@@ -68,7 +68,7 @@ export default function M_OfferScreen() {
       <PinkButton
         onPress={() => {}}
         style={styles.dbuttonStyle}
-        buttonTextStyle={styles.buttonTextStyle}
+        text={'small'}
         name={'Create Offer'}
       />
     </View>

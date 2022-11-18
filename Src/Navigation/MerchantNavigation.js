@@ -397,6 +397,32 @@ export function MerchantDrawer({navigation}) {
             borderBottomWidth: 0,
           },
           headerShadowVisible: false,
+          // headerShown: false,rr
+        })}
+        name="M_MenuItemScreen"
+        component={M_MenuItemScreen}
+      />
+      <Drawer.Screen
+        options={({navigation}) => ({
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              style={styles.headerRightView}>
+              <Image
+                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
+                style={{height: 18, width: 18, resizeMode: 'contain'}}
+              />
+            </TouchableOpacity>
+          ),
+          ...data,
+          headerStyle: {
+            backgroundColor: Colors.registrationBackground,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerShadowVisible: false,
           // headerShown: false,
         })}
         name="M_DocumentScreen"
