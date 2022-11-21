@@ -1,38 +1,38 @@
-import {View, Text, StyleSheet, TextInput} from 'react-native';
-import React, {useState} from 'react';
-import ApplicationStyles from '../../Themes/ApplicationStyles';
-import {commonFontStyle} from '../../Themes/Fonts';
-import Colors from '../../Themes/Colors';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import RegistrationDropdown from '../../Components/RegistrationDropdown';
-import {Dropdown} from 'react-native-element-dropdown';
-import PinkButton from '../../Components/PinkButton';
+import { View, Text, StyleSheet, TextInput } from "react-native";
+import React, { useState } from "react";
+import ApplicationStyles from "../../Themes/ApplicationStyles";
+import { commonFontStyle } from "../../Themes/Fonts";
+import Colors from "../../Themes/Colors";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import RegistrationDropdown from "../../Components/RegistrationDropdown";
+import { Dropdown } from "react-native-element-dropdown";
+import PinkButton from "../../Components/PinkButton";
 
 const citydata = [
   {
     id: 1,
-    strategicName: 'SUPERTREND',
+    strategicName: "SUPERTREND",
   },
-  {id: 2, strategicName: 'VWAP'},
-  {id: 3, strategicName: 'RSIMA'},
-  {id: 6, strategicName: 'TESTING'},
-  {id: 10, strategicName: 'DEMATADE'},
+  { id: 2, strategicName: "VWAP" },
+  { id: 3, strategicName: "RSIMA" },
+  { id: 6, strategicName: "TESTING" },
+  { id: 10, strategicName: "DEMATADE" },
 ];
 export default function M_OfferScreen() {
-  const [Detail, setDetail] = useState('');
-  const [Users, setUsers] = useState('');
+  const [Detail, setDetail] = useState("");
+  const [Users, setUsers] = useState("");
   return (
     <View style={ApplicationStyles.mainView}>
       <Text style={styles.welcomeText}>Create Offer</Text>
       <Text style={styles.inputName}>Offer Detail*</Text>
       <TextInput
         value={Detail}
-        onChangeText={text => setDetail(text)}
+        onChangeText={(text) => setDetail(text)}
         multiline={true}
         style={styles.textInput}
-        placeholder={'Enter Detail'}
+        placeholder={"Enter Detail"}
         placeholderTextColor={Colors.darkGrey}
-        textAlignVertical={'top'}
+        textAlignVertical={"top"}
       />
       <Text style={styles.bottomText}>Please enter the offer detail here.</Text>
       <Text style={styles.inputName}>Users*</Text>
@@ -45,19 +45,19 @@ export default function M_OfferScreen() {
         iconColor={Colors.black}
         // activeColor={colors.Gray300}
         // disable ={runningTradeTypePositions[item.tradeType] && true}
-        labelField={'strategicName'}
-        valueField={'strategicName'}
+        labelField={"strategicName"}
+        valueField={"strategicName"}
         maxHeight={300}
-        placeholder={'Nothing Selected'}
+        placeholder={"Nothing Selected"}
         value={Users}
-        onChange={item => {
+        onChange={(item) => {
           console.log(item);
-          setUsers(item['strategicName']);
+          setUsers(item["strategicName"]);
         }}
-        renderItem={item => {
+        renderItem={(item) => {
           return (
             <View>
-              <Text style={styles.textItem}>{item['strategicName']}</Text>
+              <Text style={styles.textItem}>{item["strategicName"]}</Text>
             </View>
           );
         }}
@@ -68,8 +68,8 @@ export default function M_OfferScreen() {
       <PinkButton
         onPress={() => {}}
         style={styles.dbuttonStyle}
-        text={'small'}
-        name={'Create Offer'}
+        text={"small"}
+        name={"Create Offer"}
       />
     </View>
   );
@@ -77,8 +77,9 @@ export default function M_OfferScreen() {
 const styles = StyleSheet.create({
   welcomeText: {
     ...commonFontStyle(400, 18, Colors.pink),
-    marginTop: 15,
-    textAlign: 'center',
+    marginTop: 5,
+    // marginBottom: hp(3),
+    textAlign: "center",
   },
   inputName: {
     ...commonFontStyle(500, 16, Colors.pink),
@@ -88,10 +89,10 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 14, Colors.black),
     backgroundColor: Colors.white,
     marginBottom: hp(2),
-    width: '100%',
-    // height: hp(7),
+    width: "100%",
+    // height: hp(6),
     height: hp(23),
-    padding: hp(3),
+    padding: hp(2),
     borderRadius: 5,
     marginVertical: hp(2),
   },
@@ -107,9 +108,9 @@ const styles = StyleSheet.create({
   tradetypeviewStyle: {
     backgroundColor: Colors.white,
     marginBottom: hp(2),
-    width: '100%',
-    height: hp(7),
-    paddingHorizontal: hp(3),
+    width: "100%",
+    height: hp(6),
+    paddingHorizontal: hp(2),
     borderRadius: 5,
     marginTop: hp(2),
   },

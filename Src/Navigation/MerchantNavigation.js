@@ -1,9 +1,9 @@
-import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import ChooseLoginScreen from '../Screens/ChooseLoginScreen';
-import MerchantLoginScreen from '../Screens/Merchant/MerchantLoginScreen';
-import RegistrationScreen from '../Screens/RegistrationScreen';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
+import MerchantLoginScreen from "../Screens/Merchant/MerchantLoginScreen";
+import RegistrationScreen from "../Screens/RegistrationScreen";
 import {
   Image,
   View,
@@ -11,36 +11,36 @@ import {
   TouchableOpacity,
   Text,
   Platform,
-} from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import Colors from '../Themes/Colors';
-import MDashboardScreen from '../Screens/Merchant/MDashboardScreen';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import M_OrderScreen from '../Screens/Merchant/M_OrderScreen';
-import M_MenuScreen from '../Screens/Merchant/M_MenuScreen';
-import M_NotificationScreen from '../Screens/Merchant/M_NotificationScreen';
-import M_ProfileScreen from '../Screens/Merchant/M_ProfileScreen';
+} from "react-native";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import Colors from "../Themes/Colors";
+import MDashboardScreen from "../Screens/Merchant/MDashboardScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import M_OrderScreen from "../Screens/Merchant/M_OrderScreen";
+import M_MenuScreen from "../Screens/Merchant/M_MenuScreen";
+import M_NotificationScreen from "../Screens/Merchant/M_NotificationScreen";
+import M_ProfileScreen from "../Screens/Merchant/M_ProfileScreen";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItem,
-} from '@react-navigation/drawer';
-import M_MenuItemScreen from '../Screens/Merchant/M_MenuItemScreen';
-import {commonFontStyle} from '../Themes/Fonts';
-import M_OfferScreen from '../Screens/Merchant/M_OfferScreen';
-import M_DocumentScreen from '../Screens/Merchant/M_DocumentScreen';
-import M_StatisticsScreen from '../Screens/Merchant/M_StatisticsScreen';
-import M_PromocodeScreen from '../Screens/Merchant/M_PromocodeScreen';
-import M_ReportScreen from '../Screens/Merchant/M_ReportScreen';
-import M_UpdateAvailability from '../Screens/Merchant/M_UpdateAvailability';
-import M_AppSetting from '../Screens/Merchant/M_AppSetting';
-import M_SlotScreen from '../Screens/Merchant/M_SlotScreen';
-import M_UpdatePassword from '../Screens/Merchant/M_UpdatePassword';
+} from "@react-navigation/drawer";
+import M_MenuItemScreen from "../Screens/Merchant/M_MenuItemScreen";
+import { commonFontStyle } from "../Themes/Fonts";
+import M_OfferScreen from "../Screens/Merchant/M_OfferScreen";
+import M_DocumentScreen from "../Screens/Merchant/M_DocumentScreen";
+import M_StatisticsScreen from "../Screens/Merchant/M_StatisticsScreen";
+import M_PromocodeScreen from "../Screens/Merchant/M_PromocodeScreen";
+import M_ReportScreen from "../Screens/Merchant/M_ReportScreen";
+import M_UpdateAvailability from "../Screens/Merchant/M_UpdateAvailability";
+import M_AppSetting from "../Screens/Merchant/M_AppSetting";
+import M_SlotScreen from "../Screens/Merchant/M_SlotScreen";
+import M_UpdatePassword from "../Screens/Merchant/M_UpdatePassword";
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
     <Image
-      source={require('../Images/Delivery/xxxhdpi/top_logo.png')}
+      source={require("../Images/Delivery/xxxhdpi/top_logo.png")}
       style={styles.logo}
     />
   ),
@@ -48,75 +48,75 @@ const data = {
 
 let DrawerItemArray = [
   {
-    label: 'Dashboard',
-    image: require('../Images/Merchant/xxxhdpi/ic_home.png'),
-    screen: 'MDashboardScreen',
+    label: "Dashboard",
+    image: require("../Images/Merchant/xxxhdpi/ic_home.png"),
+    screen: "MDashboardScreen",
   },
   {
-    label: 'Menu Categories',
-    image: require('../Images/Merchant/xxxhdpi/ic_side_menu.png'),
-    screen: 'M_MenuStack1',
+    label: "Menu Categories",
+    image: require("../Images/Merchant/xxxhdpi/ic_side_menu.png"),
+    screen: "M_MenuStack1",
   },
   {
-    label: 'Menu Items',
-    image: require('../Images/Merchant/xxxhdpi/ic_menu_items.png'),
-    screen: 'M_MenuItemScreen',
+    label: "Menu Items",
+    image: require("../Images/Merchant/xxxhdpi/ic_menu_items.png"),
+    screen: "M_MenuItemScreen",
   },
   {
-    label: 'Orders',
-    image: require('../Images/Merchant/xxxhdpi/ic_orders.png'),
-    screen: 'M_OrderScreen',
+    label: "Orders",
+    image: require("../Images/Merchant/xxxhdpi/ic_orders.png"),
+    screen: "M_OrderScreen",
   },
   {
-    label: 'Profile',
-    image: require('../Images/Merchant/xxxhdpi/ic_profile.png'),
-    screen: 'M_ProfileScreen',
+    label: "Profile",
+    image: require("../Images/Merchant/xxxhdpi/ic_profile.png"),
+    screen: "M_ProfileScreen",
   },
   {
-    label: 'Promo Codes',
-    image: require('../Images/Merchant/xxxhdpi/ic_promo.png'),
-    screen: 'M_PromocodeScreen',
+    label: "Promo Codes",
+    image: require("../Images/Merchant/xxxhdpi/ic_promo.png"),
+    screen: "M_PromocodeScreen",
   },
   {
-    label: 'Offers',
-    image: require('../Images/Merchant/xxxhdpi/ic_offer.png'),
-    screen: 'M_OfferScreen',
+    label: "Offers",
+    image: require("../Images/Merchant/xxxhdpi/ic_offer.png"),
+    screen: "M_OfferScreen",
   },
 
   {
-    label: 'Documents',
-    image: require('../Images/Merchant/xxxhdpi/ic_document.png'),
-    screen: 'M_DocumentScreen',
+    label: "Documents",
+    image: require("../Images/Merchant/xxxhdpi/ic_document.png"),
+    screen: "M_DocumentScreen",
   },
   {
-    label: 'Updated Availabilities',
-    image: require('../Images/Merchant/xxxhdpi/ic_update.png'),
-    screen: 'M_UpdateAvailability',
+    label: "Updated Availabilities",
+    image: require("../Images/Merchant/xxxhdpi/ic_update.png"),
+    screen: "M_UpdateAvailability",
   },
   {
-    label: 'Vendor Slot',
-    image: require('../Images/Merchant/xxxhdpi/ic_slot.png'),
-    screen: 'M_SlotScreen',
+    label: "Vendor Slot",
+    image: require("../Images/Merchant/xxxhdpi/ic_slot.png"),
+    screen: "M_SlotScreen",
   },
   {
-    label: 'App Settings',
-    image: require('../Images/Merchant/xxxhdpi/ic_seting.png'),
-    screen: 'M_AppSetting',
+    label: "App Settings",
+    image: require("../Images/Merchant/xxxhdpi/ic_seting.png"),
+    screen: "M_AppSetting",
   },
   {
-    label: 'Update Password',
-    image: require('../Images/Merchant/xxxhdpi/ic_pass.png'),
-    screen: 'M_UpdatePassword',
+    label: "Update Password",
+    image: require("../Images/Merchant/xxxhdpi/ic_pass.png"),
+    screen: "M_UpdatePassword",
   },
   {
-    label: 'Statistics',
-    image: require('../Images/Merchant/xxxhdpi/ic_statistic.png'),
-    screen: 'M_StatisticsScreen',
+    label: "Statistics",
+    image: require("../Images/Merchant/xxxhdpi/ic_statistic.png"),
+    screen: "M_StatisticsScreen",
   },
   {
-    label: 'Reports',
-    image: require('../Images/Merchant/xxxhdpi/ic_reports.png'),
-    screen: 'M_ReportScreen',
+    label: "Reports",
+    image: require("../Images/Merchant/xxxhdpi/ic_reports.png"),
+    screen: "M_ReportScreen",
   },
 ];
 
@@ -129,14 +129,14 @@ function M_MenuStack() {
           headerShown: false,
         }}
         component={M_MenuScreen}
-        name={'M_MenuScreen'}
+        name={"M_MenuScreen"}
       />
       <Menu.Screen
         options={{
           headerShown: false,
         }}
         component={M_MenuItemScreen}
-        name={'M_MenuItemScreen'}
+        name={"M_MenuItemScreen"}
       />
     </Menu.Navigator>
   );
@@ -147,7 +147,7 @@ function M_MyBottomTabs() {
   return (
     <BottomTab.Navigator
       screenOptions={{
-        headerTitleAlign: 'center',
+        headerTitleAlign: "center",
         tabBarStyle: {
           borderTopWidth: 0,
           shadowRadius: 0,
@@ -157,94 +157,229 @@ function M_MyBottomTabs() {
         },
         tabBarActiveTintColor: Colors.pink,
         tabBarInactiveTintColor: Colors.tabIconColor,
-      }}>
+      }}
+    >
       <BottomTab.Screen
-        options={{
-          tabBarIcon: ({color}) => (
+        // {({ navigation }) => ({
+        //   headerTitleAlign: "center",
+        //   headerLeft: () => (
+        //     <TouchableOpacity
+        //       onPress={() => navigation.openDrawer()}
+        //       style={styles.headerRightView}
+        //     >
+        //       <Image
+        //         source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+        //         style={{ height: 18, width: 18, resizeMode: "contain" }}
+        //       />
+        //     </TouchableOpacity>
+        //   ),
+        //   ...data,
+        //   headerStyle: {
+        //     backgroundColor: Colors.registrationBackground,
+        //     elevation: 0,
+        //     shadowOpacity: 0,
+        //     borderBottomWidth: 0,
+        //   },
+        //   headerShadowVisible: false,
+        //   // headerShown: false,
+        // })}
+
+        options={({ navigation }) => ({
+          tabBarIcon: ({ color }) => (
             <Image
               style={styles.tabIcon}
               source={
                 color == Colors.pink
-                  ? require('../Images/Merchant/xxxhdpi/ic_hone_ft_slected.png')
-                  : require('../Images/Merchant/xxxhdpi/ic_home_ft.png')
+                  ? require("../Images/Merchant/xxxhdpi/ic_hone_ft_slected.png")
+                  : require("../Images/Merchant/xxxhdpi/ic_home_ft.png")
               }
             />
           ),
-          tabBarLabel: 'Home',
-          headerShown: false,
-        }}
+          tabBarLabel: "Home",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: Colors.registrationBackground,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Image
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{
+                  height: 18,
+                  width: 18,
+                  resizeMode: "contain",
+                  marginLeft: hp(2),
+                }}
+              />
+            </TouchableOpacity>
+          ),
+          ...data,
+        })}
         name="MDashboardScreen"
         component={MDashboardScreen}
       />
       <BottomTab.Screen
-        options={{
-          tabBarIcon: ({color}) => (
+        options={({ navigation }) => ({
+          tabBarIcon: ({ color }) => (
             <Image
               style={styles.tabIcon}
               source={
                 color == Colors.pink
-                  ? require('../Images/Merchant/xxxhdpi/ic_orders_ft_selected.png')
-                  : require('../Images/Merchant/xxxhdpi/ic_orders_ft.png')
+                  ? require("../Images/Merchant/xxxhdpi/ic_orders_ft_selected.png")
+                  : require("../Images/Merchant/xxxhdpi/ic_orders_ft.png")
               }
             />
           ),
-          tabBarLabel: 'Orders',
-          headerShown: false,
-        }}
+          tabBarLabel: "Orders",
+          headerTitleAlign: "left",
+          headerStyle: {
+            backgroundColor: Colors.registrationBackground,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerShadowVisible: false,
+
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Image
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{
+                  height: 18,
+                  width: 18,
+                  resizeMode: "contain",
+                  marginLeft: hp(2),
+                }}
+              />
+            </TouchableOpacity>
+          ),
+          // ...data,
+        })}
         name="M_OrderScreen"
         component={M_OrderScreen}
       />
       <BottomTab.Screen
-        options={{
-          tabBarIcon: ({color}) => (
+        options={({ navigation }) => ({
+          tabBarIcon: ({ color }) => (
             <Image
               style={styles.tabIcon}
               source={
                 color == Colors.pink
-                  ? require('../Images/Merchant/xxxhdpi/ic_menu_ft_selected.png')
-                  : require('../Images/Merchant/xxxhdpi/ic_menu_ft.png')
+                  ? require("../Images/Merchant/xxxhdpi/ic_menu_ft_selected.png")
+                  : require("../Images/Merchant/xxxhdpi/ic_menu_ft.png")
               }
             />
           ),
-          tabBarLabel: 'Menu',
-          headerShown: false,
-        }}
+          tabBarLabel: "Menu",
+          // tabBarLabel: "Home",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: Colors.registrationBackground,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Image
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{
+                  height: 18,
+                  width: 18,
+                  resizeMode: "contain",
+                  marginLeft: hp(2),
+                }}
+              />
+            </TouchableOpacity>
+          ),
+          ...data,
+        })}
         name="M_MenuStack1"
         component={M_MenuStack}
       />
       <BottomTab.Screen
-        options={{
-          tabBarIcon: ({color}) => (
+        options={({ navigation }) => ({
+          tabBarIcon: ({ color }) => (
             <Image
               style={styles.tabIcon}
               source={
                 color == Colors.pink
-                  ? require('../Images/Merchant/xxxhdpi/ic_noti_ft_selected.png')
-                  : require('../Images/Merchant/xxxhdpi/ic_noti_ft.png')
+                  ? require("../Images/Merchant/xxxhdpi/ic_noti_ft_selected.png")
+                  : require("../Images/Merchant/xxxhdpi/ic_noti_ft.png")
               }
             />
           ),
-          tabBarLabel: 'Notifications',
-          headerShown: false,
-        }}
+          tabBarLabel: "Notifications",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: Colors.registrationBackground,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Image
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{
+                  height: 18,
+                  width: 18,
+                  resizeMode: "contain",
+                  marginLeft: hp(2),
+                }}
+              />
+            </TouchableOpacity>
+          ),
+          ...data,
+        })}
         name="M_NotificationScreen"
         component={M_NotificationScreen}
       />
       <BottomTab.Screen
-        options={{
-          tabBarIcon: ({color}) => (
+        options={({ navigation }) => ({
+          tabBarIcon: ({ color }) => (
             <Image
               style={styles.tabIcon}
               source={
                 color == Colors.pink
-                  ? require('../Images/Merchant/xxxhdpi/ic_profile_ft_selected.png')
-                  : require('../Images/Merchant/xxxhdpi/ic_profile_ft.png')
+                  ? require("../Images/Merchant/xxxhdpi/ic_profile_ft_selected.png")
+                  : require("../Images/Merchant/xxxhdpi/ic_profile_ft.png")
               }
             />
           ),
-          tabBarLabel: 'Profile',
-          headerShown: false,
-        }}
+          tabBarLabel: "Profile",
+          // headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: Colors.registrationBackground,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerShadowVisible: false,
+          // headerShown: false,
+          headerTitle: "",
+          headerTransparent: true,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Image
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{
+                  height: 18,
+                  width: 18,
+                  resizeMode: "contain",
+                  marginLeft: hp(2),
+                }}
+              />
+            </TouchableOpacity>
+          ),
+          // ...data,
+        })}
         name="M_ProfileScreen"
         component={M_ProfileScreen}
       />
@@ -253,19 +388,20 @@ function M_MyBottomTabs() {
 }
 
 const HomeStack = createNativeStackNavigator();
-export function HomeStackNav({navigation}) {
+export function HomeStackNav({ navigation }) {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitleAlign: 'center',
-      }}>
+        headerTitleAlign: "center",
+      }}
+    >
       <Stack.Screen
         options={{
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -277,7 +413,7 @@ export function HomeStackNav({navigation}) {
             borderBottomWidth: 0,
           },
           headerShadowVisible: false,
-          // headerShown: false,
+          headerShown: false,
         }}
         name="M_MyBottomTabs"
         component={M_MyBottomTabs}
@@ -286,7 +422,7 @@ export function HomeStackNav({navigation}) {
   );
 }
 
-const ImageContainer = ({image}) => {
+const ImageContainer = ({ image }) => {
   return <Image style={[styles.drawerItemIcon]} source={image} />;
 };
 
@@ -296,7 +432,7 @@ function CustomDrawerContent(props) {
       <View style={styles.drawerMain}>
         <Image
           style={styles.drawerImage}
-          source={require('../Images/Merchant/xxxhdpi/bg_profile.png')}
+          source={require("../Images/Merchant/xxxhdpi/bg_profile.png")}
         />
         <Text style={styles.name}>Jasica Birnilvis</Text>
         {DrawerItemArray.map((item, index) => {
@@ -305,7 +441,7 @@ function CustomDrawerContent(props) {
               key={index}
               label={item.label}
               labelStyle={styles.labelStyle}
-              icon={({focused, color, size}) => (
+              icon={({ focused, color, size }) => (
                 <ImageContainer image={item.image} />
               )}
               onPress={() => {
@@ -325,41 +461,43 @@ function CustomDrawerContent(props) {
 }
 const Drawer = createDrawerNavigator();
 
-export function MerchantDrawer({navigation}) {
+export function MerchantDrawer({ navigation }) {
   return (
     <Drawer.Navigator
-      screenOptions={({navigation}) => ({
+      screenOptions={({ navigation }) => ({
         drawerItemStyle: {
           borderRadius: 0,
-          width: '100%',
+          width: "100%",
           marginLeft: 0,
         },
       })}
-      drawerContent={props => <CustomDrawerContent {...props} />}>
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
       <Drawer.Screen
         options={{
           headerShown: false,
         }}
-        name={'MDashboard'}
-        component={HomeStackNav}
+        name={"MDashboard"}
+        component={M_MyBottomTabs}
       />
       <Drawer.Screen
         options={{
           headerShown: false,
         }}
-        name={'M_MenuStack'}
+        name={"M_MenuStack"}
         component={M_MenuStack}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -377,15 +515,16 @@ export function MerchantDrawer({navigation}) {
         component={M_OfferScreen}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -403,15 +542,16 @@ export function MerchantDrawer({navigation}) {
         component={M_MenuItemScreen}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -429,15 +569,16 @@ export function MerchantDrawer({navigation}) {
         component={M_DocumentScreen}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -455,15 +596,16 @@ export function MerchantDrawer({navigation}) {
         component={M_StatisticsScreen}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -481,15 +623,16 @@ export function MerchantDrawer({navigation}) {
         component={M_PromocodeScreen}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -507,15 +650,16 @@ export function MerchantDrawer({navigation}) {
         component={M_ReportScreen}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -533,15 +677,16 @@ export function MerchantDrawer({navigation}) {
         component={M_UpdateAvailability}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -559,15 +704,16 @@ export function MerchantDrawer({navigation}) {
         component={M_AppSetting}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
@@ -585,25 +731,27 @@ export function MerchantDrawer({navigation}) {
         component={M_SlotScreen}
       />
       <Drawer.Screen
-        options={({navigation}) => ({
-          headerTitleAlign: 'center',
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}>
+              style={styles.headerRightView}
+            >
               <Image
-                source={require('../Images/Delivery/xxxhdpi/ic_menu.png')}
-                style={{height: 18, width: 18, resizeMode: 'contain'}}
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
               />
             </TouchableOpacity>
           ),
-          ...data,
+          // ...data,
           headerStyle: {
             backgroundColor: Colors.registrationBackground,
             elevation: 0,
             shadowOpacity: 0,
             borderBottomWidth: 0,
           },
+          headerTitle: "Update Password",
           headerShadowVisible: false,
           // headerShown: false,
         })}
@@ -618,8 +766,9 @@ export function MerchantNavigation() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitleAlign: 'center',
-      }}>
+        headerTitleAlign: "center",
+      }}
+    >
       <Stack.Screen
         options={{
           headerShown: false,
@@ -662,7 +811,7 @@ export function MerchantNavigation() {
 }
 const styles = StyleSheet.create({
   logo: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
     height: hp(4),
     width: 120,
   },
@@ -670,27 +819,27 @@ const styles = StyleSheet.create({
     paddingLeft: hp(2),
   },
   tabIcon: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
     height: hp(2.8),
     width: hp(2.8),
     marginBottom: 5,
   },
   drawerImage: {
-    resizeMode: 'cover',
+    resizeMode: "cover",
     height: hp(15),
     width: hp(15),
   },
   drawerMain: {
     paddingHorizontal: hp(2),
-    width: '100%',
+    width: "100%",
   },
   name: {
-    ...commonFontStyle(600, 20, Colors.black),
+    ...commonFontStyle(600, hp(2.5), Colors.black),
     marginVertical: hp(2),
   },
-  labelStyle: {...commonFontStyle(400, 16, Colors.black)},
+  labelStyle: { ...commonFontStyle(400, 16, Colors.black) },
   drawerItemIcon: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
     height: hp(3),
     width: hp(3),
   },
@@ -699,7 +848,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: hp(2),
     paddingVertical: hp(1.5),
     ...commonFontStyle(600, 16, Colors.white),
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: hp(3),
     borderRadius: 5,
   },

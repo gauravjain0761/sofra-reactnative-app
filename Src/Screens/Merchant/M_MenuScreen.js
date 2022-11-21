@@ -6,18 +6,18 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import React, {useState} from 'react';
-import ApplicationStyles from '../../Themes/ApplicationStyles';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {commonFontStyle} from '../../Themes/Fonts';
-import Colors from '../../Themes/Colors';
-import RegistrationTextInput from '../../Components/RegistrationTextInput';
-import PinkButton from '../../Components/PinkButton';
-import MenuScreenItems from '../../Components/MenuScreenItems';
-export default function M_MenuScreen({navigation}) {
-  const [search, setSearch] = useState('');
-  const [name, setname] = useState('');
+} from "react-native";
+import React, { useState } from "react";
+import ApplicationStyles from "../../Themes/ApplicationStyles";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { commonFontStyle } from "../../Themes/Fonts";
+import Colors from "../../Themes/Colors";
+import RegistrationTextInput from "../../Components/RegistrationTextInput";
+import PinkButton from "../../Components/PinkButton";
+import MenuScreenItems from "../../Components/MenuScreenItems";
+export default function M_MenuScreen({ navigation }) {
+  const [search, setSearch] = useState("");
+  const [name, setname] = useState("");
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -33,25 +33,25 @@ export default function M_MenuScreen({navigation}) {
           <View>
             <Text style={styles.titleInput}>Name</Text>
             <RegistrationTextInput
-              placeholder={'Enter name'}
+              placeholder={"Enter name"}
               value={name}
-              onChangeText={text => setname(text)}
+              onChangeText={(text) => setname(text)}
             />
           </View>
           <View>
             <Text style={styles.titleInput}>Name in Arabic</Text>
             <RegistrationTextInput
-              placeholder={'Enter name in Arabic'}
+              placeholder={"Enter name in Arabic"}
               value={name}
-              onChangeText={text => setname(text)}
+              onChangeText={(text) => setname(text)}
             />
           </View>
 
           <PinkButton
-            text={'small'}
+            text={"small"}
             onPress={() => {}}
             style={styles.dbuttonStyle}
-            name={'Add Categories'}
+            name={"Add Categories"}
           />
         </View>
       </ScrollView>
@@ -61,9 +61,9 @@ export default function M_MenuScreen({navigation}) {
 const styles = StyleSheet.create({
   welcomeText: {
     ...commonFontStyle(400, 18, Colors.pink),
-    marginTop: 15,
-    marginBottom: hp(5),
-    textAlign: 'center',
+    marginTop: 5,
+    marginBottom: hp(3),
+    textAlign: "center",
   },
 
   title: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 
     marginBottom: hp(1.5),
   },
-  title2: {...commonFontStyle(500, 16, Colors.pink), marginBottom: hp(3)},
+  title2: { ...commonFontStyle(500, 16, Colors.pink), marginBottom: hp(3) },
   titleInput: {
     ...commonFontStyle(500, 14, Colors.black),
     marginBottom: 10,

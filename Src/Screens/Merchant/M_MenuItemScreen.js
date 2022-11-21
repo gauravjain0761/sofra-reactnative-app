@@ -6,47 +6,47 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import React, {useState} from 'react';
-import ApplicationStyles from '../../Themes/ApplicationStyles';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {commonFontStyle, SCREEN_WIDTH} from '../../Themes/Fonts';
-import Colors from '../../Themes/Colors';
-import RegistrationTextInput from '../../Components/RegistrationTextInput';
-import PinkButton from '../../Components/PinkButton';
-import MenuScreenItems from '../../Components/MenuScreenItems';
-import RegistrationDropdown from '../../Components/RegistrationDropdown';
-import ImagePicker from 'react-native-image-crop-picker';
+} from "react-native";
+import React, { useState } from "react";
+import ApplicationStyles from "../../Themes/ApplicationStyles";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
+import Colors from "../../Themes/Colors";
+import RegistrationTextInput from "../../Components/RegistrationTextInput";
+import PinkButton from "../../Components/PinkButton";
+import MenuScreenItems from "../../Components/MenuScreenItems";
+import RegistrationDropdown from "../../Components/RegistrationDropdown";
+import ImagePicker from "react-native-image-crop-picker";
 
 const citydata = [
   {
     id: 1,
-    strategicName: 'SUPERTREND',
+    strategicName: "SUPERTREND",
   },
-  {id: 2, strategicName: 'VWAP'},
-  {id: 3, strategicName: 'RSIMA'},
-  {id: 6, strategicName: 'TESTING'},
-  {id: 10, strategicName: 'DEMATADE'},
+  { id: 2, strategicName: "VWAP" },
+  { id: 3, strategicName: "RSIMA" },
+  { id: 6, strategicName: "TESTING" },
+  { id: 10, strategicName: "DEMATADE" },
 ];
 export default function M_MenuItemScreen() {
-  const [search, setSearch] = useState('');
-  const [Name, setName] = useState('');
-  const [ArabicName, setArabicName] = useState('');
-  const [MenuCategory, setMenuCategory] = useState('');
-  const [ItemType, setItemType] = useState('');
-  const [Price, setPrice] = useState('');
-  const [Discount, setDiscount] = useState('');
-  const [MaxLimit, setMaxLimit] = useState('');
-  const [ImageItem, setImageItem] = useState('');
-  const [Description, setDescription] = useState('');
-  const [ArabicDes, setArabicDes] = useState('');
-  const [MenuDes, setMenuDes] = useState('');
+  const [search, setSearch] = useState("");
+  const [Name, setName] = useState("");
+  const [ArabicName, setArabicName] = useState("");
+  const [MenuCategory, setMenuCategory] = useState("");
+  const [ItemType, setItemType] = useState("");
+  const [Price, setPrice] = useState("");
+  const [Discount, setDiscount] = useState("");
+  const [MaxLimit, setMaxLimit] = useState("");
+  const [ImageItem, setImageItem] = useState("");
+  const [Description, setDescription] = useState("");
+  const [ArabicDes, setArabicDes] = useState("");
+  const [MenuDes, setMenuDes] = useState("");
 
   const openPicker = () => {
     ImagePicker.openPicker({
-      mediaType: 'photo',
+      mediaType: "photo",
       includeBase64: true,
-    }).then(photo => {
+    }).then((photo) => {
       console.log(photo);
       setImageItem(photo);
     });
@@ -67,87 +67,95 @@ export default function M_MenuItemScreen() {
           <View>
             <Text style={styles.titleInput}>Name</Text>
             <RegistrationTextInput
-              placeholder={'Enter name'}
+              placeholder={"Enter name"}
               value={Name}
-              onChangeText={text => setName(text)}
+              onChangeText={(text) => setName(text)}
+              placeholderTextColor={Colors.black}
             />
           </View>
           <View>
             <Text style={styles.titleInput}>Name in Arabic</Text>
             <RegistrationTextInput
-              placeholder={'Enter name in Arabic'}
+              placeholder={"Enter name in Arabic"}
               value={ArabicName}
-              onChangeText={text => setArabicName(text)}
+              onChangeText={(text) => setArabicName(text)}
+              placeholderTextColor={Colors.black}
             />
           </View>
           <View style={styles.row}>
-            <View style={{width: (SCREEN_WIDTH - hp(6)) / 2}}>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Menu Categories</Text>
               <RegistrationDropdown
                 data={citydata}
                 value={MenuCategory}
-                setData={text => {
+                setData={(text) => {
                   setMenuCategory(text);
                 }}
-                placeholder={'Categories'}
-                valueField={'strategicName'}
+                placeholder={"Categories"}
+                valueField={"strategicName"}
                 style={styles.dropdownRow}
+                placeholderTextColor={Colors.black}
               />
             </View>
-            <View style={{width: (SCREEN_WIDTH - hp(6)) / 2}}>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Item Type</Text>
               <RegistrationDropdown
                 data={citydata}
                 value={ItemType}
-                setData={text => {
+                setData={(text) => {
                   setItemType(text);
                 }}
-                placeholder={'Type'}
-                valueField={'strategicName'}
+                placeholder={"Type"}
+                valueField={"strategicName"}
                 style={styles.dropdownRow}
+                placeholderTextColor={Colors.black}
               />
             </View>
           </View>
           <View style={styles.row}>
-            <View style={{width: (SCREEN_WIDTH - hp(6)) / 2}}>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Price in AED</Text>
               <RegistrationTextInput
-                placeholder={'Enter Price'}
+                placeholder={"Enter Price"}
                 value={Price}
-                onChangeText={text => setPrice(text)}
+                onChangeText={(text) => setPrice(text)}
+                placeholderTextColor={Colors.black}
               />
             </View>
-            <View style={{width: (SCREEN_WIDTH - hp(6)) / 2}}>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Discount</Text>
               <RegistrationDropdown
                 data={citydata}
                 value={Discount}
-                setData={text => {
+                setData={(text) => {
                   setDiscount(text);
                 }}
-                placeholder={'Discount'}
-                valueField={'strategicName'}
+                placeholder={"Discount"}
+                valueField={"strategicName"}
                 style={styles.dropdownRow}
+                placeholderTextColor={Colors.black}
               />
             </View>
           </View>
-          <View style={{width: (SCREEN_WIDTH - hp(6)) / 2}}>
+          <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <Text style={styles.titleInput}>Max Limit</Text>
             <RegistrationTextInput
-              placeholder={'Enter Price'}
+              placeholder={"Enter Price"}
               value={Price}
-              onChangeText={text => setPrice(text)}
+              onChangeText={(text) => setPrice(text)}
+              placeholderTextColor={Colors.black}
             />
           </View>
           <View>
             <Text style={styles.titleInput}>Images</Text>
             <TouchableOpacity
               onPress={() => openPicker()}
-              style={styles.imageView}>
-              {ImageItem == '' ? (
-                <View style={{alignItems: 'center'}}>
+              style={styles.imageView}
+            >
+              {ImageItem == "" ? (
+                <View style={{ alignItems: "center" }}>
                   <Image
-                    source={require('../../Images/Merchant/xxxhdpi/ic_attach.png')}
+                    source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
                     style={styles.imageVector}
                   />
                   <Text style={styles.attachText}>Attach Image</Text>
@@ -169,24 +177,24 @@ export default function M_MenuItemScreen() {
             <Text style={styles.titleInput}>Description</Text>
             <TextInput
               value={Description}
-              onChangeText={text => setDescription(text)}
+              onChangeText={(text) => setDescription(text)}
               multiline={true}
               style={styles.textInput}
-              placeholder={'Description'}
-              placeholderTextColor={Colors.placeholderColor}
-              textAlignVertical={'top'}
+              placeholder={"Description"}
+              placeholderTextColor={Colors.black}
+              textAlignVertical={"top"}
             />
           </View>
           <View>
             <Text style={styles.titleInput}>Description in Arabic</Text>
             <TextInput
               value={ArabicDes}
-              onChangeText={text => setArabicDes(text)}
+              onChangeText={(text) => setArabicDes(text)}
               multiline={true}
               style={styles.textInput}
-              placeholder={'Description'}
-              placeholderTextColor={Colors.placeholderColor}
-              textAlignVertical={'top'}
+              placeholder={"Description"}
+              placeholderTextColor={Colors.black}
+              textAlignVertical={"top"}
             />
           </View>
           <View>
@@ -194,20 +202,21 @@ export default function M_MenuItemScreen() {
             <RegistrationDropdown
               data={citydata}
               value={MenuDes}
-              setData={text => {
+              setData={(text) => {
                 setMenuDes(text);
               }}
-              placeholder={'Menu Descriptors'}
-              valueField={'strategicName'}
+              placeholder={"Menu Descriptors"}
+              valueField={"strategicName"}
               style={styles.dropdownRow}
+              placeholderTextColor={Colors.black}
             />
           </View>
 
           <PinkButton
-            text={'small'}
+            text={"small"}
             onPress={() => {}}
             style={styles.dbuttonStyle}
-            name={'Submit'}
+            name={"Submit"}
           />
         </View>
       </ScrollView>
@@ -217,9 +226,9 @@ export default function M_MenuItemScreen() {
 const styles = StyleSheet.create({
   welcomeText: {
     ...commonFontStyle(400, 18, Colors.pink),
-    marginTop: 15,
-    marginBottom: hp(5),
-    textAlign: 'center',
+    marginTop: 5,
+    marginBottom: hp(3),
+    textAlign: "center",
   },
 
   title: {
@@ -227,7 +236,7 @@ const styles = StyleSheet.create({
 
     marginBottom: hp(1.5),
   },
-  title2: {...commonFontStyle(500, 16, Colors.pink), marginBottom: hp(3)},
+  title2: { ...commonFontStyle(500, 16, Colors.pink), marginBottom: hp(3) },
   titleInput: {
     ...commonFontStyle(500, 14, Colors.pink),
     marginBottom: 10,
@@ -237,44 +246,44 @@ const styles = StyleSheet.create({
     marginVertical: hp(3),
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   textInput: {
     ...commonFontStyle(400, 14, Colors.black),
     backgroundColor: Colors.white,
     marginBottom: hp(2),
-    width: '100%',
-    // height: hp(7),
+    width: "100%",
+    // height: hp(6),
     height: hp(12),
-    padding: hp(3),
+    padding: hp(2),
     borderRadius: 5,
     // marginVertical: hp(2),
   },
   imageView: {
     backgroundColor: Colors.white,
     borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     height: hp(17),
     borderColor: Colors.placeholderColor,
     borderWidth: 1,
-    borderStyle: 'dashed',
+    borderStyle: "dashed",
     marginBottom: hp(2),
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   imageVector: {
     width: hp(6),
-    // height: hp(7),
+    // height: hp(6),
     height: hp(6),
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   image: {
     height: hp(17),
-    resizeMode: 'cover',
+    resizeMode: "cover",
     width: SCREEN_WIDTH - hp(4),
   },
   attachText: {

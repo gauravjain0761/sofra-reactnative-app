@@ -1,9 +1,9 @@
-import {View, StyleSheet, Text} from 'react-native';
-import React from 'react';
-import {Dropdown} from 'react-native-element-dropdown';
-import Colors from '../Themes/Colors';
-import {commonFontStyle} from '../Themes/Fonts';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { View, StyleSheet, Text } from "react-native";
+import React from "react";
+import { Dropdown } from "react-native-element-dropdown";
+import Colors from "../Themes/Colors";
+import { commonFontStyle } from "../Themes/Fonts";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export default function RegistrationDropdown({
   setData,
@@ -12,13 +12,22 @@ export default function RegistrationDropdown({
   placeholder,
   valueField,
   style,
+  placeholderTextColor,
 }) {
   return (
     <View>
       <Dropdown
         // selectedStyle={{color:colors.gray3}}
         style={[styles.tradetypeviewStyle, style]}
-        placeholderStyle={styles.placeholderStyle}
+        placeholderStyle={{
+          ...commonFontStyle(
+            400,
+            14,
+            placeholderTextColor
+              ? placeholderTextColor
+              : Colors.placeholderColor
+          ),
+        }}
         data={data}
         selectedTextStyle={[styles.TitleTextStyle]}
         iconColor={Colors.black}
@@ -29,11 +38,11 @@ export default function RegistrationDropdown({
         maxHeight={300}
         placeholder={placeholder}
         value={value}
-        onChange={item => {
+        onChange={(item) => {
           console.log(item);
           setData(item[valueField]);
         }}
-        renderItem={item => {
+        renderItem={(item) => {
           return (
             <View>
               <Text style={styles.textItem}>{item[valueField]}</Text>
@@ -55,9 +64,9 @@ const styles = StyleSheet.create({
   tradetypeviewStyle: {
     backgroundColor: Colors.white,
     marginBottom: hp(2),
-    width: '100%',
-    height: hp(7),
-    paddingHorizontal: hp(3),
+    width: "100%",
+    height: hp(6),
+    paddingHorizontal: hp(2),
     borderRadius: 5,
   },
   textItem: {

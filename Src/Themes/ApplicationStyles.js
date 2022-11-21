@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
-import Colors from './Colors';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { StyleSheet } from "react-native";
+import Colors from "./Colors";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 export default StyleSheet.create({
   applicationView: {
     flex: 1,
@@ -10,5 +10,9 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.registrationBackground,
     paddingHorizontal: hp(2),
+  },
+  mainViewWithoutPadding: {
+    flex: 1,
+    backgroundColor: Colors.registrationBackground,
   },
 });
