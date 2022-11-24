@@ -62,13 +62,13 @@ export default function M_DocumentScreen() {
                 <View style={styles.innerRow2}>
                   <TouchableOpacity>
                     <Image
-                      source={require("../../Images/Merchant/xxxhdpi/ic_remove.png")}
+                      source={require("../../Images/Merchant/xxxhdpi/ic_download.png")}
                       style={[styles.docImage, { marginRight: hp(1) }]}
                     />
                   </TouchableOpacity>
                   <TouchableOpacity>
                     <Image
-                      source={require("../../Images/Merchant/xxxhdpi/ic_download.png")}
+                      source={require("../../Images/Merchant/xxxhdpi/ic_remove.png")}
                       style={styles.docImage}
                     />
                   </TouchableOpacity>

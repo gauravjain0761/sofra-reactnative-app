@@ -1,5 +1,5 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { CommonActions, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
 import MerchantLoginScreen from "../Screens/Merchant/MerchantLoginScreen";
@@ -12,7 +12,10 @@ import {
   Text,
   Platform,
 } from "react-native";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import Colors from "../Themes/Colors";
 import MDashboardScreen from "../Screens/Merchant/MDashboardScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -36,6 +39,11 @@ import M_UpdateAvailability from "../Screens/Merchant/M_UpdateAvailability";
 import M_AppSetting from "../Screens/Merchant/M_AppSetting";
 import M_SlotScreen from "../Screens/Merchant/M_SlotScreen";
 import M_UpdatePassword from "../Screens/Merchant/M_UpdatePassword";
+import M_EditCategoryScreen from "../Screens/Merchant/M_EditCategoryScreen";
+import M_EditMenuItemScreen from "../Screens/Merchant/M_EditMenuItemScreen";
+import { clearAsyncStorage } from "../Services/asyncStorage";
+import { useDispatch, useSelector } from "react-redux";
+import { getLogout } from "../Services/AuthApi";
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
@@ -135,8 +143,22 @@ function M_MenuStack() {
         options={{
           headerShown: false,
         }}
+        component={M_EditCategoryScreen}
+        name={"M_EditCategoryScreen"}
+      />
+      <Menu.Screen
+        options={{
+          headerShown: false,
+        }}
         component={M_MenuItemScreen}
         name={"M_MenuItemScreen"}
+      />
+      <Menu.Screen
+        options={{
+          headerShown: false,
+        }}
+        component={M_EditMenuItemScreen}
+        name={"M_EditMenuItemScreen"}
       />
     </Menu.Navigator>
   );
@@ -427,8 +449,40 @@ const ImageContainer = ({ image }) => {
 };
 
 function CustomDrawerContent(props) {
+  const _TOAST = useSelector((e) => e.merchant.toast);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("_TOAST---", _TOAST);
+    if (_TOAST.message == "Auth Token is invalid") {
+      onLogout();
+    }
+  }, [_TOAST]);
+
+  const onLogout = async () => {
+    // props.navigation.navigate(item.screen);
+    dispatch(
+      getLogout(() => {
+        props.navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: "ChooseLoginScreen" }],
+          })
+        );
+      })
+    );
+    await clearAsyncStorage();
+  };
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView
+      style={{
+        marginLeft: 0,
+        marginRight: 0,
+        padding: 0,
+      }}
+      {...props}
+    >
       <View style={styles.drawerMain}>
         <Image
           style={styles.drawerImage}
@@ -439,19 +493,46 @@ function CustomDrawerContent(props) {
           return (
             <DrawerItem
               key={index}
-              label={item.label}
-              labelStyle={styles.labelStyle}
+              label={({ focused, color, size }) => (
+                <Text
+                  style={[
+                    styles.labelStyle,
+
+                    { width: widthPercentageToDP(50) },
+                  ]}
+                >
+                  {item.label}
+                </Text>
+              )}
+              labelStyle={[
+                // styles.labelStyle,
+                {
+                  // width: widthPercentageToDP(40),
+                },
+              ]}
               icon={({ focused, color, size }) => (
                 <ImageContainer image={item.image} />
               )}
               onPress={() => {
                 props.navigation.navigate(item.screen);
               }}
+              style={{
+                marginLeft: 0,
+                marginRight: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                marginTop: 0,
+                marginBottom: 0,
+              }}
             />
           );
         })}
         <View>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              onLogout();
+            }}
+          >
             <Text style={styles.logoutButton}>Logout</Text>
           </TouchableOpacity>
         </View>
@@ -467,9 +548,10 @@ export function MerchantDrawer({ navigation }) {
       screenOptions={({ navigation }) => ({
         drawerItemStyle: {
           borderRadius: 0,
-          width: "100%",
+
           marginLeft: 0,
         },
+        drawerStyle: { width: widthPercentageToDP(75) },
       })}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
@@ -768,45 +850,7 @@ export function MerchantNavigation() {
       screenOptions={{
         headerTitleAlign: "center",
       }}
-    >
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-        name="MerchantLoginScreen"
-        component={MerchantLoginScreen}
-      />
-
-      <Stack.Screen
-        options={{
-          ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-        }}
-        name="RegistrationScreen"
-        component={RegistrationScreen}
-      />
-      <Stack.Screen
-        options={{
-          ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          headerShown: false,
-        }}
-        name="MerchantDrawerHome"
-        component={MerchantDrawer}
-      />
-    </Stack.Navigator>
+    ></Stack.Navigator>
   );
 }
 const styles = StyleSheet.create({
@@ -837,11 +881,13 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, hp(2.5), Colors.black),
     marginVertical: hp(2),
   },
-  labelStyle: { ...commonFontStyle(400, 16, Colors.black) },
+  labelStyle: {
+    ...commonFontStyle(400, widthPercentageToDP(4), Colors.black),
+  },
   drawerItemIcon: {
     resizeMode: "contain",
-    height: hp(3),
-    width: hp(3),
+    height: hp(2.5),
+    width: hp(2.5),
   },
   logoutButton: {
     backgroundColor: Colors.pink,

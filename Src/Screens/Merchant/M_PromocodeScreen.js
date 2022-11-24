@@ -42,7 +42,9 @@ export default function M_PromocodeScreen() {
         <Text style={styles.welcomeText}>Promo Codes</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
           {[0, 1, 2, 3].map((element, index) => {
-            return <MenuScreenItems activeVisible={false} />;
+            return (
+              <MenuScreenItems activeVisible={false} screen={"promocode"} />
+            );
           })}
         </ScrollView>
         <View>

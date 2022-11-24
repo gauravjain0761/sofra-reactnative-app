@@ -47,7 +47,6 @@ export default function M_MenuItemScreen() {
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
-      console.log(photo);
       setImageItem(photo);
     });
   };
@@ -55,10 +54,10 @@ export default function M_MenuItemScreen() {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Menu Categories</Text>
+        <Text style={styles.welcomeText}>Menu Items</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
           {[0, 1, 2, 3].map((element, index) => {
-            return <MenuScreenItems activeVisible={true} />;
+            return <MenuScreenItems screen={"item"} activeVisible={true} />;
           })}
         </ScrollView>
         <View style={styles.rowView}>

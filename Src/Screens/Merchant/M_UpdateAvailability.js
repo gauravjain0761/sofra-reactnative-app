@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -16,8 +16,12 @@ import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
+import { useDispatch, useSelector } from "react-redux";
+import { getAvailbility } from "../../Services/MerchantApi";
+import moment from "moment";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const daysData = [
+const AVAILABILITY = [
   {
     checkbox: false,
     open: "12:00",
@@ -31,9 +35,20 @@ const daysData = [
   { checkbox: false, open: "12:00", close: "10:55", day: "Friday" },
   { checkbox: false, open: "12:00", close: "10:55", day: "Saturday" },
 ];
-export default function M_UpdateAvailability() {
+export default function M_UpdateAvailability({ navigation }) {
   const [everydayEnable, seteverydayEnable] = useState(false);
   const [sameTimingEnable, setsameTimingEnable] = useState(false);
+  const dispatch = useDispatch();
+  const AVAILABILITY = useSelector((e) => e.merchant.availability);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getAvailbility());
+    });
+  }, []);
+  console.log("AVAILABILITY", AVAILABILITY);
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -83,14 +98,14 @@ export default function M_UpdateAvailability() {
               <Text style={styles.tableTitlea}>Close</Text>
             </View>
           </View>
-          {daysData.map((item, index) => {
+          {AVAILABILITY.map((item, index) => {
             return (
               <View style={styles.rowDays}>
                 <TouchableOpacity style={styles.dayRowView}>
                   <Image
                     style={styles.checkIcon}
                     source={
-                      item.checkbox
+                      item.status == 1
                         ? require("../../Images/Merchant/xxxhdpi/ic_check.png")
                         : require("../../Images/Merchant/xxxhdpi/ic_uncheck.png")
                     }
@@ -99,12 +114,12 @@ export default function M_UpdateAvailability() {
                 </TouchableOpacity>
                 <View style={styles.timeBox}>
                   <Text style={{ ...commonFontStyle(400, 14, Colors.black) }}>
-                    {item.open}
+                    {moment(item.openingTime).format("hh:mm")}
                   </Text>
                 </View>
                 <View style={styles.timeBox}>
                   <Text style={{ ...commonFontStyle(400, 14, Colors.black) }}>
-                    {item.close}
+                    {moment(item.closingTime).format("hh:mm")}
                   </Text>
                 </View>
               </View>
@@ -119,6 +134,12 @@ export default function M_UpdateAvailability() {
           name={"Update Availability"}
         />
       </ScrollView>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="time"
+        // onConfirm={handleConfirm}
+        onCancel={() => setDatePickerVisibility(false)}
+      />
     </View>
   );
 }
@@ -172,7 +193,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(500, 15, Colors.black),
   },
   mainTable: {
-    marginVertical: hp(5),
+    marginVertical: hp(4),
   },
   dbuttonStyle: {
     marginBottom: hp(3),

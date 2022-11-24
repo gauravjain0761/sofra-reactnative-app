@@ -89,7 +89,7 @@ export default function M_SlotScreen() {
                 <Text style={styles.rightText}>1</Text>
               </View>
               <View style={styles.middleRow}>
-                <Text style={styles.leftText}>Off Slote Date</Text>
+                <Text style={styles.leftText}>Off Slot Date</Text>
                 <Text style={styles.rightText}>October 24, 2022</Text>
               </View>
               <View style={styles.middleRow2}>

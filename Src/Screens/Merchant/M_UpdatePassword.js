@@ -12,7 +12,10 @@ import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
@@ -77,13 +80,14 @@ export default function M_UpdatePassword() {
             </Text>
           </View>
         </View>
-
-        <PinkButton
-          onPress={() => {}}
-          style={styles.dbuttonStyle}
-          text={"small"}
-          name={"Update Password"}
-        />
+        <View style={styles.button}>
+          <PinkButton
+            onPress={() => {}}
+            style={styles.dbuttonStyle}
+            text={"small"}
+            name={"Update Password"}
+          />
+        </View>
       </View>
     </View>
   );
@@ -110,5 +114,9 @@ const styles = StyleSheet.create({
   bottomText: {
     ...commonFontStyle(400, 12, Colors.darkGrey),
     marginBottom: hp(3),
+  },
+  button: {
+    width: "60%",
+    alignSelf: "center",
   },
 });

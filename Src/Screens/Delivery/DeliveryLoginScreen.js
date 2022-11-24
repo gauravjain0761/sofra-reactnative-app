@@ -32,7 +32,11 @@ export default function DeliveryLoginScreen({ navigation }) {
             onChangeText={(text) => setPassword(text)}
             style={styles.textinputStyle}
           />
-          <PinkButton style={styles.dbuttonStyle} name={"Login"} />
+          <PinkButton
+            onPress={() => {}}
+            style={styles.dbuttonStyle}
+            name={"Login"}
+          />
           <Text style={styles.forgot}>Forgot password?</Text>
           <Text style={styles.forgot2}>
             Don't have an accout?{" "}
@@ -63,15 +67,15 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     ...commonFontStyle(400, 20, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
+    marginTop: hp(2.5),
+    marginBottom: hp(6),
     textAlign: "center",
   },
   textinputStyle: {
-    marginTop: hp(4),
+    marginTop: hp(3),
   },
   dbuttonStyle: {
-    marginTop: hp(10),
+    marginTop: hp(9),
   },
   forgot: {
     marginTop: hp(2),

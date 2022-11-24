@@ -7,7 +7,7 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -15,10 +15,20 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
+import { useDispatch, useSelector } from "react-redux";
+import { getStatitics } from "../../Services/MerchantApi";
 
-export default function M_StatisticsScreen() {
+export default function M_StatisticsScreen({ navigation }) {
   const [tab, setTab] = useState("order");
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const STATISTICS = useSelector((e) => e.merchant.statistics);
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getStatitics());
+    });
+  }, []);
 
   return (
     <View style={ApplicationStyles.mainView}>

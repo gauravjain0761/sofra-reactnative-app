@@ -8,7 +8,7 @@ import {
   ScrollView,
   Switch,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -17,23 +17,31 @@ import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
+import { useDispatch, useSelector } from "react-redux";
+import { getAppSetting, UpdateAppSetting } from "../../Services/MerchantApi";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-const daysData = [
-  {
-    checkbox: false,
-    open: "12:00",
-    close: "10:55",
-    day: "Sunday",
-  },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Monday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Tuesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Wednesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Thursday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Friday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Saturday" },
-];
 export default function M_AppSetting() {
-  const [switchEmable, setswitchEmable] = useState(true);
+  const dispatch = useDispatch();
+  const isTakingOrders = useSelector((e) => e.merchant.isTakingOrders);
+  const [switchEmable, setswitchEmable] = useState(false);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getAppSetting());
+    });
+  }, []);
+  useEffect(() => {
+    setswitchEmable(isTakingOrders);
+  }, [isTakingOrders]);
+  const onUpdateAppSetting = () => {
+    let data = {
+      isTakingOrders: switchEmable == true ? "YES" : "NO",
+    };
+    dispatch(UpdateAppSetting(data));
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -49,7 +57,7 @@ export default function M_AppSetting() {
               false: Colors.placeholderColor,
               true: Colors.pink,
             }}
-            thumbColor={switchEmable ? Colors.white : Colors.darkGrey}
+            thumbColor={switchEmable ? Colors.white : Colors.white}
             style={{
               transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
               marginTop: 0,
@@ -59,7 +67,9 @@ export default function M_AppSetting() {
           />
         </View>
         <PinkButton
-          onPress={() => {}}
+          onPress={() => {
+            onUpdateAppSetting();
+          }}
           style={styles.dbuttonStyle}
           text={"small"}
           name={"Update Settings"}

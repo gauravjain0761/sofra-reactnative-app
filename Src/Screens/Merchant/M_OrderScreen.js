@@ -8,15 +8,18 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Colors from "../../Themes/Colors";
 import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import OrderItems from "../../Components/OrderItems";
+import Modal from "react-native-modal";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrders } from "../../Services/MerchantApi";
 
 const tagArray = [
-  { title: "Accept", color: Colors.pink },
+  { title: "Accepted", color: Colors.pink, type: "ACCEPTED" },
   { title: "Ready to pick up", color: Colors.purple },
   { title: "Delivered", color: Colors.green },
   { title: "New Orders", color: Colors.yellow },
@@ -24,6 +27,18 @@ const tagArray = [
 ];
 export default function M_OrderScreen({ navigation }) {
   const [search, setSearch] = useState("");
+  const [categoryDetail, setcategoryDetail] = useState(false);
+  const [selectedOrder, setselectedOrder] = useState({});
+
+  const dispatch = useDispatch();
+  const ORDERS = useSelector((e) => e.merchant.orders);
+
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getOrders());
+    });
+  }, []);
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -69,14 +84,142 @@ export default function M_OrderScreen({ navigation }) {
           })}
         </View>
 
-        {tagArray.map((item, index) => {
-          return (
-            <View>
-              <OrderItems item={item} navigation={navigation} />
-            </View>
-          );
-        })}
+        {ORDERS.length !== 0 &&
+          ORDERS.map((item, index) => {
+            let status = tagArray.filter((obj) => obj.type == item.status);
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  setcategoryDetail(true), setselectedOrder(item);
+                }}
+              >
+                <OrderItems
+                  item={item}
+                  navigation={navigation}
+                  status={status[0]}
+                />
+              </TouchableOpacity>
+            );
+          })}
       </ScrollView>
+      <Modal
+        isVisible={categoryDetail}
+        // deviceWidth={SCREEN_WIDTH}
+        style={{
+          margin: 0,
+          justifyContent: "flex-end",
+          borderTopStartRadius: 50,
+          borderTopEndRadius: 50,
+        }}
+        onBackButtonPress={() => {
+          setcategoryDetail(!categoryDetail), setselectedOrder({});
+        }}
+        onBackdropPress={() => {
+          setcategoryDetail(!categoryDetail), setselectedOrder({});
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: Colors.white,
+            borderTopStartRadius: 20,
+            borderTopEndRadius: 20,
+            paddingBottom: hp(3),
+            maxHeight: hp(85),
+          }}
+        >
+          <View style={styles.titleView}>
+            <Text style={styles.detailText}>Order Details</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setcategoryDetail(!categoryDetail), setselectedOrder({});
+              }}
+              style={styles.closeButton}
+            >
+              <Image
+                style={styles.menuIconButton}
+                source={require("../../Images/Merchant/xxxhdpi/close.png")}
+              />
+            </TouchableOpacity>
+          </View>
+          <ScrollView>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Order Id:</Text>
+              <Text style={styles.rightText}>{selectedOrder.id}</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Total Amount:</Text>
+              <Text style={styles.rightText}>
+                AED {selectedOrder.totalPrice}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Items Amount:</Text>
+              <Text style={styles.rightText}>
+                AED {selectedOrder.itemsPrice}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>VAT (TAX):</Text>
+              <Text style={styles.rightText}>AED {selectedOrder.vat}</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Promo Code:</Text>
+              <Text style={styles.rightText}>
+                {selectedOrder.promoCode == ""
+                  ? "N/A"
+                  : selectedOrder.promoCode}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Discount Amount:</Text>
+              <Text style={styles.rightText}>
+                AED{" "}
+                {selectedOrder.discount == null ? 0 : selectedOrder.discount}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Delivery Charges:</Text>
+              <Text style={styles.rightText}>
+                AED {selectedOrder.serviceCharges}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Order Date:</Text>
+              <Text style={styles.rightText}>Nov 02 2022</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Delivery Date:</Text>
+              <Text style={styles.rightText}>AED 0</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Recipient:</Text>
+              <Text style={styles.rightText}>AED 0</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Cooking Instruction:</Text>
+              <Text style={styles.rightText}>
+                {selectedOrder.cookingInstructions !== ""
+                  ? selectedOrder.cookingInstructions
+                  : "N/A"}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Payment Methiod:</Text>
+              <Text style={styles.rightText}>{selectedOrder.paymentType}</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Payment Status:</Text>
+              <Text style={styles.rightText}>
+                {selectedOrder.paymentStatus}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Created At:</Text>
+              <Text style={styles.rightText}>N/A</Text>
+            </View>
+          </ScrollView>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -121,5 +264,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13,
     ...commonFontStyle(500, 13, Colors.white),
   },
-  mainCard: {},
+  mainView: { flex: 1 },
+  detailText: {
+    ...commonFontStyle(500, 18, Colors.black),
+    textAlign: "center",
+  },
+  titleView: {
+    paddingVertical: hp(2.5),
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.registrationBackground,
+  },
+  menuIconButton: {
+    height: hp(2),
+    width: hp(2),
+    resizeMode: "contain",
+  },
+  closeButton: {
+    position: "absolute",
+    right: 0,
+    padding: hp(2.5),
+  },
+  row: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingVertical: hp(1.5),
+    paddingHorizontal: hp(1.5),
+  },
+  leftText: {
+    ...commonFontStyle(500, 15, Colors.darkGrey),
+  },
+  rightText: {
+    ...commonFontStyle(600, 15, Colors.black),
+  },
 });

@@ -7,7 +7,7 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -16,11 +16,21 @@ import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import ReportSettled from "../../Components/ReportSettled";
+import { useDispatch, useSelector } from "react-redux";
+import { getSettledReports } from "../../Services/MerchantApi";
 
-export default function M_ReportScreen() {
+export default function M_ReportScreen({ navigation }) {
   const [tab, setTab] = useState("report");
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const SETTELED_REPORT = useSelector((e) => e.merchant.setteled_report);
 
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getSettledReports());
+    });
+  }, []);
   const OrderComponent = () => {
     return (
       <View>

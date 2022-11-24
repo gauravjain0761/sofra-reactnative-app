@@ -34,7 +34,7 @@ export default function M_NotificationScreen() {
                 <Text style={styles.title}>
                   Brownie cookies for tea party ready within 2 days
                 </Text>
-                <Text style={styles.timeText}>2 h ago</Text>
+                <Text style={styles.timeText}>2h ago</Text>
               </View>
             </View>
           );

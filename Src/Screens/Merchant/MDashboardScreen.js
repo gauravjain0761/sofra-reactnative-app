@@ -7,13 +7,19 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
+import { useDispatch } from "react-redux";
 export default function MDashboardScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: false });
+  }, []);
+
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -155,7 +161,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   rightText: {
-    ...commonFontStyle(500, 14, Colors.black),
+    ...commonFontStyle(500, 15, Colors.black),
     marginLeft: hp(1.5),
   },
   bottomcardRowImage: {

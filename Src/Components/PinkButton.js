@@ -1,8 +1,8 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import React from 'react';
-import Colors from '../Themes/Colors';
-import {commonFontStyle} from '../Themes/Fonts';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import Colors from "../Themes/Colors";
+import { commonFontStyle } from "../Themes/Fonts";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export default function PinkButton({
   style,
@@ -14,8 +14,9 @@ export default function PinkButton({
   return (
     <TouchableOpacity
       onPress={() => onPress()}
-      style={[style, styles.buttonView]}>
-      {text == 'small' ? (
+      style={[style, styles.buttonView]}
+    >
+      {text == "small" ? (
         <Text style={[styles.textSmall, buttonTextStyle]}>{name}</Text>
       ) : (
         <Text style={[styles.text, buttonTextStyle]}>{name}</Text>
@@ -26,9 +27,9 @@ export default function PinkButton({
 const styles = StyleSheet.create({
   buttonView: {
     backgroundColor: Colors.pink,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: hp(2),
     borderRadius: 5,
   },

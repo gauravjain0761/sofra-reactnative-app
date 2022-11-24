@@ -18,6 +18,7 @@ import MenuScreenItems from "../../Components/MenuScreenItems";
 export default function M_MenuScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [name, setname] = useState("");
+  const [nameArabic, setnameArabic] = useState("");
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -42,8 +43,8 @@ export default function M_MenuScreen({ navigation }) {
             <Text style={styles.titleInput}>Name in Arabic</Text>
             <RegistrationTextInput
               placeholder={"Enter name in Arabic"}
-              value={name}
-              onChangeText={(text) => setname(text)}
+              value={nameArabic}
+              onChangeText={(text) => setnameArabic(text)}
             />
           </View>
 

@@ -51,7 +51,6 @@ export default function M_OfferScreen() {
         placeholder={"Nothing Selected"}
         value={Users}
         onChange={(item) => {
-          console.log(item);
           setUsers(item["strategicName"]);
         }}
         renderItem={(item) => {

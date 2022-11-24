@@ -4,7 +4,7 @@ import Colors from "../Themes/Colors";
 import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-export default function OrderItems({ item, navigation }) {
+export default function OrderItems({ item, navigation, status }) {
   return (
     <View>
       <View style={styles.mainCardView}>
@@ -17,10 +17,10 @@ export default function OrderItems({ item, navigation }) {
         <View style={styles.RightView}>
           <View>
             <Text style={styles.name} numberOfLines={1}>
-              B.B.Q Plater
+              {item.restaurant.name}
             </Text>
             <Text style={styles.type}>Breakfast, Lunch, Dinner</Text>
-            <Text style={styles.name}>AED 75.00</Text>
+            <Text style={styles.name}>AED {item.totalPrice}</Text>
             <Image
               style={styles.truckLogo}
               source={require("../Images/Merchant/xxxhdpi/ic_car.png")}
@@ -34,8 +34,8 @@ export default function OrderItems({ item, navigation }) {
                 alignSelf: "flex-end",
               }}
             >
-              <Text style={[styles.tagText, { backgroundColor: item.color }]}>
-                {item.title}
+              <Text style={[styles.tagText, { backgroundColor: status.color }]}>
+                {status.title}
               </Text>
             </TouchableOpacity>
           </View>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, 14, Colors.black),
   },
   type: {
-    ...commonFontStyle(500, 11, Colors.tabIconColor),
+    ...commonFontStyle(500, 12, Colors.tabIconColor),
     paddingVertical: 5,
   },
 });

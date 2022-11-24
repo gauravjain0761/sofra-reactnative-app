@@ -55,7 +55,6 @@ export default function M_ProfileScreen({ navigation }) {
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
-      console.log(photo);
       setImageItem(photo);
     });
   };
@@ -312,7 +311,7 @@ export default function M_ProfileScreen({ navigation }) {
                     onPress={() => {}}
                     style={styles.dbuttonStyle}
                     text={"small"}
-                    name={"Saver"}
+                    name={"Save"}
                   />
                 </View>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
