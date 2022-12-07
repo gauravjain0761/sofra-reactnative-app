@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     marginHorizontal: hp(2),
   },
   addButton: {
-    ...commonFontStyle(500, 11, Colors.white),
+    ...commonFontStyle("M_600", 11, Colors.white),
   },
   addMenuButton: {
     flexDirection: "row",

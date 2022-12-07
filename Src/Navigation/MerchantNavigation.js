@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { CommonActions, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
-import MerchantLoginScreen from "../Screens/Merchant/MerchantLoginScreen";
-import RegistrationScreen from "../Screens/RegistrationScreen";
 import {
   Image,
   View,
@@ -17,7 +14,7 @@ import {
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 import Colors from "../Themes/Colors";
-import MDashboardScreen from "../Screens/Merchant/MDashboardScreen";
+import M_DashboardScreen from "../Screens/Merchant/M_DashboardScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import M_OrderScreen from "../Screens/Merchant/M_OrderScreen";
 import M_MenuScreen from "../Screens/Merchant/M_MenuScreen";
@@ -44,6 +41,7 @@ import M_EditMenuItemScreen from "../Screens/Merchant/M_EditMenuItemScreen";
 import { clearAsyncStorage } from "../Services/asyncStorage";
 import { useDispatch, useSelector } from "react-redux";
 import { getLogout } from "../Services/AuthApi";
+import M_CreateOfferScreen from "../Screens/Merchant/M_CreateOfferScreen";
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
@@ -58,7 +56,7 @@ let DrawerItemArray = [
   {
     label: "Dashboard",
     image: require("../Images/Merchant/xxxhdpi/ic_home.png"),
-    screen: "MDashboardScreen",
+    screen: "M_DashboardScreen",
   },
   {
     label: "Menu Categories",
@@ -175,37 +173,14 @@ function M_MyBottomTabs() {
           shadowRadius: 0,
           elevation: 0,
           paddingTop: 10,
-          backgroundColor: Colors.backgroundScreen,
+          backgroundColor: Colors.registrationBackground,
         },
+
         tabBarActiveTintColor: Colors.pink,
         tabBarInactiveTintColor: Colors.tabIconColor,
       }}
     >
       <BottomTab.Screen
-        // {({ navigation }) => ({
-        //   headerTitleAlign: "center",
-        //   headerLeft: () => (
-        //     <TouchableOpacity
-        //       onPress={() => navigation.openDrawer()}
-        //       style={styles.headerRightView}
-        //     >
-        //       <Image
-        //         source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-        //         style={{ height: 18, width: 18, resizeMode: "contain" }}
-        //       />
-        //     </TouchableOpacity>
-        //   ),
-        //   ...data,
-        //   headerStyle: {
-        //     backgroundColor: Colors.registrationBackground,
-        //     elevation: 0,
-        //     shadowOpacity: 0,
-        //     borderBottomWidth: 0,
-        //   },
-        //   headerShadowVisible: false,
-        //   // headerShown: false,
-        // })}
-
         options={({ navigation }) => ({
           tabBarIcon: ({ color }) => (
             <Image
@@ -217,8 +192,10 @@ function M_MyBottomTabs() {
               }
             />
           ),
+
           tabBarLabel: "Home",
           headerTitleAlign: "center",
+          // tabBarLabelStyle: { ...commonFontStyle("M_500", 11, Colors.black) },
           headerStyle: {
             backgroundColor: Colors.registrationBackground,
             elevation: 0,
@@ -241,8 +218,8 @@ function M_MyBottomTabs() {
           ),
           ...data,
         })}
-        name="MDashboardScreen"
-        component={MDashboardScreen}
+        name="M_DashboardScreen"
+        component={M_DashboardScreen}
       />
       <BottomTab.Screen
         options={({ navigation }) => ({
@@ -409,41 +386,6 @@ function M_MyBottomTabs() {
   );
 }
 
-const HomeStack = createNativeStackNavigator();
-export function HomeStackNav({ navigation }) {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTitleAlign: "center",
-      }}
-    >
-      <Stack.Screen
-        options={{
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
-          ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          headerShown: false,
-        }}
-        name="M_MyBottomTabs"
-        component={M_MyBottomTabs}
-      />
-    </Stack.Navigator>
-  );
-}
-
 const ImageContainer = ({ image }) => {
   return <Image style={[styles.drawerItemIcon]} source={image} />;
 };
@@ -584,6 +526,9 @@ export function MerchantDrawer({ navigation }) {
             </TouchableOpacity>
           ),
           ...data,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>Offers Listing</Text>
+          ),
           headerStyle: {
             backgroundColor: Colors.registrationBackground,
             elevation: 0,
@@ -595,6 +540,36 @@ export function MerchantDrawer({ navigation }) {
         })}
         name="M_OfferScreen"
         component={M_OfferScreen}
+      />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              style={styles.headerRightView}
+            >
+              <Image
+                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                style={{ height: 18, width: 18, resizeMode: "contain" }}
+              />
+            </TouchableOpacity>
+          ),
+          ...data,
+          // headerTitle: () => (
+          //   <Text style={styles.headerTitle}>Create Offer</Text>
+          // ),
+          headerStyle: {
+            backgroundColor: Colors.registrationBackground,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerShadowVisible: false,
+          // headerShown: false,
+        })}
+        name="M_CreateOfferScreen"
+        component={M_CreateOfferScreen}
       />
       <Drawer.Screen
         options={({ navigation }) => ({
@@ -772,13 +747,17 @@ export function MerchantDrawer({ navigation }) {
               />
             </TouchableOpacity>
           ),
-          ...data,
+          headerTitle: () => (
+            <Text style={styles.headerPinkTitle}>Update App Settings</Text>
+          ),
+          // ...data,
           headerStyle: {
             backgroundColor: Colors.registrationBackground,
             elevation: 0,
             shadowOpacity: 0,
             borderBottomWidth: 0,
           },
+
           headerShadowVisible: false,
           // headerShown: false,
         })}
@@ -833,7 +812,10 @@ export function MerchantDrawer({ navigation }) {
             shadowOpacity: 0,
             borderBottomWidth: 0,
           },
-          headerTitle: "Update Password",
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>Update Password</Text>
+          ),
+          // headerTitle: "Update Password",
           headerShadowVisible: false,
           // headerShown: false,
         })}
@@ -843,16 +825,7 @@ export function MerchantDrawer({ navigation }) {
     </Drawer.Navigator>
   );
 }
-const Stack = createNativeStackNavigator();
-export function MerchantNavigation() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTitleAlign: "center",
-      }}
-    ></Stack.Navigator>
-  );
-}
+
 const styles = StyleSheet.create({
   logo: {
     resizeMode: "contain",
@@ -897,5 +870,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: hp(3),
     borderRadius: 5,
+  },
+
+  headerTitle: {
+    ...commonFontStyle("M_700", 16, Colors.black),
+  },
+  headerPinkTitle: {
+    ...commonFontStyle("M_500", 18, Colors.pink),
   },
 });

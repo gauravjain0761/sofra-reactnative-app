@@ -61,7 +61,7 @@ export default function M_MenuScreen({ navigation }) {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",

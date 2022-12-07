@@ -45,8 +45,7 @@ export default function M_AppSetting() {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Update App Settings</Text>
-        <Text style={styles.title}>Update Availabilites Here</Text>
+        <Text style={styles.title}>Update App Settings Here</Text>
         <View style={styles.row}>
           <Text style={[styles.title2, { marginBottom: 0 }]}>
             Taking Orders
@@ -80,7 +79,7 @@ export default function M_AppSetting() {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",
@@ -89,9 +88,9 @@ const styles = StyleSheet.create({
     marginTop: hp(15),
   },
   title: {
-    ...commonFontStyle(600, 18, Colors.black),
+    ...commonFontStyle(500, 18, Colors.black),
     marginBottom: hp(3),
-    marginTop: hp(4),
+    marginTop: hp(8),
   },
   row: {
     flexDirection: "row",

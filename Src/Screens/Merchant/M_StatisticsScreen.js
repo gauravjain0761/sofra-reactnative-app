@@ -139,7 +139,7 @@ export default function M_StatisticsScreen({ navigation }) {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     // marginBottom: hp(3),
     textAlign: "center",
@@ -218,14 +218,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
   },
   middleRow: {
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
     borderTopWidth: 1,
     borderBottomWidth: 1,

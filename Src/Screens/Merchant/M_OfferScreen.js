@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Image } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
@@ -18,110 +18,105 @@ const citydata = [
   { id: 6, strategicName: "TESTING" },
   { id: 10, strategicName: "DEMATADE" },
 ];
-export default function M_OfferScreen() {
+export default function M_OfferScreen({ navigation }) {
   const [Detail, setDetail] = useState("");
   const [Users, setUsers] = useState("");
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={styles.welcomeText}>Create Offer</Text>
-      <Text style={styles.inputName}>Offer Detail*</Text>
-      <TextInput
-        value={Detail}
-        onChangeText={(text) => setDetail(text)}
-        multiline={true}
-        style={styles.textInput}
-        placeholder={"Enter Detail"}
-        placeholderTextColor={Colors.darkGrey}
-        textAlignVertical={"top"}
-      />
-      <Text style={styles.bottomText}>Please enter the offer detail here.</Text>
-      <Text style={styles.inputName}>Users*</Text>
-      <Dropdown
-        // selectedStyle={{color:colors.gray3}}
-        style={[styles.tradetypeviewStyle]}
-        placeholderStyle={styles.placeholderStyle}
-        data={citydata}
-        selectedTextStyle={[styles.TitleTextStyle]}
-        iconColor={Colors.black}
-        // activeColor={colors.Gray300}
-        // disable ={runningTradeTypePositions[item.tradeType] && true}
-        labelField={"strategicName"}
-        valueField={"strategicName"}
-        maxHeight={300}
-        placeholder={"Nothing Selected"}
-        value={Users}
-        onChange={(item) => {
-          setUsers(item["strategicName"]);
-        }}
-        renderItem={(item) => {
-          return (
-            <View>
-              <Text style={styles.textItem}>{item["strategicName"]}</Text>
-            </View>
-          );
-        }}
-      />
-      <Text style={styles.bottomText}>
-        Please enter the name in arabic here.
-      </Text>
       <PinkButton
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate("M_CreateOfferScreen");
+        }}
         style={styles.dbuttonStyle}
         text={"small"}
         name={"Create Offer"}
       />
+      {[0, 1, 2].map((item, index) => {
+        return (
+          <View style={styles.itemList}>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Offer Detail</Text>
+              <Text style={styles.rightText}>1</Text>
+            </View>
+            <View style={styles.middleRow}>
+              <Text style={styles.leftText}>User</Text>
+              <Text style={styles.rightText}>October 24, 2022</Text>
+            </View>
+            <View style={styles.middleRow2}>
+              <Text style={styles.leftText}>Created</Text>
+              <Text style={styles.rightText}>10/18/22, 12:00 AM</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.leftText}>Action</Text>
+              <Image
+                source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
+                style={styles.searchIcon}
+              />
+            </View>
+          </View>
+        );
+      })}
     </View>
   );
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     // marginBottom: hp(3),
     textAlign: "center",
   },
-  inputName: {
-    ...commonFontStyle(500, 16, Colors.pink),
-    marginTop: hp(4),
-  },
-  textInput: {
-    ...commonFontStyle(400, 14, Colors.black),
-    backgroundColor: Colors.white,
-    marginBottom: hp(2),
-    width: "100%",
-    // height: hp(6),
-    height: hp(23),
-    padding: hp(2),
-    borderRadius: 5,
+
+  dbuttonStyle: {
     marginVertical: hp(2),
   },
-  bottomText: {
-    ...commonFontStyle(400, 14, Colors.darkGrey),
-  },
-  placeholderStyle: {
-    ...commonFontStyle(400, 14, Colors.darkGrey),
-  },
-  TitleTextStyle: {
-    ...commonFontStyle(400, 14, Colors.black),
-  },
-  tradetypeviewStyle: {
+  itemList: {
     backgroundColor: Colors.white,
-    marginBottom: hp(2),
-    width: "100%",
-    height: hp(6),
+    borderRadius: 8,
+    marginBottom: hp(1.5),
+  },
+  row: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
-    borderRadius: 5,
-    marginTop: hp(2),
   },
-  textItem: {
-    ...commonFontStyle(400, 14, Colors.black),
-    paddingVertical: hp(1),
-    paddingHorizontal: hp(3),
+  middleRow: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingVertical: hp(1.8),
+    paddingHorizontal: hp(2),
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderTopColor: Colors.backgroundScreen,
+    borderBottomColor: Colors.backgroundScreen,
   },
-  dbuttonStyle: {
-    marginTop: hp(8),
+  middleRow2: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingVertical: hp(1.8),
+    paddingHorizontal: hp(2),
+    // borderTopWidth: 1,
+    borderBottomWidth: 1,
+    // borderTopColor: Colors.backgroundScreen,
+    borderBottomColor: Colors.backgroundScreen,
   },
-  buttonTextStyle: {
-    ...commonFontStyle(400, 16, Colors.white),
+  leftText: {
+    ...commonFontStyle(400, 13, Colors.black),
+  },
+  rightText: {
+    ...commonFontStyle(400, 13, Colors.grayButtonBackground),
+  },
+  mainTitle: {
+    ...commonFontStyle(500, 18, Colors.black),
+    marginBottom: hp(2.5),
+  },
+  searchIcon: {
+    height: hp(2),
+    width: hp(2),
+    resizeMode: "contain",
   },
 });

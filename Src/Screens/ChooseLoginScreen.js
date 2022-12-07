@@ -34,7 +34,7 @@ export default function ChooseLoginScreen({ navigation }) {
             name={"Merchant"}
           />
           <PinkButton
-            onPress={() => navigation.navigate("DeliveryNavigation")}
+            onPress={() => navigation.navigate("DeliveryLoginScreen")}
             style={styles.dbuttonStyle}
             name={"Delivery"}
           />

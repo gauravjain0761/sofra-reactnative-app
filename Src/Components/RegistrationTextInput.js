@@ -11,6 +11,7 @@ export default function RegistrationTextInput({
   onChangeText,
   style,
   placeholderTextColor,
+  keyboardType,
 }) {
   return (
     <View style={style}>
@@ -22,6 +23,7 @@ export default function RegistrationTextInput({
         placeholderTextColor={
           placeholderTextColor ? placeholderTextColor : Colors.placeholderColor
         }
+        keyboardType={keyboardType ? keyboardType : "default"}
       />
     </View>
   );

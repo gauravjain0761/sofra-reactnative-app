@@ -39,11 +39,19 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Graphik-Semibold.otf</string>
-		<string>Graphik-Regular.otf</string>
-		<string>Graphik-Medium.otf</string>
-		<string>Graphik-Light.otf</string>
-		<string>Graphik-Bold.otf</string>
+		<string>Montserrat-Black.ttf</string>
+		<string>Tofino-Semibold.otf</string>
+		<string>Tofino-Book.otf</string>
+		<string>Tofino-Thin.otf</string>
+		<string>Tofino-Regular.otf</string>
+		<string>Tofino-Medium.otf</string>
+		<string>Tofino-Light.otf</string>
+		<string>Tofino-Bold.otf</string>
+		<string>Montserrat-Medium.ttf</string>
+		<string>Montserrat-Light.ttf</string>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Dimensions,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import ApplicationStyles from "./Themes/ApplicationStyles";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";

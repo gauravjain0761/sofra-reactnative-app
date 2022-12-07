@@ -33,7 +33,9 @@ export default function DeliveryLoginScreen({ navigation }) {
             style={styles.textinputStyle}
           />
           <PinkButton
-            onPress={() => {}}
+            onPress={() => {
+              // navigation.navigate("DeliveryDrawerHome");
+            }}
             style={styles.dbuttonStyle}
             name={"Login"}
           />
@@ -42,7 +44,7 @@ export default function DeliveryLoginScreen({ navigation }) {
             Don't have an accout?{" "}
             <Text
               style={{ color: Colors.pink }}
-              onPress={() => navigation.navigate("RegistrationScreen")}
+              onPress={() => navigation.navigate("D_RegistrationScreen")}
             >
               Sign Up
             </Text>
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   welcomeText: {
-    ...commonFontStyle(400, 20, Colors.pink),
+    ...commonFontStyle("M_500", 20, Colors.pink),
     marginTop: hp(2.5),
     marginBottom: hp(6),
     textAlign: "center",

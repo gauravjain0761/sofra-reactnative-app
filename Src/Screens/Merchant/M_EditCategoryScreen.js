@@ -57,7 +57,7 @@ export default function M_EditCategoryScreen({ navigation }) {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(5),
     textAlign: "center",

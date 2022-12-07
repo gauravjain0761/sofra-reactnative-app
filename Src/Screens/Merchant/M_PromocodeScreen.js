@@ -118,16 +118,19 @@ export default function M_PromocodeScreen() {
               placeholderTextColor={Colors.black}
             />
             <RegistrationTextInput
+              keyboardType={"numeric"}
               placeholder={"Discount Value"}
               value={discountValue}
               onChangeText={(text) => setdiscountValue(text)}
             />
             <RegistrationTextInput
+              keyboardType={"numeric"}
               placeholder={"Maximum Discount Amount"}
               value={maxDiscount}
               onChangeText={(text) => setmaxDiscount(text)}
             />
             <RegistrationTextInput
+              keyboardType={"numeric"}
               placeholder={"Minimum Order Value"}
               value={minOrderValue}
               onChangeText={(text) => setminOrderValue(text)}
@@ -173,7 +176,7 @@ export default function M_PromocodeScreen() {
         <View style={styles.buttonRow}>
           <View style={styles.row}>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <PinkButton onPress={() => {}} text={"small"} name={"Saver"} />
+              <PinkButton onPress={() => {}} text={"small"} name={"Save"} />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <GrayButton
@@ -191,7 +194,7 @@ export default function M_PromocodeScreen() {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",

@@ -34,7 +34,7 @@ export default function M_NotificationScreen() {
                 <Text style={styles.title}>
                   Brownie cookies for tea party ready within 2 days
                 </Text>
-                <Text style={styles.timeText}>2h ago</Text>
+                <Text style={styles.timeText}>2 h ago</Text>
               </View>
             </View>
           );
@@ -45,7 +45,7 @@ export default function M_NotificationScreen() {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",

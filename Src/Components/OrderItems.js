@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   tagText: {
     paddingVertical: 8,
     paddingHorizontal: 13,
-    ...commonFontStyle(500, 13, Colors.white),
+    ...commonFontStyle("M_600", 12, Colors.white),
   },
   name: {
     ...commonFontStyle(600, 14, Colors.black),

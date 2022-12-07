@@ -112,7 +112,7 @@ export default function M_SlotScreen() {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   button: {
-    ...commonFontStyle(400, 16, Colors.black),
+    ...commonFontStyle("M_500", 16, Colors.black),
     textAlign: "center",
     paddingVertical: hp(2),
   },
@@ -142,14 +142,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
   },
   middleRow: {
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
     borderTopWidth: 1,
     borderBottomWidth: 1,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
     // borderTopWidth: 1,
     borderBottomWidth: 1,

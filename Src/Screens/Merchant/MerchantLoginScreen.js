@@ -94,7 +94,7 @@ export default function MerchantLoginScreen() {
             Don't have an accout?{" "}
             <Text
               style={{ color: Colors.pink }}
-              onPress={() => navigation.navigate("RegistrationScreen")}
+              onPress={() => navigation.navigate("M_RegistrationScreen")}
             >
               Sign Up
             </Text>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   welcomeText: {
-    ...commonFontStyle(400, 20, Colors.pink),
+    ...commonFontStyle("M_500", 20, Colors.pink),
     marginTop: hp(2.5),
     marginBottom: hp(6),
     textAlign: "center",

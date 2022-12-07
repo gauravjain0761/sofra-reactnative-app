@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 18, Colors.white),
   },
   textSmall: {
-    ...commonFontStyle(400, 16, Colors.white),
+    ...commonFontStyle(500, 16, Colors.white),
   },
 });

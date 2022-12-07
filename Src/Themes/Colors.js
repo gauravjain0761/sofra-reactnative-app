@@ -1,7 +1,7 @@
 const Colors = {
   white: "#FFFFFF",
   black: "#000000",
-  pink: "#DA2375",
+  pink: "#db176d",
   backgroundScreen: "#EEF0E9",
   darkGrey: "#868283",
   registrationBackground: "#f0f0f0",

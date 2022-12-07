@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   tagText: {
     paddingVertical: 8,
     paddingHorizontal: 13,
-    ...commonFontStyle(500, 13, Colors.white),
+    ...commonFontStyle("M_600", 12, Colors.white),
   },
   mainView: { flex: 1 },
   detailText: {

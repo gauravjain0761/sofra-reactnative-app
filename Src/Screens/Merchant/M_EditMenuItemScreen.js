@@ -109,6 +109,7 @@ export default function M_EditMenuItemScreen() {
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Price in AED</Text>
               <RegistrationTextInput
+                keyboardType={"numeric"}
                 placeholder={"Enter Price"}
                 value={Price}
                 onChangeText={(text) => setPrice(text)}
@@ -133,6 +134,7 @@ export default function M_EditMenuItemScreen() {
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <Text style={styles.titleInput}>Max Limit</Text>
             <RegistrationTextInput
+              keyboardType={"numeric"}
               placeholder={"Enter Price"}
               value={Price}
               onChangeText={(text) => setPrice(text)}
@@ -218,7 +220,7 @@ export default function M_EditMenuItemScreen() {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",

@@ -93,6 +93,7 @@ export default function M_ProfileScreen({ navigation }) {
               <View style={styles.row}>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                   <RegistrationTextInput
+                    keyboardType={"numeric"}
                     placeholder={"Phone Number"}
                     value={phoneNumber}
                     onChangeText={(text) => setphoneNumber(text)}
@@ -351,7 +352,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   title: {
-    ...commonFontStyle(600, 18, Colors.black),
+    ...commonFontStyle(700, 18, Colors.black),
     marginBottom: hp(1.5),
     marginTop: hp(3),
   },

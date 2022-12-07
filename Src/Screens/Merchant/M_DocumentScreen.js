@@ -89,7 +89,7 @@ export default function M_DocumentScreen() {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",
@@ -117,11 +117,11 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   attachText: {
-    ...commonFontStyle(400, 12, Colors.darkGrey),
+    ...commonFontStyle("M_400", 12, Colors.darkGrey),
     marginTop: hp(1.5),
   },
   uploadText: {
-    ...commonFontStyle(700, 14, Colors.darkGrey),
+    ...commonFontStyle("M_700", 14, Colors.black),
     marginBottom: hp(1.5),
   },
   row: {
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   docNmae: {
-    ...commonFontStyle(500, 14, Colors.black),
+    ...commonFontStyle("M_600", 14, Colors.black),
     width: "70%",
     marginLeft: hp(1.5),
   },

@@ -167,7 +167,7 @@ export default function M_ReportScreen({ navigation }) {
 }
 const styles = StyleSheet.create({
   welcomeText: {
-    ...commonFontStyle(400, 18, Colors.pink),
+    ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     textAlign: "center",
   },
@@ -238,14 +238,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
   },
   row2: {
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
     borderBottomWidth: 1,
     borderBottomColor: Colors.backgroundScreen,
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
     borderTopWidth: 1,
     borderBottomWidth: 1,
