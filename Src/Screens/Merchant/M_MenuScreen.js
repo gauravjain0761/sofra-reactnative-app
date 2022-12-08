@@ -22,7 +22,7 @@ export default function M_MenuScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Menu Categories</Text>
+        <Text style={ApplicationStyles.welcomeText}>Menu Categories</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
           {[0, 1, 2, 3].map((element, index) => {
             return <MenuScreenItems activeVisible={false} />;
@@ -60,13 +60,6 @@ export default function M_MenuScreen({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
-
   title: {
     ...commonFontStyle(600, 18, Colors.black),
 

@@ -6,6 +6,7 @@ import PinkButton from "../Components/PinkButton";
 import Colors from "../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../Services/asyncStorage";
+import { CommonActions } from "@react-navigation/native";
 
 export default function ChooseLoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -14,7 +15,12 @@ export default function ChooseLoginScreen({ navigation }) {
     dispatch({ type: "PRE_LOADER", payload: true });
     let token = await getToken();
     if (token) {
-      navigation.navigate("MerchantDrawerHome");
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: "MerchantDrawerHome" }],
+        })
+      );
     } else {
       dispatch({ type: "PRE_LOADER", payload: false });
     }

@@ -23,7 +23,7 @@ export default function M_CreateOfferScreen() {
   const [Users, setUsers] = useState("");
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={styles.welcomeText}>Create Offer</Text>
+      <Text style={ApplicationStyles.welcomeText}>Create Offer</Text>
       <Text style={styles.inputName}>Offer Detail*</Text>
       <TextInput
         value={Detail}
@@ -74,15 +74,9 @@ export default function M_CreateOfferScreen() {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    // marginBottom: hp(3),
-    textAlign: "center",
-  },
   inputName: {
     ...commonFontStyle(500, 16, Colors.pink),
-    marginTop: hp(4),
+    // marginTop: hp(4),
   },
   textInput: {
     ...commonFontStyle(400, 14, Colors.black),

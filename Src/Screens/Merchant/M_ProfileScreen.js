@@ -239,7 +239,7 @@ export default function M_ProfileScreen({ navigation }) {
                 data={citydata}
                 value={location}
                 setData={(text) => {
-                  location(text);
+                  setlocation(text);
                 }}
                 placeholder={"Locations"}
                 valueField={"strategicName"}

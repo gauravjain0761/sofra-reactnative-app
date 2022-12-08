@@ -64,7 +64,7 @@ export default function M_SlotScreen() {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Off Slots</Text>
+        <Text style={ApplicationStyles.welcomeText}>Off Slots</Text>
         <View style={styles.whiteView}>
           <Calendar style={styles.calender} enableSwipeMonths={true} />
           <TouchableOpacity>
@@ -111,12 +111,6 @@ export default function M_SlotScreen() {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
   whiteView: {
     backgroundColor: Colors.white,
     borderRadius: 8,

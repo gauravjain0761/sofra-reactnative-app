@@ -23,7 +23,7 @@ export default function M_DashboardScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Business Portal</Text>
+        <Text style={ApplicationStyles.welcomeText}>Business Portal</Text>
         <View style={styles.searchBar}>
           <Image
             source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
@@ -47,7 +47,10 @@ export default function M_DashboardScreen({ navigation }) {
                   source={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
                 />
                 <Text style={styles.addText}>Add your restaurant menu</Text>
-                <TouchableOpacity style={styles.addMenuButton}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("M_MenuItemScreen")}
+                  style={styles.addMenuButton}
+                >
                   <Text style={styles.addButton}>Add Menu</Text>
                 </TouchableOpacity>
               </View>
@@ -81,12 +84,6 @@ export default function M_DashboardScreen({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",

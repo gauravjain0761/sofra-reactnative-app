@@ -60,13 +60,6 @@ export default function M_OfferScreen({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    // marginBottom: hp(3),
-    textAlign: "center",
-  },
-
   dbuttonStyle: {
     marginVertical: hp(2),
   },

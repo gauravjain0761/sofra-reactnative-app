@@ -22,7 +22,7 @@ export default function M_EditCategoryScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Edit Menu Categories</Text>
+        <Text style={ApplicationStyles.welcomeText}>Edit Menu Categories</Text>
 
         <View style={styles.rowView}>
           {/* <Text style={styles.title}>Add Menu Categories</Text>
@@ -56,13 +56,6 @@ export default function M_EditCategoryScreen({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(5),
-    textAlign: "center",
-  },
-
   title: {
     ...commonFontStyle(600, 18, Colors.black),
 

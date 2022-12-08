@@ -21,7 +21,7 @@ const citydata = [
   { id: 6, strategicName: "TESTING" },
   { id: 10, strategicName: "DEMATADE" },
 ];
-export default function M_PromocodeScreen() {
+export default function M_EditPromocodeScreen() {
   const [title, settitle] = useState("");
   const [arabicTitle, setarabicTitle] = useState("");
   const [discountCode, setdiscountCode] = useState("");
@@ -39,14 +39,8 @@ export default function M_PromocodeScreen() {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Promo Codes</Text>
-        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-          {[0, 1, 2, 3].map((element, index) => {
-            return (
-              <MenuScreenItems activeVisible={false} screen={"promocode"} />
-            );
-          })}
-        </ScrollView>
+        <Text style={ApplicationStyles.welcomeText}>Edit Promo Code</Text>
+
         <View>
           <Text style={styles.title2}>Promo code details here:</Text>
           <View>

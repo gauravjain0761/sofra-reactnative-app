@@ -188,13 +188,17 @@ export default function MenuScreenItems({ activeVisible, screen }) {
       <Text style={styles.addText}>New Royal Place Restaurant</Text>
       <View style={styles.cardBotomBtn}>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(
-              screen && screen == "item"
-                ? "M_EditMenuItemScreen"
-                : "M_EditCategoryScreen"
-            )
-          }
+          onPress={() => {
+            if (screen == "promocode") {
+              navigation.navigate("M_EditPromocodeScreen");
+            } else {
+              navigation.navigate(
+                screen && screen == "item"
+                  ? "M_EditMenuItemScreen"
+                  : "M_EditCategoryScreen"
+              );
+            }
+          }}
           style={styles.addMenuButton}
         >
           <Image
@@ -210,7 +214,6 @@ export default function MenuScreenItems({ activeVisible, screen }) {
               {
                 marginLeft: hp(2),
                 backgroundColor: Colors.green,
-                // opacity: 0,
               },
             ]}
           >

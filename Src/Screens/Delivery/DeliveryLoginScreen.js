@@ -34,7 +34,7 @@ export default function DeliveryLoginScreen({ navigation }) {
           />
           <PinkButton
             onPress={() => {
-              // navigation.navigate("DeliveryDrawerHome");
+              navigation.navigate("DeliveryDrawerHome");
             }}
             style={styles.dbuttonStyle}
             name={"Login"}

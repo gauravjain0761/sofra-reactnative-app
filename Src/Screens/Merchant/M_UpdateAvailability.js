@@ -52,7 +52,7 @@ export default function M_UpdateAvailability({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Update Availabilites</Text>
+        <Text style={ApplicationStyles.welcomeText}>Update Availabilites</Text>
         <Text style={styles.title}>Update Availabilites Here</Text>
 
         <View style={styles.row1}>
@@ -144,12 +144,6 @@ export default function M_UpdateAvailability({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
   title: {
     ...commonFontStyle(600, 18, Colors.black),
     marginBottom: hp(1.5),

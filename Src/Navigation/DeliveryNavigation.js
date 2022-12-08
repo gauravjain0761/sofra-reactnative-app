@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getLogout } from "../Services/AuthApi";
 import D_DashboardScreen from "../Screens/Delivery/D_DashboardScreen";
 import D_NotificationScreen from "../Screens/Delivery/D_NotificationScreen";
+import HeaderLeftIcon from "../Components/NavigationComponent";
 
 const data = {
   headerBackVisible: false,
@@ -43,6 +44,17 @@ const data = {
       style={styles.logo}
     />
   ),
+};
+
+const transparentHeader = {
+  headerStyle: {
+    backgroundColor: Colors.registrationBackground,
+    elevation: 0,
+    shadowOpacity: 0,
+    borderBottomWidth: 0,
+  },
+  headerTitleAlign: "center",
+  headerShadowVisible: false,
 };
 
 let DrawerItemArray = [
@@ -123,27 +135,8 @@ function D_MyBottomTabs() {
             />
           ),
           tabBarLabel: "Home",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{
-                  height: 18,
-                  width: 18,
-                  resizeMode: "contain",
-                  marginLeft: hp(2),
-                }}
-              />
-            </TouchableOpacity>
-          ),
+          ...transparentHeader,
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
         })}
         name="D_DashboardScreen"
@@ -162,29 +155,8 @@ function D_MyBottomTabs() {
             />
           ),
           tabBarLabel: "Orders",
-          headerTitleAlign: "left",
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{
-                  height: 18,
-                  width: 18,
-                  resizeMode: "contain",
-                  marginLeft: hp(2),
-                }}
-              />
-            </TouchableOpacity>
-          ),
-          // ...data,
+          ...transparentHeader,
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
         })}
         name="D_ActiveOrderScreen"
         component={D_ActiveOrderScreen}
@@ -202,28 +174,8 @@ function D_MyBottomTabs() {
             />
           ),
           tabBarLabel: "Drivers",
-          // tabBarLabel: "Home",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{
-                  height: 18,
-                  width: 18,
-                  resizeMode: "contain",
-                  marginLeft: hp(2),
-                }}
-              />
-            </TouchableOpacity>
-          ),
+          ...transparentHeader,
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
         })}
         name="D_DriversScreen"
@@ -242,27 +194,8 @@ function D_MyBottomTabs() {
             />
           ),
           tabBarLabel: "Notifications",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{
-                  height: 18,
-                  width: 18,
-                  resizeMode: "contain",
-                  marginLeft: hp(2),
-                }}
-              />
-            </TouchableOpacity>
-          ),
+          ...transparentHeader,
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
         })}
         name="D_NotificationScreen"
@@ -281,31 +214,9 @@ function D_MyBottomTabs() {
             />
           ),
           tabBarLabel: "Profile",
-          // headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,
           headerTitle: "",
           headerTransparent: true,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{
-                  height: 18,
-                  width: 18,
-                  resizeMode: "contain",
-                  marginLeft: hp(2),
-                }}
-              />
-            </TouchableOpacity>
-          ),
-          // ...data,
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
         })}
         name="D_ProfileScreen"
         component={D_ProfileScreen}
@@ -322,7 +233,6 @@ function CustomDrawerContent(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("_TOAST---", _TOAST);
     if (_TOAST.message == "Auth Token is invalid") {
       onLogout();
     }
@@ -372,12 +282,6 @@ function CustomDrawerContent(props) {
                   {item.label}
                 </Text>
               )}
-              labelStyle={[
-                // styles.labelStyle,
-                {
-                  // width: widthPercentageToDP(40),
-                },
-              ]}
               icon={({ focused, color, size }) => (
                 <ImageContainer image={item.image} />
               )}
@@ -416,7 +320,6 @@ export function DeliveryDrawer({ navigation }) {
       screenOptions={({ navigation }) => ({
         drawerItemStyle: {
           borderRadius: 0,
-
           marginLeft: 0,
         },
         drawerStyle: { width: widthPercentageToDP(75) },
@@ -430,110 +333,22 @@ export function DeliveryDrawer({ navigation }) {
         name={"DDashboard"}
         component={D_MyBottomTabs}
       />
-      {/* <Drawer.Screen
-        options={({ navigation }) => ({
-          headerTitleAlign: "center",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}
-            >
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
-          ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,
-        })}
-        name={"D_DriversScreen"}
-        component={D_DriversScreen}
-      /> */}
       <Drawer.Screen
         options={({ navigation }) => ({
           headerTitleAlign: "center",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}
-            >
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,
+          ...transparentHeader,
         })}
         name="D_OrderPickupScreen"
         component={D_OrderPickupScreen}
       />
-      {/* <Drawer.Screen
-        options={({ navigation }) => ({
-          headerTitleAlign: "center",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}
-            >
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
-          ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,rr
-        })}
-        name="D_ActiveOrderScreen"
-        component={D_ActiveOrderScreen}
-      /> */}
       <Drawer.Screen
         options={({ navigation }) => ({
           headerTitleAlign: "center",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}
-            >
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,
+          ...transparentHeader,
         })}
         name="D_CancelledOrderScreen"
         component={D_CancelledOrderScreen}
@@ -541,26 +356,9 @@ export function DeliveryDrawer({ navigation }) {
       <Drawer.Screen
         options={({ navigation }) => ({
           headerTitleAlign: "center",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}
-            >
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,
+          ...transparentHeader,
         })}
         name="D_DeliveredOrderScreen"
         component={D_DeliveredOrderScreen}
@@ -568,80 +366,19 @@ export function DeliveryDrawer({ navigation }) {
       <Drawer.Screen
         options={({ navigation }) => ({
           headerTitleAlign: "center",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}
-            >
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,
+          ...transparentHeader,
         })}
         name="D_ReportScreen"
         component={D_ReportScreen}
       />
-      {/* <Drawer.Screen
-        options={({ navigation }) => ({
-          headerTitleAlign: "center",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}
-            >
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
-          ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,
-        })}
-        name="D_ProfileScreen"
-        component={D_ProfileScreen}
-      /> */}
       <Drawer.Screen
         options={({ navigation }) => ({
           headerTitleAlign: "center",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.openDrawer()}
-              style={styles.headerRightView}
-            >
-              <Image
-                source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                style={{ height: 18, width: 18, resizeMode: "contain" }}
-              />
-            </TouchableOpacity>
-          ),
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
-          headerStyle: {
-            backgroundColor: Colors.registrationBackground,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerShadowVisible: false,
-          // headerShown: false,
+          ...transparentHeader,
         })}
         name="D_UpdatePassword"
         component={D_UpdatePassword}

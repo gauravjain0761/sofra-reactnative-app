@@ -78,12 +78,6 @@ export default function M_AppSetting() {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
   dbuttonStyle: {
     marginTop: hp(15),
   },

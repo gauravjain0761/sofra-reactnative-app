@@ -32,7 +32,7 @@ export default function M_StatisticsScreen({ navigation }) {
 
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={styles.welcomeText}>Statistics</Text>
+      <Text style={ApplicationStyles.welcomeText}>Statistics</Text>
       <View style={styles.tabView}>
         <TouchableOpacity
           onPress={() => setTab("order")}
@@ -138,16 +138,10 @@ export default function M_StatisticsScreen({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    // marginBottom: hp(3),
-    textAlign: "center",
-  },
   tabView: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: hp(3),
+    marginBottom: hp(3),
   },
   selectedTab: {
     flex: 1,

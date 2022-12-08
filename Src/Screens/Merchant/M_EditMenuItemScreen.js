@@ -54,7 +54,7 @@ export default function M_EditMenuItemScreen() {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Edit Menu Items</Text>
+        <Text style={ApplicationStyles.welcomeText}>Edit Menu Items</Text>
 
         <View style={styles.rowView}>
           <View>
@@ -219,13 +219,6 @@ export default function M_EditMenuItemScreen() {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
-
   title: {
     ...commonFontStyle(600, 18, Colors.black),
 

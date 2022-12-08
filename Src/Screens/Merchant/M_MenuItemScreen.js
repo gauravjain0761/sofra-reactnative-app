@@ -54,7 +54,7 @@ export default function M_MenuItemScreen() {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Menu Items</Text>
+        <Text style={ApplicationStyles.welcomeText}>Menu Items</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
           {[0, 1, 2, 3].map((element, index) => {
             return <MenuScreenItems screen={"item"} activeVisible={true} />;
@@ -225,13 +225,6 @@ export default function M_MenuItemScreen() {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
-
   title: {
     ...commonFontStyle(600, 18, Colors.black),
 

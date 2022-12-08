@@ -40,28 +40,25 @@ export default function M_OrderScreen({ navigation }) {
     });
   }, []);
 
-  React.useEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => (
-        <View style={{ flex: 1, width: "100%" }}>
-          <View style={styles.searchBar}>
-            <Image
-              source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
-              style={styles.searchIcon}
-            />
-            <TextInput
-              placeholder="Search for specific"
-              style={styles.searchInput}
-              value={search}
-              onChangeText={(text) => setSearch(text)}
-              placeholderTextColor={Colors.placeholderColor}
-            />
-          </View>
+  navigation.setOptions({
+    headerTitle: () => (
+      <View style={{ flex: 1, width: "100%" }}>
+        <View style={styles.searchBar}>
+          <Image
+            source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
+            style={styles.searchIcon}
+          />
+          <TextInput
+            placeholder="Search for specific"
+            style={styles.searchInput}
+            value={search}
+            onChangeText={(text) => setSearch(text)}
+            placeholderTextColor={Colors.placeholderColor}
+          />
         </View>
-      ),
-    });
-  }, [navigation]);
-
+      </View>
+    ),
+  });
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView>
@@ -123,7 +120,7 @@ export default function M_OrderScreen({ navigation }) {
             backgroundColor: Colors.white,
             borderTopStartRadius: 20,
             borderTopEndRadius: 20,
-            paddingBottom: hp(3),
+            // paddingBottom: hp(3),
             maxHeight: hp(85),
           }}
         >
@@ -213,7 +210,7 @@ export default function M_OrderScreen({ navigation }) {
                 {selectedOrder.paymentStatus}
               </Text>
             </View>
-            <View style={styles.row}>
+            <View style={[styles.row, { marginBottom: hp(3) }]}>
               <Text style={styles.leftText}>Created At:</Text>
               <Text style={styles.rightText}>N/A</Text>
             </View>
@@ -247,12 +244,7 @@ const styles = StyleSheet.create({
     width: hp(2),
     resizeMode: "contain",
   },
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
+
   tagView: {
     flexWrap: "wrap",
     flexDirection: "row",

@@ -104,7 +104,7 @@ export default function M_ReportScreen({ navigation }) {
   };
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={styles.welcomeText}>Reports</Text>
+      <Text style={ApplicationStyles.welcomeText}>Reports</Text>
       <View style={styles.tabView}>
         <TouchableOpacity
           onPress={() => setTab("report")}
@@ -166,15 +166,10 @@ export default function M_ReportScreen({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    textAlign: "center",
-  },
   tabView: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: hp(3),
+    marginBottom: hp(3),
   },
   selectedTab: {
     flex: 1,

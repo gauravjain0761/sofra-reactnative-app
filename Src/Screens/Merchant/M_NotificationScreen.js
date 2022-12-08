@@ -22,7 +22,7 @@ export default function M_NotificationScreen() {
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Notifications</Text>
+        <Text style={ApplicationStyles.welcomeText}>Notifications</Text>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => {
           return (
             <View style={styles.row}>
@@ -44,12 +44,6 @@ export default function M_NotificationScreen() {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
   row: {
     flexDirection: "row",
     paddingVertical: hp(2),

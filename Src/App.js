@@ -24,7 +24,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: "TOAST", payload: {} });
+    dispatch({ type: "TOAST", payload: "initial" });
     LogBox.ignoreAllLogs(true);
     Text.defaultProps = Text.defaultProps || {};
     Text.defaultProps.allowFontScaling = false;

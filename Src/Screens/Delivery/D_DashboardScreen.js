@@ -23,7 +23,7 @@ export default function M_DashboardScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Delivery Portal</Text>
+        <Text style={ApplicationStyles.welcomeText}>Delivery Portal</Text>
         <View style={styles.searchBar}>
           <Image
             source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
@@ -76,12 +76,6 @@ export default function M_DashboardScreen({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",

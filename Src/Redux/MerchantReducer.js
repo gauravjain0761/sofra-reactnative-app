@@ -17,7 +17,11 @@ export default function (state = initialState, action) {
       return { ...state, preLoader: action.payload };
     }
     case "TOAST": {
-      return { ...state, toast: action.payload, preLoader: false };
+      if (action.payload == "initial") {
+        return { ...state, toast: action.payload, preLoader: true };
+      } else {
+        return { ...state, toast: action.payload, preLoader: false };
+      }
     }
     case "LOGIN": {
       setToken(action.payload.auth_token);

@@ -26,7 +26,7 @@ export default function M_DocumentScreen() {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.welcomeText}>Documents</Text>
+        <Text style={ApplicationStyles.welcomeText}>Documents</Text>
         <View>
           <View>
             <TouchableOpacity
@@ -88,12 +88,6 @@ export default function M_DocumentScreen() {
   );
 }
 const styles = StyleSheet.create({
-  welcomeText: {
-    ...commonFontStyle("M_500", 18, Colors.pink),
-    marginTop: 5,
-    marginBottom: hp(3),
-    textAlign: "center",
-  },
   imageView: {
     backgroundColor: Colors.white,
     borderRadius: 5,
