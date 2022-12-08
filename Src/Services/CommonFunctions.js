@@ -6,6 +6,11 @@ export const validateEmail = (email) => {
   return re.test(email);
 };
 
+export const hasArabicCharacters = (text) => {
+  var arregex = /[\u0600-\u06FF]/;
+  return arregex.test(text);
+};
+
 export const dispatchAction = (dispatch, actionType, data) => {
   dispatch({
     type: actionType,

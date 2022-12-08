@@ -21,6 +21,8 @@ import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
+import { useDispatch } from "react-redux";
+import { dispatchErrorAction } from "../../Services/CommonFunctions";
 
 const daysData = [
   {
@@ -37,9 +39,26 @@ const daysData = [
   { checkbox: false, open: "12:00", close: "10:55", day: "Saturday" },
 ];
 export default function M_UpdatePassword() {
+  const dispatch = useDispatch();
   const [oldPwd, setoldPwd] = useState("");
   const [newPwd, setnewPwd] = useState("");
   const [confirmPwd, setconfirmPwd] = useState("");
+
+  const onUpdatePassword = () => {
+    if (oldPwd.trim() !== "") {
+      if (newPwd.trim() !== "") {
+        if (confirmPwd.trim() !== "") {
+        } else {
+          dispatchErrorAction(dispatch, "Please enter new password again");
+        }
+      } else {
+        dispatchErrorAction(dispatch, "Please enter new password");
+      }
+    } else {
+      dispatchErrorAction(dispatch, "Please enter old password");
+    }
+  };
+
   return (
     <View style={ApplicationStyles.mainView}>
       <View
@@ -82,7 +101,7 @@ export default function M_UpdatePassword() {
         </View>
         <View style={styles.button}>
           <PinkButton
-            onPress={() => {}}
+            onPress={() => onUpdatePassword()}
             style={styles.dbuttonStyle}
             text={"small"}
             name={"Update Password"}
@@ -113,6 +132,7 @@ const styles = StyleSheet.create({
   },
   bottomText: {
     ...commonFontStyle(400, 12, Colors.darkGrey),
+    marginTop: -hp(1),
     marginBottom: hp(3),
   },
   button: {

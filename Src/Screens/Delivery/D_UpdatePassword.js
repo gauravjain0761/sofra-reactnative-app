@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   },
   bottomText: {
     ...commonFontStyle(400, 12, Colors.darkGrey),
+    marginTop: -hp(1),
     marginBottom: hp(3),
   },
   button: {

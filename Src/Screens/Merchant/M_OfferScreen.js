@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -7,6 +7,10 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
+import { DeleteOffer, getOffers } from "../../Services/MerchantApi";
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const citydata = [
   {
@@ -19,8 +23,22 @@ const citydata = [
   { id: 10, strategicName: "DEMATADE" },
 ];
 export default function M_OfferScreen({ navigation }) {
-  const [Detail, setDetail] = useState("");
-  const [Users, setUsers] = useState("");
+  const dispatch = useDispatch();
+  const OFFERS = useSelector((e) => e.merchant.offers);
+
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      dispatch(getOffers());
+    });
+  }, []);
+
+  const onDeleteOffer = (id) => {
+    let data = {
+      offerId: id,
+      language: "en",
+    };
+    dispatch(DeleteOffer(data));
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <PinkButton
@@ -31,31 +49,39 @@ export default function M_OfferScreen({ navigation }) {
         text={"small"}
         name={"Create Offer"}
       />
-      {[0, 1, 2].map((item, index) => {
-        return (
-          <View style={styles.itemList}>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Offer Detail</Text>
-              <Text style={styles.rightText}>1</Text>
+      {OFFERS.length !== 0 &&
+        OFFERS.map((item, index) => {
+          return (
+            <View key={index} style={styles.itemList}>
+              <View style={styles.row}>
+                <Text style={styles.leftText}>Offer Detail</Text>
+                <Text style={styles.rightText}>{item.title}</Text>
+              </View>
+              <View style={styles.middleRow}>
+                <Text style={styles.leftText}>User</Text>
+                <Text style={styles.rightText}>{item.user.name}</Text>
+              </View>
+              <View style={styles.middleRow2}>
+                <Text style={styles.leftText}>Created</Text>
+                <Text style={styles.rightText}>
+                  {moment(item.created).format("MM/DD/YY, hh:mm A")}
+                </Text>
+              </View>
+              <View style={styles.lastRow}>
+                <Text style={styles.leftText}>Action</Text>
+                <TouchableOpacity
+                  onPress={() => onDeleteOffer(item.id)}
+                  style={styles.deleteButton}
+                >
+                  <Image
+                    source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
+                    style={styles.searchIcon}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.middleRow}>
-              <Text style={styles.leftText}>User</Text>
-              <Text style={styles.rightText}>October 24, 2022</Text>
-            </View>
-            <View style={styles.middleRow2}>
-              <Text style={styles.leftText}>Created</Text>
-              <Text style={styles.rightText}>10/18/22, 12:00 AM</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Action</Text>
-              <Image
-                source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
-                style={styles.searchIcon}
-              />
-            </View>
-          </View>
-        );
-      })}
+          );
+        })}
     </View>
   );
 }
@@ -74,6 +100,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: hp(1.8),
     paddingHorizontal: hp(2),
+  },
+  lastRow: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingLeft: hp(2),
   },
   middleRow: {
     alignItems: "center",
@@ -111,5 +143,9 @@ const styles = StyleSheet.create({
     height: hp(2),
     width: hp(2),
     resizeMode: "contain",
+  },
+  deleteButton: {
+    paddingHorizontal: hp(2),
+    paddingVertical: hp(1.8),
   },
 });

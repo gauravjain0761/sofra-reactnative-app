@@ -7,7 +7,10 @@ import ApplicationStyles from "../../Themes/ApplicationStyles";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import PinkButton from "../../Components/PinkButton";
-import { dispatchErrorAction } from "../../Services/CommonFunctions";
+import {
+  dispatchErrorAction,
+  validateEmail,
+} from "../../Services/CommonFunctions";
 import { useDispatch } from "react-redux";
 const citydata = [
   {
@@ -36,10 +39,26 @@ export default function M_RegistrationScreen() {
   const dispatch = useDispatch();
 
   const onRegistration = () => {
-    if (BName !== "") {
-      if (BAddress !== "") {
+    if (BName.trim() !== "") {
+      if (BAddress.trim() !== "") {
         if (city !== "") {
           if (currentlyDeliver !== "") {
+            if (Firstname.trim() !== "") {
+              if (Lastname.trim() !== "") {
+                if (validateEmail(Email)) {
+                  if (MobileNo.trim() !== "") {
+                  } else {
+                    dispatchErrorAction(dispatch, "Please enter Mobile number");
+                  }
+                } else {
+                  dispatchErrorAction(dispatch, "Please enter valid Email");
+                }
+              } else {
+                dispatchErrorAction(dispatch, "Please enter Lastname");
+              }
+            } else {
+              dispatchErrorAction(dispatch, "Please enter Firstname");
+            }
           } else {
             dispatchErrorAction(dispatch, "Please select currently deliver");
           }

@@ -17,6 +17,11 @@ import PinkButton from "../../Components/PinkButton";
 import MenuScreenItems from "../../Components/MenuScreenItems";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import ImagePicker from "react-native-image-crop-picker";
+import { useDispatch } from "react-redux";
+import {
+  dispatchErrorAction,
+  hasArabicCharacters,
+} from "../../Services/CommonFunctions";
 
 const citydata = [
   {
@@ -29,7 +34,7 @@ const citydata = [
   { id: 10, strategicName: "DEMATADE" },
 ];
 export default function M_EditMenuItemScreen() {
-  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
   const [Name, setName] = useState("");
   const [ArabicName, setArabicName] = useState("");
   const [MenuCategory, setMenuCategory] = useState("");
@@ -49,6 +54,59 @@ export default function M_EditMenuItemScreen() {
     }).then((photo) => {
       setImageItem(photo);
     });
+  };
+
+  const onEditMenuItem = () => {
+    if (Name.trim() !== "") {
+      if (hasArabicCharacters(ArabicName)) {
+        if (MenuCategory.trim() !== "") {
+          if (ItemType.trim() !== "") {
+            if (Price.trim() !== "") {
+              if (Discount.trim() !== "") {
+                if (MaxLimit.trim() !== "") {
+                  if (ImageItem !== "") {
+                    if (Description.trim() !== "") {
+                      if (hasArabicCharacters(ArabicDes)) {
+                        if (MenuDes.trim() !== "") {
+                        } else {
+                          dispatchErrorAction(
+                            dispatch,
+                            "Please select menu descriptors"
+                          );
+                        }
+                      } else {
+                        dispatchErrorAction(
+                          dispatch,
+                          "Please enter Description in arabic"
+                        );
+                      }
+                    } else {
+                      dispatchErrorAction(dispatch, "Please enter Description");
+                    }
+                  } else {
+                    dispatchErrorAction(dispatch, "Please select item image");
+                  }
+                } else {
+                  dispatchErrorAction(dispatch, "Please enter max limit");
+                }
+              } else {
+                dispatchErrorAction(dispatch, "Please select Discount");
+              }
+            } else {
+              dispatchErrorAction(dispatch, "Please enter price");
+            }
+          } else {
+            dispatchErrorAction(dispatch, "Please select item type");
+          }
+        } else {
+          dispatchErrorAction(dispatch, "Please select menu categories");
+        }
+      } else {
+        dispatchErrorAction(dispatch, "Please enter name in arabic");
+      }
+    } else {
+      dispatchErrorAction(dispatch, "Please enter name");
+    }
   };
 
   return (
@@ -209,7 +267,7 @@ export default function M_EditMenuItemScreen() {
 
           <PinkButton
             text={"small"}
-            onPress={() => {}}
+            onPress={() => onEditMenuItem()}
             style={styles.dbuttonStyle}
             name={"Update Menu Item"}
           />

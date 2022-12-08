@@ -10,6 +10,7 @@ const initialState = {
   setteled_report: {},
   isTakingOrders: false,
   availability: [],
+  offers: [],
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -52,6 +53,16 @@ export default function (state = initialState, action) {
     }
     case "SET_AVAILABILITY": {
       return { ...state, availability: action.payload, preLoader: false };
+    }
+    case "SET_OFFERS": {
+      return { ...state, offers: action.payload, preLoader: false };
+    }
+    case "DELETE_OFFER": {
+      let offer = Object.assign([], state.offers);
+      offer = offer.filter((el) => {
+        return el.id !== action.payload.offerId;
+      });
+      return { ...state, offers: offer, preLoader: false };
     }
     default:
       return state;

@@ -28,7 +28,6 @@ export default function M_AppSetting() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getAppSetting());
     });

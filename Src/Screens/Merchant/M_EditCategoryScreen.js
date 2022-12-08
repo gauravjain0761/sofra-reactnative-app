@@ -15,10 +15,27 @@ import Colors from "../../Themes/Colors";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import PinkButton from "../../Components/PinkButton";
 import MenuScreenItems from "../../Components/MenuScreenItems";
+import {
+  dispatchErrorAction,
+  hasArabicCharacters,
+} from "../../Services/CommonFunctions";
+import { useDispatch } from "react-redux";
+
 export default function M_EditCategoryScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [name, setname] = useState("");
   const [nameArabic, setnameArabic] = useState("");
+  const onEditCategory = () => {
+    if (name.trim() !== "") {
+      if (hasArabicCharacters(nameArabic)) {
+      } else {
+        dispatchErrorAction(dispatch, "Please enter name in arabic");
+      }
+    } else {
+      dispatchErrorAction(dispatch, "Please enter category name");
+    }
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -46,7 +63,7 @@ export default function M_EditCategoryScreen({ navigation }) {
 
           <PinkButton
             text={"small"}
-            onPress={() => {}}
+            onPress={() => onEditCategory()}
             style={styles.dbuttonStyle}
             name={"Update Categories"}
           />

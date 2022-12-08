@@ -7,6 +7,8 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
+import { dispatchErrorAction } from "../../Services/CommonFunctions";
+import { useDispatch } from "react-redux";
 
 const citydata = [
   {
@@ -19,8 +21,20 @@ const citydata = [
   { id: 10, strategicName: "DEMATADE" },
 ];
 export default function M_CreateOfferScreen() {
+  const dispatch = useDispatch();
   const [Detail, setDetail] = useState("");
   const [Users, setUsers] = useState("");
+
+  const onCreateOffer = () => {
+    if (Detail.trim() !== "") {
+      if (Users.trim() !== "") {
+      } else {
+        dispatchErrorAction(dispatch, "Please select users");
+      }
+    } else {
+      dispatchErrorAction(dispatch, "Please enter offer detail");
+    }
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <Text style={ApplicationStyles.welcomeText}>Create Offer</Text>
@@ -35,7 +49,7 @@ export default function M_CreateOfferScreen() {
         textAlignVertical={"top"}
       />
       <Text style={styles.bottomText}>Please enter the offer detail here.</Text>
-      <Text style={styles.inputName}>Users*</Text>
+      <Text style={[styles.inputName, { marginTop: hp(3) }]}>Users*</Text>
       <Dropdown
         // selectedStyle={{color:colors.gray3}}
         style={[styles.tradetypeviewStyle]}
@@ -61,11 +75,9 @@ export default function M_CreateOfferScreen() {
           );
         }}
       />
-      <Text style={styles.bottomText}>
-        Please enter the name in arabic here.
-      </Text>
+      <Text style={styles.bottomText}>Please select users here.</Text>
       <PinkButton
-        onPress={() => {}}
+        onPress={() => onCreateOffer()}
         style={styles.dbuttonStyle}
         text={"small"}
         name={"Create Offer"}
@@ -91,6 +103,7 @@ const styles = StyleSheet.create({
   },
   bottomText: {
     ...commonFontStyle(400, 14, Colors.darkGrey),
+    marginTop: -hp(1),
   },
   placeholderStyle: {
     ...commonFontStyle(400, 14, Colors.darkGrey),

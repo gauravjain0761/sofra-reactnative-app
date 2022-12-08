@@ -459,6 +459,26 @@ export function MerchantDrawer({ navigation }) {
           ...data,
           ...transparentHeader,
         })}
+        name="M_MenuItemScreen"
+        component={M_MenuItemScreen}
+      />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
+        name="M_EditMenuItemScreen"
+        component={M_EditMenuItemScreen}
+      />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
         name="M_CreateOfferScreen"
         component={M_CreateOfferScreen}
       />

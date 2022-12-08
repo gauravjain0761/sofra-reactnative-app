@@ -24,7 +24,6 @@ export default function M_StatisticsScreen({ navigation }) {
   const dispatch = useDispatch();
   const STATISTICS = useSelector((e) => e.merchant.statistics);
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getStatitics());
     });

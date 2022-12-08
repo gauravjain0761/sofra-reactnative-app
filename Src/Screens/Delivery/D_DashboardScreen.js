@@ -103,14 +103,14 @@ const styles = StyleSheet.create({
     // marginRight: hp(2),
   },
   cardTitle: {
-    ...commonFontStyle(700, 24, Colors.black),
+    ...commonFontStyle("extraBold", 24, Colors.black),
     paddingHorizontal: hp(3),
   },
   addText: {
     ...commonFontStyle(400, 13, Colors.black),
   },
   addButton: {
-    ...commonFontStyle(600, 16, Colors.white),
+    ...commonFontStyle("M_700", 14, Colors.white),
   },
   addMenuButton: {
     paddingHorizontal: hp(3),
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   halfViewTitle: {
-    ...commonFontStyle(500, 24, Colors.black),
+    ...commonFontStyle("M_600", 24, Colors.black),
     marginBottom: hp(1.5),
   },
   bottomcardRow: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   rightText: {
-    ...commonFontStyle(500, 14, Colors.black),
+    ...commonFontStyle("M_600", 14, Colors.black),
     marginLeft: hp(1.5),
   },
   bottomcardRowImage: {

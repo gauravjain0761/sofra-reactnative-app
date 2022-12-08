@@ -34,7 +34,6 @@ export default function M_OrderScreen({ navigation }) {
   const ORDERS = useSelector((e) => e.merchant.orders);
 
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOrders());
     });
@@ -93,7 +92,7 @@ export default function M_OrderScreen({ navigation }) {
                 <OrderItems
                   item={item}
                   navigation={navigation}
-                  status={status[0]}
+                  // status={status[0]}
                 />
               </TouchableOpacity>
             );

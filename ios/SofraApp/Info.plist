@@ -35,8 +35,16 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+  <key>NSCameraUsageDescription</key>
+  <string>$(PRODUCT_NAME) You can upload the picture of the menu</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>You can get direction to the location</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>You can get direction to the location</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>You can get direction to the location</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>$(PRODUCT_NAME) You can upload the picture of the menu</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Black.ttf</string>

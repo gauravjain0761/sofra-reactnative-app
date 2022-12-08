@@ -26,7 +26,6 @@ export default function M_ReportScreen({ navigation }) {
   const SETTELED_REPORT = useSelector((e) => e.merchant.setteled_report);
 
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getSettledReports());
     });

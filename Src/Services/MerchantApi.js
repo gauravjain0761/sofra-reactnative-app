@@ -8,6 +8,8 @@ import {
 import { GET, POST } from "./ResponseHandler";
 
 export const getOrders = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
   let token = await getToken();
   const url = merchant_url + "/getOrders?auth_token=" + token;
   try {
@@ -24,6 +26,8 @@ export const getOrders = () => async (dispatch) => {
 };
 
 export const getStatitics = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
   let token = await getToken();
   const url = merchant_url + "/getStatitics?auth_token=" + token;
   try {
@@ -40,6 +44,8 @@ export const getStatitics = () => async (dispatch) => {
 };
 
 export const getSettledReports = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
   let token = await getToken();
   const url = merchant_url + "/getSettledReports?auth_token=" + token;
   try {
@@ -56,6 +62,8 @@ export const getSettledReports = () => async (dispatch) => {
 };
 
 export const getUnSettledReports = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
   let token = await getToken();
   const url = merchant_url + "/getUnSettledReports?auth_token=" + token;
   try {
@@ -72,6 +80,8 @@ export const getUnSettledReports = () => async (dispatch) => {
 };
 
 export const getAppSetting = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
   let token = await getToken();
   const url = merchant_url + "/getAppSetting?auth_token=" + token;
   try {
@@ -87,6 +97,8 @@ export const getAppSetting = () => async (dispatch) => {
 };
 
 export const UpdateAppSetting = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
   const url = merchant_url + "/UpdateAppSetting";
   try {
     const data = await POST(dispatch, url, postObj);
@@ -102,12 +114,48 @@ export const UpdateAppSetting = (postObj) => async (dispatch) => {
 };
 
 export const getAvailbility = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
   let token = await getToken();
   const url = merchant_url + "/getAvailbility?auth_token=" + token;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       dispatchAction(dispatch, "SET_AVAILABILITY", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const getOffers = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  let token = await getToken();
+  const url = merchant_url + "/getOffers?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_OFFERS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const DeleteOffer = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/DeleteOffer";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "DELETE_OFFER", postObj);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

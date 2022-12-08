@@ -16,7 +16,7 @@ export function getFontType(fontWeight) {
   } else if (fontWeight == "M_500") {
     return "Montserrat-Medium";
   } else if (fontWeight == "M_600") {
-    return "Montserrat-Semibold";
+    return "Montserrat-SemiBold";
   } else if (fontWeight == "M_700") {
     return "Montserrat-Bold";
   } else if (fontWeight == "extraBold") {

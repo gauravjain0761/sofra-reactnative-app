@@ -34,8 +34,10 @@ export default function OrderItems({ item, navigation, status }) {
                 alignSelf: "flex-end",
               }}
             >
-              <Text style={[styles.tagText, { backgroundColor: status.color }]}>
-                {status.title}
+              <Text
+                style={[styles.tagText, { backgroundColor: status?.color }]}
+              >
+                {status?.title}
               </Text>
             </TouchableOpacity>
           </View>
