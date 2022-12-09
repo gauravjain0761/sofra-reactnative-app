@@ -166,8 +166,15 @@ import Colors from "../Themes/Colors";
 import RegistrationTextInput from "../Components/RegistrationTextInput";
 import PinkButton from "../Components/PinkButton";
 import { useNavigation } from "@react-navigation/native";
+import { media_url } from "../Config/AppConfig";
 
-export default function MenuScreenItems({ activeVisible, screen }) {
+export default function MenuScreenItems({
+  item,
+  activeVisible,
+  screen,
+  onEdit,
+  onDelete,
+}) {
   const navigation = useNavigation();
   return (
     <View style={styles.cardView}>
@@ -181,26 +188,17 @@ export default function MenuScreenItems({ activeVisible, screen }) {
       ) : (
         <Image
           style={styles.menuImage}
-          source={require("../Images/Merchant/xxxhdpi/foodDish.jpeg")}
+          source={
+            item.image
+              ? { uri: media_url + item.image }
+              : require("../Images/Merchant/xxxhdpi/foodDish.jpeg")
+          }
         />
       )}
 
-      <Text style={styles.addText}>New Royal Place Restaurant</Text>
+      <Text style={styles.addText}>{item.name}</Text>
       <View style={styles.cardBotomBtn}>
-        <TouchableOpacity
-          onPress={() => {
-            if (screen == "promocode") {
-              navigation.navigate("M_EditPromocodeScreen");
-            } else {
-              navigation.navigate(
-                screen && screen == "item"
-                  ? "M_EditMenuItemScreen"
-                  : "M_EditCategoryScreen"
-              );
-            }
-          }}
-          style={styles.addMenuButton}
-        >
+        <TouchableOpacity onPress={() => onEdit()} style={styles.addMenuButton}>
           <Image
             style={styles.menuIconButton}
             source={require("../Images/Merchant/xxxhdpi/edit.png")}
@@ -232,6 +230,7 @@ export default function MenuScreenItems({ activeVisible, screen }) {
               backgroundColor: Colors.grayButtonBackground,
             },
           ]}
+          onPress={() => onDelete()}
         >
           <Image
             style={styles.menuIconButton}

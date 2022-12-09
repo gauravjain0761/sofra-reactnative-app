@@ -7,11 +7,38 @@ import Colors from "../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../Services/asyncStorage";
 import { CommonActions } from "@react-navigation/native";
+import {
+  getCities,
+  getCuisines,
+  getUsers,
+  getCategories,
+} from "../Services/MerchantApi";
+import messaging, { firebase } from "@react-native-firebase/messaging";
 
 export default function ChooseLoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const preLoader = useSelector((e) => e.merchant.preLoader);
   useEffect(async () => {
+    dispatch(getCities());
+    dispatch(getUsers());
+    dispatch(getCuisines());
+    dispatch(getCategories());
+
+    messaging()
+      .getToken()
+      .then((fcmToken) => {
+        if (fcmToken) {
+          dispatch({ type: "SET_FCMTOKEN", payload: fcmToken });
+        } else {
+          console.log("[FCMService] User does not have a device token");
+          // console.log("[FCMService] User does not have a device token")
+        }
+      })
+      .catch((error) => {
+        let err = `FCm token get error${error}`;
+        console.log("FCm token get error", err);
+      });
+
     dispatch({ type: "PRE_LOADER", payload: true });
     let token = await getToken();
     if (token) {

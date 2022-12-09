@@ -12,10 +12,12 @@ export default function RegistrationTextInput({
   style,
   placeholderTextColor,
   keyboardType,
+  maxLength,
 }) {
   return (
     <View style={style}>
       <TextInput
+        maxLength={maxLength ? maxLength : undefined}
         value={value}
         placeholder={placeholder}
         onChangeText={(text) => onChangeText(text)}

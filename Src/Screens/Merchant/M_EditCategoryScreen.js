@@ -20,15 +20,25 @@ import {
   hasArabicCharacters,
 } from "../../Services/CommonFunctions";
 import { useDispatch } from "react-redux";
+import { EditMenuCategory } from "../../Services/MerchantApi";
 
-export default function M_EditCategoryScreen({ navigation }) {
+export default function M_EditCategoryScreen({ navigation, route }) {
+  const category = route?.params;
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
-  const [name, setname] = useState("");
-  const [nameArabic, setnameArabic] = useState("");
+  const [name, setname] = useState(category ? category.name : "");
+  const [nameArabic, setnameArabic] = useState(
+    category ? category.name_ar : ""
+  );
   const onEditCategory = () => {
     if (name.trim() !== "") {
       if (hasArabicCharacters(nameArabic)) {
+        let data = {
+          name: name,
+          name_ar: nameArabic,
+          categoryId: category.id,
+        };
+        dispatch(EditMenuCategory(data, navigation));
       } else {
         dispatchErrorAction(dispatch, "Please enter name in arabic");
       }

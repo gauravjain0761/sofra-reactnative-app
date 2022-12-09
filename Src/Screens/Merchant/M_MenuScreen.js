@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
@@ -19,30 +19,64 @@ import {
   dispatchErrorAction,
   hasArabicCharacters,
 } from "../../Services/CommonFunctions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  AddMenuCategory,
+  DeleteMenuCategory,
+  getMenuCategories,
+} from "../../Services/MerchantApi";
 export default function M_MenuScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [name, setname] = useState("");
   const [nameArabic, setnameArabic] = useState("");
+  const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
+
+  useEffect(() => {
+    dispatch(getMenuCategories());
+  }, []);
+
   const onAddCategory = () => {
     if (name.trim() !== "") {
-      if (hasArabicCharacters(nameArabic)) {
-      } else {
-        dispatchErrorAction(dispatch, "Please enter name in arabic");
-      }
+      // if (hasArabicCharacters(nameArabic)) {
+      let data = {
+        name: name,
+        name_ar: nameArabic,
+      };
+      dispatch(AddMenuCategory(data));
+      // } else {
+      //   dispatchErrorAction(dispatch, "Please enter name in arabic");
+      // }
     } else {
       dispatchErrorAction(dispatch, "Please enter category name");
     }
+  };
+  const onDeleteCategory = (id) => {
+    let data = { categoryId: id };
+    dispatch(DeleteMenuCategory(data));
   };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={ApplicationStyles.welcomeText}>Menu Categories</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-          {[0, 1, 2, 3].map((element, index) => {
-            return <MenuScreenItems activeVisible={false} />;
-          })}
+          {ALL_CATEGORIES.length !== 0 &&
+            ALL_CATEGORIES.map((element, index) => {
+              return (
+                <View key={index}>
+                  <MenuScreenItems
+                    onEdit={() =>
+                      navigation.navigate("M_EditCategoryScreen", element)
+                    }
+                    onDelete={() => {
+                      onDeleteCategory(element.id);
+                    }}
+                    item={element}
+                    activeVisible={false}
+                  />
+                </View>
+              );
+            })}
         </ScrollView>
         <View style={styles.rowView}>
           <Text style={styles.title}>Add Menu Categories</Text>

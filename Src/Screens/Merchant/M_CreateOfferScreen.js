@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Image } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
-import { Dropdown } from "react-native-element-dropdown";
+import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import { dispatchErrorAction } from "../../Services/CommonFunctions";
 import { useDispatch } from "react-redux";
@@ -50,29 +50,39 @@ export default function M_CreateOfferScreen() {
       />
       <Text style={styles.bottomText}>Please enter the offer detail here.</Text>
       <Text style={[styles.inputName, { marginTop: hp(3) }]}>Users*</Text>
-      <Dropdown
-        // selectedStyle={{color:colors.gray3}}
+      <MultiSelect
         style={[styles.tradetypeviewStyle]}
-        placeholderStyle={styles.placeholderStyle}
+        placeholderStyle={
+          Users.length !== 0
+            ? styles.placeholderSelectedStyle
+            : styles.placeholderStyle
+        }
         data={citydata}
         selectedTextStyle={[styles.TitleTextStyle]}
         iconColor={Colors.black}
-        // activeColor={colors.Gray300}
-        // disable ={runningTradeTypePositions[item.tradeType] && true}
         labelField={"strategicName"}
         valueField={"strategicName"}
         maxHeight={300}
-        placeholder={"Nothing Selected"}
+        placeholder={Users.length !== 0 ? Users.toString() : "Nothing Selected"}
         value={Users}
         onChange={(item) => {
-          setUsers(item["strategicName"]);
+          setUsers(item);
         }}
-        renderItem={(item) => {
+        renderItem={(item, selected) => {
           return (
-            <View>
+            <View style={styles.selectedItemsDropdown}>
               <Text style={styles.textItem}>{item["strategicName"]}</Text>
+              {selected && (
+                <Image
+                  source={require("../../Images/Merchant/xxxhdpi/tick.png")}
+                  style={styles.tickIcon}
+                />
+              )}
             </View>
           );
+        }}
+        renderSelectedItem={(item) => {
+          return <></>;
         }}
       />
       <Text style={styles.bottomText}>Please select users here.</Text>
@@ -108,6 +118,9 @@ const styles = StyleSheet.create({
   placeholderStyle: {
     ...commonFontStyle(400, 14, Colors.darkGrey),
   },
+  placeholderSelectedStyle: {
+    ...commonFontStyle(400, 14, Colors.black),
+  },
   TitleTextStyle: {
     ...commonFontStyle(400, 14, Colors.black),
   },
@@ -122,13 +135,23 @@ const styles = StyleSheet.create({
   },
   textItem: {
     ...commonFontStyle(400, 14, Colors.black),
-    paddingVertical: hp(1),
-    paddingHorizontal: hp(3),
   },
   dbuttonStyle: {
     marginTop: hp(8),
   },
   buttonTextStyle: {
     ...commonFontStyle(400, 16, Colors.white),
+  },
+  selectedItemsDropdown: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: hp(1),
+    paddingHorizontal: hp(3),
+    alignItems: "center",
+  },
+  tickIcon: {
+    resizeMode: "contain",
+    height: 12,
+    width: 12,
   },
 });

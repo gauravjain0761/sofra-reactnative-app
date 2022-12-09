@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Platform } from "react-native";
 import React, { useState } from "react";
 import Colors from "../../Themes/Colors";
 import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
@@ -11,7 +11,9 @@ import {
   dispatchErrorAction,
   validateEmail,
 } from "../../Services/CommonFunctions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { CurrentDeliverData } from "../../Config/StaticDropdownData";
+import { register } from "../../Services/AuthApi";
 const citydata = [
   {
     id: 1,
@@ -23,44 +25,114 @@ const citydata = [
   { id: 10, strategicName: "DEMATADE" },
 ];
 export default function M_RegistrationScreen() {
+  const dispatch = useDispatch();
+  const CITIES = useSelector((e) => e.merchant.cities);
+  const CUISINES = useSelector((e) => e.merchant.cuisines);
+  const CATEGORIES = useSelector((e) => e.merchant.categories);
+  const fcmToken = useSelector((e) => e.auth.fcmToken);
   const [BName, setBName] = useState("");
   const [BAddress, setBAddress] = useState("");
   const [city, setCity] = useState("");
   const [licenceNumber, setLicenceNUmber] = useState("");
   const [currentlyDeliver, setCurrentlyDeliver] = useState("");
   const [socialLink, setSocialLink] = useState("");
-  const [restaurant, setRestaurant] = useState("");
+  const [restaurant, setRestaurant] = useState("Restaurant");
   const [category, setCategory] = useState("");
   const [Cuisine, setCuisine] = useState("");
   const [Firstname, setFirstname] = useState("");
   const [Lastname, setLastname] = useState("");
   const [Email, setEmail] = useState("");
   const [MobileNo, setMobileNo] = useState("");
-  const dispatch = useDispatch();
 
   const onRegistration = () => {
     if (BName.trim() !== "") {
       if (BAddress.trim() !== "") {
         if (city !== "") {
-          if (currentlyDeliver !== "") {
-            if (Firstname.trim() !== "") {
-              if (Lastname.trim() !== "") {
-                if (validateEmail(Email)) {
-                  if (MobileNo.trim() !== "") {
+          if (licenceNumber.trim() !== "") {
+            if (currentlyDeliver !== "") {
+              if (socialLink.trim() !== "") {
+                if (category.length !== 0) {
+                  if (Cuisine.length !== 0) {
+                    if (Firstname.trim() !== "") {
+                      if (Lastname.trim() !== "") {
+                        if (validateEmail(Email)) {
+                          if (MobileNo.trim() !== "") {
+                            let cityName = CITIES.filter(
+                              (obj) => obj.name == city
+                            );
+
+                            let cuisines = { cusineIds: [] };
+                            Cuisine.map((element, index) => {
+                              const temp = CUISINES.filter(
+                                (obj) => obj.name == element
+                              );
+                              cuisines.cusineIds[index] = temp[0].id;
+                            });
+                            let categories = { categoryIds: [] };
+                            category.map((element, index) => {
+                              const temp = CATEGORIES.filter(
+                                (obj) => obj.name == element
+                              );
+                              categories.categoryIds[index] = temp[0].id;
+                            });
+                            // console.log(cuisines, categories, cityName);
+
+                            let data = {
+                              name: BName,
+                              email: Email,
+                              first_name: Firstname,
+                              last_name: Lastname,
+                              phone: MobileNo,
+                              currentlyDeliver: currentlyDeliver,
+                              cityId: cityName[0].id,
+                              location: BAddress,
+                              licenseNo: licenceNumber,
+                              social_account: socialLink,
+                              ...cuisines,
+                              ...categories,
+                              deviceType:
+                                Platform.OS == "android" ? "ANDROID" : "IOS",
+                              deviceToken: fcmToken,
+                              language: "en",
+                            };
+                            // console.log(data);
+
+                            dispatch(register(data));
+                          } else {
+                            dispatchErrorAction(
+                              dispatch,
+                              "Please enter Mobile number"
+                            );
+                          }
+                        } else {
+                          dispatchErrorAction(
+                            dispatch,
+                            "Please enter valid Email"
+                          );
+                        }
+                      } else {
+                        dispatchErrorAction(dispatch, "Please enter Lastname");
+                      }
+                    } else {
+                      dispatchErrorAction(dispatch, "Please enter Firstname");
+                    }
                   } else {
-                    dispatchErrorAction(dispatch, "Please enter Mobile number");
+                    dispatchErrorAction(dispatch, "Please select cuisine");
                   }
                 } else {
-                  dispatchErrorAction(dispatch, "Please enter valid Email");
+                  dispatchErrorAction(dispatch, "Please select category");
                 }
               } else {
-                dispatchErrorAction(dispatch, "Please enter Lastname");
+                dispatchErrorAction(
+                  dispatch,
+                  "Please enter your website, facebook, instagram account"
+                );
               }
             } else {
-              dispatchErrorAction(dispatch, "Please enter Firstname");
+              dispatchErrorAction(dispatch, "Please select currently deliver");
             }
           } else {
-            dispatchErrorAction(dispatch, "Please select currently deliver");
+            dispatchErrorAction(dispatch, "Please enter trade licence number");
           }
         } else {
           dispatchErrorAction(dispatch, "Please enter City");
@@ -88,13 +160,13 @@ export default function M_RegistrationScreen() {
           onChangeText={(text) => setBAddress(text)}
         />
         <RegistrationDropdown
-          data={citydata}
+          data={CITIES}
           value={city}
           setData={(text) => {
             setCity(text);
           }}
           placeholder={"City or Town*"}
-          valueField={"strategicName"}
+          valueField={"name"}
         />
         <RegistrationTextInput
           placeholder={"Trade Licence number"}
@@ -102,13 +174,13 @@ export default function M_RegistrationScreen() {
           onChangeText={(text) => setLicenceNUmber(text)}
         />
         <RegistrationDropdown
-          data={citydata}
+          data={CurrentDeliverData}
           value={currentlyDeliver}
           setData={(text) => {
             setCurrentlyDeliver(text);
           }}
           placeholder={"Do you currently deliver?*"}
-          valueField={"strategicName"}
+          valueField={"name"}
         />
         <RegistrationTextInput
           placeholder={"Website, Instagram, Facebook account"}
@@ -117,7 +189,12 @@ export default function M_RegistrationScreen() {
         />
         <View style={styles.row}>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-            <RegistrationDropdown
+            <RegistrationTextInput
+              placeholder={"Restaurant"}
+              value={"Restaurant"}
+              onChangeText={(text) => setRestaurant(text)}
+            />
+            {/* <RegistrationDropdown
               data={citydata}
               value={restaurant}
               setData={(text) => {
@@ -126,29 +203,31 @@ export default function M_RegistrationScreen() {
               placeholder={"Restaurant"}
               valueField={"strategicName"}
               style={styles.dropdownRow}
-            />
+            /> */}
           </View>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationDropdown
-              data={citydata}
+              data={CATEGORIES}
               value={category}
+              multiSelect={true}
               setData={(text) => {
                 setCategory(text);
               }}
               placeholder={"Category"}
-              valueField={"strategicName"}
+              valueField={"name"}
               style={styles.dropdownRow}
             />
           </View>
         </View>
         <RegistrationDropdown
-          data={citydata}
+          data={CUISINES}
           value={Cuisine}
+          multiSelect={true}
           setData={(text) => {
             setCuisine(text);
           }}
           placeholder={"Type of Cuisine"}
-          valueField={"strategicName"}
+          valueField={"name"}
           style={styles.dropdownRow}
         />
         <View style={styles.row}>
@@ -173,6 +252,7 @@ export default function M_RegistrationScreen() {
           onChangeText={(text) => setEmail(text)}
         />
         <RegistrationTextInput
+          maxLength={12}
           keyboardType={"numeric"}
           placeholder={"Mobile number (+971...)*"}
           value={MobileNo}

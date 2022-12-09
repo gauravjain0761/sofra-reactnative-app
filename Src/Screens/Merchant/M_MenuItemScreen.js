@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
@@ -17,11 +17,12 @@ import PinkButton from "../../Components/PinkButton";
 import MenuScreenItems from "../../Components/MenuScreenItems";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import ImagePicker from "react-native-image-crop-picker";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   dispatchErrorAction,
   hasArabicCharacters,
 } from "../../Services/CommonFunctions";
+import { getMenuItems } from "../../Services/MerchantApi";
 
 const citydata = [
   {
@@ -33,7 +34,7 @@ const citydata = [
   { id: 6, strategicName: "TESTING" },
   { id: 10, strategicName: "DEMATADE" },
 ];
-export default function M_MenuItemScreen() {
+export default function M_MenuItemScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [Name, setName] = useState("");
@@ -47,7 +48,10 @@ export default function M_MenuItemScreen() {
   const [Description, setDescription] = useState("");
   const [ArabicDes, setArabicDes] = useState("");
   const [MenuDes, setMenuDes] = useState("");
-
+  const MENU_ITEMS = useSelector((e) => e.merchant.menuItems);
+  useEffect(() => {
+    dispatch(getMenuItems());
+  }, []);
   const openPicker = () => {
     ImagePicker.openPicker({
       mediaType: "photo",
@@ -114,9 +118,19 @@ export default function M_MenuItemScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={ApplicationStyles.welcomeText}>Menu Items</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-          {[0, 1, 2, 3].map((element, index) => {
-            return <MenuScreenItems screen={"item"} activeVisible={true} />;
-          })}
+          {MENU_ITEMS.length !== 0 &&
+            MENU_ITEMS.map((element, index) => {
+              return (
+                <MenuScreenItems
+                  onEdit={() =>
+                    navigation.navigate("M_EditMenuItemScreen", element)
+                  }
+                  item={element}
+                  screen={"item"}
+                  activeVisible={true}
+                />
+              );
+            })}
         </ScrollView>
         <View style={styles.rowView}>
           <Text style={styles.title}>Add Menu Items</Text>

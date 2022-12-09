@@ -22,6 +22,22 @@ export const getLogin = (postObj, onSuccess) => async (dispatch) => {
   }
 };
 
+export const register = (postObj, onSuccess) => async (dispatch) => {
+  dispatchAction(dispatch, "PRE_LOADER", true);
+  const url = merchant_url + "/register";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      // onSuccess();
+      // dispatchAction(dispatch, "LOGIN", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
 export const getLogout = (onSuccess) => async (dispatch) => {
   dispatchAction(dispatch, "PRE_LOADER", true);
   const url = merchant_url + "/logout";

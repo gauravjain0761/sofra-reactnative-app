@@ -14,7 +14,7 @@ export const GET = async (dispatch, url, data) => {
   })
     .then((response) => {
       return response.json().then((responseJson) => {
-        console.log("geturl-->", url, data, responseJson);
+        console.log("geturl-->", url, responseJson);
 
         return responseJson;
       });
@@ -35,6 +35,7 @@ export async function POST(dispatch, url, data) {
   if (token) {
     formData.append("auth_token", token);
   }
+  console.log("fefefef", formData);
   return fetch(url, {
     method: "POST",
     headers: {
@@ -46,12 +47,12 @@ export async function POST(dispatch, url, data) {
   })
     .then((response) => {
       return response.json().then((responseJson) => {
-        console.log("posturl-->", url, data, responseJson);
+        console.log("posturl-->", url, formData, responseJson);
         return responseJson;
       });
     })
     .catch((err) => {
-      console.log("post--", url, data, err);
+      console.log("post--", url, formData, err);
     });
 }
 

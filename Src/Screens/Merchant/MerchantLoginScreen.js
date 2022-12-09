@@ -6,13 +6,12 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import LoginTextInput from "../../Components/LoginTextInput";
 import PinkButton from "../../Components/PinkButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import {
   dispatchErrorAction,
   validateEmail,
 } from "../../Services/CommonFunctions";
-import messaging, { firebase } from "@react-native-firebase/messaging";
 import { getLogin } from "../../Services/AuthApi";
 
 export default function MerchantLoginScreen() {
@@ -20,24 +19,7 @@ export default function MerchantLoginScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("amer_bakour@hotmail.com");
   const [password, setPassword] = useState("123456");
-  const [FCMTOken, setFCMTOken] = useState("");
-  useEffect(() => {
-    messaging()
-      .getToken()
-      .then((fcmToken) => {
-        if (fcmToken) {
-          // console.log("fcmToken---", fcmToken);
-          setFCMTOken(fcmToken);
-        } else {
-          console.log("[FCMService] User does not have a device token");
-          // console.log("[FCMService] User does not have a device token")
-        }
-      })
-      .catch((error) => {
-        let err = `FCm token get error${error}`;
-        console.log("FCm token get error", err);
-      });
-  }, []);
+  const fcmToken = useSelector((e) => e.auth.fcmToken);
 
   const onLogin = () => {
     if (validateEmail(email)) {
@@ -46,7 +28,7 @@ export default function MerchantLoginScreen() {
           email: email,
           password: password,
           deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
-          deviceToken: FCMTOken,
+          deviceToken: fcmToken,
           language: "en",
         };
         dispatch(

@@ -11,6 +11,13 @@ const initialState = {
   isTakingOrders: false,
   availability: [],
   offers: [],
+  dashBoardData: {},
+  menuCategories: [],
+  menuItems: [],
+  cities: [],
+  cuisines: [],
+  users: [],
+  categories: [],
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -63,6 +70,34 @@ export default function (state = initialState, action) {
         return el.id !== action.payload.offerId;
       });
       return { ...state, offers: offer, preLoader: false };
+    }
+    case "SET_DASHBOARD_DATA": {
+      return { ...state, dashBoardData: action.payload, preLoader: false };
+    }
+    case "SET_MENU_CATEGORIES": {
+      return { ...state, menuCategories: action.payload, preLoader: false };
+    }
+    case "DELETE_CATEGORIES": {
+      let menuCategories = Object.assign([], state.menuCategories);
+      menuCategories = menuCategories.filter((el) => {
+        return el.id !== action.payload.categoryId;
+      });
+      return { ...state, menuCategories: menuCategories, preLoader: false };
+    }
+    case "SET_MENU_ITEMS": {
+      return { ...state, menuItems: action.payload, preLoader: false };
+    }
+    case "SET_CITIES": {
+      return { ...state, cities: action.payload, preLoader: false };
+    }
+    case "SET_CUISINES": {
+      return { ...state, cuisines: action.payload, preLoader: false };
+    }
+    case "SET_USERS": {
+      return { ...state, user: action.payload, preLoader: false };
+    }
+    case "SET_CATEGORIES": {
+      return { ...state, categories: action.payload, preLoader: false };
     }
     default:
       return state;

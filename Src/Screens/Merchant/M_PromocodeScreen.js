@@ -21,7 +21,7 @@ const citydata = [
   { id: 6, strategicName: "TESTING" },
   { id: 10, strategicName: "DEMATADE" },
 ];
-export default function M_PromocodeScreen() {
+export default function M_PromocodeScreen({ navigation }) {
   const [title, settitle] = useState("");
   const [arabicTitle, setarabicTitle] = useState("");
   const [discountCode, setdiscountCode] = useState("");
@@ -43,7 +43,15 @@ export default function M_PromocodeScreen() {
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
           {[0, 1, 2, 3].map((element, index) => {
             return (
-              <MenuScreenItems activeVisible={false} screen={"promocode"} />
+              <MenuScreenItems
+                onEdit={() =>
+                  navigation.navigate("M_EditPromocodeScreen", {
+                    params: element,
+                  })
+                }
+                activeVisible={false}
+                screen={"promocode"}
+              />
             );
           })}
         </ScrollView>

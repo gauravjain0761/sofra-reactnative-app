@@ -22,6 +22,8 @@ import {
   dispatchErrorAction,
   hasArabicCharacters,
 } from "../../Services/CommonFunctions";
+import { media_url } from "../../Config/AppConfig";
+import { ItemTypeData } from "../../Config/StaticDropdownData";
 
 const citydata = [
   {
@@ -33,19 +35,34 @@ const citydata = [
   { id: 6, strategicName: "TESTING" },
   { id: 10, strategicName: "DEMATADE" },
 ];
-export default function M_EditMenuItemScreen() {
+export default function M_EditMenuItemScreen({ navigation, route }) {
+  const menuItem = route?.params;
   const dispatch = useDispatch();
-  const [Name, setName] = useState("");
-  const [ArabicName, setArabicName] = useState("");
-  const [MenuCategory, setMenuCategory] = useState("");
-  const [ItemType, setItemType] = useState("");
-  const [Price, setPrice] = useState("");
-  const [Discount, setDiscount] = useState("");
-  const [MaxLimit, setMaxLimit] = useState("");
-  const [ImageItem, setImageItem] = useState("");
-  const [Description, setDescription] = useState("");
-  const [ArabicDes, setArabicDes] = useState("");
-  const [MenuDes, setMenuDes] = useState("");
+  const [Name, setName] = useState(menuItem ? menuItem.name : "");
+  const [ArabicName, setArabicName] = useState(
+    menuItem ? menuItem.name_ar : ""
+  );
+  const [MenuCategory, setMenuCategory] = useState(
+    menuItem ? menuItem.menuCategory.name : ""
+  );
+  const [ItemType, setItemType] = useState(menuItem ? menuItem.item_type : "");
+  const [Price, setPrice] = useState(menuItem ? String(menuItem.price) : "");
+  const [Discount, setDiscount] = useState(
+    menuItem ? String(menuItem.discount) : ""
+  );
+  const [MaxLimit, setMaxLimit] = useState(
+    menuItem ? String(menuItem.maxLimit) : ""
+  );
+  const [ImageItem, setImageItem] = useState(
+    menuItem ? (menuItem.image ? menuItem.image : "") : ""
+  );
+  const [Description, setDescription] = useState(
+    menuItem ? menuItem.description : ""
+  );
+  const [ArabicDes, setArabicDes] = useState(
+    menuItem ? menuItem.description_ar : ""
+  );
+  const [MenuDes, setMenuDes] = useState(menuItem ? menuItem.name : "");
 
   const openPicker = () => {
     ImagePicker.openPicker({
@@ -151,13 +168,13 @@ export default function M_EditMenuItemScreen() {
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Item Type</Text>
               <RegistrationDropdown
-                data={citydata}
+                data={ItemTypeData}
                 value={ItemType}
                 setData={(text) => {
                   setItemType(text);
                 }}
                 placeholder={"Type"}
-                valueField={"strategicName"}
+                valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
@@ -176,15 +193,11 @@ export default function M_EditMenuItemScreen() {
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Discount</Text>
-              <RegistrationDropdown
-                data={citydata}
+              <RegistrationTextInput
+                keyboardType={"numeric"}
+                placeholder={"Enter Discount"}
                 value={Discount}
-                setData={(text) => {
-                  setDiscount(text);
-                }}
-                placeholder={"Discount"}
-                valueField={"strategicName"}
-                style={styles.dropdownRow}
+                onChangeText={(text) => setDiscount(text)}
                 placeholderTextColor={Colors.black}
               />
             </View>
@@ -194,8 +207,8 @@ export default function M_EditMenuItemScreen() {
             <RegistrationTextInput
               keyboardType={"numeric"}
               placeholder={"Enter Price"}
-              value={Price}
-              onChangeText={(text) => setPrice(text)}
+              value={MaxLimit}
+              onChangeText={(text) => setMaxLimit(text)}
               placeholderTextColor={Colors.black}
             />
           </View>
@@ -217,7 +230,9 @@ export default function M_EditMenuItemScreen() {
                 <View>
                   <Image
                     source={{
-                      uri: `data:image/jpeg;base64,${ImageItem.data}`,
+                      uri: ImageItem?.data
+                        ? `data:image/jpeg;base64,${ImageItem.data}`
+                        : media_url + ImageItem,
                     }}
                     style={styles.image}
                   />

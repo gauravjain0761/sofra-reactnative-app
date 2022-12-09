@@ -12,12 +12,15 @@ import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getDashboardReports } from "../../Services/MerchantApi";
 export default function M_DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const DASHBOARD_DATA = useSelector((e) => e.merchant.dashBoardData);
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: false });
+    dispatch(getDashboardReports());
   }, []);
 
   return (
@@ -38,28 +41,40 @@ export default function M_DashboardScreen({ navigation }) {
           />
         </View>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-          {[0, 1, 2, 3].map((element, index) => {
-            return (
-              <View style={styles.cardView}>
-                <Text style={styles.cardTitle}>How it Works</Text>
-                <Image
-                  style={styles.menuImage}
-                  source={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
-                />
-                <Text style={styles.addText}>Add your restaurant menu</Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("M_MenuItemScreen")}
-                  style={styles.addMenuButton}
-                >
-                  <Text style={styles.addButton}>Add Menu</Text>
-                </TouchableOpacity>
-              </View>
-            );
-          })}
+          <View style={styles.cardView}>
+            <Text style={styles.cardTitle}>How it Works</Text>
+            <Image
+              style={styles.menuImage}
+              source={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
+            />
+            <Text style={styles.addText}>Add your restaurant menu</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("M_MenuItemScreen")}
+              style={styles.addMenuButton}
+            >
+              <Text style={styles.addButton}>Add Menu</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.cardView}>
+            <Text style={styles.cardTitle}>How it Works</Text>
+            <Image
+              style={styles.menuImage}
+              source={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
+            />
+            <Text style={styles.addText}>Add your category</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("M_MenuStack1")}
+              style={styles.addMenuButton}
+            >
+              <Text style={styles.addButton}>Add Category</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
         <View style={styles.rowView}>
           <View style={styles.halfView}>
-            <Text style={styles.halfViewTitle}>0.00</Text>
+            <Text style={styles.halfViewTitle}>
+              {DASHBOARD_DATA ? DASHBOARD_DATA?.totalEarnings : 0}
+            </Text>
             <View style={styles.bottomcardRow}>
               <Image
                 style={styles.bottomcardRowImage}
@@ -69,7 +84,9 @@ export default function M_DashboardScreen({ navigation }) {
             </View>
           </View>
           <View style={styles.halfView}>
-            <Text style={styles.halfViewTitle}>250</Text>
+            <Text style={styles.halfViewTitle}>
+              {DASHBOARD_DATA ? DASHBOARD_DATA?.bookingsCompleted : 0}
+            </Text>
             <View style={styles.bottomcardRow}>
               <Image
                 style={styles.bottomcardRowImage}
@@ -153,7 +170,6 @@ const styles = StyleSheet.create({
   },
   bottomcardRow: {
     flexDirection: "row",
-    // justifyContent: 'space-between',
     alignItems: "center",
     width: "100%",
   },
