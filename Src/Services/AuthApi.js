@@ -22,13 +22,15 @@ export const getLogin = (postObj, onSuccess) => async (dispatch) => {
   }
 };
 
-export const register = (postObj, onSuccess) => async (dispatch) => {
+export const register = (postObj, navigation) => async (dispatch) => {
   dispatchAction(dispatch, "PRE_LOADER", true);
   const url = merchant_url + "/register";
   try {
     const data = await POST(dispatch, url, postObj);
     if (data.status == true) {
       // onSuccess();
+      dispatchSuccessAction(dispatch, data.message);
+      navigation.goBack();
       // dispatchAction(dispatch, "LOGIN", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);

@@ -20,20 +20,17 @@ import ImagePicker from "react-native-image-crop-picker";
 import { useDispatch, useSelector } from "react-redux";
 import {
   dispatchErrorAction,
+  getFromDataJson,
   hasArabicCharacters,
 } from "../../Services/CommonFunctions";
-import { getMenuItems } from "../../Services/MerchantApi";
+import {
+  AddMenuItem,
+  getMenuCategories,
+  getMenuDescriptors,
+  getMenuItems,
+} from "../../Services/MerchantApi";
+import { ItemTypeData } from "../../Config/StaticDropdownData";
 
-const citydata = [
-  {
-    id: 1,
-    strategicName: "SUPERTREND",
-  },
-  { id: 2, strategicName: "VWAP" },
-  { id: 3, strategicName: "RSIMA" },
-  { id: 6, strategicName: "TESTING" },
-  { id: 10, strategicName: "DEMATADE" },
-];
 export default function M_MenuItemScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -49,8 +46,12 @@ export default function M_MenuItemScreen({ navigation }) {
   const [ArabicDes, setArabicDes] = useState("");
   const [MenuDes, setMenuDes] = useState("");
   const MENU_ITEMS = useSelector((e) => e.merchant.menuItems);
+  const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
+  const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
   useEffect(() => {
     dispatch(getMenuItems());
+    dispatch(getMenuCategories());
+    dispatch(getMenuDescriptors());
   }, []);
   const openPicker = () => {
     ImagePicker.openPicker({
@@ -63,52 +64,82 @@ export default function M_MenuItemScreen({ navigation }) {
 
   const onAddMenuItem = () => {
     if (Name.trim() !== "") {
-      // if (hasArabicCharacters(ArabicName)) {
-      if (MenuCategory.trim() !== "") {
-        if (ItemType.trim() !== "") {
-          if (Price.trim() !== "") {
-            if (Discount.trim() !== "") {
-              if (MaxLimit.trim() !== "") {
-                if (ImageItem !== "") {
-                  if (Description.trim() !== "") {
-                    if (hasArabicCharacters(ArabicDes)) {
-                      if (MenuDes.trim() !== "") {
+      if (hasArabicCharacters(ArabicName)) {
+        if (MenuCategory.trim() !== "") {
+          if (ItemType.trim() !== "") {
+            if (Price.trim() !== "") {
+              if (Discount.trim() !== "") {
+                if (MaxLimit.trim() !== "") {
+                  if (ImageItem !== "") {
+                    if (Description.trim() !== "") {
+                      if (hasArabicCharacters(ArabicDes)) {
+                        if (MenuDes.trim() !== "") {
+                          let menuCatJson = getFromDataJson(
+                            ALL_CATEGORIES,
+                            MenuCategory,
+                            "menuCategoryIds"
+                          );
+                          let menuDescriptorJson = getFromDataJson(
+                            DESCRIPTOR,
+                            MenuDes,
+                            "menuDescriptorsIds"
+                          );
+                          let data = {
+                            name: Name,
+                            name_ar: ArabicName,
+                            language: "en",
+                            description: Description,
+                            description_ar: ArabicDes,
+                            item_type: ItemType,
+                            ...menuCatJson,
+                            ...menuDescriptorJson,
+                            price: Number(Price),
+                            discount: Number(Discount),
+                            maxLimit: Number(MaxLimit),
+                            image: {
+                              uri: ImageItem.sourceURL,
+                              type: ImageItem.mime, // or photo.type image/jpg
+                              name:
+                                "image_" + ImageItem.sourceURL.split("/").pop(),
+                            },
+                          };
+                          dispatch(AddMenuItem(data));
+                        } else {
+                          dispatchErrorAction(
+                            dispatch,
+                            "Please select menu descriptors"
+                          );
+                        }
                       } else {
                         dispatchErrorAction(
                           dispatch,
-                          "Please select menu descriptors"
+                          "Please enter Description in arabic"
                         );
                       }
                     } else {
-                      dispatchErrorAction(
-                        dispatch,
-                        "Please enter Description in arabic"
-                      );
+                      dispatchErrorAction(dispatch, "Please enter Description");
                     }
                   } else {
-                    dispatchErrorAction(dispatch, "Please enter Description");
+                    dispatchErrorAction(dispatch, "Please select item image");
                   }
                 } else {
-                  dispatchErrorAction(dispatch, "Please select item image");
+                  dispatchErrorAction(dispatch, "Please enter max limit");
                 }
               } else {
-                dispatchErrorAction(dispatch, "Please enter max limit");
+                dispatchErrorAction(dispatch, "Please select Discount");
               }
             } else {
-              dispatchErrorAction(dispatch, "Please select Discount");
+              dispatchErrorAction(dispatch, "Please enter price");
             }
           } else {
-            dispatchErrorAction(dispatch, "Please enter price");
+            dispatchErrorAction(dispatch, "Please select item type");
           }
         } else {
-          dispatchErrorAction(dispatch, "Please select item type");
+          dispatchErrorAction(dispatch, "Please select menu categories");
         }
       } else {
-        dispatchErrorAction(dispatch, "Please select menu categories");
+        dispatchErrorAction(dispatch, "Please enter name in arabic");
       }
-      // } else {
-      //   dispatchErrorAction(dispatch, "Please enter name in arabic");
-      // }
     } else {
       dispatchErrorAction(dispatch, "Please enter name");
     }
@@ -157,13 +188,14 @@ export default function M_MenuItemScreen({ navigation }) {
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Menu Categories</Text>
               <RegistrationDropdown
-                data={citydata}
+                data={ALL_CATEGORIES}
                 value={MenuCategory}
                 setData={(text) => {
                   setMenuCategory(text);
                 }}
+                multiSelect={true}
                 placeholder={"Categories"}
-                valueField={"strategicName"}
+                valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
@@ -171,13 +203,13 @@ export default function M_MenuItemScreen({ navigation }) {
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Item Type</Text>
               <RegistrationDropdown
-                data={citydata}
+                data={ItemTypeData}
                 value={ItemType}
                 setData={(text) => {
                   setItemType(text);
                 }}
                 placeholder={"Type"}
-                valueField={"strategicName"}
+                valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
@@ -196,15 +228,11 @@ export default function M_MenuItemScreen({ navigation }) {
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Discount</Text>
-              <RegistrationDropdown
-                data={citydata}
-                value={Discount}
-                setData={(text) => {
-                  setDiscount(text);
-                }}
+              <RegistrationTextInput
+                keyboardType={"numeric"}
                 placeholder={"Discount"}
-                valueField={"strategicName"}
-                style={styles.dropdownRow}
+                value={Discount}
+                onChangeText={(text) => setDiscount(text)}
                 placeholderTextColor={Colors.black}
               />
             </View>
@@ -245,7 +273,6 @@ export default function M_MenuItemScreen({ navigation }) {
               )}
             </TouchableOpacity>
           </View>
-
           <View>
             <Text style={styles.titleInput}>Description</Text>
             <TextInput
@@ -273,18 +300,18 @@ export default function M_MenuItemScreen({ navigation }) {
           <View>
             <Text style={styles.titleInput}>Menu Descriptors</Text>
             <RegistrationDropdown
-              data={citydata}
+              data={DESCRIPTOR}
               value={MenuDes}
               setData={(text) => {
                 setMenuDes(text);
               }}
+              multiSelect={true}
               placeholder={"Menu Descriptors"}
-              valueField={"strategicName"}
+              valueField={"name"}
               style={styles.dropdownRow}
               placeholderTextColor={Colors.black}
             />
           </View>
-
           <PinkButton
             text={"small"}
             onPress={() => onAddMenuItem()}

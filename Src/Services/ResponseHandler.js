@@ -31,11 +31,9 @@ export async function POST(dispatch, url, data) {
       formData.append(element, data[element]);
     });
   }
-
   if (token) {
     formData.append("auth_token", token);
   }
-  console.log("fefefef", formData);
   return fetch(url, {
     method: "POST",
     headers: {

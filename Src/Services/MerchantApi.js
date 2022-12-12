@@ -321,3 +321,37 @@ export const getMenuItems = () => async (dispatch) => {
     dispatchErrorAction(dispatch, "Something went wrong!");
   }
 };
+
+export const getMenuDescriptors = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  let token = await getToken();
+  const url = merchant_url + "/getMenuDescriptors?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_MENU_DESCRIPTORS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const AddMenuItem = (postObj, navigation) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/AddMenuItem";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      // dispatchAction(dispatch, "SET_MENU_CATEGORIES", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};

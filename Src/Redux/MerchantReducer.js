@@ -18,6 +18,7 @@ const initialState = {
   cuisines: [],
   users: [],
   categories: [],
+  descriptor: [],
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -98,6 +99,9 @@ export default function (state = initialState, action) {
     }
     case "SET_CATEGORIES": {
       return { ...state, categories: action.payload, preLoader: false };
+    }
+    case "SET_MENU_DESCRIPTORS": {
+      return { ...state, descriptor: action.payload, preLoader: false };
     }
     default:
       return state;
