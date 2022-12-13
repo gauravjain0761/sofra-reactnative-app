@@ -19,13 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../Services/MerchantApi";
 import { orderStatusData } from "../../Constant/Constant";
 
-const tagArray = [
-  { title: "Accepted", color: Colors.pink, type: "ACCEPTED" },
-  { title: "Ready to pick up", color: Colors.purple },
-  { title: "Delivered", color: Colors.green },
-  { title: "New Orders", color: Colors.yellow },
-  { title: "Prepare", color: Colors.blueTag },
-];
 export default function M_OrderScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [categoryDetail, setcategoryDetail] = useState(false);
