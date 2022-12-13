@@ -103,6 +103,13 @@ export default function (state = initialState, action) {
     case "SET_MENU_DESCRIPTORS": {
       return { ...state, descriptor: action.payload, preLoader: false };
     }
+    case "DELETE_MENUITEMS": {
+      let menuItems = Object.assign([], state.menuItems);
+      menuItems = menuItems.filter((el) => {
+        return el.id !== action.payload.menuId;
+      });
+      return { ...state, menuItems: menuItems, preLoader: false };
+    }
     default:
       return state;
   }

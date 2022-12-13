@@ -25,15 +25,17 @@ import {
 } from "../../Services/CommonFunctions";
 import {
   AddMenuItem,
+  DeleteMenuItem,
+  enableDisableMenues,
   getMenuCategories,
   getMenuDescriptors,
   getMenuItems,
 } from "../../Services/MerchantApi";
 import { ItemTypeData } from "../../Config/StaticDropdownData";
+import moment from "moment";
 
 export default function M_MenuItemScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [search, setSearch] = useState("");
   const [Name, setName] = useState("");
   const [ArabicName, setArabicName] = useState("");
   const [MenuCategory, setMenuCategory] = useState("");
@@ -100,7 +102,10 @@ export default function M_MenuItemScreen({ navigation }) {
                               uri: ImageItem.sourceURL,
                               type: ImageItem.mime, // or photo.type image/jpg
                               name:
-                                "image_" + ImageItem.sourceURL.split("/").pop(),
+                                "image_" +
+                                moment().unix() +
+                                "_" +
+                                ImageItem.sourceURL.split("/").pop(),
                             },
                           };
                           dispatch(AddMenuItem(data));
@@ -144,6 +149,14 @@ export default function M_MenuItemScreen({ navigation }) {
       dispatchErrorAction(dispatch, "Please enter name");
     }
   };
+  const onDeleteMenuItems = (id) => {
+    let data = { menuId: id, language: "en" };
+    dispatch(DeleteMenuItem(data));
+  };
+  const onChangeStatus = (id, status) => {
+    let data = { menuId: id, status: status == 1 ? 0 : 1, language: "en" };
+    dispatch(enableDisableMenues(data));
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -153,12 +166,17 @@ export default function M_MenuItemScreen({ navigation }) {
             MENU_ITEMS.map((element, index) => {
               return (
                 <MenuScreenItems
-                  onEdit={() =>
-                    navigation.navigate("M_EditMenuItemScreen", element)
-                  }
+                  onEdit={() => {
+                    navigation.navigate("M_EditMenuItemScreen", element);
+                  }}
+                  onDelete={() => onDeleteMenuItems(element.id)}
                   item={element}
                   screen={"item"}
                   activeVisible={true}
+                  status={element.status}
+                  onChangeStatus={() =>
+                    onChangeStatus(element.id, element.status)
+                  }
                 />
               );
             })}

@@ -238,8 +238,6 @@ export const getDashboardReports = () => async (dispatch) => {
 };
 
 export const getMenuCategories = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getMenuCategories?auth_token=" + token;
   try {
@@ -323,8 +321,6 @@ export const getMenuItems = () => async (dispatch) => {
 };
 
 export const getMenuDescriptors = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getMenuDescriptors?auth_token=" + token;
   try {
@@ -348,6 +344,55 @@ export const AddMenuItem = (postObj, navigation) => async (dispatch) => {
     if (data.status == true) {
       dispatchSuccessAction(dispatch, data.message);
       // dispatchAction(dispatch, "SET_MENU_CATEGORIES", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const EditMenuItem = (postObj, navigation) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/EditMenuItem";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      navigation.navigate("M_MenuItemScreen");
+      dispatch(getMenuItems());
+      dispatchSuccessAction(dispatch, data.message);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const DeleteMenuItem = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+  const url = merchant_url + "/DeleteMenuItem";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "DELETE_MENUITEMS", postObj);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+export const enableDisableMenues = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+  const url = merchant_url + "/enableDisableMenues";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "DELETE_MENUITEMS", postObj);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

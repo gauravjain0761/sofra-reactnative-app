@@ -15,7 +15,6 @@ export default function RegistrationDropdown({
   placeholderTextColor,
   multiSelect,
 }) {
-  console.log("value---", value);
   return (
     <View>
       {multiSelect && multiSelect == true ? (

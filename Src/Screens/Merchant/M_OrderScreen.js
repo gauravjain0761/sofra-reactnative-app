@@ -17,6 +17,7 @@ import OrderItems from "../../Components/OrderItems";
 import Modal from "react-native-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../Services/MerchantApi";
+import { orderStatusData } from "../../Constant/Constant";
 
 const tagArray = [
   { title: "Accepted", color: Colors.pink, type: "ACCEPTED" },
@@ -62,7 +63,7 @@ export default function M_OrderScreen({ navigation }) {
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView>
         <View style={styles.tagView}>
-          {tagArray.map((item, index) => {
+          {orderStatusData.map((item, index) => {
             return (
               <TouchableOpacity
                 style={{
@@ -82,7 +83,9 @@ export default function M_OrderScreen({ navigation }) {
 
         {ORDERS.length !== 0 &&
           ORDERS.map((item, index) => {
-            let status = tagArray.filter((obj) => obj.type == item.status);
+            let status = orderStatusData.filter(
+              (obj) => obj.type == item.status
+            );
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -92,7 +95,7 @@ export default function M_OrderScreen({ navigation }) {
                 <OrderItems
                   item={item}
                   navigation={navigation}
-                  // status={status[0]}
+                  status={status[0]}
                 />
               </TouchableOpacity>
             );
