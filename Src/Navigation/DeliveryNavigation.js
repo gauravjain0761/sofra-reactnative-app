@@ -35,6 +35,7 @@ import { getLogout } from "../Services/AuthApi";
 import D_DashboardScreen from "../Screens/Delivery/D_DashboardScreen";
 import D_NotificationScreen from "../Screens/Delivery/D_NotificationScreen";
 import HeaderLeftIcon from "../Components/NavigationComponent";
+import D_PickUpOrderScreen from "../Screens/Delivery/D_PickUpOrderScreen";
 
 const data = {
   headerBackVisible: false,
@@ -157,6 +158,9 @@ function D_MyBottomTabs() {
           tabBarLabel: "Orders",
           ...transparentHeader,
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>My Active Orders</Text>
+          ),
         })}
         name="D_ActiveOrderScreen"
         component={D_ActiveOrderScreen}
@@ -349,6 +353,9 @@ export function DeliveryDrawer({ navigation }) {
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
           ...transparentHeader,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>My Cancelled Orders</Text>
+          ),
         })}
         name="D_CancelledOrderScreen"
         component={D_CancelledOrderScreen}
@@ -359,9 +366,25 @@ export function DeliveryDrawer({ navigation }) {
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
           ...transparentHeader,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>My Delivered Orders</Text>
+          ),
         })}
         name="D_DeliveredOrderScreen"
         component={D_DeliveredOrderScreen}
+      />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>Orders For Pickup</Text>
+          ),
+        })}
+        name="D_PickUpOrderScreen"
+        component={D_PickUpOrderScreen}
       />
       <Drawer.Screen
         options={({ navigation }) => ({
@@ -430,5 +453,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: hp(3),
     borderRadius: 5,
+  },
+  headerTitle: {
+    ...commonFontStyle("M_700", 16, Colors.black),
   },
 });
