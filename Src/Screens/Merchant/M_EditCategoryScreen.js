@@ -31,14 +31,18 @@ export default function M_EditCategoryScreen({ navigation, route }) {
     category ? category.name_ar : ""
   );
   const onEditCategory = () => {
+    let data = {
+      name: name,
+      name_ar: nameArabic,
+      categoryId: category.id,
+    };
+    dispatch(EditMenuCategory(data, navigation));
+  };
+
+  const validation = () => {
     if (name.trim() !== "") {
       if (hasArabicCharacters(nameArabic)) {
-        let data = {
-          name: name,
-          name_ar: nameArabic,
-          categoryId: category.id,
-        };
-        dispatch(EditMenuCategory(data, navigation));
+        onEditCategory();
       } else {
         dispatchErrorAction(dispatch, "Please enter name in arabic");
       }
@@ -73,7 +77,7 @@ export default function M_EditCategoryScreen({ navigation, route }) {
 
           <PinkButton
             text={"small"}
-            onPress={() => onEditCategory()}
+            onPress={() => validation()}
             style={styles.dbuttonStyle}
             name={"Update Categories"}
           />

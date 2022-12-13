@@ -63,8 +63,42 @@ export default function M_MenuItemScreen({ navigation }) {
       setImageItem(photo);
     });
   };
-
   const onAddMenuItem = () => {
+    let menuCatJson = getFromDataJson(
+      ALL_CATEGORIES,
+      MenuCategory,
+      "menuCategoryIds"
+    );
+    let menuDescriptorJson = getFromDataJson(
+      DESCRIPTOR,
+      MenuDes,
+      "menuDescriptorsIds"
+    );
+    let data = {
+      name: Name,
+      name_ar: ArabicName,
+      language: "en",
+      description: Description,
+      description_ar: ArabicDes,
+      item_type: ItemType,
+      ...menuCatJson,
+      ...menuDescriptorJson,
+      price: Number(Price),
+      discount: Number(Discount),
+      maxLimit: Number(MaxLimit),
+      image: {
+        uri: ImageItem.sourceURL,
+        type: ImageItem.mime, // or photo.type image/jpg
+        name:
+          "image_" +
+          moment().unix() +
+          "_" +
+          ImageItem.sourceURL.split("/").pop(),
+      },
+    };
+    dispatch(AddMenuItem(data));
+  };
+  const validation = () => {
     if (Name.trim() !== "") {
       if (hasArabicCharacters(ArabicName)) {
         if (MenuCategory.trim() !== "") {
@@ -76,39 +110,7 @@ export default function M_MenuItemScreen({ navigation }) {
                     if (Description.trim() !== "") {
                       if (hasArabicCharacters(ArabicDes)) {
                         if (MenuDes.trim() !== "") {
-                          let menuCatJson = getFromDataJson(
-                            ALL_CATEGORIES,
-                            MenuCategory,
-                            "menuCategoryIds"
-                          );
-                          let menuDescriptorJson = getFromDataJson(
-                            DESCRIPTOR,
-                            MenuDes,
-                            "menuDescriptorsIds"
-                          );
-                          let data = {
-                            name: Name,
-                            name_ar: ArabicName,
-                            language: "en",
-                            description: Description,
-                            description_ar: ArabicDes,
-                            item_type: ItemType,
-                            ...menuCatJson,
-                            ...menuDescriptorJson,
-                            price: Number(Price),
-                            discount: Number(Discount),
-                            maxLimit: Number(MaxLimit),
-                            image: {
-                              uri: ImageItem.sourceURL,
-                              type: ImageItem.mime, // or photo.type image/jpg
-                              name:
-                                "image_" +
-                                moment().unix() +
-                                "_" +
-                                ImageItem.sourceURL.split("/").pop(),
-                            },
-                          };
-                          dispatch(AddMenuItem(data));
+                          onAddMenuItem();
                         } else {
                           dispatchErrorAction(
                             dispatch,

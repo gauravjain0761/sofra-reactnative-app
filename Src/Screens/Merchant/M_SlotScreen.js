@@ -18,7 +18,11 @@ import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-export default function M_SlotScreen() {
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteOffSlot, getOffSlots } from "../../Services/MerchantApi";
+import moment from "moment";
+export default function M_SlotScreen({ navigation }) {
   LocaleConfig.locales["fr"] = {
     monthNames: [
       "January",
@@ -61,13 +65,78 @@ export default function M_SlotScreen() {
     today: "Aujourd'hui",
   };
   LocaleConfig.defaultLocale = "fr";
+  const dispatch = useDispatch();
+  const SLOTS = useSelector((e) => e.merchant.offSlots);
+
+  const [MarkedDate, setMarkedDate] = useState({});
+  const [current, setcurrent] = useState(moment().format("YYYY-MM-DD"));
+  const calendarRef = React.useRef();
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      dispatch(getOffSlots());
+      setcurrent(moment().format("YYYY-MM-DD"));
+      // calendarRef.current.se;
+    });
+  }, []);
+  useEffect(() => {
+    let data = {};
+    SLOTS.map((item, index) => {
+      data[String(moment(item.date).format("YYYY-MM-DD"))] = {
+        customStyles: {
+          container: {
+            backgroundColor: Colors.pink,
+          },
+          text: {
+            color: Colors.white,
+          },
+        },
+      };
+    });
+    setMarkedDate(data);
+  }, [SLOTS]);
+
+  const onDeleteSlot = (id) => {
+    let data = {
+      slotId: id,
+      language: "en",
+    };
+    dispatch(deleteOffSlot(data));
+  };
+
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={ApplicationStyles.welcomeText}>Off Slots</Text>
         <View style={styles.whiteView}>
-          <Calendar style={styles.calender} enableSwipeMonths={true} />
-          <TouchableOpacity>
+          <Calendar
+            onDayPress={(day) => {
+              console.log("selected day", day);
+            }}
+            ref={calendarRef}
+            markingType={"custom"}
+            markedDates={MarkedDate}
+            style={styles.calender}
+            enableSwipeMonths={true}
+            current={current}
+            key={current}
+            initialDate={current}
+            disableMonthChange={true}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              var today = new Date();
+              // var selectedDate = new Date(current);
+              // var diff =
+              //   -(selectedDate.getMonth() - today.getMonth()) -
+              //   (selectedDate.getFullYear() - today.getFullYear()) * 12;
+              // calendarRef.current.addMonth(diff);
+
+              // need to keep track of current date when swipe/date or month changes
+              // for month difference calculation and therefore jump/refresh
+              setcurrent(moment(today).format("YYYY-MM-DD"));
+              // setcurrent(moment().format("YYYY-MM-DD"));
+            }}
+          >
             <Text style={styles.button}>Today</Text>
           </TouchableOpacity>
           <TouchableOpacity>
@@ -81,31 +150,41 @@ export default function M_SlotScreen() {
           onPress={() => {}}
         />
         <Text style={styles.mainTitle}>All Off Slots</Text>
-        {[0, 1, 2].map((item, index) => {
-          return (
-            <View style={styles.itemList}>
-              <View style={styles.row}>
-                <Text style={styles.leftText}>SR</Text>
-                <Text style={styles.rightText}>1</Text>
+        {SLOTS.length !== 0 &&
+          SLOTS.map((item, index) => {
+            return (
+              <View style={styles.itemList}>
+                <View style={styles.row}>
+                  <Text style={styles.leftText}>SR</Text>
+                  <Text style={styles.rightText}>1</Text>
+                </View>
+                <View style={styles.middleRow}>
+                  <Text style={styles.leftText}>Off Slot Date</Text>
+                  <Text style={styles.rightText}>
+                    {moment(item.date).format("LL")}
+                  </Text>
+                </View>
+                <View style={styles.middleRow2}>
+                  <Text style={styles.leftText}>Created</Text>
+                  <Text style={styles.rightText}>
+                    {moment(item.created).format("MM/DD/YY, hh:mm A")}
+                  </Text>
+                </View>
+                <View style={styles.lastRow}>
+                  <Text style={styles.leftText}>Action</Text>
+                  <TouchableOpacity
+                    onPress={() => onDeleteSlot(item.id)}
+                    style={styles.deleteButton}
+                  >
+                    <Image
+                      source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
+                      style={styles.searchIcon}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={styles.middleRow}>
-                <Text style={styles.leftText}>Off Slot Date</Text>
-                <Text style={styles.rightText}>October 24, 2022</Text>
-              </View>
-              <View style={styles.middleRow2}>
-                <Text style={styles.leftText}>Created</Text>
-                <Text style={styles.rightText}>10/18/22, 12:00 AM</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.leftText}>Action</Text>
-                <Image
-                  source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
-                  style={styles.searchIcon}
-                />
-              </View>
-            </View>
-          );
-        })}
+            );
+          })}
       </ScrollView>
     </View>
   );
@@ -150,6 +229,12 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.backgroundScreen,
     borderBottomColor: Colors.backgroundScreen,
   },
+  lastRow: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingLeft: hp(2),
+  },
   middleRow2: {
     alignItems: "center",
     justifyContent: "space-between",
@@ -175,5 +260,9 @@ const styles = StyleSheet.create({
     height: hp(2),
     width: hp(2),
     resizeMode: "contain",
+  },
+  deleteButton: {
+    paddingHorizontal: hp(2),
+    paddingVertical: hp(1.8),
   },
 });

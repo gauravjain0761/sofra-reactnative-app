@@ -83,8 +83,63 @@ export default function M_EditMenuItemScreen(props) {
       setImageItem(photo);
     });
   };
-
   const onEditMenuItem = () => {
+    let menuCatJson = getFromDataJson(
+      ALL_CATEGORIES,
+      MenuCategory,
+      "menuCategoryIds"
+    );
+    let menuDescriptorJson = getFromDataJson(
+      DESCRIPTOR,
+      MenuDes,
+      "menuDescriptorsIds"
+    );
+    let data = {};
+    if (ImageItem.sourceURL) {
+      data = {
+        menuId: MenuIdEdit,
+        name: Name,
+        name_ar: ArabicName,
+        language: "en",
+        description: Description,
+        description_ar: ArabicDes,
+        item_type: ItemType,
+        ...menuCatJson,
+        ...menuDescriptorJson,
+        price: Number(Price),
+        discount: Number(Discount),
+        maxLimit: Number(MaxLimit),
+        image: ImageItem.sourceURL
+          ? {
+              uri: ImageItem.sourceURL,
+              type: ImageItem.mime, // or photo.type image/jpg
+              name:
+                "image_" +
+                moment().unix() +
+                "_" +
+                ImageItem.sourceURL.split("/").pop(),
+            }
+          : ImageItem,
+      };
+    } else {
+      data = {
+        menuId: MenuIdEdit,
+        name: Name,
+        name_ar: ArabicName,
+        language: "en",
+        description: Description,
+        description_ar: ArabicDes,
+        item_type: ItemType,
+        ...menuCatJson,
+        ...menuDescriptorJson,
+        price: Number(Price),
+        discount: Number(Discount),
+        maxLimit: Number(MaxLimit),
+      };
+    }
+    dispatch(EditMenuItem(data, navigation));
+  };
+  const validation = () => {
     if (Name.trim() !== "") {
       if (hasArabicCharacters(ArabicName)) {
         if (MenuCategory.length !== 0) {
@@ -96,61 +151,7 @@ export default function M_EditMenuItemScreen(props) {
                     if (Description.trim() !== "") {
                       if (hasArabicCharacters(ArabicDes)) {
                         if (MenuDes.length !== 0) {
-                          let menuCatJson = getFromDataJson(
-                            ALL_CATEGORIES,
-                            MenuCategory,
-                            "menuCategoryIds"
-                          );
-                          let menuDescriptorJson = getFromDataJson(
-                            DESCRIPTOR,
-                            MenuDes,
-                            "menuDescriptorsIds"
-                          );
-                          let data = {};
-                          if (ImageItem.sourceURL) {
-                            data = {
-                              menuId: MenuIdEdit,
-                              name: Name,
-                              name_ar: ArabicName,
-                              language: "en",
-                              description: Description,
-                              description_ar: ArabicDes,
-                              item_type: ItemType,
-                              ...menuCatJson,
-                              ...menuDescriptorJson,
-                              price: Number(Price),
-                              discount: Number(Discount),
-                              maxLimit: Number(MaxLimit),
-                              image: ImageItem.sourceURL
-                                ? {
-                                    uri: ImageItem.sourceURL,
-                                    type: ImageItem.mime, // or photo.type image/jpg
-                                    name:
-                                      "image_" +
-                                      moment().unix() +
-                                      "_" +
-                                      ImageItem.sourceURL.split("/").pop(),
-                                  }
-                                : ImageItem,
-                            };
-                          } else {
-                            data = {
-                              menuId: MenuIdEdit,
-                              name: Name,
-                              name_ar: ArabicName,
-                              language: "en",
-                              description: Description,
-                              description_ar: ArabicDes,
-                              item_type: ItemType,
-                              ...menuCatJson,
-                              ...menuDescriptorJson,
-                              price: Number(Price),
-                              discount: Number(Discount),
-                              maxLimit: Number(MaxLimit),
-                            };
-                          }
-
-                          dispatch(EditMenuItem(data, navigation));
+                          onEditMenuItem();
                         } else {
                           dispatchErrorAction(
                             dispatch,
@@ -350,7 +351,7 @@ export default function M_EditMenuItemScreen(props) {
 
           <PinkButton
             text={"small"}
-            onPress={() => onEditMenuItem()}
+            onPress={() => validation()}
             style={styles.dbuttonStyle}
             name={"Update Menu Item"}
           />

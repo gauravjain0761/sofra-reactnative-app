@@ -19,6 +19,8 @@ const initialState = {
   users: [],
   categories: [],
   descriptor: [],
+  promocodes: [],
+  offSlots: [],
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -95,7 +97,7 @@ export default function (state = initialState, action) {
       return { ...state, cuisines: action.payload, preLoader: false };
     }
     case "SET_USERS": {
-      return { ...state, user: action.payload, preLoader: false };
+      return { ...state, users: action.payload, preLoader: false };
     }
     case "SET_CATEGORIES": {
       return { ...state, categories: action.payload, preLoader: false };
@@ -109,6 +111,19 @@ export default function (state = initialState, action) {
         return el.id !== action.payload.menuId;
       });
       return { ...state, menuItems: menuItems, preLoader: false };
+    }
+    case "SET_PROMO_CODES": {
+      return { ...state, promocodes: action.payload, preLoader: false };
+    }
+    case "SET_OFF_SLOT": {
+      return { ...state, offSlots: action.payload, preLoader: false };
+    }
+    case "DELETE_SLOT": {
+      let offSlots = Object.assign([], state.offSlots);
+      offSlots = offSlots.filter((el) => {
+        return el.id !== action.payload.slotId;
+      });
+      return { ...state, offSlots: offSlots };
     }
     default:
       return state;

@@ -44,8 +44,30 @@ export default function M_RegistrationScreen({ navigation }) {
   const [Lastname, setLastname] = useState("");
   const [Email, setEmail] = useState("");
   const [MobileNo, setMobileNo] = useState("");
-
   const onRegistration = () => {
+    let cityName = CITIES.filter((obj) => obj.name == city);
+    let cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds");
+    let categoriesJson = getFromDataJson(CATEGORIES, category, "categoryIds");
+    let data = {
+      name: BName,
+      email: Email,
+      first_name: Firstname,
+      last_name: Lastname,
+      phone: MobileNo,
+      currentlyDeliver: currentlyDeliver,
+      cityId: cityName[0].id,
+      location: BAddress,
+      licenseNo: licenceNumber,
+      social_account: socialLink,
+      ...cusineJson,
+      ...categoriesJson,
+      deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
+      deviceToken: fcmToken,
+      language: "en",
+    };
+    dispatch(register(data, navigation));
+  };
+  const validation = () => {
     if (BName.trim() !== "") {
       if (BAddress.trim() !== "") {
         if (city !== "") {
@@ -58,38 +80,7 @@ export default function M_RegistrationScreen({ navigation }) {
                       if (Lastname.trim() !== "") {
                         if (validateEmail(Email)) {
                           if (MobileNo.trim() !== "") {
-                            let cityName = CITIES.filter(
-                              (obj) => obj.name == city
-                            );
-                            let cusineJson = getFromDataJson(
-                              CUISINES,
-                              Cuisine,
-                              "cusineIds"
-                            );
-                            let categoriesJson = getFromDataJson(
-                              CATEGORIES,
-                              category,
-                              "categoryIds"
-                            );
-                            let data = {
-                              name: BName,
-                              email: Email,
-                              first_name: Firstname,
-                              last_name: Lastname,
-                              phone: MobileNo,
-                              currentlyDeliver: currentlyDeliver,
-                              cityId: cityName[0].id,
-                              location: BAddress,
-                              licenseNo: licenceNumber,
-                              social_account: socialLink,
-                              ...cusineJson,
-                              ...categoriesJson,
-                              deviceType:
-                                Platform.OS == "android" ? "ANDROID" : "IOS",
-                              deviceToken: fcmToken,
-                              language: "en",
-                            };
-                            dispatch(register(data, navigation));
+                            onRegistration();
                           } else {
                             dispatchErrorAction(
                               dispatch,
@@ -252,7 +243,7 @@ export default function M_RegistrationScreen({ navigation }) {
         />
 
         <PinkButton
-          onPress={() => onRegistration()}
+          onPress={() => validation()}
           style={styles.dbuttonStyle}
           name={"Submit"}
         />
