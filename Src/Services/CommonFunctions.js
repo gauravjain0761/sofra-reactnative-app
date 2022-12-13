@@ -39,3 +39,17 @@ export const dispatchSuccessAction = (dispatch, message) => {
     },
   });
 };
+
+export const getFromDataJson = (mainArray, selectedData, keyName) => {
+  let tempArray = [];
+  selectedData.map((element, index) => {
+    const temp = mainArray.filter((obj) => obj.name == element);
+    tempArray.push(keyName + "[" + index + "]");
+    tempArray.push(temp[0].id);
+  });
+  var ob2 = {};
+  for (var i = 0; i < tempArray.length; i += 2) {
+    ob2[tempArray[i]] = tempArray[i + 1];
+  }
+  return ob2;
+};

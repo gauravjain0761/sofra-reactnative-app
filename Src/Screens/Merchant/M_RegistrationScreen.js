@@ -10,6 +10,7 @@ import PinkButton from "../../Components/PinkButton";
 import {
   dispatchErrorAction,
   validateEmail,
+  getFromDataJson,
 } from "../../Services/CommonFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { CurrentDeliverData } from "../../Config/StaticDropdownData";
@@ -24,7 +25,7 @@ const citydata = [
   { id: 6, strategicName: "TESTING" },
   { id: 10, strategicName: "DEMATADE" },
 ];
-export default function M_RegistrationScreen() {
+export default function M_RegistrationScreen({ navigation }) {
   const dispatch = useDispatch();
   const CITIES = useSelector((e) => e.merchant.cities);
   const CUISINES = useSelector((e) => e.merchant.cuisines);
@@ -43,8 +44,30 @@ export default function M_RegistrationScreen() {
   const [Lastname, setLastname] = useState("");
   const [Email, setEmail] = useState("");
   const [MobileNo, setMobileNo] = useState("");
-
   const onRegistration = () => {
+    let cityName = CITIES.filter((obj) => obj.name == city);
+    let cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds");
+    let categoriesJson = getFromDataJson(CATEGORIES, category, "categoryIds");
+    let data = {
+      name: BName,
+      email: Email,
+      first_name: Firstname,
+      last_name: Lastname,
+      phone: MobileNo,
+      currentlyDeliver: currentlyDeliver,
+      cityId: cityName[0].id,
+      location: BAddress,
+      licenseNo: licenceNumber,
+      social_account: socialLink,
+      ...cusineJson,
+      ...categoriesJson,
+      deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
+      deviceToken: fcmToken,
+      language: "en",
+    };
+    dispatch(register(data, navigation));
+  };
+  const validation = () => {
     if (BName.trim() !== "") {
       if (BAddress.trim() !== "") {
         if (city !== "") {
@@ -57,47 +80,7 @@ export default function M_RegistrationScreen() {
                       if (Lastname.trim() !== "") {
                         if (validateEmail(Email)) {
                           if (MobileNo.trim() !== "") {
-                            let cityName = CITIES.filter(
-                              (obj) => obj.name == city
-                            );
-
-                            let cuisines = { cusineIds: [] };
-                            Cuisine.map((element, index) => {
-                              const temp = CUISINES.filter(
-                                (obj) => obj.name == element
-                              );
-                              cuisines.cusineIds[index] = temp[0].id;
-                            });
-                            let categories = { categoryIds: [] };
-                            category.map((element, index) => {
-                              const temp = CATEGORIES.filter(
-                                (obj) => obj.name == element
-                              );
-                              categories.categoryIds[index] = temp[0].id;
-                            });
-                            // console.log(cuisines, categories, cityName);
-
-                            let data = {
-                              name: BName,
-                              email: Email,
-                              first_name: Firstname,
-                              last_name: Lastname,
-                              phone: MobileNo,
-                              currentlyDeliver: currentlyDeliver,
-                              cityId: cityName[0].id,
-                              location: BAddress,
-                              licenseNo: licenceNumber,
-                              social_account: socialLink,
-                              ...cuisines,
-                              ...categories,
-                              deviceType:
-                                Platform.OS == "android" ? "ANDROID" : "IOS",
-                              deviceToken: fcmToken,
-                              language: "en",
-                            };
-                            // console.log(data);
-
-                            dispatch(register(data));
+                            onRegistration();
                           } else {
                             dispatchErrorAction(
                               dispatch,
@@ -260,7 +243,7 @@ export default function M_RegistrationScreen() {
         />
 
         <PinkButton
-          onPress={() => onRegistration()}
+          onPress={() => validation()}
           style={styles.dbuttonStyle}
           name={"Submit"}
         />

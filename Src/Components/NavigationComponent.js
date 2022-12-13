@@ -2,10 +2,14 @@ import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import ApplicationStyles from "../Themes/ApplicationStyles";
 
-export default function HeaderLeftIcon({ navigation }) {
+export default function HeaderLeftIcon({ navigation, navigationPress }) {
   return (
     <TouchableOpacity
-      onPress={() => navigation.openDrawer()}
+      onPress={() => {
+        navigationPress && navigationPress == "back"
+          ? navigation.goBack()
+          : navigation.openDrawer();
+      }}
       style={ApplicationStyles.headerRightView}
     >
       <Image

@@ -220,6 +220,24 @@ export const DeleteOffer = (postObj) => async (dispatch) => {
   }
 };
 
+export const AddOffer = (postObj, navigation) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/AddOffer";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      navigation.navigate("M_OfferScreen");
+      dispatch(getOffers());
+      dispatchSuccessAction(dispatch, data.message);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
 export const getDashboardReports = () => async (dispatch) => {
   // dispatch({ type: "PRE_LOADER", payload: true });
 
@@ -238,8 +256,6 @@ export const getDashboardReports = () => async (dispatch) => {
 };
 
 export const getMenuCategories = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getMenuCategories?auth_token=" + token;
   try {
@@ -314,6 +330,138 @@ export const getMenuItems = () => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       dispatchAction(dispatch, "SET_MENU_ITEMS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const getMenuDescriptors = () => async (dispatch) => {
+  let token = await getToken();
+  const url = merchant_url + "/getMenuDescriptors?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_MENU_DESCRIPTORS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const AddMenuItem = (postObj, navigation) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/AddMenuItem";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatch(getMenuItems());
+      dispatchSuccessAction(dispatch, data.message);
+      // dispatchAction(dispatch, "SET_MENU_CATEGORIES", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const EditMenuItem = (postObj, navigation) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/EditMenuItem";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      navigation.navigate("M_MenuItemScreen");
+      dispatch(getMenuItems());
+      dispatchSuccessAction(dispatch, data.message);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const DeleteMenuItem = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+  const url = merchant_url + "/DeleteMenuItem";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "DELETE_MENUITEMS", postObj);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const enableDisableMenues = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+  const url = merchant_url + "/enableDisableMenues";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "DELETE_MENUITEMS", postObj);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const getPromoCodes = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+  let token = await getToken();
+  const url = merchant_url + "/getPromoCodes?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_PROMO_CODES", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const getOffSlots = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+  let token = await getToken();
+  const url = merchant_url + "/getOffSlots?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_OFF_SLOT", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const deleteOffSlot = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/deleteOffSlot";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "DELETE_SLOT", postObj);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

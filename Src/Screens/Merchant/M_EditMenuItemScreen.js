@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
@@ -17,13 +17,17 @@ import PinkButton from "../../Components/PinkButton";
 import MenuScreenItems from "../../Components/MenuScreenItems";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import ImagePicker from "react-native-image-crop-picker";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   dispatchErrorAction,
+  getFromDataJson,
   hasArabicCharacters,
 } from "../../Services/CommonFunctions";
 import { media_url } from "../../Config/AppConfig";
 import { ItemTypeData } from "../../Config/StaticDropdownData";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { EditMenuItem } from "../../Services/MerchantApi";
+import moment from "moment";
 
 const citydata = [
   {
@@ -35,34 +39,41 @@ const citydata = [
   { id: 6, strategicName: "TESTING" },
   { id: 10, strategicName: "DEMATADE" },
 ];
-export default function M_EditMenuItemScreen({ navigation, route }) {
-  const menuItem = route?.params;
+export default function M_EditMenuItemScreen(props) {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [Name, setName] = useState(menuItem ? menuItem.name : "");
-  const [ArabicName, setArabicName] = useState(
-    menuItem ? menuItem.name_ar : ""
-  );
-  const [MenuCategory, setMenuCategory] = useState(
-    menuItem ? menuItem.menuCategory.name : ""
-  );
-  const [ItemType, setItemType] = useState(menuItem ? menuItem.item_type : "");
-  const [Price, setPrice] = useState(menuItem ? String(menuItem.price) : "");
-  const [Discount, setDiscount] = useState(
-    menuItem ? String(menuItem.discount) : ""
-  );
-  const [MaxLimit, setMaxLimit] = useState(
-    menuItem ? String(menuItem.maxLimit) : ""
-  );
-  const [ImageItem, setImageItem] = useState(
-    menuItem ? (menuItem.image ? menuItem.image : "") : ""
-  );
-  const [Description, setDescription] = useState(
-    menuItem ? menuItem.description : ""
-  );
-  const [ArabicDes, setArabicDes] = useState(
-    menuItem ? menuItem.description_ar : ""
-  );
-  const [MenuDes, setMenuDes] = useState(menuItem ? menuItem.name : "");
+  const [Name, setName] = useState("");
+  const [ArabicName, setArabicName] = useState("");
+  const [MenuCategory, setMenuCategory] = useState("");
+  const [ItemType, setItemType] = useState("");
+  const [Price, setPrice] = useState("");
+  const [Discount, setDiscount] = useState("");
+  const [MaxLimit, setMaxLimit] = useState("");
+  const [MenuIdEdit, setMenuIdEdit] = useState("");
+  const [ImageItem, setImageItem] = useState("");
+  const [Description, setDescription] = useState("");
+  const [ArabicDes, setArabicDes] = useState("");
+  const [MenuDes, setMenuDes] = useState("");
+  const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
+  const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    let menuItem = props?.route?.params;
+    if (menuItem) {
+      setName(menuItem.name);
+      setArabicName(menuItem.name_ar);
+      setItemType(menuItem.item_type);
+      setPrice(String(menuItem.price ? menuItem.price : ""));
+      setMenuCategory([menuItem.menuCategory.name]);
+      setDiscount(String(menuItem.discount ? menuItem.discount : ""));
+      setMaxLimit(String(menuItem.maxLimit ? menuItem.maxLimit : ""));
+      setImageItem(menuItem.image ? menuItem.image : "");
+      setDescription(menuItem.description);
+      setArabicDes(menuItem.description_ar);
+      setMenuDes("");
+      setMenuIdEdit(menuItem.id);
+    }
+  }, [props, isFocused]);
 
   const openPicker = () => {
     ImagePicker.openPicker({
@@ -72,11 +83,66 @@ export default function M_EditMenuItemScreen({ navigation, route }) {
       setImageItem(photo);
     });
   };
-
   const onEditMenuItem = () => {
+    let menuCatJson = getFromDataJson(
+      ALL_CATEGORIES,
+      MenuCategory,
+      "menuCategoryIds"
+    );
+    let menuDescriptorJson = getFromDataJson(
+      DESCRIPTOR,
+      MenuDes,
+      "menuDescriptorsIds"
+    );
+    let data = {};
+    if (ImageItem.sourceURL) {
+      data = {
+        menuId: MenuIdEdit,
+        name: Name,
+        name_ar: ArabicName,
+        language: "en",
+        description: Description,
+        description_ar: ArabicDes,
+        item_type: ItemType,
+        ...menuCatJson,
+        ...menuDescriptorJson,
+        price: Number(Price),
+        discount: Number(Discount),
+        maxLimit: Number(MaxLimit),
+        image: ImageItem.sourceURL
+          ? {
+              uri: ImageItem.sourceURL,
+              type: ImageItem.mime, // or photo.type image/jpg
+              name:
+                "image_" +
+                moment().unix() +
+                "_" +
+                ImageItem.sourceURL.split("/").pop(),
+            }
+          : ImageItem,
+      };
+    } else {
+      data = {
+        menuId: MenuIdEdit,
+        name: Name,
+        name_ar: ArabicName,
+        language: "en",
+        description: Description,
+        description_ar: ArabicDes,
+        item_type: ItemType,
+        ...menuCatJson,
+        ...menuDescriptorJson,
+        price: Number(Price),
+        discount: Number(Discount),
+        maxLimit: Number(MaxLimit),
+      };
+    }
+    dispatch(EditMenuItem(data, navigation));
+  };
+  const validation = () => {
     if (Name.trim() !== "") {
       if (hasArabicCharacters(ArabicName)) {
-        if (MenuCategory.trim() !== "") {
+        if (MenuCategory.length !== 0) {
           if (ItemType.trim() !== "") {
             if (Price.trim() !== "") {
               if (Discount.trim() !== "") {
@@ -84,7 +150,8 @@ export default function M_EditMenuItemScreen({ navigation, route }) {
                   if (ImageItem !== "") {
                     if (Description.trim() !== "") {
                       if (hasArabicCharacters(ArabicDes)) {
-                        if (MenuDes.trim() !== "") {
+                        if (MenuDes.length !== 0) {
+                          onEditMenuItem();
                         } else {
                           dispatchErrorAction(
                             dispatch,
@@ -107,7 +174,7 @@ export default function M_EditMenuItemScreen({ navigation, route }) {
                   dispatchErrorAction(dispatch, "Please enter max limit");
                 }
               } else {
-                dispatchErrorAction(dispatch, "Please select Discount");
+                dispatchErrorAction(dispatch, "Please enter Discount");
               }
             } else {
               dispatchErrorAction(dispatch, "Please enter price");
@@ -154,13 +221,14 @@ export default function M_EditMenuItemScreen({ navigation, route }) {
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <Text style={styles.titleInput}>Menu Categories</Text>
               <RegistrationDropdown
-                data={citydata}
+                data={ALL_CATEGORIES}
                 value={MenuCategory}
                 setData={(text) => {
                   setMenuCategory(text);
                 }}
+                multiSelect={true}
                 placeholder={"Categories"}
-                valueField={"strategicName"}
+                valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
@@ -195,7 +263,7 @@ export default function M_EditMenuItemScreen({ navigation, route }) {
               <Text style={styles.titleInput}>Discount</Text>
               <RegistrationTextInput
                 keyboardType={"numeric"}
-                placeholder={"Enter Discount"}
+                placeholder={"Discount"}
                 value={Discount}
                 onChangeText={(text) => setDiscount(text)}
                 placeholderTextColor={Colors.black}
@@ -268,21 +336,22 @@ export default function M_EditMenuItemScreen({ navigation, route }) {
           <View>
             <Text style={styles.titleInput}>Menu Descriptors</Text>
             <RegistrationDropdown
-              data={citydata}
+              data={DESCRIPTOR}
               value={MenuDes}
               setData={(text) => {
                 setMenuDes(text);
               }}
               placeholder={"Menu Descriptors"}
-              valueField={"strategicName"}
+              valueField={"name"}
               style={styles.dropdownRow}
+              multiSelect={true}
               placeholderTextColor={Colors.black}
             />
           </View>
 
           <PinkButton
             text={"small"}
-            onPress={() => onEditMenuItem()}
+            onPress={() => validation()}
             style={styles.dbuttonStyle}
             name={"Update Menu Item"}
           />

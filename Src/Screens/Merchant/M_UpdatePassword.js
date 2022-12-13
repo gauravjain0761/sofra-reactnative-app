@@ -43,11 +43,12 @@ export default function M_UpdatePassword() {
   const [oldPwd, setoldPwd] = useState("");
   const [newPwd, setnewPwd] = useState("");
   const [confirmPwd, setconfirmPwd] = useState("");
-
-  const onUpdatePassword = () => {
+  const onUpdatePassword = () => {};
+  const validation = () => {
     if (oldPwd.trim() !== "") {
       if (newPwd.trim() !== "") {
         if (confirmPwd.trim() !== "") {
+          onUpdatePassword();
         } else {
           dispatchErrorAction(dispatch, "Please enter new password again");
         }
@@ -101,7 +102,7 @@ export default function M_UpdatePassword() {
         </View>
         <View style={styles.button}>
           <PinkButton
-            onPress={() => onUpdatePassword()}
+            onPress={() => validation()}
             style={styles.dbuttonStyle}
             text={"small"}
             name={"Update Password"}

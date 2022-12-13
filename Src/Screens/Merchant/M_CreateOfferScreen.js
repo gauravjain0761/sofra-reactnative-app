@@ -7,8 +7,12 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
-import { dispatchErrorAction } from "../../Services/CommonFunctions";
-import { useDispatch } from "react-redux";
+import {
+  dispatchErrorAction,
+  getFromDataJson,
+} from "../../Services/CommonFunctions";
+import { useDispatch, useSelector } from "react-redux";
+import { AddOffer } from "../../Services/MerchantApi";
 
 const citydata = [
   {
@@ -23,11 +27,15 @@ const citydata = [
 export default function M_CreateOfferScreen() {
   const dispatch = useDispatch();
   const [Detail, setDetail] = useState("");
-  const [Users, setUsers] = useState("");
-
+  const [Users, setUsers] = useState([]);
+  const USERS = useSelector((e) => e.merchant.users);
   const onCreateOffer = () => {
     if (Detail.trim() !== "") {
-      if (Users.trim() !== "") {
+      if (Users.length !== 0) {
+        let userIdJson = getFromDataJson(USERS, Users, "userIds");
+        console.log("userIdJson", userIdJson);
+        let data = { title: Detail, type: "", ...userIdJson };
+        dispatch(AddOffer(data));
       } else {
         dispatchErrorAction(dispatch, "Please select users");
       }
@@ -57,11 +65,11 @@ export default function M_CreateOfferScreen() {
             ? styles.placeholderSelectedStyle
             : styles.placeholderStyle
         }
-        data={citydata}
+        data={USERS}
         selectedTextStyle={[styles.TitleTextStyle]}
         iconColor={Colors.black}
-        labelField={"strategicName"}
-        valueField={"strategicName"}
+        labelField={"name"}
+        valueField={"name"}
         maxHeight={300}
         placeholder={Users.length !== 0 ? Users.toString() : "Nothing Selected"}
         value={Users}
@@ -71,7 +79,7 @@ export default function M_CreateOfferScreen() {
         renderItem={(item, selected) => {
           return (
             <View style={styles.selectedItemsDropdown}>
-              <Text style={styles.textItem}>{item["strategicName"]}</Text>
+              <Text style={styles.textItem}>{item["name"]}</Text>
               {selected && (
                 <Image
                   source={require("../../Images/Merchant/xxxhdpi/tick.png")}

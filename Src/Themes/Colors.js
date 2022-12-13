@@ -7,10 +7,12 @@ const Colors = {
   registrationBackground: "#f0f0f0",
   placeholderColor: "#b4b4b4",
   tabIconColor: "#a7a7a7",
-  green: "#71ab32",
+  green: "#5db33e",
   grayButtonBackground: "#929191",
   yellow: "#eaa005",
-  blueTag: "#3d559e",
+  blueTag: "#3c569f",
   purple: "#a455be",
+  red: "#e02c2c",
+  rejected: "#e0581e",
 };
 export default Colors;

@@ -1,51 +1,12 @@
-export const homeScreenData = [
-  {
-    name: "Video 1",
-    title: "KEN BLOCK'S GYMKHANA SEVEN",
-    videoLink: require("../Images/video1Link1.mp4"),
-    // videoId: "5qanlirrRWs",
-    videoThumbnail: require("../Images/video_1.jpg"),
-    selected: true,
-  },
+import Colors from "../Themes/Colors";
 
-  {
-    name: "Video 2",
-    title: "Ken Block’s Climbkhana TWO",
-    videoLink: require("../Images/video2Link1.mp4"),
-    videoId: "ZX2uXBMkO8U",
-    videoThumbnail: require("../Images/video_2.jpg"),
-    selected: false,
-  },
-  {
-    name: "Video 3",
-    title: "Ken Block Drifts London",
-    videoLink: require("../Images/video3Link1.mp4"),
-    videoId: "PrqYohBV58o",
-    videoThumbnail: require("../Images/video_3.jpg"),
-    selected: false,
-  },
-];
-export const editData = [
-  {
-    name: "Video 1",
-    title: "Cocktails - Recipe Collection",
-    // videoLink: require("../Images/video1Link.mp4"),
-    videoThumbnail: require("../Images/edit1.png"),
-    selected: true,
-  },
-
-  {
-    name: "Video 2",
-    title: "Best Summer Cocktails Recipes",
-    // videoLink: require("../Images/video2Link.mp4"),
-    videoThumbnail: require("../Images/edit2.png"),
-    selected: false,
-  },
-  {
-    name: "Video 3",
-    title: "Sensational Strawberry Mojitos",
-    // videoLink: require("../Images/video3Link.mp4"),
-    videoThumbnail: require("../Images/edit3.png"),
-    selected: false,
-  },
+export const orderStatusData = [
+  { title: "Pending", color: Colors.pink, type: "PENDING" },
+  { title: "Accepted", color: Colors.green, type: "ACCEPTED" },
+  { title: "Prepare", color: Colors.blueTag, type: "PREPARING" },
+  { title: "Ready to pick up", color: Colors.purple, type: "READY_FOR_PICKUP" },
+  { title: "Delivered", color: Colors.green, type: "DELIVERED" },
+  { title: "Picked", color: Colors.green, type: "PICKED_UP" },
+  { title: "Canceled", color: Colors.red, type: "CANCELED_USER" },
+  { title: "Rejected", color: Colors.rejected, type: "REJECTED" },
 ];
