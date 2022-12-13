@@ -2,7 +2,7 @@ import {
     View,
     Text,
     StyleSheet,
-    FlatList, Image
+    FlatList, Image, ScrollView, TouchableOpacity
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -10,6 +10,39 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch } from "react-redux";
+import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
+import { orderStatusData } from "../../Constant/Constant";
+
+let ORDERS = [
+    {
+        restaurant: {
+            name: "Taj Hotel"
+        },
+        totalPrice: 30,
+        status: "READY_FOR_PICKUP"
+    },
+    {
+        restaurant: {
+            name: "Taj Hotel"
+        },
+        totalPrice: 30,
+        status: "READY_FOR_PICKUP"
+    },
+    {
+        restaurant: {
+            name: "Taj Hotel"
+        },
+        totalPrice: 30,
+        status: "READY_FOR_PICKUP"
+    },
+    {
+        restaurant: {
+            name: "Taj Hotel"
+        },
+        totalPrice: 30,
+        status: "READY_FOR_PICKUP"
+    },
+]
 
 export default function D_PickUpOrderScreen({ navigation }) {
     const dispatch = useDispatch();
@@ -18,37 +51,29 @@ export default function D_PickUpOrderScreen({ navigation }) {
         dispatch({ type: "PRE_LOADER", payload: false });
     }, []);
 
-    const renderPickUpOrders = ({ item, index }) => {
-        return (
-            <View style={styles.mainListView} >
-                <View style={styles.secondView} >
-                    <Image
-                        style={styles.imageStyle}
-                        source={{ uri: "https://c4.wallpaperflare.com/wallpaper/367/822/458/chicken-wings-fried-food-food-cuisine-wallpaper-preview.jpg" }}
-                    />
-                </View>
-                <View style={styles.desStyle} >
-                    <View>
-                        <Text style={styles.titleStyle} >Indian Thali</Text>
-                        <Text style={styles.cousineStyle} >Breakfast, Lunch, Dinner</Text>
-                        <Text style={styles.priceStyle} >AED 75.00</Text>
-                    </View>
-                    <Text style={styles.statusTextStyle} >Ready for pickup</Text>
-                </View>
-            </View>
-        )
-    }
 
     return (
-        <View style={ApplicationStyles.mainView}>
-
-            <FlatList
-                data={[1, 2, 3, 4, 5, 6]}
-                renderItem={renderPickUpOrders}
-                showsVerticalScrollIndicator={false}
-            />
-
-
+        <View style={ApplicationStyles.mainViewWithoutPadding}>
+            <ScrollView>
+                {ORDERS.map((item, index) => {
+                    let status = orderStatusData.filter(
+                        (obj) => obj.type == item.status
+                    );
+                    return (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setcategoryDetail(true), setselectedOrder(item);
+                            }}
+                        >
+                            <D_OrderItems
+                                item={item}
+                                navigation={navigation}
+                                status={status[0]}
+                            />
+                        </TouchableOpacity>
+                    );
+                })}
+            </ScrollView>
         </View >
     );
 }

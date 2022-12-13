@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList, Image, TouchableOpacity
+  FlatList, Image, TouchableOpacity, ScrollView
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -11,6 +11,8 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch } from "react-redux";
+import { orderStatusData } from "../../Constant/Constant";
+import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 
 const tagArray = [
   { title: "Delivered", color: Colors.pink, type: "ACCEPTED" },
@@ -18,6 +20,38 @@ const tagArray = [
   { title: "Active", color: Colors.green },
   { title: "Ready for pick up", color: Colors.yellow },
 ];
+
+
+let ORDERS = [
+  {
+    restaurant: {
+      name: "Taj Hotel"
+    },
+    totalPrice: 30,
+    status: "PENDING"
+  },
+  {
+    restaurant: {
+      name: "Taj Hotel"
+    },
+    totalPrice: 30,
+    status: "PENDING"
+  },
+  {
+    restaurant: {
+      name: "Taj Hotel"
+    },
+    totalPrice: 30,
+    status: "PENDING"
+  },
+  {
+    restaurant: {
+      name: "Taj Hotel"
+    },
+    totalPrice: 30,
+    status: "PENDING"
+  },
+]
 
 
 export default function D_ActiveOrderScreen({ navigation }) {
@@ -54,7 +88,7 @@ export default function D_ActiveOrderScreen({ navigation }) {
   }
 
   return (
-    <View style={ApplicationStyles.mainView}>
+    <View style={ApplicationStyles.mainViewWithoutPadding}>
 
       <View style={styles.tagView}>
         {tagArray.map((item, index) => {
@@ -75,11 +109,26 @@ export default function D_ActiveOrderScreen({ navigation }) {
         })}
       </View>
 
-      <FlatList
-        data={[1, 2, 3, 4, 5]}
-        renderItem={renderActiveOrders}
-        showsVerticalScrollIndicator={false}
-      />
+      <ScrollView>
+        {ORDERS.map((item, index) => {
+          let status = orderStatusData.filter(
+            (obj) => obj.type == item.status
+          );
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                setcategoryDetail(true), setselectedOrder(item);
+              }}
+            >
+              <D_OrderItems
+                item={item}
+                navigation={navigation}
+                status={status[0]}
+              />
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
 
 
     </View >

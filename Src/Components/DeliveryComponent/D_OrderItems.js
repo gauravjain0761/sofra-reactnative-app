@@ -1,17 +1,17 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import React from "react";
-import Colors from "../Themes/Colors";
-import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
+import Colors from "../../Themes/Colors";
+import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-export default function OrderItems({ item, navigation, status }) {
+export default function D_OrderItems({ item, navigation, status }) {
   return (
     <View>
       <View style={styles.mainCardView}>
         <View style={styles.leftView}>
           <Image
             style={styles.resImage}
-            source={require("../Images/Merchant/xxxhdpi/foodDish.jpeg")}
+            source={require("../../Images/Merchant/xxxhdpi/foodDish.jpeg")}
           />
         </View>
         <View style={styles.RightView}>
@@ -23,7 +23,7 @@ export default function OrderItems({ item, navigation, status }) {
             <Text style={styles.name}>AED {item.totalPrice}</Text>
             <Image
               style={styles.truckLogo}
-              source={require("../Images/Merchant/xxxhdpi/ic_car.png")}
+              source={require("../../Images/Merchant/xxxhdpi/ic_car.png")}
             />
           </View>
           <View>

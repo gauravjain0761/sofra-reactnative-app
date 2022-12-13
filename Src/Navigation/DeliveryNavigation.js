@@ -72,7 +72,7 @@ let DrawerItemArray = [
   {
     label: "Orders For Pickup",
     image: require("../Images/Delivery/xxxhdpi/ic_pickup.png"),
-    screen: "D_OrderPickupScreen",
+    screen: "D_PickUpOrderScreen",
   },
   {
     label: "My Active Orders",
