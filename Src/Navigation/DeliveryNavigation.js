@@ -181,6 +181,8 @@ function D_MyBottomTabs() {
           ...transparentHeader,
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
+          headerTitle: "",
+          headerTransparent: true,
         })}
         name="D_DriversScreen"
         component={D_DriversScreen}

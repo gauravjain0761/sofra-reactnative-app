@@ -62,7 +62,7 @@ export default function D_PickUpOrderScreen({ navigation }) {
                     return (
                         <TouchableOpacity
                             onPress={() => {
-                                setcategoryDetail(true), setselectedOrder(item);
+                                // setcategoryDetail(true), setselectedOrder(item);
                             }}
                         >
                             <D_OrderItems

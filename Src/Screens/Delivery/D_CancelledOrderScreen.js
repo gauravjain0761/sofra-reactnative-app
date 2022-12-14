@@ -63,7 +63,7 @@ export default function D_CancelledOrderScreen({ navigation }) {
           return (
             <TouchableOpacity
               onPress={() => {
-                setcategoryDetail(true), setselectedOrder(item);
+                // setcategoryDetail(true), setselectedOrder(item);
               }}
             >
               <D_OrderItems
