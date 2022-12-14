@@ -1,13 +1,18 @@
-
 import {
   View,
   Text,
   StyleSheet,
-  FlatList, Image, TouchableOpacity, ScrollView
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch } from "react-redux";
@@ -21,38 +26,36 @@ const tagArray = [
   { title: "Ready for pick up", color: Colors.yellow },
 ];
 
-
 let ORDERS = [
   {
     restaurant: {
-      name: "Taj Hotel"
+      name: "Taj Hotel",
     },
     totalPrice: 30,
-    status: "PENDING"
+    status: "PENDING",
   },
   {
     restaurant: {
-      name: "Taj Hotel"
+      name: "Taj Hotel",
     },
     totalPrice: 30,
-    status: "PENDING"
+    status: "PENDING",
   },
   {
     restaurant: {
-      name: "Taj Hotel"
+      name: "Taj Hotel",
     },
     totalPrice: 30,
-    status: "PENDING"
+    status: "PENDING",
   },
   {
     restaurant: {
-      name: "Taj Hotel"
+      name: "Taj Hotel",
     },
     totalPrice: 30,
-    status: "PENDING"
+    status: "PENDING",
   },
-]
-
+];
 
 export default function D_ActiveOrderScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -61,37 +64,37 @@ export default function D_ActiveOrderScreen({ navigation }) {
     dispatch({ type: "PRE_LOADER", payload: false });
   }, []);
 
-
   const renderActiveOrders = ({ item, index }) => {
     return (
-      <View style={styles.mainListView} >
-        <View style={styles.secondView} >
+      <View style={styles.mainListView}>
+        <View style={styles.secondView}>
           <Image
             style={styles.imageStyle}
-            source={{ uri: "https://c4.wallpaperflare.com/wallpaper/367/822/458/chicken-wings-fried-food-food-cuisine-wallpaper-preview.jpg" }}
+            source={{
+              uri: "https://c4.wallpaperflare.com/wallpaper/367/822/458/chicken-wings-fried-food-food-cuisine-wallpaper-preview.jpg",
+            }}
           />
         </View>
-        <View style={styles.desStyle} >
+        <View style={styles.desStyle}>
           <View>
-            <Text style={styles.titleStyle} >Indian Thali</Text>
-            <Text style={styles.cousineStyle} >Breakfast, Lunch, Dinner</Text>
-            <Text style={styles.priceStyle} >AED 75.00</Text>
+            <Text style={styles.titleStyle}>Indian Thali</Text>
+            <Text style={styles.cousineStyle}>Breakfast, Lunch, Dinner</Text>
+            <Text style={styles.priceStyle}>AED 75.00</Text>
             <Image
               style={styles.truckLogo}
               source={require("../../Images/Merchant/xxxhdpi/ic_car.png")}
             />
           </View>
-          <Text style={styles.statusTextStyle} >Cancel</Text>
+          <Text style={styles.statusTextStyle}>Cancel</Text>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
-
       <View style={styles.tagView}>
-        {tagArray.map((item, index) => {
+        {orderStatusData.map((item, index) => {
           return (
             <TouchableOpacity
               style={{
@@ -111,9 +114,7 @@ export default function D_ActiveOrderScreen({ navigation }) {
 
       <ScrollView>
         {ORDERS.map((item, index) => {
-          let status = orderStatusData.filter(
-            (obj) => obj.type == item.status
-          );
+          let status = orderStatusData.filter((obj) => obj.type == item.status);
           return (
             <TouchableOpacity
               onPress={() => {
@@ -129,27 +130,35 @@ export default function D_ActiveOrderScreen({ navigation }) {
           );
         })}
       </ScrollView>
-
-
-    </View >
+    </View>
   );
 }
 const styles = StyleSheet.create({
   mainListView: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 5,
     marginVertical: 4,
     paddingVertical: 12,
     borderBottomWidth: 2,
-    borderColor: '#dddddd'
+    borderColor: "#dddddd",
   },
   secondView: { flex: 1 },
   imageStyle: { height: hp(17), borderRadius: 8 },
-  desStyle: { flex: 1, justifyContent: 'space-between', paddingHorizontal: 7 },
-  titleStyle: { fontWeight: 'bold', color: 'black' },
-  cousineStyle: { fontSize: 12, color: 'gray' },
-  priceStyle: { fontSize: 12, color: 'black', fontWeight: 'bold' },
-  statusTextStyle: { width: wp(25), paddingVertical: 5, borderRadius: 4, alignSelf: 'flex-end', fontSize: 10, textAlign: 'center', fontWeight: 'bold', color: Colors.white, backgroundColor: 'red' },
+  desStyle: { flex: 1, justifyContent: "space-between", paddingHorizontal: 7 },
+  titleStyle: { fontWeight: "bold", color: "black" },
+  cousineStyle: { fontSize: 12, color: "gray" },
+  priceStyle: { fontSize: 12, color: "black", fontWeight: "bold" },
+  statusTextStyle: {
+    width: wp(25),
+    paddingVertical: 5,
+    borderRadius: 4,
+    alignSelf: "flex-end",
+    fontSize: 10,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: Colors.white,
+    backgroundColor: "red",
+  },
 
   tagView: {
     flexWrap: "wrap",
@@ -167,7 +176,5 @@ const styles = StyleSheet.create({
     height: hp(4),
     resizeMode: "contain",
     marginVertical: 5,
-  }
-
-
+  },
 });
