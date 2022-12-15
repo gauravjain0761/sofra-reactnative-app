@@ -36,7 +36,7 @@ export default function (state = initialState, action) {
     }
     case "LOGIN": {
       setToken(action.payload.auth_token);
-      setUser(JSON.stringify(action.payload));
+      setUser("merchant");
       return { ...state, user: action.payload, preLoader: false };
     }
     case "LOGOUT": {

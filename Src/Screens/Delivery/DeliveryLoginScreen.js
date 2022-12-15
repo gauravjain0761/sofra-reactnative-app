@@ -6,10 +6,43 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import LoginTextInput from "../../Components/LoginTextInput";
 import PinkButton from "../../Components/PinkButton";
+import {
+  dispatchErrorAction,
+  validateEmail,
+} from "../../Services/CommonFunctions";
+import { useDispatch, useSelector } from "react-redux";
+import { getDeliveryLogin } from "../../Services/AuthApi";
 
 export default function DeliveryLoginScreen({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("amer_bakour@hotmail.com");
+  const [password, setPassword] = useState("123456");
+  const fcmToken = useSelector((e) => e.auth.fcmToken);
+
+  const onLogin = () => {
+    if (validateEmail(email)) {
+      if (password !== "") {
+        let data = {
+          email: email,
+          password: password,
+          deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
+          deviceToken: fcmToken,
+          language: "en",
+        };
+        dispatch(
+          getDeliveryLogin(data, () => {
+            navigation.navigate("DeliveryDrawerHome");
+          })
+        );
+      } else {
+        dispatchErrorAction(dispatch, "Please enter password");
+      }
+    } else {
+      dispatchErrorAction(dispatch, "Please enter valid email");
+    }
+    // navigation.navigate("MerchantDrawerHome");
+  };
+
   return (
     <View style={ApplicationStyles.applicationView}>
       <View style={styles.mainView}>
@@ -34,7 +67,7 @@ export default function DeliveryLoginScreen({ navigation }) {
           />
           <PinkButton
             onPress={() => {
-              navigation.navigate("DeliveryDrawerHome");
+              onLogin();
             }}
             style={styles.dbuttonStyle}
             name={"Login"}

@@ -5,7 +5,7 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import PinkButton from "../Components/PinkButton";
 import Colors from "../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../Services/asyncStorage";
+import { getToken, getUser } from "../Services/asyncStorage";
 import { CommonActions } from "@react-navigation/native";
 import {
   getCities,
@@ -19,11 +19,6 @@ export default function ChooseLoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const preLoader = useSelector((e) => e.merchant.preLoader);
   useEffect(async () => {
-    dispatch(getCities());
-    dispatch(getUsers());
-    dispatch(getCuisines());
-    dispatch(getCategories());
-
     messaging()
       .getToken()
       .then((fcmToken) => {
@@ -31,7 +26,6 @@ export default function ChooseLoginScreen({ navigation }) {
           dispatch({ type: "SET_FCMTOKEN", payload: fcmToken });
         } else {
           console.log("[FCMService] User does not have a device token");
-          // console.log("[FCMService] User does not have a device token")
         }
       })
       .catch((error) => {
@@ -41,14 +35,32 @@ export default function ChooseLoginScreen({ navigation }) {
 
     dispatch({ type: "PRE_LOADER", payload: true });
     let token = await getToken();
-    if (token) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{ name: "MerchantDrawerHome" }],
-        })
-      );
+    let user = await getUser();
+    if (token && user) {
+      dispatch(getCities());
+      dispatch(getUsers());
+      dispatch(getCuisines());
+      dispatch(getCategories());
+      if (user == "delivery") {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: "DeliveryDrawerHome" }],
+          })
+        );
+      } else {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: "MerchantDrawerHome" }],
+          })
+        );
+      }
     } else {
+      dispatch(getCities());
+      dispatch(getUsers());
+      dispatch(getCuisines());
+      dispatch(getCategories());
       dispatch({ type: "PRE_LOADER", payload: false });
     }
   }, []);

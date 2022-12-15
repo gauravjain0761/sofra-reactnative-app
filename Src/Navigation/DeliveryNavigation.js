@@ -31,7 +31,7 @@ import {
 import { commonFontStyle } from "../Themes/Fonts";
 import { clearAsyncStorage } from "../Services/asyncStorage";
 import { useDispatch, useSelector } from "react-redux";
-import { getLogout } from "../Services/AuthApi";
+import { getDeliveryLogout } from "../Services/AuthApi";
 import D_DashboardScreen from "../Screens/Delivery/D_DashboardScreen";
 import D_NotificationScreen from "../Screens/Delivery/D_NotificationScreen";
 import HeaderLeftIcon from "../Components/NavigationComponent";
@@ -241,7 +241,7 @@ function CustomDrawerContent(props) {
   const onLogout = async () => {
     // props.navigation.navigate(item.screen);
     dispatch(
-      getLogout(() => {
+      getDeliveryLogout(() => {
         props.navigation.dispatch(
           CommonActions.reset({
             index: 1,
