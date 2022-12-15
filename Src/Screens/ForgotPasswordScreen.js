@@ -7,92 +7,67 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import ApplicationStyles from "../../Themes/ApplicationStyles";
-import Colors from "../../Themes/Colors";
+import ApplicationStyles from "../Themes/ApplicationStyles";
+import Colors from "../Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { commonFontStyle } from "../../Themes/Fonts";
-import LoginTextInput from "../../Components/LoginTextInput";
-import PinkButton from "../../Components/PinkButton";
+import { commonFontStyle } from "../Themes/Fonts";
+import LoginTextInput from "../Components/LoginTextInput";
+import PinkButton from "../Components/PinkButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import {
   dispatchErrorAction,
   validateEmail,
-} from "../../Services/CommonFunctions";
-import { getLogin } from "../../Services/AuthApi";
+} from "../Services/CommonFunctions";
+import { forgotPassword, getLogin } from "../Services/AuthApi";
 
 export default function MerchantLoginScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [email, setEmail] = useState("amer_bakour@hotmail.com");
-  const [password, setPassword] = useState("123456");
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 
-  const onLogin = () => {
+  const onSendMail = () => {
     if (validateEmail(email)) {
-      if (password !== "") {
-        let data = {
-          email: email,
-          password: password,
-          deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
-          deviceToken: fcmToken,
-          language: "en",
-        };
-        dispatch(
-          getLogin(data, () => {
-            navigation.navigate("MerchantDrawerHome");
-          })
-        );
-      } else {
-        dispatchErrorAction(dispatch, "Please enter password");
-      }
+      let data = { email: email };
+      dispatch(
+        forgotPassword(data, () => {
+          navigation.goBack();
+        })
+      );
     } else {
       dispatchErrorAction(dispatch, "Please enter valid email");
     }
     // navigation.navigate("MerchantDrawerHome");
   };
   return (
-    <View style={ApplicationStyles.applicationView}>
+    <View style={ApplicationStyles.mainView}>
+      <Text style={ApplicationStyles.welcomeText}>Forgot Password</Text>
       <View style={styles.mainView}>
-        <Image
-          source={require("../../Images/Delivery/xxxhdpi/top_logo.png")}
-          style={styles.imageLogo}
-        />
-        <Text style={styles.welcomeText}>Welcome Merchant</Text>
         <View>
+          <Text style={styles.forgot22}>
+            Enter your email to receive an email to reset your password
+          </Text>
           <LoginTextInput
             name={"Email"}
             placeholder={"Enter your email address"}
             value={email}
             onChangeText={(text) => setEmail(text)}
           />
-          <LoginTextInput
-            name={"Password"}
-            placeholder={"Enter your password"}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            style={styles.textinputStyle}
-          />
+
           <PinkButton
-            onPress={() => onLogin()}
+            onPress={() => onSendMail()}
             style={styles.dbuttonStyle}
-            name={"Login"}
+            name={"Send Email"}
           />
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("ForgotPasswordScreen", { email: email })
-            }
-          >
-            <Text style={styles.forgot}>Forgot password?</Text>
-          </TouchableOpacity>
 
           <Text style={styles.forgot2}>
-            Don't have an accout?{" "}
+            Already have an accout?{" "}
             <Text
               style={{ color: Colors.pink }}
-              onPress={() => navigation.navigate("M_RegistrationScreen")}
+              onPress={() => navigation.goBack()}
             >
-              Sign Up
+              Log In
             </Text>
           </Text>
         </View>
@@ -104,8 +79,9 @@ const styles = StyleSheet.create({
   mainView: {
     backgroundColor: Colors.backgroundScreen,
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: hp(5),
+    // justifyContent: "center",
+    marginTop: hp(3),
+    paddingHorizontal: hp(2),
   },
   imageLogo: {
     height: hp(6),
@@ -122,7 +98,7 @@ const styles = StyleSheet.create({
     marginTop: hp(3),
   },
   dbuttonStyle: {
-    marginTop: hp(9),
+    marginTop: hp(3),
   },
   forgot: {
     marginTop: hp(2),
@@ -133,5 +109,9 @@ const styles = StyleSheet.create({
     marginTop: hp(6),
     ...commonFontStyle(400, 14, Colors.darkGrey),
     textAlign: "center",
+  },
+  forgot22: {
+    marginBottom: hp(3),
+    ...commonFontStyle(400, 14, Colors.darkGrey),
   },
 });

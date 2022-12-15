@@ -8,7 +8,7 @@ import {
   ScrollView,
   Switch,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -23,32 +23,46 @@ import CheckBox from "@react-native-community/checkbox";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import { useDispatch } from "react-redux";
 import { dispatchErrorAction } from "../../Services/CommonFunctions";
+import { updatePassword } from "../../Services/AuthApi";
 
-const daysData = [
-  {
-    checkbox: false,
-    open: "12:00",
-    close: "10:55",
-    day: "Sunday",
-  },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Monday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Tuesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Wednesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Thursday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Friday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Saturday" },
-];
-export default function M_UpdatePassword() {
+export default function M_UpdatePassword({ navigation }) {
   const dispatch = useDispatch();
   const [oldPwd, setoldPwd] = useState("");
   const [newPwd, setnewPwd] = useState("");
   const [confirmPwd, setconfirmPwd] = useState("");
-  const onUpdatePassword = () => {};
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      setoldPwd("");
+      setnewPwd("");
+      setconfirmPwd("");
+    });
+  }, []);
+  const onUpdatePassword = () => {
+    let data = {
+      old_password: oldPwd,
+      new_password: newPwd,
+      confirm_password: confirmPwd,
+    };
+    dispatch(
+      updatePassword(data, () => {
+        setoldPwd("");
+        setnewPwd("");
+        setconfirmPwd("");
+      })
+    );
+  };
   const validation = () => {
     if (oldPwd.trim() !== "") {
       if (newPwd.trim() !== "") {
         if (confirmPwd.trim() !== "") {
-          onUpdatePassword();
+          if (newPwd == confirmPwd) {
+            onUpdatePassword();
+          } else {
+            dispatchErrorAction(
+              dispatch,
+              "Confirm password doesn't match with new password"
+            );
+          }
         } else {
           dispatchErrorAction(dispatch, "Please enter new password again");
         }

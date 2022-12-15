@@ -16,6 +16,7 @@ import D_AddNewDriver from "../Screens/Delivery/D_AddNewDriver";
 import D_DeliveredOrderScreen from "../Screens/Delivery/D_DeliveredOrderScreen";
 import D_CancelledOrderScreen from "../Screens/Delivery/D_CancelledOrderScreen";
 import D_PickUpOrderScreen from "../Screens/Delivery/D_PickUpOrderScreen";
+import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen";
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
@@ -50,6 +51,25 @@ export default function Navigation() {
           }}
           name="ChooseLoginScreen"
           component={ChooseLoginScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={ApplicationStyles.headerRightView}
+              >
+                <Image
+                  source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+                  style={{ height: 18, width: 18, resizeMode: "contain" }}
+                />
+              </TouchableOpacity>
+            ),
+            ...data,
+            ...transparentHeader,
+          })}
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
         />
         <Stack.Screen
           options={{
@@ -121,44 +141,6 @@ export default function Navigation() {
           name="DeliveryDrawerHome"
           component={DeliveryDrawer}
         />
-
-        <Stack.Screen
-          options={{
-            ...transparentHeader,
-            headerShown: false,
-          }}
-          name="D_AddNewDriver"
-          component={D_AddNewDriver}
-        />
-
-        <Stack.Screen
-          options={{
-            ...transparentHeader,
-            headerShown: false,
-          }}
-          name="D_DeliveredOrderScreen"
-          component={D_DeliveredOrderScreen}
-        />
-
-        <Stack.Screen
-          options={{
-            ...transparentHeader,
-            headerShown: false,
-          }}
-          name="D_CancelledOrderScreen"
-          component={D_CancelledOrderScreen}
-        />
-
-        <Stack.Screen
-          options={{
-            ...transparentHeader,
-            headerShown: false,
-          }}
-          name="D_PickUpOrderScreen"
-          component={D_PickUpOrderScreen}
-        />
-
-
       </Stack.Navigator>
     </NavigationContainer>
   );

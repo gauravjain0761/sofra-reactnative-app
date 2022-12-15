@@ -21,6 +21,7 @@ const initialState = {
   descriptor: [],
   promocodes: [],
   offSlots: [],
+  restaurant: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -49,10 +50,20 @@ export default function (state = initialState, action) {
       return { ...state, statistics: action.payload, preLoader: false };
     }
     case "SET_SETTELED_REPORT": {
-      return { ...state, setteled_report: action.payload, preLoader: false };
+      return {
+        ...state,
+        unsetteled_report: {},
+        setteled_report: action.payload,
+        preLoader: false,
+      };
     }
     case "SET_UNSETTELED_REPORT": {
-      return { ...state, unsetteled_report: action.payload, preLoader: false };
+      return {
+        ...state,
+        setteled_report: {},
+        unsetteled_report: action.payload,
+        preLoader: false,
+      };
     }
     case "SET_APP_SETTING": {
       return {
@@ -124,6 +135,15 @@ export default function (state = initialState, action) {
         return el.id !== action.payload.slotId;
       });
       return { ...state, offSlots: offSlots };
+    }
+    case "ADD_OFF_SLOT": {
+      console.log(action.payload);
+      let offSlots = Object.assign([], state.offSlots);
+      offSlots.push(action.payload);
+      return { ...state, offSlots: offSlots };
+    }
+    case "SET_RESTAURANT": {
+      return { ...state, restaurant: action.payload, preLoader: false };
     }
     default:
       return state;

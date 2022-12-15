@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Switch,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -20,7 +21,11 @@ import CheckBox from "@react-native-community/checkbox";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOffSlot, getOffSlots } from "../../Services/MerchantApi";
+import {
+  addOffSlot,
+  deleteOffSlot,
+  getOffSlots,
+} from "../../Services/MerchantApi";
 import moment from "moment";
 export default function M_SlotScreen({ navigation }) {
   LocaleConfig.locales["fr"] = {
@@ -103,6 +108,27 @@ export default function M_SlotScreen({ navigation }) {
     dispatch(deleteOffSlot(data));
   };
 
+  const addOffslot = (date) => {
+    Alert.alert(
+      "Are you sure?",
+      "You want to add off slot for " + date.dateString,
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            let data = { date: date.dateString };
+            dispatch(addOffSlot(data));
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -111,6 +137,7 @@ export default function M_SlotScreen({ navigation }) {
           <Calendar
             onDayPress={(day) => {
               console.log("selected day", day);
+              addOffslot(day);
             }}
             ref={calendarRef}
             markingType={"custom"}

@@ -89,3 +89,37 @@ export const getDeliveryLogout = (onSuccess) => async (dispatch) => {
     dispatchErrorAction(dispatch, "Something went wrong!");
   }
 };
+
+export const updatePassword = (postObj, onSuccess) => async (dispatch) => {
+  dispatchAction(dispatch, "PRE_LOADER", true);
+  const url = merchant_url + "/updatePassword";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      onSuccess();
+      dispatchSuccessAction(dispatch, data.message);
+      // dispatchAction(dispatch, "LOGOUT", "");
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const forgotPassword = (postObj, onSuccess) => async (dispatch) => {
+  dispatchAction(dispatch, "PRE_LOADER", true);
+  const url = merchant_url + "/forgotPassword";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      onSuccess();
+      dispatchSuccessAction(dispatch, data.message);
+      // dispatchAction(dispatch, "LOGOUT", "");
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};

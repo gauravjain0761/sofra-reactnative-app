@@ -28,7 +28,9 @@ export async function POST(dispatch, url, data) {
   let formData = new FormData();
   if (data) {
     Object.keys(data).map((element) => {
-      formData.append(element, data[element]);
+      if (data[element]) {
+        formData.append(element, data[element]);
+      }
     });
   }
   if (token) {

@@ -13,6 +13,7 @@ export default function RegistrationTextInput({
   placeholderTextColor,
   keyboardType,
   maxLength,
+  onFocus,
 }) {
   return (
     <View style={style}>
@@ -26,6 +27,7 @@ export default function RegistrationTextInput({
           placeholderTextColor ? placeholderTextColor : Colors.placeholderColor
         }
         keyboardType={keyboardType ? keyboardType : "default"}
+        onPressIn={() => (onFocus ? onFocus() : {})}
       />
     </View>
   );

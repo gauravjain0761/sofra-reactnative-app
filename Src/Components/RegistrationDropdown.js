@@ -14,6 +14,7 @@ export default function RegistrationDropdown({
   style,
   placeholderTextColor,
   multiSelect,
+  labelField,
 }) {
   return (
     <View>
@@ -37,7 +38,7 @@ export default function RegistrationDropdown({
           iconColor={Colors.black}
           // activeColor={colors.Gray300}
           // disable ={runningTradeTypePositions[item.tradeType] && true}
-          labelField={valueField}
+          labelField={labelField ? labelField : valueField}
           valueField={valueField}
           maxHeight={300}
           placeholder={value.length !== 0 ? value.toString() : placeholder}
@@ -48,7 +49,9 @@ export default function RegistrationDropdown({
           renderItem={(item, selected) => {
             return (
               <View style={styles.selectedItemsDropdown}>
-                <Text style={styles.textItem2}>{item[valueField]}</Text>
+                <Text style={styles.textItem2}>
+                  {item[labelField ? labelField : valueField]}
+                </Text>
                 {selected && (
                   <Image
                     source={require("../Images/Merchant/xxxhdpi/tick.png")}
@@ -80,7 +83,7 @@ export default function RegistrationDropdown({
           iconColor={Colors.black}
           // activeColor={colors.Gray300}
           // disable ={runningTradeTypePositions[item.tradeType] && true}
-          labelField={valueField}
+          labelField={labelField ? labelField : valueField}
           valueField={valueField}
           maxHeight={300}
           placeholder={placeholder}
@@ -91,7 +94,9 @@ export default function RegistrationDropdown({
           renderItem={(item) => {
             return (
               <View>
-                <Text style={styles.textItem}>{item[valueField]}</Text>
+                <Text style={styles.textItem}>
+                  {item[labelField ? labelField : valueField]}
+                </Text>
               </View>
             );
           }}

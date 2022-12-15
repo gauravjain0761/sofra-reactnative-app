@@ -19,17 +19,21 @@ import MenuScreenItems from "../../Components/MenuScreenItems";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import GrayButton from "../../Components/GrayButton";
 import { useDispatch, useSelector } from "react-redux";
-import { getPromoCodes } from "../../Services/MerchantApi";
+import { AddPromoCode, getPromoCodes } from "../../Services/MerchantApi";
 import {
   dispatchErrorAction,
+  getFromDataJson,
   hasArabicCharacters,
 } from "../../Services/CommonFunctions";
 import {
+  discountType,
   ExpiryTypeData,
+  offerUserData,
   VendorsValidityData,
 } from "../../Config/StaticDropdownData";
 import ImagePicker from "react-native-image-crop-picker";
 import moment from "moment";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const citydata = [
   {
@@ -49,15 +53,21 @@ export default function M_PromocodeScreen({ navigation }) {
   const [businessArabic, setbusinessArabic] = useState("");
   const [des, setdes] = useState("");
   const [Arabicdes, setArabicdes] = useState("");
-  const [price, setprice] = useState("");
+  const [price, setprice] = useState("PRICE");
   const [discountValue, setdiscountValue] = useState("");
   const [maxDiscount, setmaxDiscount] = useState("");
   const [minOrderValue, setminOrderValue] = useState("");
-  const [validityType, setvalidityType] = useState("");
-  const [expiryType, setexpiryType] = useState("");
+  const [validityType, setvalidityType] = useState("ALL");
+  const [expiryType, setexpiryType] = useState("NO_LIMIT");
   const [image, setimage] = useState("");
+  const [StartDate, setStartDate] = useState("");
+  const [EndDate, setEndDate] = useState("");
+  const [count, setcount] = useState("");
   const PROMO_CODES = useSelector((e) => e.merchant.promocodes);
-
+  const [Users, setUsers] = useState([]);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dateType, setdateType] = useState([]);
+  const USERS = useSelector((e) => e.merchant.users);
   useEffect(() => {
     // dispatch(getPromoCodes());
   }, []);
@@ -70,90 +80,93 @@ export default function M_PromocodeScreen({ navigation }) {
     });
   };
   const addPromoCode = () => {
+    let userIdJson = getFromDataJson(USERS, Users, "userIds");
     let data = {
       title: title,
       title_ar: arabicTitle,
       vendorsValidity: validityType,
       description: des,
       description_ar: Arabicdes,
-      image: {
-        uri: image.sourceURL,
-        type: image.mime, // or photo.type image/jpg
-        name:
-          "image_" + moment().unix() + "_" + image.sourceURL.split("/").pop(),
-      },
+      image: image.sourceURL
+        ? {
+            uri: image.sourceURL,
+            type: image.mime, // or photo.type image/jpg
+            name:
+              "image_" +
+              moment().unix() +
+              "_" +
+              image.sourceURL.split("/").pop(),
+          }
+        : undefined,
       type: "",
-      code: discountCode.toUpperCase(),
+      code: discountCode !== "" ? discountCode.toUpperCase() : undefined,
       expiryType: expiryType,
-      startDate: "",
-      endDate: "",
+      startDate:
+        StartDate !== "" ? moment(StartDate).format("YYYY-MM-DD") : undefined,
+      endDate:
+        EndDate !== "" ? moment(EndDate).format("YYYY-MM-DD") : undefined,
       discountValue: discountValue,
       maxDiscountPrice: maxDiscount,
       minimumOrderValue: minOrderValue,
-      count: "",
+      count: count !== "" ? count : undefined,
+      ...userIdJson,
     };
+    dispatch(AddPromoCode(data));
+    console.log(data);
   };
 
   const validation = () => {
     if (title.trim() !== "") {
       if (hasArabicCharacters(arabicTitle)) {
-        if (discountCode.trim() !== "") {
-          if (hasArabicCharacters(businessArabic)) {
-            if (des.trim() !== "") {
-              if (Arabicdes.trim() !== "") {
-                if (discountValue.trim() !== "") {
-                  if (maxDiscount.trim() !== "") {
-                    if (minOrderValue.trim() !== "") {
-                      if (validityType.trim() !== "") {
-                        if (expiryType.trim() !== "") {
-                          if (image.trim() !== "") {
-                          } else {
-                            dispatchErrorAction(
-                              dispatch,
-                              "Please select image"
-                            );
-                          }
-                        } else {
-                          dispatchErrorAction(
-                            dispatch,
-                            "Please select expiry type"
-                          );
-                        }
+        if (des.trim() !== "") {
+          if (Arabicdes.trim() !== "") {
+            if (
+              discountValue.trim() !== "" &&
+              Number.isInteger(discountValue)
+            ) {
+              if (maxDiscount.trim() !== "" && Number.isInteger(maxDiscount)) {
+                if (
+                  minOrderValue.trim() !== "" &&
+                  Number.isInteger(minOrderValue)
+                ) {
+                  if (validityType.trim() !== "") {
+                    if (expiryType.trim() !== "") {
+                      if (image.trim() !== "") {
                       } else {
-                        dispatchErrorAction(
-                          dispatch,
-                          "Please select validity type"
-                        );
+                        dispatchErrorAction(dispatch, "Please select image");
                       }
                     } else {
                       dispatchErrorAction(
                         dispatch,
-                        "Please enter minimum order value"
+                        "Please select expiry type"
                       );
                     }
                   } else {
                     dispatchErrorAction(
                       dispatch,
-                      "Please enter maximum discount amount"
+                      "Please select validity type"
                     );
                   }
                 } else {
-                  dispatchErrorAction(dispatch, "Please enter discount value");
+                  dispatchErrorAction(
+                    dispatch,
+                    "Please enter minimum order value"
+                  );
                 }
               } else {
                 dispatchErrorAction(
                   dispatch,
-                  "Please enter description in arabic"
+                  "Please enter maximum discount amount"
                 );
               }
             } else {
-              dispatchErrorAction(dispatch, "Please enter description");
+              dispatchErrorAction(dispatch, "Please enter discount value");
             }
           } else {
-            dispatchErrorAction(dispatch, "Please enter business in arabic");
+            dispatchErrorAction(dispatch, "Please enter description in arabic");
           }
         } else {
-          dispatchErrorAction(dispatch, "Please enter discount code");
+          dispatchErrorAction(dispatch, "Please enter description");
         }
       } else {
         dispatchErrorAction(dispatch, "Please enter title in arabic");
@@ -161,6 +174,15 @@ export default function M_PromocodeScreen({ navigation }) {
     } else {
       dispatchErrorAction(dispatch, "Please enter title");
     }
+  };
+  const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    if (dateType == "start") {
+      setStartDate(date);
+    } else {
+      setEndDate(date);
+    }
+    setDatePickerVisibility(false);
   };
 
   return (
@@ -202,22 +224,11 @@ export default function M_PromocodeScreen({ navigation }) {
                 />
               </View>
             </View>
-            <View style={styles.row}>
-              <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-                <RegistrationTextInput
-                  placeholder={"Discount code"}
-                  value={discountCode}
-                  onChangeText={(text) => setdiscountCode(text)}
-                />
-              </View>
-              <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-                <RegistrationTextInput
-                  placeholder={"Business in arabic"}
-                  value={businessArabic}
-                  onChangeText={(text) => setbusinessArabic(text)}
-                />
-              </View>
-            </View>
+            <RegistrationTextInput
+              placeholder={"Discount code"}
+              value={discountCode}
+              onChangeText={(text) => setdiscountCode(text)}
+            />
             <View>
               <TextInput
                 value={des}
@@ -244,13 +255,14 @@ export default function M_PromocodeScreen({ navigation }) {
           <Text style={styles.title22}>Discount Type</Text>
           <View>
             <RegistrationDropdown
-              data={citydata}
+              data={discountType}
               value={price}
               setData={(text) => {
                 setprice(text);
               }}
-              placeholder={"Price"}
-              valueField={"strategicName"}
+              placeholder={price !== "" ? price : "Discount Type"}
+              valueField={"name"}
+              labelField={"label"}
               placeholderTextColor={Colors.black}
             />
             <RegistrationTextInput
@@ -276,15 +288,32 @@ export default function M_PromocodeScreen({ navigation }) {
         <View>
           <Text style={styles.title22}>Validity Type*</Text>
           <RegistrationDropdown
-            data={VendorsValidityData}
+            data={offerUserData}
             value={validityType}
             setData={(text) => {
               setvalidityType(text);
             }}
-            placeholder={"Type"}
+            placeholder={validityType !== "" ? validityType : "Type"}
             valueField={"name"}
+            labelField={"label"}
             placeholderTextColor={Colors.black}
           />
+          {validityType == "SPECIFIC" && (
+            <RegistrationDropdown
+              data={USERS}
+              value={Users}
+              setData={(text) => {
+                setUsers(text);
+              }}
+              multiSelect={true}
+              placeholder={
+                Users.length !== 0 ? Users.toString() : "Select Users"
+              }
+              valueField={"name"}
+              style={styles.dropdownRow}
+              placeholderTextColor={Colors.black}
+            />
+          )}
         </View>
         <View>
           <Text style={styles.title22}>Expiry Type*</Text>
@@ -296,8 +325,41 @@ export default function M_PromocodeScreen({ navigation }) {
             }}
             placeholder={"Type"}
             valueField={"name"}
+            labelField={"label"}
             placeholderTextColor={Colors.black}
           />
+          {expiryType == "DATE" && (
+            <View style={styles.row}>
+              <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+                <RegistrationTextInput
+                  onFocus={() => {
+                    setDatePickerVisibility(true), setdateType("start");
+                  }}
+                  placeholder={"Start date"}
+                  value={moment(StartDate).format("MM/DD/YYYY")}
+                  onChangeText={(text) => setStartDate(text)}
+                />
+              </View>
+              <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+                <RegistrationTextInput
+                  onFocus={() => {
+                    setDatePickerVisibility(true), setdateType("end");
+                  }}
+                  placeholder={"End date"}
+                  value={moment(EndDate).format("MM/DD/YYYY")}
+                  onChangeText={(text) => setEndDate(text)}
+                />
+              </View>
+            </View>
+          )}
+          {expiryType == "NO" && (
+            <RegistrationTextInput
+              keyboardType={"numeric"}
+              placeholder={"Enter the discount code expire count"}
+              value={count}
+              onChangeText={(text) => setcount(text)}
+            />
+          )}
         </View>
         <View>
           <Text style={styles.title22}>Image</Text>
@@ -331,7 +393,7 @@ export default function M_PromocodeScreen({ navigation }) {
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <PinkButton
                 onPress={() => {
-                  validation();
+                  addPromoCode();
                 }}
                 text={"small"}
                 name={"Save"}
@@ -348,6 +410,12 @@ export default function M_PromocodeScreen({ navigation }) {
           </View>
         </View>
       </ScrollView>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={() => setDatePickerVisibility(false)}
+      />
     </View>
   );
 }

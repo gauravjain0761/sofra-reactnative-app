@@ -8,7 +8,7 @@ import {
   ScrollView,
   Switch,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -22,24 +22,18 @@ import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 
-const daysData = [
-  {
-    checkbox: false,
-    open: "12:00",
-    close: "10:55",
-    day: "Sunday",
-  },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Monday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Tuesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Wednesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Thursday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Friday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Saturday" },
-];
-export default function D_UpdatePassword() {
+export default function D_UpdatePassword({ navigation }) {
   const [oldPwd, setoldPwd] = useState("");
   const [newPwd, setnewPwd] = useState("");
   const [confirmPwd, setconfirmPwd] = useState("");
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      setoldPwd("");
+      setnewPwd("");
+      setconfirmPwd("");
+      // calendarRef.current.se;
+    });
+  }, []);
   return (
     <View style={ApplicationStyles.mainView}>
       <View

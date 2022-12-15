@@ -23,7 +23,6 @@ export const dispatchErrorAction = (dispatch, message) => {
     type: "TOAST",
     payload: {
       message: message,
-      // message2: message,
       type: "error",
     },
   });
@@ -34,7 +33,6 @@ export const dispatchSuccessAction = (dispatch, message) => {
     type: "TOAST",
     payload: {
       message: message,
-      // message2: message,
       type: "success",
     },
   });
@@ -42,10 +40,15 @@ export const dispatchSuccessAction = (dispatch, message) => {
 
 export const getFromDataJson = (mainArray, selectedData, keyName) => {
   let tempArray = [];
+  console.log(mainArray, selectedData);
   selectedData.map((element, index) => {
     const temp = mainArray.filter((obj) => obj.name == element);
-    tempArray.push(keyName + "[" + index + "]");
-    tempArray.push(temp[0].id);
+    console.log("temp--", temp);
+    if (temp.length !== 0) {
+      console.log("here");
+      tempArray.push(keyName + "[" + index + "]");
+      tempArray.push(temp[0].id);
+    }
   });
   var ob2 = {};
   for (var i = 0; i < tempArray.length; i += 2) {

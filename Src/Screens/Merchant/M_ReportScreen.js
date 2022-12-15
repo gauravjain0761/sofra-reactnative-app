@@ -17,14 +17,18 @@ import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import ReportSettled from "../../Components/ReportSettled";
 import { useDispatch, useSelector } from "react-redux";
-import { getSettledReports } from "../../Services/MerchantApi";
+import {
+  getSettledReports,
+  getUnSettledReports,
+} from "../../Services/MerchantApi";
+import { reportDropdownData } from "../../Config/StaticDropdownData";
 
 export default function M_ReportScreen({ navigation }) {
   const [tab, setTab] = useState("report");
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const SETTELED_REPORT = useSelector((e) => e.merchant.setteled_report);
-
+  const [reportType, setreportType] = useState(reportDropdownData[0].name);
   useEffect(() => {
     navigation.addListener("focus", () => {
       dispatch(getSettledReports());
@@ -101,11 +105,34 @@ export default function M_ReportScreen({ navigation }) {
       </View>
     );
   };
+
+  const getReportsData = (text) => {
+    setreportType(text);
+
+    setTab("report");
+
+    if (text == reportDropdownData[0].name) {
+      dispatch(getSettledReports());
+    } else {
+      dispatch(getUnSettledReports());
+    }
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <Text style={ApplicationStyles.welcomeText}>Reports</Text>
+      <RegistrationDropdown
+        data={reportDropdownData}
+        value={reportType}
+        setData={(text) => {
+          getReportsData(text);
+        }}
+        placeholder={reportType}
+        valueField={"name"}
+        style={styles.dropdownRow}
+        placeholderTextColor={Colors.black}
+      />
       <View style={styles.tabView}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => setTab("report")}
           style={tab == "report" ? styles.selectedTab : styles.tab}
         >
@@ -114,7 +141,7 @@ export default function M_ReportScreen({ navigation }) {
           >
             Reports-Settled
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => setTab("order")}
           style={tab == "order" ? styles.selectedTab : styles.tab}
@@ -137,7 +164,7 @@ export default function M_ReportScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.filterTitle}>Apply Date Filters</Text>
         <View style={styles.searchBar}>
           <Image

@@ -17,6 +17,7 @@ import { commonFontStyle } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
 import RegistrationTextInput from "../Components/RegistrationTextInput";
 import PinkButton from "../Components/PinkButton";
+import { useSelector } from "react-redux";
 
 let data = [
   {
@@ -73,6 +74,13 @@ let data = [
   },
 ];
 export default function ReportSettled() {
+  // const REPORT = useSelector((e) =>
+  //   e.state.setteled_report == {}
+  //     ? e.state.unsetteled_report
+  //     : e.state.setteled_report
+  // );
+
+  // console.log("REPORT", REPORT);
   return (
     <View>
       <PinkButton name={"Export to CSV"} onPress={() => {}} text={"small"} />

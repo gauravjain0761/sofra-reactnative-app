@@ -220,14 +220,14 @@ export const DeleteOffer = (postObj) => async (dispatch) => {
   }
 };
 
-export const AddOffer = (postObj, navigation) => async (dispatch) => {
+export const AddOffer = (postObj, onSuccess) => async (dispatch) => {
   dispatch({ type: "PRE_LOADER", payload: true });
 
   const url = merchant_url + "/AddOffer";
   try {
     const data = await POST(dispatch, url, postObj);
     if (data.status == true) {
-      navigation.navigate("M_OfferScreen");
+      onSuccess();
       dispatch(getOffers());
       dispatchSuccessAction(dispatch, data.message);
     } else {
@@ -437,6 +437,23 @@ export const getPromoCodes = () => async (dispatch) => {
   }
 };
 
+export const AddPromoCode = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/AddPromoCode";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      // dispatchAction(dispatch, "ADD_OFF_SLOT", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
 export const getOffSlots = () => async (dispatch) => {
   dispatch({ type: "PRE_LOADER", payload: true });
   let token = await getToken();
@@ -462,6 +479,55 @@ export const deleteOffSlot = (postObj) => async (dispatch) => {
     if (data.status == true) {
       dispatchSuccessAction(dispatch, data.message);
       dispatchAction(dispatch, "DELETE_SLOT", postObj);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const addOffSlot = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/addOffSlot";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "ADD_OFF_SLOT", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const getRestaurnatDetails = () => async (dispatch) => {
+  let token = await getToken();
+  const url = merchant_url + "/getRestaurnatDetails?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_RESTAURANT", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const updateProfile = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/updateProfile";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatch(getRestaurnatDetails());
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
