@@ -44,7 +44,21 @@ export default function M_DashboardScreen({ navigation }) {
             style={styles.menuImage}
             source={require("../../Images/Delivery/xxxhdpi/ic_driver_selected.png")}
           />
-          <TouchableOpacity style={styles.addMenuButton}>
+          <TouchableOpacity style={styles.addMenuButton}
+            onPress={() => {
+              // D_DeliveredOrderScreen
+              // D_CancelledOrderScreen
+              // navigation.navigate('D_AddNewDriver')
+              // navigation.navigate('D_CancelledOrderScreen')
+              navigation.navigate('D_PickUpOrderScreen')
+              // navigation.navigate('D_ActiveOrderScreen')
+
+
+
+
+
+            }}
+          >
             <Text style={styles.addButton}>Add Driver</Text>
           </TouchableOpacity>
         </View>
