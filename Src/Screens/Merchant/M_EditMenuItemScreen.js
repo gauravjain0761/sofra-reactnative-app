@@ -57,6 +57,14 @@ export default function M_EditMenuItemScreen(props) {
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
   const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
   const isFocused = useIsFocused();
+
+  const getArray = (mainArray, filed) => {
+    let temp = [];
+    mainArray.length !== 0 &&
+      mainArray.map((element) => temp.push(element[filed]));
+    return temp;
+  };
+
   useEffect(() => {
     let menuItem = props?.route?.params;
     if (menuItem) {
@@ -70,7 +78,7 @@ export default function M_EditMenuItemScreen(props) {
       setImageItem(menuItem.image ? menuItem.image : "");
       setDescription(menuItem.description);
       setArabicDes(menuItem.description_ar);
-      setMenuDes("");
+      setMenuDes(getArray(menuItem.menuDescriptors, "name"));
       setMenuIdEdit(menuItem.id);
     }
   }, [props, isFocused]);
@@ -222,11 +230,11 @@ export default function M_EditMenuItemScreen(props) {
               <Text style={styles.titleInput}>Menu Categories</Text>
               <RegistrationDropdown
                 data={ALL_CATEGORIES}
-                value={MenuCategory}
+                value={MenuCategory[0]}
                 setData={(text) => {
-                  setMenuCategory(text);
+                  setMenuCategory([text]);
                 }}
-                multiSelect={true}
+                // multiSelect={true}
                 placeholder={"Categories"}
                 valueField={"name"}
                 style={styles.dropdownRow}

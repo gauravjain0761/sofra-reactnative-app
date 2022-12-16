@@ -18,16 +18,18 @@ import Modal from "react-native-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../Services/MerchantApi";
 import { orderStatusData } from "../../Constant/Constant";
+import moment from "moment";
 
 export default function M_OrderScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [categoryDetail, setcategoryDetail] = useState(false);
   const [selectedOrder, setselectedOrder] = useState({});
-
+  const [selectedStatus, setselectedStatus] = useState("ALL");
   const dispatch = useDispatch();
-  const ORDERS = useSelector((e) => e.merchant.orders);
+  const ORDERS = useSelector((e) => e.merchant.filterOrders);
 
   useEffect(() => {
+    // dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOrders());
     });
@@ -52,6 +54,11 @@ export default function M_OrderScreen({ navigation }) {
       </View>
     ),
   });
+
+  const onPressFilterStatus = (type) => {
+    setselectedStatus(type);
+    dispatch({ type: "FILTER_ORDER", payload: type });
+  };
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView>
@@ -60,11 +67,17 @@ export default function M_OrderScreen({ navigation }) {
             return (
               <TouchableOpacity
                 style={{
-                  borderRadius: 3,
+                  borderRadius: 5,
                   marginRight: hp(2),
                   overflow: "hidden",
-                  marginBottom: hp(1.5),
+                  marginBottom: hp(1.2),
+                  borderWidth: 2,
+                  borderColor:
+                    selectedStatus == item.type
+                      ? Colors.black
+                      : Colors.registrationBackground,
                 }}
+                onPress={() => onPressFilterStatus(item.type)}
               >
                 <Text style={[styles.tagText, { backgroundColor: item.color }]}>
                   {item.title}
@@ -74,7 +87,7 @@ export default function M_OrderScreen({ navigation }) {
           })}
         </View>
 
-        {ORDERS.length !== 0 &&
+        {ORDERS.length !== 0 ? (
           ORDERS.map((item, index) => {
             let status = orderStatusData.filter(
               (obj) => obj.type == item.status
@@ -92,7 +105,12 @@ export default function M_OrderScreen({ navigation }) {
                 />
               </TouchableOpacity>
             );
-          })}
+          })
+        ) : (
+          <View>
+            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+          </View>
+        )}
       </ScrollView>
       <Modal
         isVisible={categoryDetail}
@@ -136,7 +154,7 @@ export default function M_OrderScreen({ navigation }) {
           <ScrollView>
             <View style={styles.row}>
               <Text style={styles.leftText}>Order Id:</Text>
-              <Text style={styles.rightText}>{selectedOrder.id}</Text>
+              <Text style={styles.rightText}>{selectedOrder.bookingCode}</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.leftText}>Total Amount:</Text>
@@ -177,11 +195,15 @@ export default function M_OrderScreen({ navigation }) {
             </View>
             <View style={styles.row}>
               <Text style={styles.leftText}>Order Date:</Text>
-              <Text style={styles.rightText}>Nov 02 2022</Text>
+              <Text style={styles.rightText}>
+                {moment(selectedOrder.bookingDate).format("MMM DD YYYY")}
+              </Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.leftText}>Delivery Date:</Text>
-              <Text style={styles.rightText}>AED 0</Text>
+              <Text style={styles.rightText}>
+                {moment(selectedOrder.bookingDate).format("MMM DD YYYY")}
+              </Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.leftText}>Recipient:</Text>
@@ -196,7 +218,7 @@ export default function M_OrderScreen({ navigation }) {
               </Text>
             </View>
             <View style={styles.row}>
-              <Text style={styles.leftText}>Payment Methiod:</Text>
+              <Text style={styles.leftText}>Payment Method:</Text>
               <Text style={styles.rightText}>{selectedOrder.paymentType}</Text>
             </View>
             <View style={styles.row}>
@@ -207,7 +229,9 @@ export default function M_OrderScreen({ navigation }) {
             </View>
             <View style={[styles.row, { marginBottom: hp(3) }]}>
               <Text style={styles.leftText}>Created At:</Text>
-              <Text style={styles.rightText}>N/A</Text>
+              <Text style={styles.rightText}>
+                {moment(selectedOrder.created).format("YYYY MM DD, hh:mm A")}
+              </Text>
             </View>
           </ScrollView>
         </View>

@@ -96,6 +96,32 @@ export default function M_DashboardScreen({ navigation }) {
             </View>
           </View>
         </View>
+        <View style={styles.rowView}>
+          <View style={styles.halfView}>
+            <Text style={styles.halfViewTitle}>
+              {DASHBOARD_DATA ? DASHBOARD_DATA?.totalMenuItems : 0}
+            </Text>
+            <View style={styles.bottomcardRow}>
+              <Image
+                style={styles.bottomcardRowImage}
+                source={require("../../Images/Merchant/xxxhdpi/ic_eraning.png")}
+              />
+              <Text style={styles.rightText}>Total{"\n"}Menu Items</Text>
+            </View>
+          </View>
+          <View style={styles.halfView}>
+            <Text style={styles.halfViewTitle}>
+              {DASHBOARD_DATA ? DASHBOARD_DATA?.bookingsActive : 0}
+            </Text>
+            <View style={styles.bottomcardRow}>
+              <Image
+                style={styles.bottomcardRowImage}
+                source={require("../../Images/Merchant/xxxhdpi/ic_complete_orders.png")}
+              />
+              <Text style={styles.rightText}>Active{"\n"}Orders</Text>
+            </View>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -155,7 +181,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: hp(2),
+    marginTop: hp(2),
   },
   halfView: {
     backgroundColor: Colors.white,
@@ -165,8 +191,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   halfViewTitle: {
-    ...commonFontStyle("M_600", 24, Colors.black),
-    marginBottom: hp(1.5),
+    ...commonFontStyle("M_600", 22, Colors.black),
+    marginBottom: hp(1),
   },
   bottomcardRow: {
     flexDirection: "row",
@@ -174,12 +200,12 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   rightText: {
-    ...commonFontStyle("M_600", 14, Colors.black),
+    ...commonFontStyle("M_600", 13, Colors.black),
     marginLeft: hp(1.5),
   },
   bottomcardRowImage: {
-    height: hp(5),
-    width: hp(5),
+    height: hp(4.5),
+    width: hp(4.5),
     resizeMode: "contain",
   },
 });

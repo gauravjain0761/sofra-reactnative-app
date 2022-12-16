@@ -19,21 +19,12 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const citydata = [
-  {
-    id: 1,
-    strategicName: "SUPERTREND",
-  },
-  { id: 2, strategicName: "VWAP" },
-  { id: 3, strategicName: "RSIMA" },
-  { id: 6, strategicName: "TESTING" },
-  { id: 10, strategicName: "DEMATADE" },
-];
 export default function M_OfferScreen({ navigation }) {
   const dispatch = useDispatch();
   const OFFERS = useSelector((e) => e.merchant.offers);
 
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOffers());
     });

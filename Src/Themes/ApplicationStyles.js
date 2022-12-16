@@ -26,4 +26,9 @@ export default StyleSheet.create({
     marginBottom: hp(3),
     textAlign: "center",
   },
+  nodataStyle: {
+    ...commonFontStyle("M_500", 18, Colors.placeholderColor),
+    textAlign: "center",
+    paddingVertical: hp(3),
+  },
 });

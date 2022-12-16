@@ -69,7 +69,6 @@ export default function M_ProfileScreen({ navigation }) {
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
-      console.log("called");
       dispatch(getRestaurnatDetails());
     });
   }, []);

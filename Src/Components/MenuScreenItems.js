@@ -36,22 +36,29 @@ export default function MenuScreenItems({
         />
       )}
 
-      <Text style={styles.addText}>{item.name}</Text>
+      <Text style={styles.addText}>
+        {screen == "promocode" ? item.title + "(" + item.code + ")" : item.name}
+      </Text>
       <View style={styles.cardBotomBtn}>
-        <TouchableOpacity onPress={() => onEdit()} style={styles.addMenuButton}>
-          <Image
-            style={styles.menuIconButton}
-            source={require("../Images/Merchant/xxxhdpi/edit.png")}
-          />
-          <Text style={styles.addButton}>Edit</Text>
-        </TouchableOpacity>
+        {screen !== "promocode" && (
+          <TouchableOpacity
+            onPress={() => onEdit()}
+            style={styles.addMenuButton}
+          >
+            <Image
+              style={styles.menuIconButton}
+              source={require("../Images/Merchant/xxxhdpi/edit.png")}
+            />
+            <Text style={styles.addButton}>Edit</Text>
+          </TouchableOpacity>
+        )}
         {activeVisible == true && (
           <TouchableOpacity
             onPress={() => onChangeStatus()}
             style={[
               styles.addMenuButton,
               {
-                backgroundColor: status == 1 ? Colors.green : Colors.purple,
+                backgroundColor: status == 1 ? Colors.green : Colors.red,
               },
             ]}
           >
@@ -59,25 +66,29 @@ export default function MenuScreenItems({
               style={styles.menuIconButton}
               source={require("../Images/Merchant/xxxhdpi/ic_tick.png")}
             />
-            <Text style={styles.addButton}>Active</Text>
+            <Text style={styles.addButton}>
+              {status == 1 ? "Active" : "In-Active"}
+            </Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity
-          style={[
-            styles.addMenuButton,
-            {
-              backgroundColor: Colors.grayButtonBackground,
-            },
-          ]}
-          onPress={() => onDelete()}
-        >
-          <Image
-            style={styles.menuIconButton}
-            source={require("../Images/Merchant/xxxhdpi/delete.png")}
-          />
-          <Text style={styles.addButton}>Delete</Text>
-        </TouchableOpacity>
-        {!activeVisible && (
+        {screen !== "promocode" && (
+          <TouchableOpacity
+            style={[
+              styles.addMenuButton,
+              {
+                backgroundColor: Colors.grayButtonBackground,
+              },
+            ]}
+            onPress={() => onDelete()}
+          >
+            <Image
+              style={styles.menuIconButton}
+              source={require("../Images/Merchant/xxxhdpi/delete.png")}
+            />
+            <Text style={styles.addButton}>Delete</Text>
+          </TouchableOpacity>
+        )}
+        {(!activeVisible || screen == "promocode") && (
           <View style={{ opacity: 0 }}>
             <TouchableOpacity
               style={[

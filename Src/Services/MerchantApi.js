@@ -64,8 +64,6 @@ export const getUsers = () => async (dispatch) => {
 };
 
 export const getOrders = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getOrders?auth_token=" + token;
   try {
@@ -82,8 +80,6 @@ export const getOrders = () => async (dispatch) => {
 };
 
 export const getStatitics = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getStatitics?auth_token=" + token;
   try {
@@ -100,8 +96,6 @@ export const getStatitics = () => async (dispatch) => {
 };
 
 export const getSettledReports = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getSettledReports?auth_token=" + token;
   try {
@@ -170,8 +164,6 @@ export const UpdateAppSetting = (postObj) => async (dispatch) => {
 };
 
 export const getAvailbility = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getAvailbility?auth_token=" + token;
   try {
@@ -187,8 +179,6 @@ export const getAvailbility = () => async (dispatch) => {
 };
 
 export const getOffers = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getOffers?auth_token=" + token;
   try {
@@ -322,8 +312,6 @@ export const AddMenuCategory = (postObj, navigation) => async (dispatch) => {
 };
 
 export const getMenuItems = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   const url = merchant_url + "/getMenuItems?auth_token=" + token;
   try {
@@ -421,8 +409,24 @@ export const enableDisableMenues = (postObj) => async (dispatch) => {
   }
 };
 
-export const getPromoCodes = () => async (dispatch) => {
+export const changePromoCodeStatus = (postObj) => async (dispatch) => {
   dispatch({ type: "PRE_LOADER", payload: true });
+  const url = merchant_url + "/changePromoCodeStatus";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.error == "false" || data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      console.log("vwjhfvjfhg");
+      dispatchAction(dispatch, "PROMOCODE_STATUS_UPDATE", postObj);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const getPromoCodes = () => async (dispatch) => {
   let token = await getToken();
   const url = merchant_url + "/getPromoCodes?auth_token=" + token;
   try {
@@ -455,7 +459,6 @@ export const AddPromoCode = (postObj) => async (dispatch) => {
 };
 
 export const getOffSlots = () => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
   let token = await getToken();
   const url = merchant_url + "/getOffSlots?auth_token=" + token;
   try {

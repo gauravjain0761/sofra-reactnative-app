@@ -33,7 +33,10 @@ export default function M_MenuScreen({ navigation }) {
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
 
   useEffect(() => {
-    dispatch(getMenuCategories());
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getMenuCategories());
+    });
   }, []);
 
   const onAddCategory = () => {

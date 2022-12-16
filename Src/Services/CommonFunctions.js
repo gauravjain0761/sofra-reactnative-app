@@ -40,7 +40,6 @@ export const dispatchSuccessAction = (dispatch, message) => {
 
 export const getFromDataJson = (mainArray, selectedData, keyName) => {
   let tempArray = [];
-  console.log(mainArray, selectedData);
   selectedData.map((element, index) => {
     const temp = mainArray.filter((obj) => obj.name == element);
     console.log("temp--", temp);

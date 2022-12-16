@@ -9,14 +9,14 @@ export const CurrentDeliverData = [
 ];
 
 export const ExpiryTypeData = [
-  { id: 2, name: "NO_LIMIT", label: "No Limit" },
+  { id: 0, name: "NO", label: "No Limit" },
   { id: 1, name: "DATE", label: "For Specific Dates" },
-  { id: 2, name: "NO", label: "For Specific Count" },
+  { id: 2, name: "COUNT", label: "For Specific Count" },
 ];
 
 export const VendorsValidityData = [
-  { id: 1, name: "ALL" },
-  { id: 2, name: "SPECIFIC" },
+  { id: 1, name: "ALL", label: "For All Users" },
+  { id: 2, name: "USERS", label: "For Specific Users" },
 ];
 
 export const reportDropdownData = [
@@ -35,6 +35,6 @@ export const offerUserData = [
 ];
 
 export const discountType = [
-  { id: 1, name: "PRICE", label: "Price" },
-  { id: 2, name: "PERCENTAGE", label: "Percentage" },
+  { id: 1, name: "Price" },
+  { id: 2, name: "Percentage" },
 ];

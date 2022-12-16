@@ -5,6 +5,7 @@ const initialState = {
   toast: {},
   user: {},
   orders: [],
+  filterOrders: [],
   statistics: {},
   unsetteled_report: {},
   setteled_report: {},
@@ -44,7 +45,12 @@ export default function (state = initialState, action) {
       return initialState;
     }
     case "SET_ORDERS": {
-      return { ...state, orders: action.payload, preLoader: false };
+      return {
+        ...state,
+        orders: action.payload,
+        filterOrders: action.payload,
+        preLoader: false,
+      };
     }
     case "SET_STATISTICS": {
       return { ...state, statistics: action.payload, preLoader: false };
@@ -144,6 +150,24 @@ export default function (state = initialState, action) {
     }
     case "SET_RESTAURANT": {
       return { ...state, restaurant: action.payload, preLoader: false };
+    }
+    case "FILTER_ORDER": {
+      console.log(action.payload);
+      let orders = Object.assign([], state.orders);
+      if (action.payload == "ALL") orders = orders;
+      else orders = orders.filter((obj) => obj.status == action.payload);
+      return { ...state, filterOrders: orders };
+    }
+    case "PROMOCODE_STATUS_UPDATE": {
+      console.log(action.payload);
+      let promocodes = Object.assign([], state.promocodes);
+      index = promocodes.findIndex((obj) => obj.id == action.payload.codeId);
+
+      console.log(promocodes);
+      promocodes[index].status =
+        action.payload.status == 1 ? "ACTIVE" : "ACTIVE";
+      console.log(promocodes);
+      return { ...state, promocodes: promocodes, preLoader: false };
     }
     default:
       return state;

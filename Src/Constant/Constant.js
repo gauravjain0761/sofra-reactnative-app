@@ -1,6 +1,7 @@
 import Colors from "../Themes/Colors";
 
 export const orderStatusData = [
+  { title: "All", color: Colors.green, type: "ALL" },
   { title: "Pending", color: Colors.pink, type: "PENDING" },
   { title: "Accepted", color: Colors.green, type: "ACCEPTED" },
   { title: "Prepare", color: Colors.blueTag, type: "PREPARING" },

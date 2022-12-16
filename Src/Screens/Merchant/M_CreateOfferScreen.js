@@ -20,10 +20,7 @@ import {
 } from "../../Services/CommonFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { AddOffer } from "../../Services/MerchantApi";
-import {
-  offerUserData,
-  VendorsValidityData,
-} from "../../Config/StaticDropdownData";
+import { offerUserData } from "../../Config/StaticDropdownData";
 
 export default function M_CreateOfferScreen({ navigation }) {
   const dispatch = useDispatch();

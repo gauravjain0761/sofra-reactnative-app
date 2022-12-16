@@ -35,6 +35,7 @@ export default function ChooseLoginScreen({ navigation }) {
 
     dispatch({ type: "PRE_LOADER", payload: true });
     let token = await getToken();
+    console.log("token--", token);
     let user = await getUser();
     if (token && user) {
       dispatch(getCities());

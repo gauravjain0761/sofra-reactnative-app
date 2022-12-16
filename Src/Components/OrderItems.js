@@ -3,6 +3,7 @@ import React from "react";
 import Colors from "../Themes/Colors";
 import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import moment from "moment";
 
 export default function OrderItems({ item, navigation, status }) {
   return (
@@ -16,10 +17,12 @@ export default function OrderItems({ item, navigation, status }) {
         </View>
         <View style={styles.RightView}>
           <View>
-            <Text style={styles.name} numberOfLines={1}>
-              {item.restaurant.name}
+            <Text style={styles.name} numberOfLines={2}>
+              {item.user.name}
             </Text>
-            <Text style={styles.type}>Breakfast, Lunch, Dinner</Text>
+            <Text style={styles.type}>
+              {"Date " + moment(item.bookingDate).format("YYYY-MM-DD")}
+            </Text>
             <Text style={styles.name}>AED {item.totalPrice}</Text>
             <Image
               style={styles.truckLogo}

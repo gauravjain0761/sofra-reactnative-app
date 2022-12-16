@@ -24,10 +24,31 @@ export default function M_StatisticsScreen({ navigation }) {
   const dispatch = useDispatch();
   const STATISTICS = useSelector((e) => e.merchant.statistics);
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+
     navigation.addListener("focus", () => {
       dispatch(getStatitics());
     });
   }, []);
+
+  const CommonEarningItems = ({ name, amount, vat }) => {
+    return (
+      <View style={styles.itemList}>
+        <View style={styles.row}>
+          <Text style={styles.leftText}>Item</Text>
+          <Text style={styles.rightText}>{name}</Text>
+        </View>
+        <View style={styles.middleRow}>
+          <Text style={styles.leftText}>Amount(EXE VAT)</Text>
+          <Text style={styles.rightText}>{amount}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.leftText}>VAT</Text>
+          <Text style={styles.rightText}>{vat}</Text>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <View style={ApplicationStyles.mainView}>
@@ -54,7 +75,7 @@ export default function M_StatisticsScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.filterTitle}>Apply Date Filters</Text>
         {tab == "order" ? (
           <View>
@@ -112,24 +133,45 @@ export default function M_StatisticsScreen({ navigation }) {
                 style={styles.searchIcon2}
               />
             </View>
-            {[0, 1, 2, 3, 4, 5, 6].map((element, index) => {
-              return (
-                <View style={styles.itemList}>
-                  <View style={styles.row}>
-                    <Text style={styles.leftText}>Item</Text>
-                    <Text style={styles.rightText}>Cash payments</Text>
-                  </View>
-                  <View style={styles.middleRow}>
-                    <Text style={styles.leftText}>Amount(EXE VAT)</Text>
-                    <Text style={styles.rightText}>AED 0.00</Text>
-                  </View>
-                  <View style={styles.row}>
-                    <Text style={styles.leftText}>VAT</Text>
-                    <Text style={styles.rightText}>N/A</Text>
-                  </View>
-                </View>
-              );
-            })}
+            {STATISTICS && (
+              <View>
+                <CommonEarningItems
+                  name={"Cash payments"}
+                  amount={STATISTICS.totalCASHEarnings}
+                  vat={STATISTICS.cashBookingVat}
+                />
+                <CommonEarningItems
+                  name={"Credit Card payments"}
+                  amount={STATISTICS.totalCARDEarnings}
+                  vat={STATISTICS.CARDBookingVat}
+                />
+                <CommonEarningItems
+                  name={"Discounts Values"}
+                  amount={STATISTICS.discountCodeValue}
+                  vat={"N/A"}
+                />
+                <CommonEarningItems
+                  name={"Sofra Commission Amount"}
+                  amount={STATISTICS.sofraFixedComission}
+                  vat={"N/A"}
+                />
+                <CommonEarningItems
+                  name={"Sofra Vat"}
+                  amount={STATISTICS.sofraVatTotal}
+                  vat={"N/A"}
+                />
+                <CommonEarningItems
+                  name={"Sofra Convenience Fee"}
+                  amount={STATISTICS.sofraConvenience}
+                  vat={"N/A"}
+                />
+                <CommonEarningItems
+                  name={"Partners Total Net Profit"}
+                  amount={STATISTICS.partnerProfit}
+                  vat={"N/A"}
+                />
+              </View>
+            )}
           </View>
         )}
       </ScrollView>

@@ -58,16 +58,16 @@ export default function MerchantLoginScreen() {
           <PinkButton
             onPress={() => onSendMail()}
             style={styles.dbuttonStyle}
-            name={"Send Email"}
+            name={"Submit"}
           />
 
           <Text style={styles.forgot2}>
-            Already have an accout?{" "}
+            Already have an account?{" "}
             <Text
               style={{ color: Colors.pink }}
               onPress={() => navigation.goBack()}
             >
-              Log In
+              Sign In
             </Text>
           </Text>
         </View>

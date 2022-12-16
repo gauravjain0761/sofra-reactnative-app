@@ -77,6 +77,7 @@ export default function M_SlotScreen({ navigation }) {
   const [current, setcurrent] = useState(moment().format("YYYY-MM-DD"));
   const calendarRef = React.useRef();
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOffSlots());
       setcurrent(moment().format("YYYY-MM-DD"));

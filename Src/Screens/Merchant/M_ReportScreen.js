@@ -27,9 +27,16 @@ export default function M_ReportScreen({ navigation }) {
   const [tab, setTab] = useState("report");
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
-  const SETTELED_REPORT = useSelector((e) => e.merchant.setteled_report);
   const [reportType, setreportType] = useState(reportDropdownData[0].name);
+  const setteled_report = useSelector((e) => e.merchant.setteled_report);
+  const unsetteled_report = useSelector((e) => e.merchant.unsetteled_report);
+
+  const REPORT =
+    Object.keys(setteled_report).length == 0
+      ? unsetteled_report
+      : setteled_report;
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getSettledReports());
     });
@@ -45,17 +52,19 @@ export default function M_ReportScreen({ navigation }) {
         <View style={styles.itemList}>
           <View style={styles.row}>
             <Text style={styles.rightText}>Total Cash Orders (Completed)</Text>
-            <Text style={styles.rightText}>0</Text>
+            <Text style={styles.rightText}>{REPORT.cashOrders}</Text>
           </View>
           <View style={styles.middleRow}>
             <Text style={styles.rightText}>
               Total Online Orders (Completed)
             </Text>
-            <Text style={styles.rightText}>0</Text>
+            <Text style={styles.rightText}>{REPORT.onlineOrders}</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.rightText}>Total Orders (Completed</Text>
-            <Text style={styles.rightText}>0</Text>
+            <Text style={styles.rightText}>Total Orders (Completed)</Text>
+            <Text style={styles.rightText}>
+              {REPORT.cashOrders + REPORT.onlineOrders}
+            </Text>
           </View>
         </View>
       </View>
@@ -108,18 +117,18 @@ export default function M_ReportScreen({ navigation }) {
 
   const getReportsData = (text) => {
     setreportType(text);
-
     setTab("report");
-
     if (text == reportDropdownData[0].name) {
+      dispatch({ type: "PRE_LOADER", payload: true });
       dispatch(getSettledReports());
     } else {
+      dispatch({ type: "PRE_LOADER", payload: true });
       dispatch(getUnSettledReports());
     }
   };
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={ApplicationStyles.welcomeText}>Reports</Text>
+      <Text style={ApplicationStyles.welcomeText}>{reportType}</Text>
       <RegistrationDropdown
         data={reportDropdownData}
         value={reportType}
@@ -185,7 +194,7 @@ export default function M_ReportScreen({ navigation }) {
         </View>
 
         {tab == "order" && <OrderComponent />}
-        {tab == "report" && <ReportSettled />}
+        {tab == "report" && <ReportSettled reportType={reportType} />}
         {tab == "summary" && <SummaryComponent />}
       </ScrollView>
     </View>

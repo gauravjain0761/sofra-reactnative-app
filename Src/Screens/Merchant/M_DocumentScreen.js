@@ -17,10 +17,19 @@ import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
-export default function M_DocumentScreen() {
+export default function M_DocumentScreen({ navigation }) {
   const [document, setdocument] = useState("");
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      // dispatch(getOffers());
+    });
+  }, []);
   const openPicker = () => {};
 
   return (

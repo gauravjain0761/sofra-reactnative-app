@@ -43,6 +43,7 @@ export default function M_UpdateAvailability({ navigation }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getAvailbility());
     });

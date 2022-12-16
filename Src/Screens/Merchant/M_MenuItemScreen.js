@@ -51,9 +51,12 @@ export default function M_MenuItemScreen({ navigation }) {
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
   const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
   useEffect(() => {
-    dispatch(getMenuItems());
-    dispatch(getMenuCategories());
-    dispatch(getMenuDescriptors());
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getMenuItems());
+      dispatch(getMenuCategories());
+      dispatch(getMenuDescriptors());
+    });
   }, []);
   const openPicker = () => {
     ImagePicker.openPicker({
@@ -64,6 +67,7 @@ export default function M_MenuItemScreen({ navigation }) {
     });
   };
   const onAddMenuItem = () => {
+    console.log("MenuCategory", MenuCategory);
     let menuCatJson = getFromDataJson(
       ALL_CATEGORIES,
       MenuCategory,
@@ -86,17 +90,20 @@ export default function M_MenuItemScreen({ navigation }) {
       price: Number(Price),
       discount: Number(Discount),
       maxLimit: Number(MaxLimit),
-      image: {
-        uri: ImageItem.sourceURL,
-        type: ImageItem.mime, // or photo.type image/jpg
-        name:
-          "image_" +
-          moment().unix() +
-          "_" +
-          ImageItem.sourceURL.split("/").pop(),
-      },
+      image: ImageItem.sourceURL
+        ? {
+            uri: ImageItem.sourceURL,
+            type: ImageItem.mime, // or photo.type image/jpg
+            name:
+              "image_" +
+              moment().unix() +
+              "_" +
+              ImageItem.sourceURL.split("/").pop(),
+          }
+        : undefined,
     };
-    dispatch(AddMenuItem(data));
+    console.log(data);
+    // dispatch(AddMenuItem(data));
   };
   const validation = () => {
     if (Name.trim() !== "") {
@@ -209,11 +216,11 @@ export default function M_MenuItemScreen({ navigation }) {
               <Text style={styles.titleInput}>Menu Categories</Text>
               <RegistrationDropdown
                 data={ALL_CATEGORIES}
-                value={MenuCategory}
+                value={MenuCategory[0]}
                 setData={(text) => {
-                  setMenuCategory(text);
+                  setMenuCategory([text]);
                 }}
-                multiSelect={true}
+                // multiSelect={true}
                 placeholder={"Categories"}
                 valueField={"name"}
                 style={styles.dropdownRow}

@@ -19,7 +19,11 @@ import MenuScreenItems from "../../Components/MenuScreenItems";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import GrayButton from "../../Components/GrayButton";
 import { useDispatch, useSelector } from "react-redux";
-import { AddPromoCode, getPromoCodes } from "../../Services/MerchantApi";
+import {
+  AddPromoCode,
+  changePromoCodeStatus,
+  getPromoCodes,
+} from "../../Services/MerchantApi";
 import {
   dispatchErrorAction,
   getFromDataJson,
@@ -53,12 +57,12 @@ export default function M_PromocodeScreen({ navigation }) {
   const [businessArabic, setbusinessArabic] = useState("");
   const [des, setdes] = useState("");
   const [Arabicdes, setArabicdes] = useState("");
-  const [price, setprice] = useState("PRICE");
+  const [price, setprice] = useState("Price");
   const [discountValue, setdiscountValue] = useState("");
   const [maxDiscount, setmaxDiscount] = useState("");
   const [minOrderValue, setminOrderValue] = useState("");
   const [validityType, setvalidityType] = useState("ALL");
-  const [expiryType, setexpiryType] = useState("NO_LIMIT");
+  const [expiryType, setexpiryType] = useState("NO");
   const [image, setimage] = useState("");
   const [StartDate, setStartDate] = useState("");
   const [EndDate, setEndDate] = useState("");
@@ -69,6 +73,10 @@ export default function M_PromocodeScreen({ navigation }) {
   const [dateType, setdateType] = useState([]);
   const USERS = useSelector((e) => e.merchant.users);
   useEffect(() => {
+    // dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getPromoCodes());
+    });
     // dispatch(getPromoCodes());
   }, []);
   const openPicker = () => {
@@ -84,9 +92,10 @@ export default function M_PromocodeScreen({ navigation }) {
     let data = {
       title: title,
       title_ar: arabicTitle,
-      vendorsValidity: validityType,
+      type: validityType,
       description: des,
       description_ar: Arabicdes,
+      vendorsValidity: "SPECIFIC",
       image: image.sourceURL
         ? {
             uri: image.sourceURL,
@@ -98,69 +107,52 @@ export default function M_PromocodeScreen({ navigation }) {
               image.sourceURL.split("/").pop(),
           }
         : undefined,
-      type: "",
-      code: discountCode !== "" ? discountCode.toUpperCase() : undefined,
+      discountType: price,
+      code: discountCode !== "" ? discountCode.toUpperCase() : null,
       expiryType: expiryType,
       startDate:
-        StartDate !== "" ? moment(StartDate).format("YYYY-MM-DD") : undefined,
-      endDate:
-        EndDate !== "" ? moment(EndDate).format("YYYY-MM-DD") : undefined,
+        StartDate !== "" ? moment(StartDate).format("YYYY-MM-DD") : null,
+      endDate: EndDate !== "" ? moment(EndDate).format("YYYY-MM-DD") : null,
       discountValue: discountValue,
       maxDiscountPrice: maxDiscount,
       minimumOrderValue: minOrderValue,
-      count: count !== "" ? count : undefined,
+      count: count !== "" ? count : null,
       ...userIdJson,
     };
     dispatch(AddPromoCode(data));
     console.log(data);
   };
 
+  const checkExpiryTypeValidation = () => {
+    if (expiryType == "DATE") {
+      if (StartDate !== "" && EndDate !== "") {
+        addPromoCode();
+      } else {
+        dispatchErrorAction(dispatch, "Please select start and end date");
+      }
+    } else if (expiryType == "COUNT") {
+      if (count !== "") {
+        addPromoCode();
+      } else {
+        dispatchErrorAction(dispatch, "Please enter count");
+      }
+    } else {
+      addPromoCode();
+    }
+  };
   const validation = () => {
     if (title.trim() !== "") {
-      if (hasArabicCharacters(arabicTitle)) {
+      if (arabicTitle !== "") {
         if (des.trim() !== "") {
-          if (Arabicdes.trim() !== "") {
-            if (
-              discountValue.trim() !== "" &&
-              Number.isInteger(discountValue)
-            ) {
-              if (maxDiscount.trim() !== "" && Number.isInteger(maxDiscount)) {
-                if (
-                  minOrderValue.trim() !== "" &&
-                  Number.isInteger(minOrderValue)
-                ) {
-                  if (validityType.trim() !== "") {
-                    if (expiryType.trim() !== "") {
-                      if (image.trim() !== "") {
-                      } else {
-                        dispatchErrorAction(dispatch, "Please select image");
-                      }
-                    } else {
-                      dispatchErrorAction(
-                        dispatch,
-                        "Please select expiry type"
-                      );
-                    }
-                  } else {
-                    dispatchErrorAction(
-                      dispatch,
-                      "Please select validity type"
-                    );
-                  }
-                } else {
-                  dispatchErrorAction(
-                    dispatch,
-                    "Please enter minimum order value"
-                  );
-                }
+          if (Arabicdes !== "") {
+            if (validityType == "USERS") {
+              if (Users.length !== 0) {
+                checkExpiryTypeValidation();
               } else {
-                dispatchErrorAction(
-                  dispatch,
-                  "Please enter maximum discount amount"
-                );
+                dispatchErrorAction(dispatch, "Please select users");
               }
             } else {
-              dispatchErrorAction(dispatch, "Please enter discount value");
+              checkExpiryTypeValidation();
             }
           } else {
             dispatchErrorAction(dispatch, "Please enter description in arabic");
@@ -176,7 +168,6 @@ export default function M_PromocodeScreen({ navigation }) {
     }
   };
   const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
     if (dateType == "start") {
       setStartDate(date);
     } else {
@@ -184,7 +175,11 @@ export default function M_PromocodeScreen({ navigation }) {
     }
     setDatePickerVisibility(false);
   };
-
+  const onChangeStatus = (id, status) => {
+    let data = { codeId: id, status: status == 1 ? 0 : 1, language: "en" };
+    console.log(data);
+    dispatch(changePromoCodeStatus(data));
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -194,12 +189,20 @@ export default function M_PromocodeScreen({ navigation }) {
             PROMO_CODES.map((element, index) => {
               return (
                 <MenuScreenItems
+                  item={element}
                   onEdit={() =>
                     navigation.navigate("M_EditPromocodeScreen", {
                       params: element,
                     })
                   }
-                  activeVisible={false}
+                  onChangeStatus={() =>
+                    onChangeStatus(
+                      element.id,
+                      element.status == "ACTIVE" ? 1 : 0
+                    )
+                  }
+                  status={element.status == "ACTIVE" ? 1 : 0}
+                  activeVisible={true}
                   screen={"promocode"}
                 />
               );
@@ -262,7 +265,6 @@ export default function M_PromocodeScreen({ navigation }) {
               }}
               placeholder={price !== "" ? price : "Discount Type"}
               valueField={"name"}
-              labelField={"label"}
               placeholderTextColor={Colors.black}
             />
             <RegistrationTextInput
@@ -288,7 +290,7 @@ export default function M_PromocodeScreen({ navigation }) {
         <View>
           <Text style={styles.title22}>Validity Type*</Text>
           <RegistrationDropdown
-            data={offerUserData}
+            data={VendorsValidityData}
             value={validityType}
             setData={(text) => {
               setvalidityType(text);
@@ -298,7 +300,7 @@ export default function M_PromocodeScreen({ navigation }) {
             labelField={"label"}
             placeholderTextColor={Colors.black}
           />
-          {validityType == "SPECIFIC" && (
+          {validityType == "USERS" && (
             <RegistrationDropdown
               data={USERS}
               value={Users}
@@ -336,7 +338,11 @@ export default function M_PromocodeScreen({ navigation }) {
                     setDatePickerVisibility(true), setdateType("start");
                   }}
                   placeholder={"Start date"}
-                  value={moment(StartDate).format("MM/DD/YYYY")}
+                  value={
+                    StartDate !== ""
+                      ? moment(StartDate).format("MM/DD/YYYY")
+                      : ""
+                  }
                   onChangeText={(text) => setStartDate(text)}
                 />
               </View>
@@ -346,13 +352,15 @@ export default function M_PromocodeScreen({ navigation }) {
                     setDatePickerVisibility(true), setdateType("end");
                   }}
                   placeholder={"End date"}
-                  value={moment(EndDate).format("MM/DD/YYYY")}
+                  value={
+                    EndDate !== "" ? moment(EndDate).format("MM/DD/YYYY") : ""
+                  }
                   onChangeText={(text) => setEndDate(text)}
                 />
               </View>
             </View>
           )}
-          {expiryType == "NO" && (
+          {expiryType == "COUNT" && (
             <RegistrationTextInput
               keyboardType={"numeric"}
               placeholder={"Enter the discount code expire count"}
@@ -393,7 +401,7 @@ export default function M_PromocodeScreen({ navigation }) {
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <PinkButton
                 onPress={() => {
-                  addPromoCode();
+                  validation();
                 }}
                 text={"small"}
                 name={"Save"}
