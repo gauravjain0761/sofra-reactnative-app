@@ -14,7 +14,7 @@ export default function PinkButton({
   return (
     <TouchableOpacity
       onPress={() => onPress()}
-      style={[style, styles.buttonView]}
+      style={[styles.buttonView, style]}
     >
       {text == "small" ? (
         <Text style={[styles.textSmall, buttonTextStyle]}>{name}</Text>

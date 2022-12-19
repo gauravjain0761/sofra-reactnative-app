@@ -17,17 +17,19 @@ import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { getDocuments } from "../../Services/MerchantApi";
 
 export default function M_DocumentScreen({ navigation }) {
   const [document, setdocument] = useState("");
   const dispatch = useDispatch();
+  const DOCUMENTS = useSelector((e) => e.merchant.documents);
 
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
-      // dispatch(getOffers());
+      dispatch(getDocuments());
     });
   }, []);
   const openPicker = () => {};
@@ -56,35 +58,41 @@ export default function M_DocumentScreen({ navigation }) {
               )}
             </TouchableOpacity>
           </View>
-          {[0, 1, 2, 3, 45, 6, 7, 8, 9].map((item, index) => {
-            return (
-              <View style={styles.row}>
-                <View style={styles.innerRow}>
-                  <Image
-                    source={require("../../Images/Merchant/xxxhdpi/ic_doc_color.png")}
-                    style={styles.docImage}
-                  />
-                  <Text numberOfLines={1} style={styles.docNmae}>
-                    35435454645_76
-                  </Text>
-                </View>
-                <View style={styles.innerRow2}>
-                  <TouchableOpacity>
+          {DOCUMENTS.length !== 0 ? (
+            DOCUMENTS.map((item, index) => {
+              return (
+                <View style={styles.row}>
+                  <View style={styles.innerRow}>
                     <Image
-                      source={require("../../Images/Merchant/xxxhdpi/ic_download.png")}
-                      style={[styles.docImage, { marginRight: hp(1) }]}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Image
-                      source={require("../../Images/Merchant/xxxhdpi/ic_remove.png")}
+                      source={require("../../Images/Merchant/xxxhdpi/ic_doc_color.png")}
                       style={styles.docImage}
                     />
-                  </TouchableOpacity>
+                    <Text numberOfLines={1} style={styles.docNmae}>
+                      {item.image}
+                    </Text>
+                  </View>
+                  <View style={styles.innerRow2}>
+                    <TouchableOpacity>
+                      <Image
+                        source={require("../../Images/Merchant/xxxhdpi/ic_download.png")}
+                        style={[styles.docImage, { marginRight: hp(1) }]}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Image
+                        source={require("../../Images/Merchant/xxxhdpi/ic_remove.png")}
+                        style={styles.docImage}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            );
-          })}
+              );
+            })
+          ) : (
+            <View>
+              <Text style={ApplicationStyles.nodataStyle}>No Data</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
       <PinkButton

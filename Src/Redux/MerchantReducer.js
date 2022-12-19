@@ -23,6 +23,7 @@ const initialState = {
   promocodes: [],
   offSlots: [],
   restaurant: {},
+  documents: [],
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -165,9 +166,12 @@ export default function (state = initialState, action) {
 
       console.log(promocodes);
       promocodes[index].status =
-        action.payload.status == 1 ? "ACTIVE" : "ACTIVE";
+        action.payload.status == 1 ? "ACTIVE" : "IN-ACTIVE";
       console.log(promocodes);
       return { ...state, promocodes: promocodes, preLoader: false };
+    }
+    case "SET_DOCUMENTS": {
+      return { ...state, documents: action.payload };
     }
     default:
       return state;

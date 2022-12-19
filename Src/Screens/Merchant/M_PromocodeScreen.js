@@ -73,7 +73,7 @@ export default function M_PromocodeScreen({ navigation }) {
   const [dateType, setdateType] = useState([]);
   const USERS = useSelector((e) => e.merchant.users);
   useEffect(() => {
-    // dispatch({ type: "PRE_LOADER", payload: true });
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getPromoCodes());
     });

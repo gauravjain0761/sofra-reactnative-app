@@ -538,3 +538,18 @@ export const updateProfile = (postObj) => async (dispatch) => {
     dispatchErrorAction(dispatch, "Something went wrong!");
   }
 };
+
+export const getDocuments = () => async (dispatch) => {
+  let token = await getToken();
+  const url = merchant_url + "/getDocuments?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_DOCUMENTS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};

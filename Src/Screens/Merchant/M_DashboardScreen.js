@@ -59,7 +59,7 @@ export default function M_DashboardScreen({ navigation }) {
             <Text style={styles.cardTitle}>How it Works</Text>
             <Image
               style={styles.menuImage}
-              source={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
+              source={require("../../Images/Merchant/xxxhdpi/img_category.png")}
             />
             <Text style={styles.addText}>Add your category</Text>
             <TouchableOpacity
@@ -104,7 +104,7 @@ export default function M_DashboardScreen({ navigation }) {
             <View style={styles.bottomcardRow}>
               <Image
                 style={styles.bottomcardRowImage}
-                source={require("../../Images/Merchant/xxxhdpi/ic_eraning.png")}
+                source={require("../../Images/Merchant/xxxhdpi/ic_menu_dashboard.png")}
               />
               <Text style={styles.rightText}>Total{"\n"}Menu Items</Text>
             </View>
@@ -116,7 +116,7 @@ export default function M_DashboardScreen({ navigation }) {
             <View style={styles.bottomcardRow}>
               <Image
                 style={styles.bottomcardRowImage}
-                source={require("../../Images/Merchant/xxxhdpi/ic_complete_orders.png")}
+                source={require("../../Images/Merchant/xxxhdpi/ic_active_order.png")}
               />
               <Text style={styles.rightText}>Active{"\n"}Orders</Text>
             </View>

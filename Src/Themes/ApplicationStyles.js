@@ -31,4 +31,17 @@ export default StyleSheet.create({
     textAlign: "center",
     paddingVertical: hp(3),
   },
+  modalStyle: {
+    margin: 0,
+    justifyContent: "flex-end",
+    borderTopStartRadius: 50,
+    borderTopEndRadius: 50,
+  },
+  modalViewStyle: {
+    backgroundColor: Colors.white,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    // paddingBottom: hp(3),
+    maxHeight: hp(85),
+  },
 });

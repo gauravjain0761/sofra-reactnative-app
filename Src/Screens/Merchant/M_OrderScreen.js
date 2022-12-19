@@ -29,7 +29,7 @@ export default function M_OrderScreen({ navigation }) {
   const ORDERS = useSelector((e) => e.merchant.filterOrders);
 
   useEffect(() => {
-    // dispatch({ type: "PRE_LOADER", payload: true });
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOrders());
     });
@@ -115,12 +115,7 @@ export default function M_OrderScreen({ navigation }) {
       <Modal
         isVisible={categoryDetail}
         // deviceWidth={SCREEN_WIDTH}
-        style={{
-          margin: 0,
-          justifyContent: "flex-end",
-          borderTopStartRadius: 50,
-          borderTopEndRadius: 50,
-        }}
+        style={ApplicationStyles.modalStyle}
         onBackButtonPress={() => {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
@@ -128,15 +123,7 @@ export default function M_OrderScreen({ navigation }) {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
       >
-        <View
-          style={{
-            backgroundColor: Colors.white,
-            borderTopStartRadius: 20,
-            borderTopEndRadius: 20,
-            // paddingBottom: hp(3),
-            maxHeight: hp(85),
-          }}
-        >
+        <View style={ApplicationStyles.modalViewStyle}>
           <View style={styles.titleView}>
             <Text style={styles.detailText}>Order Details</Text>
             <TouchableOpacity
