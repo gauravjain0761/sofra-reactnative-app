@@ -25,9 +25,10 @@ import {
   updateProfile,
 } from "../../Services/MerchantApi";
 import { media_url } from "../../Config/AppConfig";
-import { vatType } from "../../Config/StaticDropdownData";
+import { deliveryTimeData, vatType } from "../../Config/StaticDropdownData";
 import {
   dispatchErrorAction,
+  getDataJsonAvailability,
   getFromDataJson,
 } from "../../Services/CommonFunctions";
 
@@ -43,8 +44,8 @@ const citydata = [
 ];
 export default function M_ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [firstname, setfirstname] = useState("Jasica");
-  const [lastname, setlastname] = useState("Birnilvis");
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setlastname] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
   const [businessName, setbusinessName] = useState("");
   const [arabicBName, setarabicBName] = useState("");
@@ -66,8 +67,11 @@ export default function M_ProfileScreen({ navigation }) {
   const CUISINES = useSelector((e) => e.merchant.cuisines);
   const CATEGORIES = useSelector((e) => e.merchant.categories);
   const fcmToken = useSelector((e) => e.auth.fcmToken);
+  const [timeData, settimeData] = useState([]);
+
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
+    settimeData(deliveryTimeData());
     navigation.addListener("focus", () => {
       dispatch(getRestaurnatDetails());
     });
@@ -80,9 +84,11 @@ export default function M_ProfileScreen({ navigation }) {
     return temp;
   };
   useEffect(() => {
-    console.log(RESTAURANT);
     if (RESTAURANT !== {} && Object.keys(RESTAURANT).length !== 0) {
       let city = CITIES.filter((obj) => obj.id == RESTAURANT.cityId);
+      let deliveryTime = timeData.filter(
+        (obj) => obj.name == RESTAURANT.deliveryTime
+      );
       setfirstname(RESTAURANT.first_name);
       setlastname(RESTAURANT.last_name);
       setphoneNumber(RESTAURANT.phone);
@@ -90,7 +96,7 @@ export default function M_ProfileScreen({ navigation }) {
       setarabicBName(RESTAURANT.name_ar);
       setb_category(getArray(RESTAURANT.categories, "name"));
       setVATtype(RESTAURANT.vatType);
-      setdeliveryTime(RESTAURANT.deliveryTime);
+      setdeliveryTime(deliveryTime[0].name);
       setcity(city[0].name);
       setcuisine(getArray(RESTAURANT.cusinies, "name"));
       setimage(RESTAURANT.image);
@@ -114,52 +120,37 @@ export default function M_ProfileScreen({ navigation }) {
     let cusineJson = getFromDataJson(CUISINES, cuisine, "cusineIds");
     let categoriesJson = getFromDataJson(CATEGORIES, b_category, "categoryIds");
     let data = {};
-    if (image.sourceURL) {
-      data = {
-        name: businessName,
-        name_ar: arabicBName,
-        first_name: firstname,
-        last_name: lastname,
-        phone: phoneNumber,
-        description: des,
-        description_ar: arabicDes,
-        location: location,
-        cityId: cityName[0].id,
-        deliveryTime: deliveryTime,
-        vatType: vatType,
-        image: {
-          uri: image.sourceURL,
-          type: image.mime, // or photo.type image/jpg
-          name:
-            "image_" + moment().unix() + "_" + image.sourceURL.split("/").pop(),
-        },
-        ...cusineJson,
-        ...categoriesJson,
-        deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
-        deviceToken: fcmToken,
-        language: "en",
-      };
-    } else {
-      data = {
-        name: businessName,
-        name_ar: arabicBName,
-        first_name: firstname,
-        last_name: lastname,
-        phone: phoneNumber,
-        description: des,
-        description_ar: arabicDes,
-        location: location,
-        cityId: cityName[0].id,
-        deliveryTime: deliveryTime,
-        vatType: VATtype,
-        ...cusineJson,
-        ...categoriesJson,
-        deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
-        deviceToken: fcmToken,
-        language: "en",
-      };
-    }
-    console.log(data);
+
+    data = {
+      name: businessName,
+      name_ar: arabicBName,
+      first_name: firstname,
+      last_name: lastname,
+      phone: phoneNumber,
+      description: des,
+      description_ar: arabicDes,
+      location: location,
+      cityId: cityName[0].id,
+      deliveryTime: deliveryTime,
+      vatType: VATtype,
+      image: image.sourceURL
+        ? {
+            uri: image.sourceURL,
+            type: image.mime, // or photo.type image/jpg
+            name:
+              "image_" +
+              moment().unix() +
+              "_" +
+              image.sourceURL.split("/").pop(),
+          }
+        : undefined,
+      ...cusineJson,
+      ...categoriesJson,
+      deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
+      deviceToken: fcmToken,
+      language: "en",
+    };
+
     dispatch(updateProfile(data));
   };
 
@@ -255,6 +246,7 @@ export default function M_ProfileScreen({ navigation }) {
               {RESTAURANT !== {} ? RESTAURANT.name : ""}
             </Text>
           </View>
+
           <View>
             <Text style={styles.title}>Profile</Text>
             <Text style={styles.title2}>Personal Info</Text>
@@ -332,13 +324,14 @@ export default function M_ProfileScreen({ navigation }) {
                 </View>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                   <RegistrationDropdown
-                    data={citydata}
+                    data={timeData}
                     value={deliveryTime}
                     setData={(text) => {
                       setdeliveryTime(text);
                     }}
                     placeholder={"Delivery Time"}
-                    valueField={"strategicName"}
+                    valueField={"name"}
+                    labelField={"label"}
                     style={styles.dropdownRow}
                     placeholderTextColor={Colors.black}
                   />

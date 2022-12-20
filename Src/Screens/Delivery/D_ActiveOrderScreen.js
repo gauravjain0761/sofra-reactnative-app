@@ -99,7 +99,7 @@ export default function D_ActiveOrderScreen({ navigation }) {
             <TouchableOpacity
               style={{
                 borderRadius: 3,
-                marginRight: hp(2),
+                marginRight: hp(1),
                 overflow: "hidden",
                 marginBottom: hp(1.5),
               }}

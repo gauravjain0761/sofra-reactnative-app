@@ -59,7 +59,6 @@ export async function POST(dispatch, url, data) {
 export async function PUT(dispatch, url, data) {
   const token = await getToken();
 
-  console.log("--------------", url, data);
   return fetch(url, {
     method: "PUT",
     headers: {

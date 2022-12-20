@@ -14,10 +14,11 @@ export default function MenuScreenItems({
   onDelete,
   status,
   onChangeStatus,
+  index,
 }) {
   const navigation = useNavigation();
   return (
-    <View style={styles.cardView}>
+    <View key={index} style={styles.cardView}>
       {screen == "promocode" ? (
         <View style={styles.promoView}>
           <Image

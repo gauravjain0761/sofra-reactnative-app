@@ -29,8 +29,6 @@ export default function ReportSettled({ reportType }) {
       ? unsetteled_report
       : setteled_report;
 
-  console.log("REPORT", REPORT, unsetteled_report);
-
   const ItemRender = ({ name, value }) => {
     return (
       <View style={styles.row}>
@@ -89,7 +87,7 @@ export default function ReportSettled({ reportType }) {
                   />
                   <ItemRender
                     name={"Sofra comissionable amount"}
-                    value={index}
+                    value={"AED " + element.itemsPrice}
                   />
                   <ItemRender
                     name={"Sofra comission"}

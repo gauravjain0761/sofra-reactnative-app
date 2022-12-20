@@ -38,3 +38,46 @@ export const discountType = [
   { id: 1, name: "Price" },
   { id: 2, name: "Percentage" },
 ];
+
+export const deliveryTimeData = () => {
+  let time = [];
+  for (let i = 5; i <= 2880; i = i + 5) {
+    let temp = { name: "", label: "" };
+    if (i > 59) {
+      if (i > 1435) {
+        let HourData = toHoursAndMinutes(i);
+        let converted_time = HourData.hours + ":" + HourData.minutes + " Hour";
+
+        temp.label = converted_time;
+        temp.name = i;
+        time.push(temp);
+      } else {
+        let HourData = toHoursAndMinutes(i);
+        let converted_time = HourData.hours + ":" + HourData.minutes + " Hour";
+        temp.label = converted_time;
+        temp.name = i;
+        time.push(temp);
+      }
+    } else {
+      let converted_time = i + " Min";
+      temp.label = converted_time;
+      temp.name = i;
+      time.push(temp);
+    }
+  }
+
+  return time;
+};
+
+const toHoursAndMinutes = (totalMinutes) => {
+  const hours = Math.floor(totalMinutes / 60).toLocaleString("en-US", {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  });
+  const minutes = (totalMinutes % 60).toLocaleString("en-US", {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  });
+
+  return { hours, minutes };
+};

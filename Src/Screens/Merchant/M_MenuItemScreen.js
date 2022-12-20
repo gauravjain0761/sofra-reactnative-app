@@ -67,7 +67,6 @@ export default function M_MenuItemScreen({ navigation }) {
     });
   };
   const onAddMenuItem = () => {
-    console.log("MenuCategory", MenuCategory);
     let menuCatJson = getFromDataJson(
       ALL_CATEGORIES,
       MenuCategory,
@@ -102,8 +101,7 @@ export default function M_MenuItemScreen({ navigation }) {
           }
         : undefined,
     };
-    console.log(data);
-    // dispatch(AddMenuItem(data));
+    dispatch(AddMenuItem(data));
   };
   const validation = () => {
     if (Name.trim() !== "") {
@@ -159,8 +157,16 @@ export default function M_MenuItemScreen({ navigation }) {
     }
   };
   const onDeleteMenuItems = (id) => {
-    let data = { menuId: id, language: "en" };
-    dispatch(DeleteMenuItem(data));
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = { menuId: id, language: "en" };
+          dispatch(DeleteMenuItem(data));
+        },
+      },
+    });
   };
   const onChangeStatus = (id, status) => {
     let data = { menuId: id, status: status == 1 ? 0 : 1, language: "en" };
@@ -183,6 +189,7 @@ export default function M_MenuItemScreen({ navigation }) {
                   screen={"item"}
                   activeVisible={true}
                   status={element.status}
+                  index={index}
                   onChangeStatus={() =>
                     onChangeStatus(element.id, element.status)
                   }
@@ -341,7 +348,7 @@ export default function M_MenuItemScreen({ navigation }) {
           </View>
           <PinkButton
             text={"small"}
-            onPress={() => onAddMenuItem()}
+            onPress={() => validation()}
             style={styles.dbuttonStyle}
             name={"Submit"}
           />

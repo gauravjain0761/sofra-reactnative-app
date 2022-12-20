@@ -100,17 +100,23 @@ export default function M_StatisticsScreen({ navigation }) {
                 <Text style={styles.rightText}>
                   Total Cash Orders (Completed)
                 </Text>
-                <Text style={styles.rightText}>0</Text>
+                <Text style={styles.rightText}>
+                  {STATISTICS.cashOrdersCount}
+                </Text>
               </View>
               <View style={styles.middleRow}>
                 <Text style={styles.rightText}>
                   Total Online Orders (Completed)
                 </Text>
-                <Text style={styles.rightText}>0</Text>
+                <Text style={styles.rightText}>
+                  {STATISTICS.onlineOrdersCount}
+                </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.rightText}>Total Orders (Completed</Text>
-                <Text style={styles.rightText}>0</Text>
+                <Text style={styles.rightText}>Total Orders (Completed)</Text>
+                <Text style={styles.rightText}>
+                  {STATISTICS.cashOrdersCount + STATISTICS.onlineOrdersCount}
+                </Text>
               </View>
             </View>
           </View>

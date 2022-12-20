@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Switch,
+  Platform,
+  PermissionsAndroid,
 } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -19,8 +21,19 @@ import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getDocuments } from "../../Services/MerchantApi";
-
+import {
+  AddDocument,
+  deleteDocument,
+  getDocuments,
+} from "../../Services/MerchantApi";
+import DocumentPicker from "react-native-document-picker";
+import {
+  dispatchErrorAction,
+  dispatchSuccessAction,
+} from "../../Services/CommonFunctions";
+import moment from "moment";
+import { media_url } from "../../Config/AppConfig";
+import RNFetchBlob from "rn-fetch-blob";
 export default function M_DocumentScreen({ navigation }) {
   const [document, setdocument] = useState("");
   const dispatch = useDispatch();
@@ -32,8 +45,110 @@ export default function M_DocumentScreen({ navigation }) {
       dispatch(getDocuments());
     });
   }, []);
-  const openPicker = () => {};
+  const openPicker = async () => {
+    try {
+      const response = await DocumentPicker.pick({
+        presentationStyle: "fullScreen",
+      });
+      setdocument(response[0]);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
+  const onAddDocuments = () => {
+    if (document !== "") {
+      let data = {
+        "files[0]": {
+          uri: document.uri,
+          type: document.type, // or photo.type image/jpg
+          name: moment().unix() + "_" + document.name,
+        },
+      };
+      dispatch(
+        AddDocument(data, () => {
+          setdocument("");
+        })
+      );
+    } else {
+      dispatchErrorAction(dispatch, "Please select document");
+    }
+  };
+
+  const onDeleteDocument = (id) => {
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = { docId: id, language: "en" };
+          dispatch(deleteDocument(data));
+        },
+      },
+    });
+  };
+  const isPermitted = async () => {
+    // if (await isPermitted()) {
+
+    if (Platform.OS === "android") {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        Alert.alert("Write permission err", err);
+        return false;
+      }
+    } else {
+      return true;
+    }
+    // }
+  };
+
+  const download = async (item) => {
+    if (await isPermitted()) {
+      dispatch({ type: "PRE_LOADER", payload: true });
+      let FILE_URL = media_url + item.image;
+
+      let filePath =
+        (Platform.OS == "ios"
+          ? RNFetchBlob.fs.dirs.DocumentDir
+          : RNFetchBlob.fs.dirs.DownloadDir) +
+        "/" +
+        item.image;
+
+      let options = {
+        fileCache: true,
+        addAndroidDownloads: {
+          path: filePath,
+          description: "downloading file...",
+          notification: true,
+          useDownloadManager: true,
+        },
+      };
+      RNFetchBlob.config(options)
+        .fetch("GET", FILE_URL)
+        .then((res) => {
+          console.log("res -> ", JSON.stringify(res));
+          dispatch({ type: "PRE_LOADER", payload: false });
+          dispatchSuccessAction(dispatch, "Documents download successfull");
+        })
+        .catch((err) => {
+          dispatch({ type: "PRE_LOADER", payload: false });
+          dispatchErrorAction(
+            dispatch,
+            "Something went wrong! Please try again later"
+          );
+        });
+    } else {
+      dispatch({ type: "PRE_LOADER", payload: false });
+      dispatchErrorAction(
+        dispatch,
+        "Permission denied, Please allow storages from app setting"
+      );
+    }
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -54,14 +169,16 @@ export default function M_DocumentScreen({ navigation }) {
                   <Text style={styles.attachText}>Choose File Here..</Text>
                 </View>
               ) : (
-                <View></View>
+                <View>
+                  <Text style={styles.uploadTextTitle}>{document.name}</Text>
+                </View>
               )}
             </TouchableOpacity>
           </View>
           {DOCUMENTS.length !== 0 ? (
             DOCUMENTS.map((item, index) => {
               return (
-                <View style={styles.row}>
+                <View key={index} style={styles.row}>
                   <View style={styles.innerRow}>
                     <Image
                       source={require("../../Images/Merchant/xxxhdpi/ic_doc_color.png")}
@@ -72,13 +189,13 @@ export default function M_DocumentScreen({ navigation }) {
                     </Text>
                   </View>
                   <View style={styles.innerRow2}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => download(item)}>
                       <Image
                         source={require("../../Images/Merchant/xxxhdpi/ic_download.png")}
                         style={[styles.docImage, { marginRight: hp(1) }]}
                       />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => onDeleteDocument(item.id)}>
                       <Image
                         source={require("../../Images/Merchant/xxxhdpi/ic_remove.png")}
                         style={styles.docImage}
@@ -96,7 +213,7 @@ export default function M_DocumentScreen({ navigation }) {
         </View>
       </ScrollView>
       <PinkButton
-        onPress={() => {}}
+        onPress={() => onAddDocuments()}
         style={styles.dbuttonStyle}
         text={"small"}
         name={"Upload"}
@@ -133,6 +250,10 @@ const styles = StyleSheet.create({
   },
   uploadText: {
     ...commonFontStyle("M_700", 14, Colors.black),
+    marginBottom: hp(1.5),
+  },
+  uploadTextTitle: {
+    ...commonFontStyle("M_700", 18, Colors.black),
     marginBottom: hp(1.5),
   },
   row: {

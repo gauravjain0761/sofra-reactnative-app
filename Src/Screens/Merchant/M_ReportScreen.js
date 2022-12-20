@@ -22,6 +22,7 @@ import {
   getUnSettledReports,
 } from "../../Services/MerchantApi";
 import { reportDropdownData } from "../../Config/StaticDropdownData";
+import moment from "moment";
 
 export default function M_ReportScreen({ navigation }) {
   const [tab, setTab] = useState("report");
@@ -82,34 +83,58 @@ export default function M_ReportScreen({ navigation }) {
         <View style={styles.itemList}>
           <View style={styles.row2}>
             <Text style={styles.rightText}>Total Restaurant Sale(Vat Inc)</Text>
-            <Text style={styles.rightText}>AED 0.00</Text>
+            <Text style={styles.rightText}>
+              AED {REPORT.totalResturantSale}
+            </Text>
           </View>
           <View style={styles.row2}>
             <Text style={styles.rightText}>
               Total Sofra Charges(VAT Inclusive)
             </Text>
-            <Text style={styles.rightText}>-AED 0.00</Text>
+            <Text style={styles.rightText}>
+              -AED {REPORT.totalSofraCharges}
+            </Text>
           </View>
           <View style={styles.row2}>
             <Text style={styles.rightText}>Net settlement Amount</Text>
-            <Text style={styles.rightText}>AED 0.00</Text>
+            <Text style={styles.rightText}>
+              AED {REPORT.netSettlementAmount}
+            </Text>
           </View>
-          <View style={styles.row2}>
-            <Text style={styles.rightText}>Net settlement Amount</Text>
-            <Text style={styles.rightText}>AED 0.00</Text>
-          </View>
-          <View style={styles.row2}>
-            <Text style={styles.rightText}>Settlement Period</Text>
-            <Text style={styles.rightText}>01 Jan 1970 to 01 Jan 1970</Text>
-          </View>
-          <View style={styles.row2}>
-            <Text style={styles.rightText}>Settlement Date</Text>
-            <Text style={styles.rightText}>01 Jan 1970</Text>
-          </View>
-          <View style={styles.row2}>
-            <Text style={styles.rightText}>Settlement Reference</Text>
-            <Text style={styles.rightText}></Text>
-          </View>
+          {reportType == reportDropdownData[0].name && (
+            <View>
+              <View style={styles.row2}>
+                <Text style={styles.rightText}>Settlement Period</Text>
+                <Text style={styles.rightText}>
+                  {moment(
+                    REPORT.settlementPeriodStart
+                      ? REPORT.settlementPeriodStart
+                      : undefined
+                  ).format("DD MMM YYYY")}{" "}
+                  to{" "}
+                  {moment(
+                    REPORT.settlementPeriodEnd
+                      ? REPORT.settlementPeriodEnd
+                      : undefined
+                  ).format("DD MMM YYYY")}
+                </Text>
+              </View>
+              <View style={styles.row2}>
+                <Text style={styles.rightText}>Settlement Date</Text>
+                <Text style={styles.rightText}>
+                  {REPORT.settlementPeriodStart
+                    ? moment(REPORT.settlementPeriodStart).format("DD MMM YYYY")
+                    : "N/A"}
+                </Text>
+              </View>
+              <View style={styles.row2}>
+                <Text style={styles.rightText}>Settlement Reference</Text>
+                <Text style={styles.rightText}>
+                  {REPORT.settlementReference}
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       </View>
     );

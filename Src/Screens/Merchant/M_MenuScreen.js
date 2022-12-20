@@ -25,11 +25,13 @@ import {
   DeleteMenuCategory,
   getMenuCategories,
 } from "../../Services/MerchantApi";
+import DeleteModal from "../../Components/DeleteModal";
 export default function M_MenuScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [name, setname] = useState("");
   const [nameArabic, setnameArabic] = useState("");
+  const [deleteModalVisible, setdeleteModalVisible] = useState(false);
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
 
   useEffect(() => {
@@ -46,7 +48,11 @@ export default function M_MenuScreen({ navigation }) {
           name: name,
           name_ar: nameArabic,
         };
-        dispatch(AddMenuCategory(data));
+        dispatch(
+          AddMenuCategory(data, () => {
+            setname(""), setnameArabic("");
+          })
+        );
       } else {
         dispatchErrorAction(dispatch, "Please enter name in arabic");
       }
@@ -55,8 +61,16 @@ export default function M_MenuScreen({ navigation }) {
     }
   };
   const onDeleteCategory = (id) => {
-    let data = { categoryId: id };
-    dispatch(DeleteMenuCategory(data));
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = { categoryId: id };
+          dispatch(DeleteMenuCategory(data));
+        },
+      },
+    });
   };
   return (
     <View style={ApplicationStyles.mainView}>

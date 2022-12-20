@@ -17,10 +17,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Colors from "./Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "./Themes/Fonts";
+import DeleteModal from "./Components/DeleteModal";
 
 function App() {
   const _TOAST = useSelector((e) => e.merchant.toast);
   const preLoader = useSelector((e) => e.merchant.preLoader);
+  const isVisible = useSelector((e) => e.merchant.isVisible);
+  const onDelete = useSelector((e) => e.merchant.onDelete);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -77,6 +80,16 @@ function App() {
           <ActivityIndicator size={"large"} color={Colors.black} />
         </View>
       )}
+      <DeleteModal
+        isVisible={isVisible}
+        onDelete={() => {
+          onDelete(),
+            dispatch({ type: "DELETE_MODAL", payload: { isVisible: false } });
+        }}
+        onClose={() =>
+          dispatch({ type: "DELETE_MODAL", payload: { isVisible: false } })
+        }
+      />
     </View>
   );
 }

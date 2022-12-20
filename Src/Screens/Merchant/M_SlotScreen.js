@@ -102,11 +102,19 @@ export default function M_SlotScreen({ navigation }) {
   }, [SLOTS]);
 
   const onDeleteSlot = (id) => {
-    let data = {
-      slotId: id,
-      language: "en",
-    };
-    dispatch(deleteOffSlot(data));
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = {
+            slotId: id,
+            language: "en",
+          };
+          dispatch(deleteOffSlot(data));
+        },
+      },
+    });
   };
 
   const addOffslot = (date) => {
@@ -137,7 +145,6 @@ export default function M_SlotScreen({ navigation }) {
         <View style={styles.whiteView}>
           <Calendar
             onDayPress={(day) => {
-              console.log("selected day", day);
               addOffslot(day);
             }}
             ref={calendarRef}
@@ -150,7 +157,7 @@ export default function M_SlotScreen({ navigation }) {
             initialDate={current}
             disableMonthChange={true}
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               var today = new Date();
               // var selectedDate = new Date(current);
@@ -169,7 +176,7 @@ export default function M_SlotScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.button}>Clear</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <PinkButton
           style={styles.btn}

@@ -120,7 +120,6 @@ export default function M_PromocodeScreen({ navigation }) {
       ...userIdJson,
     };
     dispatch(AddPromoCode(data));
-    console.log(data);
   };
 
   const checkExpiryTypeValidation = () => {
@@ -177,7 +176,6 @@ export default function M_PromocodeScreen({ navigation }) {
   };
   const onChangeStatus = (id, status) => {
     let data = { codeId: id, status: status == 1 ? 0 : 1, language: "en" };
-    console.log(data);
     dispatch(changePromoCodeStatus(data));
   };
   return (

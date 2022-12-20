@@ -178,6 +178,23 @@ export const getAvailbility = () => async (dispatch) => {
   }
 };
 
+export const updateAvailbility = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/updateAvailbility";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      // dispatchAction(dispatch, "DELETE_OFFER", postObj);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
 export const getOffers = () => async (dispatch) => {
   let token = await getToken();
   const url = merchant_url + "/getOffers?auth_token=" + token;
@@ -294,7 +311,7 @@ export const DeleteMenuCategory = (postObj) => async (dispatch) => {
   }
 };
 
-export const AddMenuCategory = (postObj, navigation) => async (dispatch) => {
+export const AddMenuCategory = (postObj, onSuccess) => async (dispatch) => {
   dispatch({ type: "PRE_LOADER", payload: true });
 
   const url = merchant_url + "/AddMenuCategory";
@@ -303,6 +320,7 @@ export const AddMenuCategory = (postObj, navigation) => async (dispatch) => {
     if (data.status == true) {
       dispatchSuccessAction(dispatch, data.message);
       dispatchAction(dispatch, "SET_MENU_CATEGORIES", data.result);
+      onSuccess();
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -416,7 +434,6 @@ export const changePromoCodeStatus = (postObj) => async (dispatch) => {
     const data = await POST(dispatch, url, postObj);
     if (data.error == "false" || data.status == true) {
       dispatchSuccessAction(dispatch, data.message);
-      console.log("vwjhfvjfhg");
       dispatchAction(dispatch, "PROMOCODE_STATUS_UPDATE", postObj);
     } else {
       dispatchErrorAction(dispatch, data.message);
@@ -546,6 +563,58 @@ export const getDocuments = () => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       dispatchAction(dispatch, "SET_DOCUMENTS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const AddDocument = (postObj, onSuccess) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/AddDocument";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      onSuccess();
+      dispatch(getDocuments());
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const deleteDocument = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/deleteDocument";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "DELETE_DOCUMENT", postObj);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const changeStatus = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/changeStatus";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      dispatchAction(dispatch, "UPDATE_ORDER_STATUS", postObj);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

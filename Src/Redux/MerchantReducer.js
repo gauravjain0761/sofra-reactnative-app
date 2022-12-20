@@ -24,6 +24,8 @@ const initialState = {
   offSlots: [],
   restaurant: {},
   documents: [],
+  isVisible: false,
+  onDelete: undefined,
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -53,6 +55,7 @@ export default function (state = initialState, action) {
         preLoader: false,
       };
     }
+
     case "SET_STATISTICS": {
       return { ...state, statistics: action.payload, preLoader: false };
     }
@@ -144,7 +147,6 @@ export default function (state = initialState, action) {
       return { ...state, offSlots: offSlots };
     }
     case "ADD_OFF_SLOT": {
-      console.log(action.payload);
       let offSlots = Object.assign([], state.offSlots);
       offSlots.push(action.payload);
       return { ...state, offSlots: offSlots };
@@ -153,25 +155,48 @@ export default function (state = initialState, action) {
       return { ...state, restaurant: action.payload, preLoader: false };
     }
     case "FILTER_ORDER": {
-      console.log(action.payload);
       let orders = Object.assign([], state.orders);
       if (action.payload == "ALL") orders = orders;
       else orders = orders.filter((obj) => obj.status == action.payload);
       return { ...state, filterOrders: orders };
     }
+    case "UPDATE_ORDER_STATUS": {
+      let filterOrders = Object.assign([], state.filterOrders);
+      let index = filterOrders.findIndex(
+        (obj) => obj.id == action.payload.orderId
+      );
+      filterOrders[index].status = action.payload.status;
+      return {
+        ...state,
+        filterOrders: filterOrders,
+        preLoader: false,
+      };
+    }
     case "PROMOCODE_STATUS_UPDATE": {
-      console.log(action.payload);
       let promocodes = Object.assign([], state.promocodes);
-      index = promocodes.findIndex((obj) => obj.id == action.payload.codeId);
-
-      console.log(promocodes);
+      let index = promocodes.findIndex(
+        (obj) => obj.id == action.payload.codeId
+      );
       promocodes[index].status =
         action.payload.status == 1 ? "ACTIVE" : "IN-ACTIVE";
-      console.log(promocodes);
       return { ...state, promocodes: promocodes, preLoader: false };
     }
     case "SET_DOCUMENTS": {
       return { ...state, documents: action.payload };
+    }
+    case "DELETE_DOCUMENT": {
+      let documents = Object.assign([], state.documents);
+      documents = documents.filter((el) => {
+        return el.id !== action.payload.docId;
+      });
+      return { ...state, documents: documents };
+    }
+    case "DELETE_MODAL": {
+      return {
+        ...state,
+        isVisible: action.payload.isVisible,
+        onDelete: action.payload.onDelete,
+      };
     }
     default:
       return state;

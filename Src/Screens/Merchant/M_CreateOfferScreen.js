@@ -42,7 +42,6 @@ export default function M_CreateOfferScreen({ navigation }) {
         } else {
           if (Users.length !== 0) {
             let userIdJson = getFromDataJson(USERS, Users, "userIds");
-            console.log("userIdJson", userIdJson);
             let data = { title: Detail, type: "SPECIFIC", ...userIdJson };
             dispatch(
               AddOffer(data, () => {

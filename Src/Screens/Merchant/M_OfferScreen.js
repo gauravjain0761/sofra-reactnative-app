@@ -31,11 +31,19 @@ export default function M_OfferScreen({ navigation }) {
   }, []);
 
   const onDeleteOffer = (id) => {
-    let data = {
-      offerId: id,
-      language: "en",
-    };
-    dispatch(DeleteOffer(data));
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = {
+            offerId: id,
+            language: "en",
+          };
+          dispatch(DeleteOffer(data));
+        },
+      },
+    });
   };
   return (
     <View style={ApplicationStyles.mainView}>

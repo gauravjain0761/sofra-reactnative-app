@@ -68,7 +68,7 @@ export default function M_OrderScreen({ navigation }) {
               <TouchableOpacity
                 style={{
                   borderRadius: 5,
-                  marginRight: hp(2),
+                  marginRight: hp(1),
                   overflow: "hidden",
                   marginBottom: hp(1.2),
                   borderWidth: 2,

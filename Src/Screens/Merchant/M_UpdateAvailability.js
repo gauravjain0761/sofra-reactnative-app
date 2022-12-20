@@ -17,12 +17,16 @@ import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
 import { useDispatch, useSelector } from "react-redux";
-import { getAvailbility } from "../../Services/MerchantApi";
+import { getAvailbility, updateAvailbility } from "../../Services/MerchantApi";
 import moment from "moment";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Modal from "react-native-modal";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
-import { dispatchErrorAction } from "../../Services/CommonFunctions";
+import {
+  dispatchErrorAction,
+  getDataJsonAvailability,
+  getFromDataJson,
+} from "../../Services/CommonFunctions";
 
 export default function M_UpdateAvailability({ navigation }) {
   const [everydayEnable, seteverydayEnable] = useState(false);
@@ -34,6 +38,7 @@ export default function M_UpdateAvailability({ navigation }) {
   const [openTime, setopenTime] = useState("");
   const [closeTime, setcloseTime] = useState("");
   const [timeType, setTimeType] = useState("");
+  const [selectedDay, setSelectedDay] = useState("");
   const [availability, setavailability] = useState(AVAILABILITY);
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
@@ -74,10 +79,10 @@ export default function M_UpdateAvailability({ navigation }) {
         setavailability(data);
         applysameTime();
       } else {
-        dispatchErrorAction("Please select closing time");
+        dispatchErrorAction(dispatch, "Please select closing time");
       }
     } else {
-      dispatchErrorAction("Please select opening time");
+      dispatchErrorAction(dispatch, "Please select opening time");
     }
   };
   const onPressEveryDay = () => {
@@ -103,6 +108,36 @@ export default function M_UpdateAvailability({ navigation }) {
     data[index].status = data[index].status == 1 ? 0 : 1;
     setavailability(data);
   };
+
+  const onUpdateAvailability = () => {
+    let temp = [];
+    availability.forEach((element) => {
+      if (element.status == 1) {
+        temp.push(element);
+      }
+    });
+    let day = getDataJsonAvailability(temp, "day");
+    let openingTime = getDataJsonAvailability(temp, "openingTime");
+    let closingTime = getDataJsonAvailability(temp, "closingTime");
+    let data = { ...day, ...openingTime, ...closingTime };
+    dispatch(updateAvailbility(data));
+  };
+
+  const handleConfirm = (date) => {
+    let data = Object.assign([], availability);
+    data.map((element) => {
+      if (element.day == selectedDay.day) {
+        if (timeType == "open") {
+          element.openingTime = moment(date).format("HH:mm:ss");
+        } else {
+          element.closingTime = moment(date).format("HH:mm:ss");
+        }
+      }
+    });
+    setavailability(data);
+    setDatePickerVisibility(false);
+  };
+
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -151,7 +186,7 @@ export default function M_UpdateAvailability({ navigation }) {
             >
               <Text style={openTime ? styles.timeText : styles.placeHolder}>
                 {openTime !== ""
-                  ? moment(openTime).format("HH:mm")
+                  ? moment(openTime).format("HH:mm:ss")
                   : "Select Opening Time"}
               </Text>
             </TouchableOpacity>
@@ -163,7 +198,7 @@ export default function M_UpdateAvailability({ navigation }) {
             >
               <Text style={closeTime ? styles.timeText : styles.placeHolder}>
                 {closeTime !== ""
-                  ? moment(closeTime).format("HH:mm")
+                  ? moment(closeTime).format("HH:mm:ss")
                   : "Select Closing Time"}
               </Text>
             </TouchableOpacity>
@@ -218,22 +253,26 @@ export default function M_UpdateAvailability({ navigation }) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    setDatePickerVisibility(true), setTimeType("open");
+                    setDatePickerVisibility(true),
+                      setSelectedDay(item),
+                      setTimeType("open");
                   }}
                   style={styles.timeBox}
                 >
                   <Text style={{ ...commonFontStyle(400, 14, Colors.black) }}>
-                    {moment(item.openingTime).format("HH:mm")}
+                    {item.openingTime}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    setDatePickerVisibility(true), setTimeType("close");
+                    setDatePickerVisibility(true),
+                      setSelectedDay(item),
+                      setTimeType("close");
                   }}
                   style={styles.timeBox}
                 >
                   <Text style={{ ...commonFontStyle(400, 14, Colors.black) }}>
-                    {moment(item.closingTime).format("HH:mm")}
+                    {item.closingTime}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -242,7 +281,7 @@ export default function M_UpdateAvailability({ navigation }) {
         </View>
 
         <PinkButton
-          onPress={() => {}}
+          onPress={() => onUpdateAvailability()}
           style={styles.dbuttonStyle}
           text={"small"}
           name={"Update Availability"}
@@ -253,7 +292,7 @@ export default function M_UpdateAvailability({ navigation }) {
         mode="time"
         is24Hour={true}
         locale="en_GB"
-        // onConfirm={handleConfirm}
+        onConfirm={handleConfirm}
         onCancel={() => setDatePickerVisibility(false)}
       />
       <DateTimePickerModal
@@ -304,7 +343,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 15, Colors.grayButtonBackground),
   },
   timeBox: {
-    marginRight: hp(2),
+    marginRight: hp(1),
     backgroundColor: Colors.registrationBackground,
     paddingHorizontal: 10,
     paddingVertical: 10,
