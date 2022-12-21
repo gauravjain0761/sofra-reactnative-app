@@ -14,6 +14,7 @@ import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import { getDashboardReports } from "../../Services/MerchantApi";
+import Chart from "../../Components/Chart";
 export default function M_DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -130,6 +131,25 @@ export default function M_DashboardScreen({ navigation }) {
             </View>
           </View>
         </View>
+        <View>
+          {DASHBOARD_DATA?.grossVolume && (
+            <Chart
+              name={"Gross Volume"}
+              x={DASHBOARD_DATA.grossVolume.dates}
+              value={DASHBOARD_DATA.grossVolume.grossAmount}
+              totalData={DASHBOARD_DATA.grossVolume.totalGrossAmount}
+            />
+          )}
+
+          {DASHBOARD_DATA?.grossVolume && (
+            <Chart
+              name={"Net Earnings"}
+              x={DASHBOARD_DATA.netEarnings.dates}
+              value={DASHBOARD_DATA.netEarnings.netEarningArr}
+              totalData={DASHBOARD_DATA.netEarnings.totalNetEarnings}
+            />
+          )}
+        </View>
       </ScrollView>
     </View>
   );
@@ -160,6 +180,7 @@ const styles = StyleSheet.create({
     padding: hp(3),
     alignItems: "center",
     marginRight: hp(2),
+    marginBottom: hp(2),
   },
   cardTitle: {
     ...commonFontStyle("extraBold", 24, Colors.black),
@@ -189,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: hp(2),
+    marginBottom: hp(2),
   },
   halfView: {
     backgroundColor: Colors.white,

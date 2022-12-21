@@ -89,7 +89,7 @@ export default function M_PromocodeScreen({ navigation }) {
     });
   };
   const addPromoCode = () => {
-    let userIdJson = getFromDataJson(USERS, Users, "userIds");
+    let userIdJson = getFromDataJson(USERS, Users, "users");
     let data = {
       title: title,
       title_ar: arabicTitle,

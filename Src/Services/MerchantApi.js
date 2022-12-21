@@ -466,6 +466,7 @@ export const AddPromoCode = (postObj) => async (dispatch) => {
     const data = await POST(dispatch, url, postObj);
     if (data.status == true) {
       dispatchSuccessAction(dispatch, data.message);
+      dispatch(getPromoCodes());
       // dispatchAction(dispatch, "ADD_OFF_SLOT", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);
