@@ -7,6 +7,7 @@ import {
   Image,
   Platform,
   ScrollView,
+  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Colors from "../../Themes/Colors";
@@ -27,7 +28,7 @@ export default function M_OrderScreen({ navigation }) {
   const [selectedStatus, setselectedStatus] = useState("ALL");
   const dispatch = useDispatch();
   const ORDERS = useSelector((e) => e.merchant.filterOrders);
-
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
@@ -66,6 +67,7 @@ export default function M_OrderScreen({ navigation }) {
           {orderStatusData.map((item, index) => {
             return (
               <TouchableOpacity
+                key={index}
                 style={{
                   borderRadius: 5,
                   marginRight: hp(1),
@@ -86,30 +88,34 @@ export default function M_OrderScreen({ navigation }) {
             );
           })}
         </View>
+        {!PRELOADER && (
+          <FlatList
+            data={ORDERS}
+            ListEmptyComponent={
+              <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+            }
+            renderItem={({ item, index }) => {
+              let status = orderStatusData.filter(
+                (obj) => obj.type == item.status
+              );
 
-        {ORDERS.length !== 0 ? (
-          ORDERS.map((item, index) => {
-            let status = orderStatusData.filter(
-              (obj) => obj.type == item.status
-            );
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  setcategoryDetail(true), setselectedOrder(item);
-                }}
-              >
-                <OrderItems
-                  item={item}
-                  navigation={navigation}
-                  status={status[0]}
-                />
-              </TouchableOpacity>
-            );
-          })
-        ) : (
-          <View>
-            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
-          </View>
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    setcategoryDetail(true), setselectedOrder(item);
+                  }}
+                >
+                  <OrderItems
+                    selectedStatus={selectedStatus}
+                    item={item}
+                    navigation={navigation}
+                    status={status[0]}
+                  />
+                </TouchableOpacity>
+              );
+            }}
+            keyExtractor={(item) => item.id}
+          />
         )}
       </ScrollView>
       <Modal

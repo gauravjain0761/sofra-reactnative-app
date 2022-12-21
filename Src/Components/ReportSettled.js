@@ -42,66 +42,64 @@ export default function ReportSettled({ reportType }) {
       <PinkButton name={"Export to CSV"} onPress={() => {}} text={"small"} />
       <View>
         <Text style={styles.tabTitle}>{reportType + "s"}</Text>
-        <View style={styles.itemList}>
-          {REPORT?.items && REPORT?.items?.length !== 0 ? (
-            REPORT.items.map((element, index) => {
-              return (
-                <View>
-                  <ItemRender name={"Menu Categorysr#"} value={index + 1} />
-                  <ItemRender
-                    name={"Menu Categoryid"}
-                    value={element.bookingCode}
-                  />
-                  <ItemRender
-                    name={"Order date"}
-                    value={moment(element.created).format("YYYY-MM-DD")}
-                  />
-                  <ItemRender
-                    name={"Time"}
-                    value={moment(element.created).format("hh:mm A")}
-                  />
-                  <ItemRender
-                    name={"Mode of payment"}
-                    value={element.paymentType}
-                  />
+        {REPORT?.items && REPORT?.items?.length !== 0 ? (
+          REPORT.items.map((element, index) => {
+            return (
+              <View style={styles.itemList}>
+                <ItemRender name={"Menu Categorysr#"} value={index + 1} />
+                <ItemRender
+                  name={"Menu Categoryid"}
+                  value={element.bookingCode}
+                />
+                <ItemRender
+                  name={"Order date"}
+                  value={moment(element.created).format("YYYY-MM-DD")}
+                />
+                <ItemRender
+                  name={"Time"}
+                  value={moment(element.created).format("hh:mm A")}
+                />
+                <ItemRender
+                  name={"Mode of payment"}
+                  value={element.paymentType}
+                />
 
-                  <ItemRender
-                    name={"Sub total"}
-                    value={"AED " + element.itemsPrice}
-                  />
-                  <ItemRender
-                    name={"Discount"}
-                    value={"-AED " + element.discount}
-                  />
-                  <ItemRender
-                    name={"Net Amount"}
-                    value={"AED " + (element.itemsPrice - element.discount)}
-                  />
-                  <ItemRender name={"VAT"} value={"AED " + element.vat} />
-                  <ItemRender
-                    name={"Gross Amount"}
-                    value={
-                      "AED " +
-                      (element.itemsPrice - element.discount + element.vat)
-                    }
-                  />
-                  <ItemRender
-                    name={"Sofra comissionable amount"}
-                    value={"AED " + element.itemsPrice}
-                  />
-                  <ItemRender
-                    name={"Sofra comission"}
-                    value={"% " + element.comissionPercentage}
-                  />
-                </View>
-              );
-            })
-          ) : (
-            <View>
-              <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
-            </View>
-          )}
-        </View>
+                <ItemRender
+                  name={"Sub total"}
+                  value={"AED " + element.itemsPrice}
+                />
+                <ItemRender
+                  name={"Discount"}
+                  value={"-AED " + element.discount}
+                />
+                <ItemRender
+                  name={"Net Amount"}
+                  value={"AED " + (element.itemsPrice - element.discount)}
+                />
+                <ItemRender name={"VAT"} value={"AED " + element.vat} />
+                <ItemRender
+                  name={"Gross Amount"}
+                  value={
+                    "AED " +
+                    (element.itemsPrice - element.discount + element.vat)
+                  }
+                />
+                <ItemRender
+                  name={"Sofra comissionable amount"}
+                  value={"AED " + element.itemsPrice}
+                />
+                <ItemRender
+                  name={"Sofra comission"}
+                  value={"% " + element.comissionPercentage}
+                />
+              </View>
+            );
+          })
+        ) : (
+          <View>
+            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+          </View>
+        )}
       </View>
     </View>
   );

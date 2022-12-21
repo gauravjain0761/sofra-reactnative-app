@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -51,7 +52,7 @@ export default function M_MenuItemScreen({ navigation }) {
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
   const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: true });
+    // dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getMenuItems());
       dispatch(getMenuCategories());
@@ -172,31 +173,33 @@ export default function M_MenuItemScreen({ navigation }) {
     let data = { menuId: id, status: status == 1 ? 0 : 1, language: "en" };
     dispatch(enableDisableMenues(data));
   };
+
+  const renderItem = ({ item, index }) => (
+    <MenuScreenItems
+      onEdit={() => {
+        navigation.navigate("M_EditMenuItemScreen", item);
+      }}
+      onDelete={() => onDeleteMenuItems(item.id)}
+      item={item}
+      screen={"item"}
+      activeVisible={true}
+      status={item.status}
+      index={index}
+      onChangeStatus={() => onChangeStatus(item.id, item.status)}
+    />
+  );
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={ApplicationStyles.welcomeText}>Menu Items</Text>
-        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-          {MENU_ITEMS.length !== 0 &&
-            MENU_ITEMS.map((element, index) => {
-              return (
-                <MenuScreenItems
-                  onEdit={() => {
-                    navigation.navigate("M_EditMenuItemScreen", element);
-                  }}
-                  onDelete={() => onDeleteMenuItems(element.id)}
-                  item={element}
-                  screen={"item"}
-                  activeVisible={true}
-                  status={element.status}
-                  index={index}
-                  onChangeStatus={() =>
-                    onChangeStatus(element.id, element.status)
-                  }
-                />
-              );
-            })}
-        </ScrollView>
+        {MENU_ITEMS.length !== 0 && (
+          <FlatList
+            horizontal={true}
+            data={MENU_ITEMS}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        )}
         <View style={styles.rowView}>
           <Text style={styles.title}>Add Menu Items</Text>
           <Text style={styles.title2}>Menu items details</Text>

@@ -26,6 +26,7 @@ const initialState = {
   documents: [],
   isVisible: false,
   onDelete: undefined,
+  successModal: false,
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -133,6 +134,12 @@ export default function (state = initialState, action) {
       });
       return { ...state, menuItems: menuItems, preLoader: false };
     }
+    case "STATUS_UPDATE_MENU_ITEMS": {
+      let menuItems = Object.assign([], state.menuItems);
+      let index = menuItems.findIndex((obj) => obj.id == action.payload.menuId);
+      menuItems[index].status = action.payload.status;
+      return { ...state, menuItems: menuItems, preLoader: false };
+    }
     case "SET_PROMO_CODES": {
       return { ...state, promocodes: action.payload, preLoader: false };
     }
@@ -161,15 +168,24 @@ export default function (state = initialState, action) {
       return { ...state, filterOrders: orders };
     }
     case "UPDATE_ORDER_STATUS": {
-      let filterOrders = Object.assign([], state.filterOrders);
-      let index = filterOrders.findIndex(
-        (obj) => obj.id == action.payload.orderId
+      console.log("UPDATE_ORDER_STATUS", action.payload);
+
+      let orders = Object.assign([], state.orders);
+      let index = orders.findIndex(
+        (obj) => obj.id == action.payload.postObj.orderId
       );
-      filterOrders[index].status = action.payload.status;
+      orders[index].status = action.payload.postObj.status;
+
+      let filter = [];
+      if (action.payload.selectedStatus == "ALL") filter = orders;
+      else
+        filter = orders.filter(
+          (obj) => obj.status == action.payload.selectedStatus
+        );
       return {
         ...state,
-        filterOrders: filterOrders,
-        preLoader: false,
+        orders: orders,
+        filterOrders: filter,
       };
     }
     case "PROMOCODE_STATUS_UPDATE": {
@@ -182,7 +198,7 @@ export default function (state = initialState, action) {
       return { ...state, promocodes: promocodes, preLoader: false };
     }
     case "SET_DOCUMENTS": {
-      return { ...state, documents: action.payload };
+      return { ...state, documents: action.payload, preLoader: false };
     }
     case "DELETE_DOCUMENT": {
       let documents = Object.assign([], state.documents);
@@ -198,6 +214,15 @@ export default function (state = initialState, action) {
         onDelete: action.payload.onDelete,
       };
     }
+    case "SUCCESS_MODAL": {
+      return {
+        ...state,
+        preLoader: false,
+        successModal: action.payload.modal,
+        successModalMessage: action.payload.message,
+      };
+    }
+
     default:
       return state;
   }

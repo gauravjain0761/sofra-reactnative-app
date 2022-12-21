@@ -73,7 +73,9 @@ export default function M_DashboardScreen({ navigation }) {
         <View style={styles.rowView}>
           <View style={styles.halfView}>
             <Text style={styles.halfViewTitle}>
-              {DASHBOARD_DATA ? DASHBOARD_DATA?.totalEarnings : 0}
+              {DASHBOARD_DATA?.totalEarnings
+                ? parseFloat(DASHBOARD_DATA?.totalEarnings).toFixed(2)
+                : 0}
             </Text>
             <View style={styles.bottomcardRow}>
               <Image
@@ -85,7 +87,9 @@ export default function M_DashboardScreen({ navigation }) {
           </View>
           <View style={styles.halfView}>
             <Text style={styles.halfViewTitle}>
-              {DASHBOARD_DATA ? DASHBOARD_DATA?.bookingsCompleted : 0}
+              {DASHBOARD_DATA?.bookingsCompleted
+                ? DASHBOARD_DATA?.bookingsCompleted
+                : 0}
             </Text>
             <View style={styles.bottomcardRow}>
               <Image
@@ -99,7 +103,9 @@ export default function M_DashboardScreen({ navigation }) {
         <View style={styles.rowView}>
           <View style={styles.halfView}>
             <Text style={styles.halfViewTitle}>
-              {DASHBOARD_DATA ? DASHBOARD_DATA?.totalMenuItems : 0}
+              {DASHBOARD_DATA?.totalMenuItems
+                ? DASHBOARD_DATA?.totalMenuItems
+                : 0}
             </Text>
             <View style={styles.bottomcardRow}>
               <Image
@@ -111,7 +117,9 @@ export default function M_DashboardScreen({ navigation }) {
           </View>
           <View style={styles.halfView}>
             <Text style={styles.halfViewTitle}>
-              {DASHBOARD_DATA ? DASHBOARD_DATA?.bookingsActive : 0}
+              {DASHBOARD_DATA?.bookingsActive
+                ? DASHBOARD_DATA?.bookingsActive
+                : 0}
             </Text>
             <View style={styles.bottomcardRow}>
               <Image

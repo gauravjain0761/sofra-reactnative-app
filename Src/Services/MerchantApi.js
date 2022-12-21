@@ -418,7 +418,7 @@ export const enableDisableMenues = (postObj) => async (dispatch) => {
     const data = await POST(dispatch, url, postObj);
     if (data.status == true) {
       dispatchSuccessAction(dispatch, data.message);
-      dispatchAction(dispatch, "DELETE_MENUITEMS", postObj);
+      dispatchAction(dispatch, "STATUS_UPDATE_MENU_ITEMS", postObj);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -606,19 +606,24 @@ export const deleteDocument = (postObj) => async (dispatch) => {
   }
 };
 
-export const changeStatus = (postObj) => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
+export const changeStatus =
+  (postObj, selectedStatus, onSuccess) => async (dispatch) => {
+    dispatch({ type: "PRE_LOADER", payload: true });
 
-  const url = merchant_url + "/changeStatus";
-  try {
-    const data = await POST(dispatch, url, postObj);
-    if (data.status == true) {
-      dispatchSuccessAction(dispatch, data.message);
-      dispatchAction(dispatch, "UPDATE_ORDER_STATUS", postObj);
-    } else {
-      dispatchErrorAction(dispatch, data.message);
+    const url = merchant_url + "/changeStatus";
+    try {
+      const data = await POST(dispatch, url, postObj);
+      if (data.status == true) {
+        // dispatchSuccessAction(dispatch, data.message);
+        onSuccess(data.message);
+        dispatchAction(dispatch, "UPDATE_ORDER_STATUS", {
+          postObj,
+          selectedStatus,
+        });
+      } else {
+        dispatchErrorAction(dispatch, data.message);
+      }
+    } catch (error) {
+      dispatchErrorAction(dispatch, "Something went wrong!");
     }
-  } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
-  }
-};
+  };

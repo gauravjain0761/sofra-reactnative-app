@@ -8,6 +8,7 @@ import {
   ScrollView,
   Switch,
   Alert,
+  FlatList,
 } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -72,7 +73,7 @@ export default function M_SlotScreen({ navigation }) {
   LocaleConfig.defaultLocale = "fr";
   const dispatch = useDispatch();
   const SLOTS = useSelector((e) => e.merchant.offSlots);
-
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
   const [MarkedDate, setMarkedDate] = useState({});
   const [current, setcurrent] = useState(moment().format("YYYY-MM-DD"));
   const calendarRef = React.useRef();
@@ -137,7 +138,36 @@ export default function M_SlotScreen({ navigation }) {
       ]
     );
   };
-
+  const renderItem = ({ item, index }) => (
+    <View style={styles.itemList}>
+      <View style={styles.row}>
+        <Text style={styles.leftText}>SR</Text>
+        <Text style={styles.rightText}>{index}</Text>
+      </View>
+      <View style={styles.middleRow}>
+        <Text style={styles.leftText}>Off Slot Date</Text>
+        <Text style={styles.rightText}>{moment(item.date).format("LL")}</Text>
+      </View>
+      <View style={styles.middleRow2}>
+        <Text style={styles.leftText}>Created</Text>
+        <Text style={styles.rightText}>
+          {moment(item.created).format("MM/DD/YY, hh:mm A")}
+        </Text>
+      </View>
+      <View style={styles.lastRow}>
+        <Text style={styles.leftText}>Action</Text>
+        <TouchableOpacity
+          onPress={() => onDeleteSlot(item.id)}
+          style={styles.deleteButton}
+        >
+          <Image
+            source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
+            style={styles.searchIcon}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -185,41 +215,17 @@ export default function M_SlotScreen({ navigation }) {
           onPress={() => {}}
         />
         <Text style={styles.mainTitle}>All Off Slots</Text>
-        {SLOTS.length !== 0 &&
-          SLOTS.map((item, index) => {
-            return (
-              <View style={styles.itemList}>
-                <View style={styles.row}>
-                  <Text style={styles.leftText}>SR</Text>
-                  <Text style={styles.rightText}>1</Text>
-                </View>
-                <View style={styles.middleRow}>
-                  <Text style={styles.leftText}>Off Slot Date</Text>
-                  <Text style={styles.rightText}>
-                    {moment(item.date).format("LL")}
-                  </Text>
-                </View>
-                <View style={styles.middleRow2}>
-                  <Text style={styles.leftText}>Created</Text>
-                  <Text style={styles.rightText}>
-                    {moment(item.created).format("MM/DD/YY, hh:mm A")}
-                  </Text>
-                </View>
-                <View style={styles.lastRow}>
-                  <Text style={styles.leftText}>Action</Text>
-                  <TouchableOpacity
-                    onPress={() => onDeleteSlot(item.id)}
-                    style={styles.deleteButton}
-                  >
-                    <Image
-                      source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
-                      style={styles.searchIcon}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            );
-          })}
+
+        {!PRELOADER && (
+          <FlatList
+            data={SLOTS}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={
+              <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+            }
+          />
+        )}
       </ScrollView>
     </View>
   );

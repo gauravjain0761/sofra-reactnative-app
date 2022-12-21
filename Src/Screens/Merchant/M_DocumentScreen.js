@@ -9,6 +9,7 @@ import {
   Switch,
   Platform,
   PermissionsAndroid,
+  FlatList,
 } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -38,6 +39,7 @@ export default function M_DocumentScreen({ navigation }) {
   const [document, setdocument] = useState("");
   const dispatch = useDispatch();
   const DOCUMENTS = useSelector((e) => e.merchant.documents);
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
 
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
@@ -149,6 +151,34 @@ export default function M_DocumentScreen({ navigation }) {
       );
     }
   };
+
+  const renderItem = ({ item, index }) => (
+    <View key={index} style={styles.row}>
+      <View style={styles.innerRow}>
+        <Image
+          source={require("../../Images/Merchant/xxxhdpi/ic_doc_color.png")}
+          style={styles.docImage}
+        />
+        <Text numberOfLines={1} style={styles.docNmae}>
+          {item.image}
+        </Text>
+      </View>
+      <View style={styles.innerRow2}>
+        <TouchableOpacity onPress={() => download(item)}>
+          <Image
+            source={require("../../Images/Merchant/xxxhdpi/ic_download.png")}
+            style={[styles.docImage, { marginRight: hp(1) }]}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => onDeleteDocument(item.id)}>
+          <Image
+            source={require("../../Images/Merchant/xxxhdpi/ic_remove.png")}
+            style={styles.docImage}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -175,40 +205,16 @@ export default function M_DocumentScreen({ navigation }) {
               )}
             </TouchableOpacity>
           </View>
-          {DOCUMENTS.length !== 0 ? (
-            DOCUMENTS.map((item, index) => {
-              return (
-                <View key={index} style={styles.row}>
-                  <View style={styles.innerRow}>
-                    <Image
-                      source={require("../../Images/Merchant/xxxhdpi/ic_doc_color.png")}
-                      style={styles.docImage}
-                    />
-                    <Text numberOfLines={1} style={styles.docNmae}>
-                      {item.image}
-                    </Text>
-                  </View>
-                  <View style={styles.innerRow2}>
-                    <TouchableOpacity onPress={() => download(item)}>
-                      <Image
-                        source={require("../../Images/Merchant/xxxhdpi/ic_download.png")}
-                        style={[styles.docImage, { marginRight: hp(1) }]}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => onDeleteDocument(item.id)}>
-                      <Image
-                        source={require("../../Images/Merchant/xxxhdpi/ic_remove.png")}
-                        style={styles.docImage}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              );
-            })
-          ) : (
-            <View>
-              <Text style={ApplicationStyles.nodataStyle}>No Data</Text>
-            </View>
+          {!PRELOADER && (
+            <FlatList
+              nestedScrollEnabled
+              data={DOCUMENTS}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              ListEmptyComponent={
+                <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+              }
+            />
           )}
         </View>
       </ScrollView>

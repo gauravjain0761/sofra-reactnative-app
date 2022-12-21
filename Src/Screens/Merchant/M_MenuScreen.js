@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -33,6 +34,7 @@ export default function M_MenuScreen({ navigation }) {
   const [nameArabic, setnameArabic] = useState("");
   const [deleteModalVisible, setdeleteModalVisible] = useState(false);
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
 
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
@@ -43,19 +45,19 @@ export default function M_MenuScreen({ navigation }) {
 
   const onAddCategory = () => {
     if (name.trim() !== "") {
-      if (hasArabicCharacters(nameArabic)) {
-        let data = {
-          name: name,
-          name_ar: nameArabic,
-        };
-        dispatch(
-          AddMenuCategory(data, () => {
-            setname(""), setnameArabic("");
-          })
-        );
-      } else {
-        dispatchErrorAction(dispatch, "Please enter name in arabic");
-      }
+      // if (hasArabicCharacters(nameArabic)) {
+      let data = {
+        name: name,
+        name_ar: nameArabic,
+      };
+      dispatch(
+        AddMenuCategory(data, () => {
+          setname(""), setnameArabic("");
+        })
+      );
+      // } else {
+      //   dispatchErrorAction(dispatch, "Please enter name in arabic");
+      // }
     } else {
       dispatchErrorAction(dispatch, "Please enter category name");
     }
@@ -72,29 +74,28 @@ export default function M_MenuScreen({ navigation }) {
       },
     });
   };
+  const renderItem = ({ item, index }) => (
+    <View key={index}>
+      <MenuScreenItems
+        onEdit={() => navigation.navigate("M_EditCategoryScreen", item)}
+        onDelete={() => {
+          onDeleteCategory(item.id);
+        }}
+        item={item}
+        activeVisible={false}
+      />
+    </View>
+  );
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={ApplicationStyles.welcomeText}>Menu Categories</Text>
-        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-          {ALL_CATEGORIES.length !== 0 &&
-            ALL_CATEGORIES.map((element, index) => {
-              return (
-                <View key={index}>
-                  <MenuScreenItems
-                    onEdit={() =>
-                      navigation.navigate("M_EditCategoryScreen", element)
-                    }
-                    onDelete={() => {
-                      onDeleteCategory(element.id);
-                    }}
-                    item={element}
-                    activeVisible={false}
-                  />
-                </View>
-              );
-            })}
-        </ScrollView>
+        <FlatList
+          horizontal={true}
+          data={ALL_CATEGORIES}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
         <View style={styles.rowView}>
           <Text style={styles.title}>Add Menu Categories</Text>
           <Text style={styles.title2}>Menu Categories Details</Text>

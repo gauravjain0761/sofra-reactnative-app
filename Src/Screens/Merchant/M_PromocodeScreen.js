@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -113,10 +114,10 @@ export default function M_PromocodeScreen({ navigation }) {
       startDate:
         StartDate !== "" ? moment(StartDate).format("YYYY-MM-DD") : null,
       endDate: EndDate !== "" ? moment(EndDate).format("YYYY-MM-DD") : null,
-      discountValue: discountValue,
-      maxDiscountPrice: maxDiscount,
-      minimumOrderValue: minOrderValue,
-      count: count !== "" ? count : null,
+      discountValue: discountValue !== "" ? Number(discountValue) : "",
+      maxDiscountPrice: maxDiscount !== "" ? Number(maxDiscount) : "",
+      minimumOrderValue: minOrderValue !== "" ? Number(minOrderValue) : "",
+      count: count !== "" ? Number(count) : null,
       ...userIdJson,
     };
     dispatch(AddPromoCode(data));
@@ -178,34 +179,37 @@ export default function M_PromocodeScreen({ navigation }) {
     let data = { codeId: id, status: status == 1 ? 0 : 1, language: "en" };
     dispatch(changePromoCodeStatus(data));
   };
+
+  const renderItem = ({ item, index }) => (
+    <MenuScreenItems
+      item={item}
+      onEdit={() =>
+        navigation.navigate("M_EditPromocodeScreen", {
+          params: item,
+        })
+      }
+      onChangeStatus={() =>
+        onChangeStatus(item.id, item.status == "ACTIVE" ? 1 : 0)
+      }
+      status={item.status == "ACTIVE" ? 1 : 0}
+      activeVisible={true}
+      screen={"promocode"}
+    />
+  );
+
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={ApplicationStyles.welcomeText}>Promo Codes</Text>
-        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-          {PROMO_CODES.length !== 0 &&
-            PROMO_CODES.map((element, index) => {
-              return (
-                <MenuScreenItems
-                  item={element}
-                  onEdit={() =>
-                    navigation.navigate("M_EditPromocodeScreen", {
-                      params: element,
-                    })
-                  }
-                  onChangeStatus={() =>
-                    onChangeStatus(
-                      element.id,
-                      element.status == "ACTIVE" ? 1 : 0
-                    )
-                  }
-                  status={element.status == "ACTIVE" ? 1 : 0}
-                  activeVisible={true}
-                  screen={"promocode"}
-                />
-              );
-            })}
-        </ScrollView>
+        {PROMO_CODES.length !== 0 && (
+          <FlatList
+            horizontal={true}
+            data={PROMO_CODES}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            showsHorizontalScrollIndicator={false}
+          />
+        )}
         <View>
           <Text style={styles.title2}>Promo code details here:</Text>
           <View>

@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Modal,
+} from "react-native";
 import React from "react";
 import Colors from "../Themes/Colors";
 import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
@@ -10,19 +17,29 @@ import { useState } from "react";
 import PinkButton from "./PinkButton";
 import { useEffect } from "react";
 import { orderStatusData } from "../Constant/Constant";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeStatus } from "../Services/MerchantApi";
 
-export default function OrderItems({ item, navigation, status }) {
+export default function OrderItems({
+  item,
+  navigation,
+  selectedStatus,
+  status,
+}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [nextStatus, setnextStatus] = useState({});
   const dispatch = useDispatch();
-
+  const [message, setmessage] = useState("");
+  // const [modalVisibleSuccess, setModalVisibleSuccess] = useState(false);
+  const modalVisibleSuccess = useSelector((e) => e.merchant.successModal);
+  const successModalMessage = useSelector(
+    (e) => e.merchant.successModalMessage
+  );
   useEffect(() => {
     if (
       status.type !== "CANCELED_USER" &&
       status.type !== "ALL" &&
-      status.type !== "DELIVERED" &&
+      // status.type !== "DELIVERED" &&
       status.type !== "REJECTED"
     ) {
       let index = orderStatusData.findIndex((obj) => obj.type == status.type);
@@ -31,8 +48,22 @@ export default function OrderItems({ item, navigation, status }) {
   }, []);
   const onStatusUpdate = () => {
     let data = { orderId: item.id, status: nextStatus.type, language: "en" };
-    dispatch(changeStatus(data));
+    dispatch(
+      changeStatus(data, selectedStatus, (message) => {
+        setmessage(message);
+        dispatch({
+          type: "SUCCESS_MODAL",
+          payload: { modal: true, message: message },
+        });
+      })
+    );
     setModalVisible(false);
+  };
+  const onPressOk = () => {
+    dispatch({
+      type: "SUCCESS_MODAL",
+      payload: { modal: false, message: "" },
+    });
   };
   return (
     <View>
@@ -95,7 +126,35 @@ export default function OrderItems({ item, navigation, status }) {
         </View>
       </View>
       <View style={styles.line}></View>
+      <ReactNativeModal
+        style={ApplicationStyles.modalStyle}
+        isVisible={modalVisibleSuccess}
+        onBackButtonPress={() => onPressOk()}
+        onBackdropPress={() => onPressOk()}
+      >
+        <View
+          style={[
+            ApplicationStyles.modalViewStyle,
+            { paddingVertical: hp(4), paddingHorizontal: hp(2) },
+          ]}
+        >
+          <Image
+            source={require("../Images/Merchant/xxxhdpi/correct.png")}
+            style={styles.icon}
+          />
+          <Text style={styles.title}>{successModalMessage}</Text>
 
+          <View style={styles.buttonRow2}>
+            <View style={{ width: "50%" }}>
+              <PinkButton
+                onPress={() => onPressOk()}
+                text={"small"}
+                name={"Ok"}
+              />
+            </View>
+          </View>
+        </View>
+      </ReactNativeModal>
       <ReactNativeModal
         style={ApplicationStyles.modalStyle}
         isVisible={modalVisible}
@@ -207,6 +266,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     // flex: 1,
+    alignSelf: "center",
     justifyContent: "space-between",
+  },
+  buttonRow2: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    // flex: 1,
+    alignSelf: "center",
+    justifyContent: "center",
   },
 });
