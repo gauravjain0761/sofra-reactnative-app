@@ -37,10 +37,9 @@ export default function OrderItems({
   );
   useEffect(() => {
     if (
-      status.type !== "CANCELED_USER" &&
-      status.type !== "ALL" &&
-      // status.type !== "DELIVERED" &&
-      status.type !== "REJECTED"
+      status.type == "PENDING" &&
+      status.type == "ACCEPTED" &&
+      status.type == "PREPARING"
     ) {
       let index = orderStatusData.findIndex((obj) => obj.type == status.type);
       setnextStatus(orderStatusData[index + 1]);
@@ -89,10 +88,9 @@ export default function OrderItems({
             />
           </View>
           <View>
-            {status.type !== "CANCELED_USER" &&
-            status.type !== "ALL" &&
-            status.type !== "DELIVERED" &&
-            status.type !== "REJECTED" ? (
+            {status.type == "PENDING" &&
+            status.type == "ACCEPTED" &&
+            status.type == "PREPARING" ? (
               <TouchableOpacity
                 style={{
                   borderRadius: 3,
