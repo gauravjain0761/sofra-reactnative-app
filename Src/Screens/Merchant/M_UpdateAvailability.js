@@ -27,6 +27,7 @@ import {
   getDataJsonAvailability,
   getFromDataJson,
 } from "../../Services/CommonFunctions";
+import DateTimePickerView from "../../Components/DateTimePickerView";
 
 export default function M_UpdateAvailability({ navigation }) {
   const [everydayEnable, seteverydayEnable] = useState(false);
@@ -178,30 +179,25 @@ export default function M_UpdateAvailability({ navigation }) {
         {sameTimingEnable == true && (
           <View style={styles.sameView}>
             <Text style={styles.detailText}>Apply Same Timings Everyday</Text>
-            <TouchableOpacity
-              onPress={() => {
+            <DateTimePickerView
+              value={openTime}
+              format={"HH:mm:ss"}
+              placeHolder={"Select Opening Time"}
+              onPressPicker={() => {
                 settimepickerSameTime(true), setTimeType("open");
               }}
-              style={styles.input}
-            >
-              <Text style={openTime ? styles.timeText : styles.placeHolder}>
-                {openTime !== ""
-                  ? moment(openTime).format("HH:mm:ss")
-                  : "Select Opening Time"}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
+              width={"100%"}
+            />
+            <DateTimePickerView
+              value={closeTime}
+              format={"HH:mm:ss"}
+              placeHolder={"Select Closing Time"}
+              onPressPicker={() => {
                 settimepickerSameTime(true), setTimeType("close");
               }}
-              style={styles.input}
-            >
-              <Text style={closeTime ? styles.timeText : styles.placeHolder}>
-                {closeTime !== ""
-                  ? moment(closeTime).format("HH:mm:ss")
-                  : "Select Closing Time"}
-              </Text>
-            </TouchableOpacity>
+              width={"100%"}
+            />
+
             <View style={styles.buttonRow}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <PinkButton
@@ -384,21 +380,7 @@ const styles = StyleSheet.create({
     paddingVertical: hp(1.5),
     paddingHorizontal: hp(1.5),
   },
-  input: {
-    backgroundColor: Colors.white,
-    marginBottom: hp(2),
-    width: "100%",
-    height: hp(6),
-    paddingHorizontal: hp(2),
-    borderRadius: 5,
-    justifyContent: "center",
-  },
-  timeText: {
-    ...commonFontStyle(400, 14, Colors.black),
-  },
-  placeHolder: {
-    ...commonFontStyle(400, 14, Colors.placeholderColor),
-  },
+
   buttonRow: {
     flexDirection: "row",
     alignItems: "center",

@@ -132,7 +132,6 @@ export default function M_DocumentScreen({ navigation }) {
       RNFetchBlob.config(options)
         .fetch("GET", FILE_URL)
         .then((res) => {
-          console.log("res -> ", JSON.stringify(res));
           dispatch({ type: "PRE_LOADER", payload: false });
           dispatchSuccessAction(dispatch, "Documents download successfull");
         })

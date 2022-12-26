@@ -24,7 +24,7 @@ import { getLogin } from "../../Services/AuthApi";
 export default function MerchantLoginScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [email, setEmail] = useState("amer_bakour@hotmail.com");
+  const [email, setEmail] = useState("amzix.paroo@gmail.com");
   const [password, setPassword] = useState("123456");
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 

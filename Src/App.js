@@ -75,11 +75,11 @@ function App() {
         config={toastConfig}
         ref={(ref) => Toast.setRef(ref)}
       />
-      {preLoader && (
+      {/* {preLoader && (
         <View style={styles.loaderView}>
           <ActivityIndicator size={"large"} color={Colors.black} />
         </View>
-      )}
+      )} */}
       <DeleteModal
         isVisible={isVisible}
         onDelete={() => {

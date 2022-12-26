@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  Image,
+} from "react-native";
 import React, { useState } from "react";
 import Colors from "../../Themes/Colors";
 import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
@@ -15,16 +22,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { CurrentDeliverData } from "../../Config/StaticDropdownData";
 import { register } from "../../Services/AuthApi";
-const citydata = [
-  {
-    id: 1,
-    strategicName: "SUPERTREND",
-  },
-  { id: 2, strategicName: "VWAP" },
-  { id: 3, strategicName: "RSIMA" },
-  { id: 6, strategicName: "TESTING" },
-  { id: 10, strategicName: "DEMATADE" },
-];
+import { ReactNativeModal } from "react-native-modal";
+
 export default function M_RegistrationScreen({ navigation }) {
   const dispatch = useDispatch();
   const CITIES = useSelector((e) => e.merchant.cities);
@@ -44,6 +43,8 @@ export default function M_RegistrationScreen({ navigation }) {
   const [Lastname, setLastname] = useState("");
   const [Email, setEmail] = useState("");
   const [MobileNo, setMobileNo] = useState("");
+  const registerSuccess = useSelector((e) => e.auth.registerSuccess);
+
   const onRegistration = () => {
     let cityName = CITIES.filter((obj) => obj.name == city);
     let cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds");
@@ -65,7 +66,11 @@ export default function M_RegistrationScreen({ navigation }) {
       deviceToken: fcmToken,
       language: "en",
     };
-    dispatch(register(data, navigation));
+    dispatch(
+      register(data, () => {
+        dispatch({ type: "REGISTER_SUCCESS", payload: true });
+      })
+    );
   };
   const validation = () => {
     if (BName.trim() !== "") {
@@ -73,43 +78,36 @@ export default function M_RegistrationScreen({ navigation }) {
         if (city !== "") {
           if (licenceNumber.trim() !== "") {
             if (currentlyDeliver !== "") {
-              if (socialLink.trim() !== "") {
-                if (category.length !== 0) {
-                  if (Cuisine.length !== 0) {
-                    if (Firstname.trim() !== "") {
-                      if (Lastname.trim() !== "") {
-                        if (validateEmail(Email)) {
-                          if (MobileNo.trim() !== "") {
-                            onRegistration();
-                          } else {
-                            dispatchErrorAction(
-                              dispatch,
-                              "Please enter Mobile number"
-                            );
-                          }
+              if (category.length !== 0) {
+                if (Cuisine.length !== 0) {
+                  if (Firstname.trim() !== "") {
+                    if (Lastname.trim() !== "") {
+                      if (validateEmail(Email)) {
+                        if (MobileNo.trim() !== "") {
+                          onRegistration();
                         } else {
                           dispatchErrorAction(
                             dispatch,
-                            "Please enter valid Email"
+                            "Please enter Mobile number"
                           );
                         }
                       } else {
-                        dispatchErrorAction(dispatch, "Please enter Lastname");
+                        dispatchErrorAction(
+                          dispatch,
+                          "Please enter valid Email"
+                        );
                       }
                     } else {
-                      dispatchErrorAction(dispatch, "Please enter Firstname");
+                      dispatchErrorAction(dispatch, "Please enter Lastname");
                     }
                   } else {
-                    dispatchErrorAction(dispatch, "Please select cuisine");
+                    dispatchErrorAction(dispatch, "Please enter Firstname");
                   }
                 } else {
-                  dispatchErrorAction(dispatch, "Please select category");
+                  dispatchErrorAction(dispatch, "Please select cuisine");
                 }
               } else {
-                dispatchErrorAction(
-                  dispatch,
-                  "Please enter your website, facebook, instagram account"
-                );
+                dispatchErrorAction(dispatch, "Please select category");
               }
             } else {
               dispatchErrorAction(dispatch, "Please select currently deliver");
@@ -126,6 +124,12 @@ export default function M_RegistrationScreen({ navigation }) {
     } else {
       dispatchErrorAction(dispatch, "Please enter Business Name");
     }
+  };
+
+  const onPressOk = () => {
+    dispatch({ type: "REGISTER_SUCCESS", payload: false });
+    navigation.goBack();
+    dispatch({ type: "PRE_LOADER", payload: false });
   };
 
   return (
@@ -259,6 +263,38 @@ export default function M_RegistrationScreen({ navigation }) {
           </Text>
         </Text>
       </ScrollView>
+
+      <ReactNativeModal
+        style={ApplicationStyles.modalStyle}
+        isVisible={registerSuccess}
+        onBackButtonPress={() => onPressOk()}
+        onBackdropPress={() => onPressOk()}
+      >
+        <View
+          style={[
+            ApplicationStyles.modalViewStyle,
+            { paddingVertical: hp(4), paddingHorizontal: hp(2) },
+          ]}
+        >
+          <Image
+            source={require("../../Images/Merchant/xxxhdpi/correct.png")}
+            style={styles.icon}
+          />
+          <Text style={styles.title2}>
+            {"Your request has been submitted. We will get back to you soon."}
+          </Text>
+
+          <View style={styles.buttonRow2}>
+            <View style={{ width: "50%" }}>
+              <PinkButton
+                onPress={() => onPressOk()}
+                text={"small"}
+                name={"Ok"}
+              />
+            </View>
+          </View>
+        </View>
+      </ReactNativeModal>
     </View>
   );
 }
@@ -282,5 +318,22 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 14, Colors.black),
     marginVertical: hp(3),
     lineHeight: 20,
+  },
+
+  icon: {
+    height: hp(10),
+    width: hp(10),
+    resizeMode: "contain",
+    alignSelf: "center",
+    tintColor: Colors.green,
+  },
+  title2: {
+    textAlign: "center",
+    ...commonFontStyle("M_500", 18, Colors.black),
+    paddingVertical: hp(2),
+  },
+  buttonRow2: {
+    alignItems: "center",
+    marginTop: hp(2),
   },
 });

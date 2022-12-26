@@ -24,12 +24,15 @@ import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import { useDispatch } from "react-redux";
 import { dispatchErrorAction } from "../../Services/CommonFunctions";
 import { updatePassword } from "../../Services/AuthApi";
+import { useNavigation } from "@react-navigation/native";
+import { merchant_url } from "../../Config/AppConfig";
 
-export default function M_UpdatePassword({ navigation }) {
+export default function M_UpdatePassword() {
   const dispatch = useDispatch();
   const [oldPwd, setoldPwd] = useState("");
   const [newPwd, setnewPwd] = useState("");
   const [confirmPwd, setconfirmPwd] = useState("");
+  const navigation = useNavigation();
   useEffect(() => {
     navigation.addListener("focus", () => {
       setoldPwd("");
@@ -43,11 +46,13 @@ export default function M_UpdatePassword({ navigation }) {
       new_password: newPwd,
       confirm_password: confirmPwd,
     };
+    let url = merchant_url;
     dispatch(
-      updatePassword(data, () => {
+      updatePassword(data, url, () => {
         setoldPwd("");
         setnewPwd("");
         setconfirmPwd("");
+        navigation.goBack();
       })
     );
   };

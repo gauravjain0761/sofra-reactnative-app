@@ -63,14 +63,30 @@ export const getUsers = () => async (dispatch) => {
   }
 };
 
-export const getOrders = () => async (dispatch) => {
+export const getOrders = (page, status) => async (dispatch) => {
   let token = await getToken();
-  const url = merchant_url + "/getOrders?auth_token=" + token;
+  let url = "";
+  if (page) {
+    if (status == "ALL") {
+      url = merchant_url + "/getOrders?auth_token=" + token + "&page=" + page;
+    } else {
+      url =
+        merchant_url +
+        "/getOrders?auth_token=" +
+        token +
+        "&page=" +
+        page +
+        "&status=" +
+        status;
+    }
+  } else {
+    url = merchant_url + "/getOrders?auth_token=" + token;
+  }
+
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
-      // onSuccess();
-      dispatchAction(dispatch, "SET_ORDERS", data.result);
+      dispatchAction(dispatch, "SET_ORDERS", data);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -79,9 +95,21 @@ export const getOrders = () => async (dispatch) => {
   }
 };
 
-export const getStatitics = () => async (dispatch) => {
+export const getStatitics = (postObj) => async (dispatch) => {
   let token = await getToken();
-  const url = merchant_url + "/getStatitics?auth_token=" + token;
+  let url = "";
+  if (postObj) {
+    url =
+      merchant_url +
+      "/getStatitics?auth_token=" +
+      token +
+      "&language=en&startDate=" +
+      postObj.startDate +
+      "&endDate=" +
+      postObj.endDate;
+  } else {
+    url = merchant_url + "/getStatitics?auth_token=" + token;
+  }
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -95,9 +123,23 @@ export const getStatitics = () => async (dispatch) => {
   }
 };
 
-export const getSettledReports = () => async (dispatch) => {
+export const getSettledReports = (postObj) => async (dispatch) => {
   let token = await getToken();
-  const url = merchant_url + "/getSettledReports?auth_token=" + token;
+  let url = "";
+  if (postObj) {
+    url =
+      merchant_url +
+      "/getSettledReports?auth_token=" +
+      token +
+      "&language=en&startDate=" +
+      postObj.startDate +
+      "&endDate=" +
+      postObj.endDate;
+  } else {
+    url = merchant_url + "/getSettledReports?auth_token=" + token;
+  }
+
+  // const url = merchant_url + "/getSettledReports?auth_token=" + token;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -111,11 +153,25 @@ export const getSettledReports = () => async (dispatch) => {
   }
 };
 
-export const getUnSettledReports = () => async (dispatch) => {
+export const getUnSettledReports = (postObj) => async (dispatch) => {
   dispatch({ type: "PRE_LOADER", payload: true });
 
   let token = await getToken();
-  const url = merchant_url + "/getUnSettledReports?auth_token=" + token;
+  let url = "";
+  if (postObj) {
+    url =
+      merchant_url +
+      "/getUnSettledReports?auth_token=" +
+      token +
+      "&language=en&startDate=" +
+      postObj.startDate +
+      "&endDate=" +
+      postObj.endDate;
+  } else {
+    url = merchant_url + "/getUnSettledReports?auth_token=" + token;
+  }
+
+  // const url = merchant_url + "/getUnSettledReports?auth_token=" + token;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -617,10 +673,6 @@ export const changeStatus =
       if (data.status == true) {
         // dispatchSuccessAction(dispatch, data.message);
         onSuccess(data.message);
-        dispatchAction(dispatch, "UPDATE_ORDER_STATUS", {
-          postObj,
-          selectedStatus,
-        });
       } else {
         dispatchErrorAction(dispatch, data.message);
       }
@@ -628,3 +680,34 @@ export const changeStatus =
       dispatchErrorAction(dispatch, "Something went wrong!");
     }
   };
+
+export const updateNotificationSetting = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/updateNotificationSetting";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatch(getRestaurnatDetails());
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const getNotifications = () => async (dispatch) => {
+  let token = await getToken();
+  const url = merchant_url + "/getNotifications?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_NOTIFICATIONS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};

@@ -34,7 +34,6 @@ export default function Chart({ name, x, totalData, value }) {
       Data.push(a);
     });
     DomainValue[1] = DomainValue[1] + (15 / 100) * DomainValue[1];
-    console.log(Data, DomainValue);
     setData(Data);
     setXaxis(Xaxis);
     setDomainValue(DomainValue);

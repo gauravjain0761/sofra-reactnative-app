@@ -22,6 +22,7 @@ import PinkButton from "../../Components/PinkButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getRestaurnatDetails,
+  updateNotificationSetting,
   updateProfile,
 } from "../../Services/MerchantApi";
 import { media_url } from "../../Config/AppConfig";
@@ -59,9 +60,7 @@ export default function M_ProfileScreen({ navigation }) {
   const [des, setdes] = useState("");
   const [arabicDes, setarabicDes] = useState("");
   const [location, setlocation] = useState("");
-  const [reportNoti, setreportNoti] = useState("");
   const [orderNoti, setorderNoti] = useState("");
-  const [notification, setnotification] = useState("");
   const RESTAURANT = useSelector((e) => e.merchant.restaurant);
   const CITIES = useSelector((e) => e.merchant.cities);
   const CUISINES = useSelector((e) => e.merchant.cuisines);
@@ -84,7 +83,11 @@ export default function M_ProfileScreen({ navigation }) {
     return temp;
   };
   useEffect(() => {
-    if (RESTAURANT !== {} && Object.keys(RESTAURANT).length !== 0) {
+    if (
+      RESTAURANT !== {} &&
+      Object.keys(RESTAURANT).length !== 0 &&
+      timeData.length !== 0
+    ) {
       let city = CITIES.filter((obj) => obj.id == RESTAURANT.cityId);
       let deliveryTime = timeData.filter(
         (obj) => obj.name == RESTAURANT.deliveryTime
@@ -103,8 +106,9 @@ export default function M_ProfileScreen({ navigation }) {
       setdes(RESTAURANT.description);
       setarabicDes(RESTAURANT.description_ar);
       setlocation(RESTAURANT.location);
+      setorderNoti(RESTAURANT.orderNotifications);
     }
-  }, [RESTAURANT]);
+  }, [RESTAURANT, timeData]);
 
   const openPicker = () => {
     ImagePicker.openPicker({
@@ -427,25 +431,6 @@ export default function M_ProfileScreen({ navigation }) {
             <Text style={styles.title}>Notifications</Text>
             <View>
               <View style={styles.row}>
-                <Text style={[styles.title2, { marginBottom: 0 }]}>
-                  Reports
-                </Text>
-                <Switch
-                  ios_backgroundColor={"#cccccc"}
-                  trackColor={{
-                    false: Colors.placeholderColor,
-                    true: Colors.pink,
-                  }}
-                  thumbColor={reportNoti ? Colors.white : Colors.darkGrey}
-                  style={{
-                    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
-                    marginTop: 0,
-                  }}
-                  onValueChange={() => setreportNoti(!reportNoti)}
-                  value={reportNoti}
-                />
-              </View>
-              <View style={styles.row}>
                 <Text style={[styles.title2, { marginBottom: 0 }]}>Orders</Text>
                 <Switch
                   ios_backgroundColor={"#cccccc"}
@@ -458,27 +443,15 @@ export default function M_ProfileScreen({ navigation }) {
                     marginTop: 0,
                   }}
                   thumbColor={orderNoti ? Colors.white : Colors.darkGrey}
-                  onValueChange={() => setorderNoti(!orderNoti)}
+                  onValueChange={(value) => {
+                    console.log(value);
+                    setorderNoti(value);
+                    let data = {
+                      orderNotifications: value == true ? 1 : 0,
+                    };
+                    dispatch(updateNotificationSetting(data));
+                  }}
                   value={orderNoti}
-                />
-              </View>
-              <View style={styles.row}>
-                <Text style={[styles.title2, { marginBottom: 0 }]}>
-                  Notifications
-                </Text>
-                <Switch
-                  ios_backgroundColor={"#cccccc"}
-                  trackColor={{
-                    false: Colors.placeholderColor,
-                    true: Colors.pink,
-                  }}
-                  style={{
-                    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
-                    marginTop: 0,
-                  }}
-                  thumbColor={notification ? Colors.white : Colors.darkGrey}
-                  onValueChange={() => setnotification(!notification)}
-                  value={notification}
                 />
               </View>
             </View>

@@ -37,8 +37,8 @@ export default function OrderItems({
   );
   useEffect(() => {
     if (
-      status.type == "PENDING" &&
-      status.type == "ACCEPTED" &&
+      status.type == "PENDING" ||
+      status.type == "ACCEPTED" ||
       status.type == "PREPARING"
     ) {
       let index = orderStatusData.findIndex((obj) => obj.type == status.type);
@@ -54,6 +54,12 @@ export default function OrderItems({
           type: "SUCCESS_MODAL",
           payload: { modal: true, message: message },
         });
+        setTimeout(() => {
+          dispatch({
+            type: "UPDATE_ORDER_STATUS",
+            payload: { postObj: data, selectedStatus },
+          });
+        }, 2000);
       })
     );
     setModalVisible(false);
@@ -79,6 +85,7 @@ export default function OrderItems({
               {item.user.name}
             </Text>
             <Text style={styles.type}>
+              {item.bookingCode + "\n"}
               {"Date " + moment(item.bookingDate).format("YYYY-MM-DD")}
             </Text>
             <Text style={styles.name}>AED {item.totalPrice}</Text>
@@ -88,14 +95,15 @@ export default function OrderItems({
             />
           </View>
           <View>
-            {status.type == "PENDING" &&
-            status.type == "ACCEPTED" &&
-            status.type == "PREPARING" ? (
+            {status.type !== "PENDING" ||
+            status.type !== "ACCEPTED" ||
+            status.type !== "PREPARING" ? (
               <TouchableOpacity
                 style={{
                   borderRadius: 3,
                   overflow: "hidden",
                   alignSelf: "flex-end",
+                  zIndex: 1111,
                 }}
                 onPress={() => setModalVisible(true)}
               >
@@ -237,6 +245,7 @@ const styles = StyleSheet.create({
   type: {
     ...commonFontStyle(500, 12, Colors.tabIconColor),
     paddingVertical: 5,
+    lineHeight: 14,
   },
 
   icon: {

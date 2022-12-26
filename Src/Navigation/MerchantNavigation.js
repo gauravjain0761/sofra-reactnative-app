@@ -44,6 +44,8 @@ import { getLogout } from "../Services/AuthApi";
 import M_CreateOfferScreen from "../Screens/Merchant/M_CreateOfferScreen";
 import HeaderLeftIcon from "../Components/NavigationComponent";
 import M_EditPromocodeScreen from "../Screens/Merchant/M_EditPromocodeScreen";
+import { getRestaurnatDetails } from "../Services/MerchantApi";
+import { media_url } from "../Config/AppConfig";
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
@@ -334,6 +336,8 @@ const ImageContainer = ({ image }) => {
 function CustomDrawerContent(props) {
   const _TOAST = useSelector((e) => e.merchant.toast);
   const dispatch = useDispatch();
+  const RESTAURANT = useSelector((e) => e.merchant.restaurant);
+
   useEffect(() => {
     if (_TOAST.message == "Auth Token is invalid") {
       onLogout();
@@ -352,6 +356,11 @@ function CustomDrawerContent(props) {
     );
     await clearAsyncStorage();
   };
+
+  useEffect(() => {
+    dispatch(getRestaurnatDetails());
+  }, []);
+
   return (
     <DrawerContentScrollView
       style={{
@@ -364,9 +373,13 @@ function CustomDrawerContent(props) {
       <View style={styles.drawerMain}>
         <Image
           style={styles.drawerImage}
-          source={require("../Images/Merchant/xxxhdpi/bg_profile.png")}
+          source={
+            RESTAURANT?.image
+              ? { uri: media_url + RESTAURANT.image }
+              : require("../Images/Merchant/xxxhdpi/bg_profile.png")
+          }
         />
-        <Text style={styles.name}>Jasica Birnilvis</Text>
+        <Text style={styles.name}>{RESTAURANT.name}</Text>
         {DrawerItemArray.map((item, index) => {
           return (
             <DrawerItem
@@ -597,6 +610,9 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: hp(15),
     width: hp(15),
+    borderWidth: 1,
+    borderRadius: hp(15) / 2,
+    borderColor: Colors.placeholderColor,
   },
   drawerMain: {
     paddingHorizontal: hp(2),

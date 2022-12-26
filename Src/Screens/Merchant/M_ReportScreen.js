@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
-import { commonFontStyle } from "../../Themes/Fonts";
+import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
@@ -22,7 +22,12 @@ import {
   getUnSettledReports,
 } from "../../Services/MerchantApi";
 import { reportDropdownData } from "../../Config/StaticDropdownData";
+import SearchDropdown from "../../Components/SearchDropdown";
+import { dateFilterData } from "../../Config/StaticDropdownData";
+import DateTimePickerView from "../../Components/DateTimePickerView";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
+import { dispatchErrorAction } from "../../Services/CommonFunctions";
 
 export default function M_ReportScreen({ navigation }) {
   const [tab, setTab] = useState("report");
@@ -31,7 +36,11 @@ export default function M_ReportScreen({ navigation }) {
   const [reportType, setreportType] = useState(reportDropdownData[0].name);
   const setteled_report = useSelector((e) => e.merchant.setteled_report);
   const unsetteled_report = useSelector((e) => e.merchant.unsetteled_report);
-
+  const [StartDate, setStartDate] = useState("");
+  const [EndDate, setEndDate] = useState("");
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dateType, setdateType] = useState([]);
+  console.log("setteled_report--", setteled_report, unsetteled_report);
   const REPORT =
     Object.keys(setteled_report).length == 0
       ? unsetteled_report
@@ -40,6 +49,9 @@ export default function M_ReportScreen({ navigation }) {
     dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getSettledReports());
+      setSearch("");
+      setStartDate("");
+      setEndDate("");
     });
   }, []);
   const OrderComponent = () => {
@@ -140,16 +152,47 @@ export default function M_ReportScreen({ navigation }) {
     );
   };
 
-  const getReportsData = (text) => {
+  const getReportsData = (text, data) => {
     setreportType(text);
     setTab("report");
     if (text == reportDropdownData[0].name) {
       dispatch({ type: "PRE_LOADER", payload: true });
-      dispatch(getSettledReports());
+      dispatch(getSettledReports(data));
     } else {
       dispatch({ type: "PRE_LOADER", payload: true });
-      dispatch(getUnSettledReports());
+      dispatch(getUnSettledReports(data));
     }
+  };
+
+  const handleConfirm = (date) => {
+    if (dateType == "start") {
+      setStartDate(date);
+    } else {
+      setEndDate(date);
+    }
+    setDatePickerVisibility(false);
+  };
+
+  const onSearchDateWise = () => {
+    if (search == "CUSTOM") {
+      if (StartDate !== "") {
+        if (EndDate !== "") {
+          getFilterData(
+            moment(StartDate).format("YYYY-MM-DD"),
+            moment(EndDate).format("YYYY-MM-DD")
+          );
+        } else dispatchErrorAction(dispatch, "Please select end date");
+      } else dispatchErrorAction(dispatch, "Please select start date");
+    } else {
+      if (search !== "") {
+        const selectedDate = dateFilterData.filter((obj) => obj.name == search);
+        getFilterData(selectedDate[0].startDate, selectedDate[0].endDate);
+      }
+    }
+  };
+  const getFilterData = (sDate, eDate) => {
+    let data = { startDate: sDate, endDate: eDate };
+    getReportsData(reportType, data);
   };
   return (
     <View style={ApplicationStyles.mainView}>
@@ -158,7 +201,9 @@ export default function M_ReportScreen({ navigation }) {
         data={reportDropdownData}
         value={reportType}
         setData={(text) => {
-          getReportsData(text);
+          {
+            getReportsData(text), setSearch("");
+          }
         }}
         placeholder={reportType}
         valueField={"name"}
@@ -200,28 +245,56 @@ export default function M_ReportScreen({ navigation }) {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.filterTitle}>Apply Date Filters</Text>
-        <View style={styles.searchBar}>
-          <Image
-            source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
-            style={styles.searchIcon}
-          />
-          <TextInput
-            placeholder="Search by Date Range"
-            style={styles.searchInput}
-            value={search}
-            onChangeText={(text) => setSearch(text)}
-            placeholderTextColor={Colors.placeholderColor}
-          />
-          <Image
-            source={require("../../Images/Merchant/xxxhdpi/ic_filter.png")}
-            style={styles.searchIcon2}
-          />
-        </View>
+        <SearchDropdown
+          value={search}
+          setData={(text) => {
+            setSearch(text);
+          }}
+          placeholder={"Search by Date Range"}
+          valueField={"name"}
+          labelField={"label"}
+          style={styles.dropdownRow}
+          placeholderTextColor={Colors.placeholderColor}
+          onSearch={() => onSearchDateWise()}
+        />
+        {search == "CUSTOM" && (
+          <View style={styles.datesRow}>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+              <DateTimePickerView
+                value={StartDate}
+                format={"MM/DD/YYYY"}
+                placeHolder={"Start date"}
+                onPressPicker={() => {
+                  setDatePickerVisibility(true), setdateType("start");
+                }}
+                width={"100%"}
+              />
+            </View>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+              <DateTimePickerView
+                value={EndDate}
+                format={"MM/DD/YYYY"}
+                placeHolder={"End date"}
+                onPressPicker={() => {
+                  setDatePickerVisibility(true), setdateType("end");
+                }}
+                width={"100%"}
+              />
+            </View>
+          </View>
+        )}
 
         {tab == "order" && <OrderComponent />}
         {tab == "report" && <ReportSettled reportType={reportType} />}
         {tab == "summary" && <SummaryComponent />}
       </ScrollView>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={() => setDatePickerVisibility(false)}
+        minimumDate={dateType == "end" ? StartDate : null}
+      />
     </View>
   );
 }

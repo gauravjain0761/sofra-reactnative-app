@@ -4,6 +4,7 @@ const initialState = {
   preLoader: false,
   toast: {},
   user: {},
+  dashboardData: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -14,6 +15,9 @@ export default function (state = initialState, action) {
     }
     case "LOGOUT": {
       return initialState;
+    }
+    case "SET_D_DASHBOARD_DATA": {
+      return { ...state, dashboardData: action.payload, preLoader: false };
     }
     default:
       return state;

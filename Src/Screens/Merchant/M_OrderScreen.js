@@ -29,26 +29,57 @@ export default function M_OrderScreen({ navigation }) {
   const dispatch = useDispatch();
   const ORDERS = useSelector((e) => e.merchant.filterOrders);
   const PRELOADER = useSelector((e) => e.merchant.preLoader);
+  const PAGINATIONDATA = useSelector((e) => e.merchant.orderPaging);
+  const [filterOrders, setfilterOrders] = useState(ORDERS);
+  const [page, setPage] = useState(1);
+
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
+      setPage(1);
       dispatch(getOrders());
     });
   }, []);
+  useEffect(() => {
+    setfilterOrders(ORDERS);
+  }, [ORDERS]);
+
+  const onSearch = () => {
+    if (search !== "") {
+      setSearch("");
+      setfilterOrders(ORDERS);
+    }
+  };
+
+  const onChangeSearch = (text) => {
+    setSearch(text);
+    const filtered = filterOrders.filter(
+      (val) =>
+        val.bookingCode.toLowerCase().includes(text.toLowerCase()) ||
+        val.user.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setfilterOrders(filtered);
+  };
 
   navigation.setOptions({
     headerTitle: () => (
       <View style={{ flex: 1, width: "100%" }}>
         <View style={styles.searchBar}>
-          <Image
-            source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
-            style={styles.searchIcon}
-          />
+          <TouchableOpacity onPress={() => onSearch()}>
+            <Image
+              source={
+                search == ""
+                  ? require("../../Images/Merchant/xxxhdpi/ic_search.png")
+                  : require("../../Images/Merchant/xxxhdpi/close.png")
+              }
+              style={styles.searchIcon}
+            />
+          </TouchableOpacity>
           <TextInput
             placeholder="Search for specific"
             style={styles.searchInput}
             value={search}
-            onChangeText={(text) => setSearch(text)}
+            onChangeText={(text) => onChangeSearch(text)}
             placeholderTextColor={Colors.placeholderColor}
           />
         </View>
@@ -57,67 +88,86 @@ export default function M_OrderScreen({ navigation }) {
   });
 
   const onPressFilterStatus = (type) => {
+    dispatch({
+      type: "SUCCESS_MODAL",
+      payload: { modal: false, message: "" },
+    });
+    if (selectedStatus !== type) {
+      setPage(1);
+    }
     setselectedStatus(type);
-    dispatch({ type: "FILTER_ORDER", payload: type });
+    setSearch("");
+    dispatch(getOrders(1, type));
   };
+
+  const fetchMoreData = () => {
+    if (PAGINATIONDATA.currentPage + 1 <= PAGINATIONDATA.totalPages) {
+      dispatch(getOrders(PAGINATIONDATA.currentPage + 1, selectedStatus));
+    }
+  };
+
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
-      <ScrollView>
-        <View style={styles.tagView}>
-          {orderStatusData.map((item, index) => {
+      {/* <ScrollView> */}
+      <View style={styles.tagView}>
+        {orderStatusData.map((item, index) => {
+          return (
+            <TouchableOpacity
+              key={index}
+              style={{
+                borderRadius: 5,
+                marginRight: hp(1),
+                overflow: "hidden",
+                marginBottom: hp(1.2),
+                borderWidth: 2,
+                borderColor:
+                  selectedStatus == item.type
+                    ? Colors.black
+                    : Colors.registrationBackground,
+              }}
+              onPress={() => onPressFilterStatus(item.type)}
+            >
+              <Text style={[styles.tagText, { backgroundColor: item.color }]}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+      {!PRELOADER && (
+        <FlatList
+          // contentContainerStyle={{ flex: 1 }}
+          data={filterOrders}
+          ListEmptyComponent={
+            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+          }
+          style={{ flex: 1 }}
+          renderItem={({ item, index }) => {
+            let status = orderStatusData.filter(
+              (obj) => obj.type == item.status
+            );
+
             return (
               <TouchableOpacity
-                key={index}
-                style={{
-                  borderRadius: 5,
-                  marginRight: hp(1),
-                  overflow: "hidden",
-                  marginBottom: hp(1.2),
-                  borderWidth: 2,
-                  borderColor:
-                    selectedStatus == item.type
-                      ? Colors.black
-                      : Colors.registrationBackground,
+                onPress={() => {
+                  setcategoryDetail(true), setselectedOrder(item);
                 }}
-                onPress={() => onPressFilterStatus(item.type)}
               >
-                <Text style={[styles.tagText, { backgroundColor: item.color }]}>
-                  {item.title}
-                </Text>
+                <OrderItems
+                  selectedStatus={selectedStatus}
+                  item={item}
+                  navigation={navigation}
+                  status={status[0]}
+                />
               </TouchableOpacity>
             );
-          })}
-        </View>
-        {!PRELOADER && (
-          <FlatList
-            data={ORDERS}
-            ListEmptyComponent={
-              <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
-            }
-            renderItem={({ item, index }) => {
-              let status = orderStatusData.filter(
-                (obj) => obj.type == item.status
-              );
-
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    setcategoryDetail(true), setselectedOrder(item);
-                  }}
-                >
-                  <OrderItems
-                    selectedStatus={selectedStatus}
-                    item={item}
-                    navigation={navigation}
-                    status={status[0]}
-                  />
-                </TouchableOpacity>
-              );
-            }}
-            keyExtractor={(item) => item.id}
-          />
-        )}
-      </ScrollView>
+          }}
+          keyExtractor={(item) => item.id}
+          onEndReachedThreshold={0.2}
+          onEndReached={fetchMoreData}
+        />
+      )}
+      {/* </ScrollView> */}
       <Modal
         isVisible={categoryDetail}
         // deviceWidth={SCREEN_WIDTH}

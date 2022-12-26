@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const ItemTypeData = [
   { id: 1, name: "Normal" },
   { id: 2, name: "Cold" },
@@ -81,3 +83,67 @@ const toHoursAndMinutes = (totalMinutes) => {
 
   return { hours, minutes };
 };
+
+export const dateFilterData = [
+  {
+    startDate: moment().format("YYYY-MM-DD"),
+    endDate: moment().format("YYYY-MM-DD"),
+    id: 0,
+    name: moment().format("MM/DD/YYYY") + " - " + moment().format("MM/DD/YYYY"),
+    label: "Today",
+  },
+  {
+    startDate: moment().subtract(1, "day").format("YYYY-MM-DD"),
+    endDate: moment().subtract(1, "day").format("YYYY-MM-DD"),
+    id: 1,
+    name:
+      moment().subtract(1, "day").format("MM/DD/YYYY") +
+      " - " +
+      moment().subtract(1, "day").format("MM/DD/YYYY"),
+    label: "Yesterday",
+  },
+  {
+    startDate: moment().subtract(6, "days").format("YYYY-MM-DD"),
+    endDate: moment().format("YYYY-MM-DD"),
+    id: 2,
+    name:
+      moment().subtract(6, "days").format("MM/DD/YYYY") +
+      " - " +
+      moment().format("MM/DD/YYYY"),
+    label: "Last 7 Days",
+  },
+  {
+    startDate: moment().subtract(29, "days").format("YYYY-MM-DD"),
+    endDate: moment().format("YYYY-MM-DD"),
+    id: 2,
+    name:
+      moment().subtract(29, "day").format("MM/DD/YYYY") +
+      " - " +
+      moment().format("MM/DD/YYYY"),
+    label: "Last 30 Days",
+  },
+  {
+    startDate: moment().startOf("month").format("YYYY-MM-DD"),
+    endDate: moment().endOf("month").format("YYYY-MM-DD"),
+    id: 0,
+    name:
+      moment().startOf("month").format("MM/DD/YYYY") +
+      " - " +
+      moment().endOf("month").format("MM/DD/YYYY"),
+    label: "This Month",
+  },
+  {
+    startDate: moment()
+      .subtract(1, "month")
+      .startOf("month")
+      .format("YYYY-MM-DD"),
+    endDate: moment().subtract(1, "month").endOf("month").format("YYYY-MM-DD"),
+    id: 0,
+    name:
+      moment().subtract(1, "month").startOf("month").format("MM/DD/YYYY") +
+      " - " +
+      moment().subtract(1, "month").endOf("month").format("MM/DD/YYYY"),
+    label: "Last Month",
+  },
+  { startDate: "", endDate: "", id: 0, name: "CUSTOM", label: "Custom Range" },
+];

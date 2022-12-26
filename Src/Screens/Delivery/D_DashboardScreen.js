@@ -12,14 +12,16 @@ import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getDeliveryDashboardReports } from "../../Services/DeliveryApi";
 export default function M_DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const DASHBOARD_DATA = useSelector((e) => e.delivery.dashboardData);
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: false });
+    dispatch(getDeliveryDashboardReports());
   }, []);
-
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -42,21 +44,17 @@ export default function M_DashboardScreen({ navigation }) {
           <Text style={styles.cardTitle}>Add New Driver</Text>
           <Image
             style={styles.menuImage}
-            source={require("../../Images/Delivery/xxxhdpi/ic_driver_selected.png")}
+            source={require("../../Images/Delivery/xxxhdpi/ic_delivery.png")}
           />
-          <TouchableOpacity style={styles.addMenuButton}
+          <TouchableOpacity
+            style={styles.addMenuButton}
             onPress={() => {
               // D_DeliveredOrderScreen
               // D_CancelledOrderScreen
               // navigation.navigate('D_AddNewDriver')
               // navigation.navigate('D_CancelledOrderScreen')
-              navigation.navigate('D_PickUpOrderScreen')
+              navigation.navigate("D_PickUpOrderScreen");
               // navigation.navigate('D_ActiveOrderScreen')
-
-
-
-
-
             }}
           >
             <Text style={styles.addButton}>Add Driver</Text>
@@ -65,7 +63,9 @@ export default function M_DashboardScreen({ navigation }) {
 
         <View style={styles.rowView}>
           <View style={styles.halfView}>
-            <Text style={styles.halfViewTitle}>0.00</Text>
+            <Text style={styles.halfViewTitle}>
+              {DASHBOARD_DATA ? DASHBOARD_DATA.totalEarnings : 0}
+            </Text>
             <View style={styles.bottomcardRow}>
               <Image
                 style={styles.bottomcardRowImage}
@@ -75,7 +75,9 @@ export default function M_DashboardScreen({ navigation }) {
             </View>
           </View>
           <View style={styles.halfView}>
-            <Text style={styles.halfViewTitle}>250</Text>
+            <Text style={styles.halfViewTitle}>
+              {DASHBOARD_DATA ? DASHBOARD_DATA.totalConvienceFee : 0}
+            </Text>
             <View style={styles.bottomcardRow}>
               <Image
                 style={styles.bottomcardRowImage}
@@ -130,14 +132,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: hp(3),
     paddingVertical: hp(1.5),
     backgroundColor: Colors.pink,
-    marginTop: hp(2),
+    marginTop: hp(1.5),
     borderRadius: 5,
   },
   menuImage: {
-    marginVertical: hp(3),
-    height: hp(12),
-    width: hp(20),
+    marginVertical: hp(1),
+    height: hp(18),
+    width: hp(30),
     resizeMode: "contain",
+    // backgroundColor: "red",
   },
   rowView: {
     flex: 2,

@@ -15,7 +15,7 @@ import { getDeliveryLogin } from "../../Services/AuthApi";
 
 export default function DeliveryLoginScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("amer_bakour@hotmail.com");
+  const [email, setEmail] = useState("amir.shahzad@devicebee.com");
   const [password, setPassword] = useState("123456");
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 
@@ -68,7 +68,7 @@ export default function DeliveryLoginScreen({ navigation }) {
           <PinkButton
             onPress={() => {
               // navigation.navigate("DeliveryDrawerHome");
-              // onLogin();
+              onLogin();
             }}
             style={styles.dbuttonStyle}
             name={"Login"}

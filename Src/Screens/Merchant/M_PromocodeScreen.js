@@ -39,6 +39,7 @@ import {
 import ImagePicker from "react-native-image-crop-picker";
 import moment from "moment";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePickerView from "../../Components/DateTimePickerView";
 
 const citydata = [
   {
@@ -335,29 +336,25 @@ export default function M_PromocodeScreen({ navigation }) {
           {expiryType == "DATE" && (
             <View style={styles.row}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-                <RegistrationTextInput
-                  onFocus={() => {
+                <DateTimePickerView
+                  value={StartDate}
+                  format={"MM/DD/YYYY"}
+                  placeHolder={"Start date"}
+                  onPressPicker={() => {
                     setDatePickerVisibility(true), setdateType("start");
                   }}
-                  placeholder={"Start date"}
-                  value={
-                    StartDate !== ""
-                      ? moment(StartDate).format("MM/DD/YYYY")
-                      : ""
-                  }
-                  onChangeText={(text) => setStartDate(text)}
+                  width={"100%"}
                 />
               </View>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-                <RegistrationTextInput
-                  onFocus={() => {
+                <DateTimePickerView
+                  value={EndDate}
+                  format={"MM/DD/YYYY"}
+                  placeHolder={"End date"}
+                  onPressPicker={() => {
                     setDatePickerVisibility(true), setdateType("end");
                   }}
-                  placeholder={"End date"}
-                  value={
-                    EndDate !== "" ? moment(EndDate).format("MM/DD/YYYY") : ""
-                  }
-                  onChangeText={(text) => setEndDate(text)}
+                  width={"100%"}
                 />
               </View>
             </View>

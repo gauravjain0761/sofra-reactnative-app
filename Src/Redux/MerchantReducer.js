@@ -27,6 +27,8 @@ const initialState = {
   isVisible: false,
   onDelete: undefined,
   successModal: false,
+  notifications: [],
+  orderPaging: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -49,14 +51,27 @@ export default function (state = initialState, action) {
       return initialState;
     }
     case "SET_ORDERS": {
-      return {
-        ...state,
-        orders: action.payload,
-        filterOrders: action.payload,
-        preLoader: false,
-      };
+      let orders = Object.assign([], state.orders);
+      if (action.payload.result.length !== 0)
+        orders.push(...action.payload.result);
+      if (action.payload.paging.currentPage == 1) {
+        return {
+          ...state,
+          orders: action.payload.result,
+          filterOrders: action.payload.result,
+          orderPaging: action.payload.paging,
+          preLoader: false,
+        };
+      } else {
+        return {
+          ...state,
+          orders: orders,
+          filterOrders: orders,
+          orderPaging: action.payload.paging,
+          preLoader: false,
+        };
+      }
     }
-
     case "SET_STATISTICS": {
       return { ...state, statistics: action.payload, preLoader: false };
     }
@@ -161,27 +176,23 @@ export default function (state = initialState, action) {
     case "SET_RESTAURANT": {
       return { ...state, restaurant: action.payload, preLoader: false };
     }
-    case "FILTER_ORDER": {
-      let orders = Object.assign([], state.orders);
-      if (action.payload == "ALL") orders = orders;
-      else orders = orders.filter((obj) => obj.status == action.payload);
-      return { ...state, filterOrders: orders };
-    }
     case "UPDATE_ORDER_STATUS": {
-      console.log("UPDATE_ORDER_STATUS", action.payload);
-
       let orders = Object.assign([], state.orders);
+      let filterOrders = Object.assign([], state.filterOrders);
       let index = orders.findIndex(
         (obj) => obj.id == action.payload.postObj.orderId
       );
       orders[index].status = action.payload.postObj.status;
 
-      let filter = [];
-      if (action.payload.selectedStatus == "ALL") filter = orders;
-      else
-        filter = orders.filter(
-          (obj) => obj.status == action.payload.selectedStatus
-        );
+      let index2 = filterOrders.findIndex(
+        (obj) => obj.id == action.payload.postObj.orderId
+      );
+      filterOrders[index2].status = action.payload.postObj.status;
+
+      let filter = filterOrders.filter(
+        (obj) => obj.status == action.payload.selectedStatus
+      );
+
       return {
         ...state,
         orders: orders,
@@ -222,7 +233,9 @@ export default function (state = initialState, action) {
         successModalMessage: action.payload.message,
       };
     }
-
+    case "SET_NOTIFICATIONS": {
+      return { ...state, notifications: action.payload, preLoader: false };
+    }
     default:
       return state;
   }

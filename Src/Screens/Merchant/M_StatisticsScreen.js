@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
-import { commonFontStyle } from "../../Themes/Fonts";
+import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
@@ -17,20 +17,41 @@ import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import { useDispatch, useSelector } from "react-redux";
 import { getStatitics } from "../../Services/MerchantApi";
+import SearchDropdown from "../../Components/SearchDropdown";
+import { dateFilterData } from "../../Config/StaticDropdownData";
+import DateTimePickerView from "../../Components/DateTimePickerView";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
+import { dispatchErrorAction } from "../../Services/CommonFunctions";
 
 export default function M_StatisticsScreen({ navigation }) {
-  const [tab, setTab] = useState("order");
-  const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const STATISTICS = useSelector((e) => e.merchant.statistics);
+  const [tab, setTab] = useState("order");
+  const [search, setSearch] = useState("");
+  const [StartDate, setStartDate] = useState("");
+  const [EndDate, setEndDate] = useState("");
+  const [Users, setUsers] = useState([]);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dateType, setdateType] = useState([]);
+
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
-
     navigation.addListener("focus", () => {
       dispatch(getStatitics());
+      setSearch("");
+      setStartDate("");
+      setEndDate("");
     });
   }, []);
-
+  const handleConfirm = (date) => {
+    if (dateType == "start") {
+      setStartDate(date);
+    } else {
+      setEndDate(date);
+    }
+    setDatePickerVisibility(false);
+  };
   const CommonEarningItems = ({ name, amount, vat }) => {
     return (
       <View style={styles.itemList}>
@@ -49,7 +70,27 @@ export default function M_StatisticsScreen({ navigation }) {
       </View>
     );
   };
-
+  const onSearchDateWise = () => {
+    if (search == "CUSTOM") {
+      if (StartDate !== "") {
+        if (EndDate !== "") {
+          getFilterData(
+            moment(StartDate).format("YYYY-MM-DD"),
+            moment(EndDate).format("YYYY-MM-DD")
+          );
+        } else dispatchErrorAction(dispatch, "Please select end date");
+      } else dispatchErrorAction(dispatch, "Please select start date");
+    } else {
+      if (search !== "") {
+        const selectedDate = dateFilterData.filter((obj) => obj.name == search);
+        getFilterData(selectedDate[0].startDate, selectedDate[0].endDate);
+      }
+    }
+  };
+  const getFilterData = (sDate, eDate) => {
+    let data = { startDate: sDate, endDate: eDate };
+    dispatch(getStatitics(data));
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <Text style={ApplicationStyles.welcomeText}>Statistics</Text>
@@ -77,20 +118,46 @@ export default function M_StatisticsScreen({ navigation }) {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.filterTitle}>Apply Date Filters</Text>
+        <SearchDropdown
+          value={search}
+          setData={(text) => {
+            setSearch(text);
+          }}
+          placeholder={"Search by Date Range"}
+          valueField={"name"}
+          labelField={"label"}
+          style={styles.dropdownRow}
+          placeholderTextColor={Colors.placeholderColor}
+          onSearch={() => onSearchDateWise()}
+        />
+        {search == "CUSTOM" && (
+          <View style={styles.datesRow}>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+              <DateTimePickerView
+                value={StartDate}
+                format={"MM/DD/YYYY"}
+                placeHolder={"Start date"}
+                onPressPicker={() => {
+                  setDatePickerVisibility(true), setdateType("start");
+                }}
+                width={"100%"}
+              />
+            </View>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+              <DateTimePickerView
+                value={EndDate}
+                format={"MM/DD/YYYY"}
+                placeHolder={"End date"}
+                onPressPicker={() => {
+                  setDatePickerVisibility(true), setdateType("end");
+                }}
+                width={"100%"}
+              />
+            </View>
+          </View>
+        )}
         {tab == "order" ? (
           <View>
-            <View style={styles.searchBar2}>
-              <TextInput
-                placeholder="Search by Date Range"
-                style={styles.searchInput2}
-                value={search}
-                onChangeText={(text) => setSearch(text)}
-                placeholderTextColor={Colors.placeholderColor}
-              />
-              <TouchableOpacity style={styles.searchButton}>
-                <Text style={styles.seatext}>Search</Text>
-              </TouchableOpacity>
-            </View>
             <View style={styles.titles}>
               <Text style={styles.nameTitle}>ITEM</Text>
               <Text style={styles.nameTitle}>QUANTITY</Text>
@@ -122,23 +189,6 @@ export default function M_StatisticsScreen({ navigation }) {
           </View>
         ) : (
           <View>
-            <View style={styles.searchBar}>
-              <Image
-                source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
-                style={styles.searchIcon}
-              />
-              <TextInput
-                placeholder="Search by Date Range"
-                style={styles.searchInput}
-                value={search}
-                onChangeText={(text) => setSearch(text)}
-                placeholderTextColor={Colors.placeholderColor}
-              />
-              <Image
-                source={require("../../Images/Merchant/xxxhdpi/ic_filter.png")}
-                style={styles.searchIcon2}
-              />
-            </View>
             {STATISTICS && (
               <View>
                 <CommonEarningItems
@@ -181,6 +231,13 @@ export default function M_StatisticsScreen({ navigation }) {
           </View>
         )}
       </ScrollView>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={() => setDatePickerVisibility(false)}
+        minimumDate={dateType == "end" ? StartDate : null}
+      />
     </View>
   );
 }
@@ -211,45 +268,7 @@ const styles = StyleSheet.create({
   filterTitle: {
     ...commonFontStyle(500, 14, Colors.black),
   },
-  searchBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.white,
-    paddingHorizontal: hp(2),
-    borderRadius: 8,
-    marginVertical: hp(2.5),
-  },
-  searchBar2: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.white,
-    paddingHorizontal: hp(2),
-    borderRadius: 8,
-    marginVertical: hp(2.5),
-    justifyContent: "space-between",
-  },
-  searchIcon: {
-    height: hp(2.5),
-    width: hp(2.5),
-    resizeMode: "contain",
-  },
-  searchIcon2: {
-    height: hp(3),
-    width: hp(3),
-    resizeMode: "contain",
-  },
-  searchInput: {
-    height: hp(6),
-    ...commonFontStyle(400, 14, Colors.black),
-    paddingLeft: hp(2),
-    width: "89%",
-  },
-  searchInput2: {
-    height: hp(6),
-    ...commonFontStyle(400, 14, Colors.black),
-    // paddingLeft: hp(2),
-    width: "78%",
-  },
+
   itemList: {
     backgroundColor: Colors.white,
     borderRadius: 8,
@@ -279,21 +298,20 @@ const styles = StyleSheet.create({
   rightText: {
     ...commonFontStyle(400, 13, Colors.grayButtonBackground),
   },
-  searchButton: {
-    backgroundColor: Colors.pink,
-    paddingVertical: hp(1.5),
-    paddingHorizontal: hp(1.5),
-    borderRadius: 8,
-  },
-  seatext: {
-    ...commonFontStyle(400, 14, Colors.white),
-  },
+
   titles: {
     paddingHorizontal: hp(2),
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: hp(2),
-    marginTop: hp(1),
+    // marginTop: hp(1),
   },
   nameTitle: { ...commonFontStyle(500, 13, Colors.black) },
+  datesRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    flex: 1,
+    justifyContent: "space-between",
+  },
 });
