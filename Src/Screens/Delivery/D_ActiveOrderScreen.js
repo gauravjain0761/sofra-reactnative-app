@@ -18,6 +18,8 @@ import Colors from "../../Themes/Colors";
 import { useDispatch } from "react-redux";
 import { orderStatusData } from "../../Constant/Constant";
 import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
+import { useNavigation } from "@react-navigation/native";
+import { getActiveOrders } from "../../Services/DeliveryApi";
 
 const tagArray = [
   { title: "Delivered", color: Colors.pink, type: "ACCEPTED" },
@@ -57,11 +59,15 @@ let ORDERS = [
   },
 ];
 
-export default function D_ActiveOrderScreen({ navigation }) {
+export default function D_ActiveOrderScreen({}) {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: false });
+    dispatch({ type: "PRE_LOADER_DELIVERY", payload: false });
+    navigation.addListener("focus", () => {
+      dispatch(getActiveOrders(1));
+    });
   }, []);
 
   const renderActiveOrders = ({ item, index }) => {

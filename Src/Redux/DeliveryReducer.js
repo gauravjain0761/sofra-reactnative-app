@@ -9,9 +9,15 @@ const initialState = {
   drivers: [],
   pickupOrders: [],
   deliveredOrders: [],
+  activeOrders: [],
+  cancelledOrders: [],
+  orderPaging: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
+    case "PRE_LOADER_DELIVERY": {
+      return { ...state, preLoader: action.payload };
+    }
     case "D_LOGIN": {
       setToken(action.payload.auth_token);
       setUser("delivery");
@@ -24,16 +30,40 @@ export default function (state = initialState, action) {
       return { ...state, dashboardData: action.payload, preLoader: false };
     }
     case "SET_COMPANY_PROFILE": {
-      return { ...state, companyProfile: action.payload };
+      return { ...state, companyProfile: action.payload, preLoader: false };
     }
     case "SET_DRIVERS": {
-      return { ...state, drivers: action.payload };
+      return { ...state, drivers: action.payload, preLoader: false };
     }
     case "SET_PICKUP_ORDERS": {
-      return { ...state, pickupOrders: action.payload };
+      let pickupOrders = Object.assign([], state.pickupOrders);
+      if (action.payload.result.length !== 0)
+        pickupOrders.push(...action.payload.result);
+      if (action.payload.paging.currentPage == 1) {
+        return {
+          ...state,
+          pickupOrders: action.payload.result,
+          orderPaging: action.payload.paging,
+          preLoader: false,
+        };
+      } else {
+        return {
+          ...state,
+          pickupOrders: pickupOrders,
+          orderPaging: action.payload.paging,
+          preLoader: false,
+        };
+      }
+      return { ...state, pickupOrders: action.payload, preLoader: false };
     }
     case "SET_DELIVERED_ORDERS": {
-      return { ...state, deliveredOrders: action.payload };
+      return { ...state, deliveredOrders: action.payload, preLoader: false };
+    }
+    case "SET_ACTIVE_ORDERS": {
+      return { ...state, activeOrders: action.payload, preLoader: false };
+    }
+    case "SET_CANCELLED_ORDERS": {
+      return { ...state, cancelledOrders: action.payload, preLoader: false };
     }
     default:
       return state;

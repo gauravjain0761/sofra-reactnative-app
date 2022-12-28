@@ -50,7 +50,7 @@ export default function D_ReportScreen({ navigation }) {
       ? unsetteled_report
       : setteled_report;
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: true });
+    dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getCompanySettledReports());
       setSearch("");
@@ -160,10 +160,10 @@ export default function D_ReportScreen({ navigation }) {
     setreportType(text);
     setTab("report");
     if (text == reportDropdownData[0].name) {
-      dispatch({ type: "PRE_LOADER", payload: true });
+      dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
       dispatch(getCompanySettledReports(data));
     } else {
-      dispatch({ type: "PRE_LOADER", payload: true });
+      dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
       dispatch(getCompanyUnSettledReports(data));
     }
   };

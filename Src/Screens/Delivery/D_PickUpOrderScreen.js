@@ -15,74 +15,78 @@ import {
 } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 import { orderStatusData } from "../../Constant/Constant";
 import { useNavigation } from "@react-navigation/native";
 import { getPickupOrders } from "../../Services/DeliveryApi";
-
-let ORDERS = [
-  {
-    restaurant: {
-      name: "Taj Hotel",
-    },
-    totalPrice: 30,
-    status: "READY_FOR_PICKUP",
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel",
-    },
-    totalPrice: 30,
-    status: "READY_FOR_PICKUP",
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel",
-    },
-    totalPrice: 30,
-    status: "READY_FOR_PICKUP",
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel",
-    },
-    totalPrice: 30,
-    status: "READY_FOR_PICKUP",
-  },
-];
+import OrderDetailModal from "../../Components/OrderDetailModal";
 
 export default function D_PickUpOrderScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
+  const PICKUP_ORDERS = useSelector((e) => e.delivery.pickupOrders);
+  const PRELOADER = useSelector((e) => e.delivery.preLoader);
+  const PAGINATIONDATA = useSelector((e) => e.delivery.orderPaging);
+  const [categoryDetail, setcategoryDetail] = useState(false);
+  const [selectedOrder, setselectedOrder] = useState({});
+
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: true });
+    dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
     navigation.addListener("focus", () => {
-      dispatch(getPickupOrders());
+      dispatch(getPickupOrders(1));
     });
   }, []);
+  const fetchMoreData = () => {
+    if (PAGINATIONDATA.currentPage + 1 <= PAGINATIONDATA.totalPages) {
+      dispatch(getPickupOrders(PAGINATIONDATA.currentPage + 1, selectedStatus));
+    }
+  };
 
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
-      <ScrollView>
-        {ORDERS.map((item, index) => {
-          let status = orderStatusData.filter((obj) => obj.type == item.status);
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                // setcategoryDetail(true), setselectedOrder(item);
-              }}
-            >
-              <D_OrderItems
-                item={item}
-                navigation={navigation}
-                status={status[0]}
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+      {!PRELOADER && (
+        <FlatList
+          // contentContainerStyle={{ flex: 1 }}
+          data={PICKUP_ORDERS}
+          ListEmptyComponent={
+            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+          }
+          style={{ flex: 1 }}
+          renderItem={({ item, index }) => {
+            let status = orderStatusData.filter(
+              (obj) => obj.type == item.status
+            );
+
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  setcategoryDetail(true), setselectedOrder(item);
+                }}
+              >
+                <D_OrderItems
+                  selectedStatus={selectedStatus}
+                  item={item}
+                  navigation={navigation}
+                  status={status[0]}
+                />
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.id}
+          onEndReachedThreshold={0.2}
+          onEndReached={fetchMoreData}
+        />
+      )}
+
+      <OrderDetailModal
+        visible={categoryDetail}
+        onClose={() => {
+          setcategoryDetail(!categoryDetail), setselectedOrder({});
+        }}
+        selectedOrder={selectedOrder}
+      />
     </View>
   );
 }

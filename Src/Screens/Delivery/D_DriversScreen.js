@@ -39,7 +39,7 @@ export default function D_DriversScreen() {
   const companyProfile = useSelector((e) => e.delivery.companyProfile);
   const DRIVERS = useSelector((e) => e.delivery.drivers);
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: true });
+    dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getDrivers());
     });

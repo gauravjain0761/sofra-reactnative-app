@@ -18,7 +18,7 @@ export const getLogin = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -34,7 +34,7 @@ export const getDeliveryLogin = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -49,7 +49,7 @@ export const register = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -66,7 +66,7 @@ export const getLogout = (onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -83,7 +83,7 @@ export const getDeliveryLogout = (onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -101,7 +101,7 @@ export const updatePassword =
         dispatchErrorAction(dispatch, data.message);
       }
     } catch (error) {
-      dispatchErrorAction(dispatch, "Something went wrong!");
+      dispatchErrorAction(dispatch, error.message);
     }
   };
 
@@ -118,7 +118,7 @@ export const forgotPassword = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -133,6 +133,6 @@ export const deliveryRegistaer = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };

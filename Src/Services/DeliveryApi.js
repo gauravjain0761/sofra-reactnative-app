@@ -18,7 +18,7 @@ export const getDeliveryDashboardReports = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -33,7 +33,7 @@ export const getCompanyProfile = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -48,22 +48,7 @@ export const getDrivers = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
-  }
-};
-
-export const getPickupOrders = () => async (dispatch) => {
-  let token = await getToken();
-  const url = delivery_url + "/getPickupOrders?auth_token=" + token;
-  try {
-    const data = await GET(dispatch, url);
-    if (data.status == true) {
-      dispatchAction(dispatch, "SET_PICKUP_ORDERS", data.result);
-    } else {
-      dispatchErrorAction(dispatch, data.message);
-    }
-  } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -93,7 +78,7 @@ export const getCompanySettledReports = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -125,13 +110,14 @@ export const getCompanyUnSettledReports = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
-export const getDeliveredOrders = () => async (dispatch) => {
+export const getDeliveredOrders = (page) => async (dispatch) => {
   let token = await getToken();
-  const url = delivery_url + "/getDeliveredOrders?auth_token=" + token;
+  const url =
+    delivery_url + "/getDeliveredOrders?auth_token=" + token + "&page=" + page;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -140,6 +126,54 @@ export const getDeliveredOrders = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const getPickupOrders = (page) => async (dispatch) => {
+  let token = await getToken();
+  const url =
+    delivery_url + "/getPickupOrders?auth_token=" + token + "&page=" + page;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_PICKUP_ORDERS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const getActiveOrders = (page) => async (dispatch) => {
+  let token = await getToken();
+  const url =
+    delivery_url + "/getActiveOrders?auth_token=" + token + "&page=" + page;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_ACTIVE_ORDERS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const getCancelledOrders = (page) => async (dispatch) => {
+  let token = await getToken();
+  const url =
+    delivery_url + "/getCancelledOrders?auth_token=" + token + "&page=" + page;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_CANCELLED_ORDERS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
   }
 };

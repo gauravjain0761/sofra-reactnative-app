@@ -19,11 +19,12 @@ export default function M_DashboardScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const DASHBOARD_DATA = useSelector((e) => e.delivery.dashboardData);
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER_DELIVERY", payload: false });
     dispatch({ type: "PRE_LOADER", payload: false });
     dispatch(getDeliveryDashboardReports());
   }, []);
   return (
-    <View style={ApplicationStyles.mainView}>
+    <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={ApplicationStyles.welcomeText}>Delivery Portal</Text>
         <View style={styles.searchBar}>
@@ -99,6 +100,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: hp(2),
     borderRadius: 8,
     marginBottom: hp(3),
+    marginHorizontal: hp(2),
+  },
+  paddingView: {
+    marginHorizontal: hp(2),
   },
   searchIcon: {
     height: hp(2),
@@ -116,7 +121,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     padding: hp(3),
     alignItems: "center",
-    // marginRight: hp(2),
+    marginRight: hp(2),
+    marginBottom: hp(2),
   },
   cardTitle: {
     ...commonFontStyle("extraBold", 24, Colors.black),
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: hp(3),
     paddingVertical: hp(1.5),
     backgroundColor: Colors.pink,
-    marginTop: hp(1.5),
+    marginTop: hp(2),
     borderRadius: 5,
   },
   menuImage: {
@@ -140,14 +146,14 @@ const styles = StyleSheet.create({
     height: hp(18),
     width: hp(30),
     resizeMode: "contain",
-    // backgroundColor: "red",
   },
   rowView: {
     flex: 2,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: hp(2),
+    marginBottom: hp(2),
+    marginHorizontal: hp(2),
   },
   halfView: {
     backgroundColor: Colors.white,
@@ -157,22 +163,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   halfViewTitle: {
-    ...commonFontStyle("M_600", 24, Colors.black),
-    marginBottom: hp(1.5),
+    ...commonFontStyle("M_600", 22, Colors.black),
+    marginBottom: hp(1),
   },
   bottomcardRow: {
     flexDirection: "row",
-    // justifyContent: 'space-between',
     alignItems: "center",
     width: "100%",
   },
   rightText: {
-    ...commonFontStyle("M_600", 14, Colors.black),
+    ...commonFontStyle("M_600", 13, Colors.black),
     marginLeft: hp(1.5),
   },
   bottomcardRowImage: {
-    height: hp(5),
-    width: hp(5),
+    height: hp(4.5),
+    width: hp(4.5),
     resizeMode: "contain",
   },
 });

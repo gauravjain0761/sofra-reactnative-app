@@ -32,12 +32,10 @@ export default function M_OrderScreen({ navigation }) {
   const PRELOADER = useSelector((e) => e.merchant.preLoader);
   const PAGINATIONDATA = useSelector((e) => e.merchant.orderPaging);
   const [filterOrders, setfilterOrders] = useState(ORDERS);
-  const [page, setPage] = useState(1);
 
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
-      setPage(1);
       dispatch(getOrders());
     });
   }, []);
@@ -88,9 +86,7 @@ export default function M_OrderScreen({ navigation }) {
       type: "SUCCESS_MODAL",
       payload: { modal: false, message: "" },
     });
-    if (selectedStatus !== type) {
-      setPage(1);
-    }
+
     setselectedStatus(type);
     setSearch("");
     dispatch(getOrders(1, type));

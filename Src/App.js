@@ -22,6 +22,7 @@ import DeleteModal from "./Components/DeleteModal";
 function App() {
   const _TOAST = useSelector((e) => e.merchant.toast);
   const preLoader = useSelector((e) => e.merchant.preLoader);
+  const DpreLoader = useSelector((e) => e.delivery.preLoader);
   const isVisible = useSelector((e) => e.merchant.isVisible);
   const onDelete = useSelector((e) => e.merchant.onDelete);
   const dispatch = useDispatch();
@@ -75,11 +76,16 @@ function App() {
         config={toastConfig}
         ref={(ref) => Toast.setRef(ref)}
       />
-      {/* {preLoader && (
+      {preLoader && (
         <View style={styles.loaderView}>
           <ActivityIndicator size={"large"} color={Colors.black} />
         </View>
-      )} */}
+      )}
+      {DpreLoader && (
+        <View style={styles.loaderView}>
+          <ActivityIndicator size={"large"} color={Colors.black} />
+        </View>
+      )}
       <DeleteModal
         isVisible={isVisible}
         onDelete={() => {

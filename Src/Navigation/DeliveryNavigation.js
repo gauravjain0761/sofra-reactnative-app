@@ -174,8 +174,8 @@ function D_MyBottomTabs() {
               style={styles.tabIcon}
               source={
                 color == Colors.pink
-                  ? require("../Images/Delivery/xxxhdpi/ic_driver_selected.png")
-                  : require("../Images/Delivery/xxxhdpi/ic_drivers.png")
+                  ? require("../Images/Delivery/xxxhdpi/ic_driver_selectedTab.png")
+                  : require("../Images/Delivery/xxxhdpi/ic_driver.png")
               }
             />
           ),
@@ -242,7 +242,6 @@ function CustomDrawerContent(props) {
   useEffect(() => {
     dispatch(getCompanyProfile());
   }, []);
-  console.log(companyProfile);
   useEffect(() => {
     if (_TOAST.message == "Auth Token is invalid") {
       onLogout();
@@ -250,7 +249,6 @@ function CustomDrawerContent(props) {
   }, [_TOAST]);
 
   const onLogout = async () => {
-    // props.navigation.navigate(item.screen);
     dispatch(
       getDeliveryLogout(() => {
         props.navigation.dispatch(

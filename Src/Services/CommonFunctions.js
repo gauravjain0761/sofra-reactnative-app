@@ -20,6 +20,7 @@ export const dispatchAction = (dispatch, actionType, data) => {
 };
 
 export const dispatchErrorAction = (dispatch, message) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: false });
   dispatch({
     type: "TOAST",
     payload: {
@@ -30,6 +31,8 @@ export const dispatchErrorAction = (dispatch, message) => {
 };
 
 export const dispatchSuccessAction = (dispatch, message) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: false });
+
   dispatch({
     type: "TOAST",
     payload: {

@@ -17,7 +17,7 @@ export const getCities = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -31,7 +31,7 @@ export const getCuisines = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -45,7 +45,7 @@ export const getCategories = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -59,7 +59,7 @@ export const getUsers = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -115,7 +115,7 @@ export const getOrders = (page, status, search) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -143,7 +143,7 @@ export const getStatitics = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -173,7 +173,7 @@ export const getSettledReports = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -205,7 +205,7 @@ export const getUnSettledReports = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -222,7 +222,7 @@ export const getAppSetting = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -239,7 +239,7 @@ export const UpdateAppSetting = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -254,7 +254,7 @@ export const getAvailbility = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -271,7 +271,7 @@ export const updateAvailbility = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -286,7 +286,7 @@ export const getOffers = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -303,7 +303,7 @@ export const DeleteOffer = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -321,7 +321,7 @@ export const AddOffer = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -338,7 +338,7 @@ export const getDashboardReports = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -353,7 +353,7 @@ export const getMenuCategories = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -371,7 +371,7 @@ export const EditMenuCategory = (postObj, navigation) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -387,7 +387,7 @@ export const DeleteMenuCategory = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -405,7 +405,7 @@ export const AddMenuCategory = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -420,7 +420,7 @@ export const getMenuItems = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -435,7 +435,7 @@ export const getMenuDescriptors = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -453,7 +453,7 @@ export const AddMenuItem = (postObj, navigation) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -471,7 +471,7 @@ export const EditMenuItem = (postObj, navigation) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -487,7 +487,7 @@ export const DeleteMenuItem = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -504,7 +504,7 @@ export const enableDisableMenues = (postObj) => async (dispatch) => {
     }
   } catch (error) {
     console.log(error.message);
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -520,7 +520,7 @@ export const changePromoCodeStatus = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -535,7 +535,7 @@ export const getPromoCodes = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -553,7 +553,7 @@ export const AddPromoCode = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -568,7 +568,7 @@ export const getOffSlots = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -585,7 +585,7 @@ export const deleteOffSlot = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -602,7 +602,7 @@ export const addOffSlot = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -617,7 +617,7 @@ export const getRestaurnatDetails = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -634,7 +634,7 @@ export const updateProfile = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -649,7 +649,7 @@ export const getDocuments = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -667,7 +667,7 @@ export const AddDocument = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -684,7 +684,7 @@ export const deleteDocument = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -702,7 +702,7 @@ export const changeStatus =
         dispatchErrorAction(dispatch, data.message);
       }
     } catch (error) {
-      dispatchErrorAction(dispatch, "Something went wrong!");
+      dispatchErrorAction(dispatch, error.message);
     }
   };
 
@@ -718,7 +718,7 @@ export const updateNotificationSetting = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -733,7 +733,7 @@ export const getNotifications = () => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
 
@@ -749,6 +749,6 @@ export const dashboardSearch = (query) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    dispatchErrorAction(dispatch, "Something went wrong!");
+    dispatchErrorAction(dispatch, error.message);
   }
 };
