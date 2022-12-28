@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../Services/MerchantApi";
 import { orderStatusData } from "../../Constant/Constant";
 import moment from "moment";
+import OrderDetailModal from "../../Components/OrderDetailModal";
 
 export default function M_OrderScreen({ navigation }) {
   const [search, setSearch] = useState("");
@@ -48,17 +49,12 @@ export default function M_OrderScreen({ navigation }) {
     if (search !== "") {
       setSearch("");
       setfilterOrders(ORDERS);
+      onPressFilterStatus(selectedStatus);
     }
   };
-
   const onChangeSearch = (text) => {
     setSearch(text);
-    const filtered = filterOrders.filter(
-      (val) =>
-        val.bookingCode.toLowerCase().includes(text.toLowerCase()) ||
-        val.user.name.toLowerCase().includes(text.toLowerCase())
-    );
-    setfilterOrders(filtered);
+    dispatch(getOrders(1, selectedStatus, text));
   };
 
   navigation.setOptions({
@@ -108,7 +104,6 @@ export default function M_OrderScreen({ navigation }) {
 
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
-      {/* <ScrollView> */}
       <View style={styles.tagView}>
         {orderStatusData.map((item, index) => {
           return (
@@ -167,118 +162,13 @@ export default function M_OrderScreen({ navigation }) {
           onEndReached={fetchMoreData}
         />
       )}
-      {/* </ScrollView> */}
-      <Modal
-        isVisible={categoryDetail}
-        // deviceWidth={SCREEN_WIDTH}
-        style={ApplicationStyles.modalStyle}
-        onBackButtonPress={() => {
+      <OrderDetailModal
+        visible={categoryDetail}
+        onClose={() => {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
-        onBackdropPress={() => {
-          setcategoryDetail(!categoryDetail), setselectedOrder({});
-        }}
-      >
-        <View style={ApplicationStyles.modalViewStyle}>
-          <View style={styles.titleView}>
-            <Text style={styles.detailText}>Order Details</Text>
-            <TouchableOpacity
-              onPress={() => {
-                setcategoryDetail(!categoryDetail), setselectedOrder({});
-              }}
-              style={styles.closeButton}
-            >
-              <Image
-                style={styles.menuIconButton}
-                source={require("../../Images/Merchant/xxxhdpi/close.png")}
-              />
-            </TouchableOpacity>
-          </View>
-          <ScrollView>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Order Id:</Text>
-              <Text style={styles.rightText}>{selectedOrder.bookingCode}</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Total Amount:</Text>
-              <Text style={styles.rightText}>
-                AED {selectedOrder.totalPrice}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Items Amount:</Text>
-              <Text style={styles.rightText}>
-                AED {selectedOrder.itemsPrice}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>VAT (TAX):</Text>
-              <Text style={styles.rightText}>AED {selectedOrder.vat}</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Promo Code:</Text>
-              <Text style={styles.rightText}>
-                {selectedOrder.promoCode == ""
-                  ? "N/A"
-                  : selectedOrder.promoCode}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Discount Amount:</Text>
-              <Text style={styles.rightText}>
-                AED{" "}
-                {selectedOrder.discount == null ? 0 : selectedOrder.discount}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Delivery Charges:</Text>
-              <Text style={styles.rightText}>
-                AED {selectedOrder.serviceCharges}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Order Date:</Text>
-              <Text style={styles.rightText}>
-                {moment(selectedOrder.bookingDate).format("MMM DD YYYY")}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Delivery Date:</Text>
-              <Text style={styles.rightText}>
-                {moment(selectedOrder.bookingDate).format("MMM DD YYYY")}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Recipient:</Text>
-              <Text style={styles.rightText}>AED 0</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Cooking Instruction:</Text>
-              <Text style={styles.rightText}>
-                {selectedOrder.cookingInstructions !== ""
-                  ? selectedOrder.cookingInstructions
-                  : "N/A"}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Payment Method:</Text>
-              <Text style={styles.rightText}>{selectedOrder.paymentType}</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Payment Status:</Text>
-              <Text style={styles.rightText}>
-                {selectedOrder.paymentStatus}
-              </Text>
-            </View>
-            <View style={[styles.row, { marginBottom: hp(3) }]}>
-              <Text style={styles.leftText}>Created At:</Text>
-              <Text style={styles.rightText}>
-                {moment(selectedOrder.created).format("YYYY MM DD, hh:mm A")}
-              </Text>
-            </View>
-          </ScrollView>
-        </View>
-      </Modal>
+        selectedOrder={selectedOrder}
+      />
     </View>
   );
 }

@@ -29,6 +29,7 @@ const initialState = {
   successModal: false,
   notifications: [],
   orderPaging: {},
+  dashboardSearch: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -144,16 +145,47 @@ export default function (state = initialState, action) {
     }
     case "DELETE_MENUITEMS": {
       let menuItems = Object.assign([], state.menuItems);
-      menuItems = menuItems.filter((el) => {
-        return el.id !== action.payload.menuId;
-      });
-      return { ...state, menuItems: menuItems, preLoader: false };
+      let dashboardSearch = Object.assign([], state.dashboardSearch);
+      if (menuItems.length !== 0) {
+        menuItems = menuItems.filter((el) => {
+          return el.id !== action.payload.menuId;
+        });
+      }
+      if (dashboardSearch !== {} && dashboardSearch.menuItems.length !== 0) {
+        let menuItemsTemp = dashboardSearch.menuItems.filter((el) => {
+          return el.id !== action.payload.menuId;
+        });
+        dashboardSearch.menuItems = menuItemsTemp;
+      }
+      return {
+        ...state,
+        menuItems: menuItems,
+        dashboardSearch: dashboardSearch,
+        preLoader: false,
+      };
     }
     case "STATUS_UPDATE_MENU_ITEMS": {
       let menuItems = Object.assign([], state.menuItems);
-      let index = menuItems.findIndex((obj) => obj.id == action.payload.menuId);
-      menuItems[index].status = action.payload.status;
-      return { ...state, menuItems: menuItems, preLoader: false };
+      let dashboardSearch = Object.assign([], state.dashboardSearch);
+
+      if (menuItems.length !== 0) {
+        let index = menuItems.findIndex(
+          (obj) => obj.id == action.payload.menuId
+        );
+        menuItems[index].status = action.payload.status;
+      }
+      if (dashboardSearch !== {} && dashboardSearch.menuItems.length !== 0) {
+        let index = dashboardSearch.menuItems.findIndex(
+          (obj) => obj.id == action.payload.menuId
+        );
+        dashboardSearch.menuItems[index].status = action.payload.status;
+      }
+      return {
+        ...state,
+        menuItems: menuItems,
+        dashboardSearch: dashboardSearch,
+        preLoader: false,
+      };
     }
     case "SET_PROMO_CODES": {
       return { ...state, promocodes: action.payload, preLoader: false };
@@ -235,6 +267,9 @@ export default function (state = initialState, action) {
     }
     case "SET_NOTIFICATIONS": {
       return { ...state, notifications: action.payload, preLoader: false };
+    }
+    case "SET_DASHBOARD_SEARCH_DATA": {
+      return { ...state, dashboardSearch: action.payload };
     }
     default:
       return state;

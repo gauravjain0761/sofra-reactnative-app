@@ -1,72 +1,42 @@
-
 import {
   View,
   Text,
   StyleSheet,
-  FlatList, Image, TouchableOpacity, ScrollView
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch } from "react-redux";
 import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 import { orderStatusData } from "../../Constant/Constant";
+import { useNavigation } from "@react-navigation/native";
+import { getDeliveredOrders } from "../../Services/DeliveryApi";
 
-
-let ORDERS = [
-  {
-    restaurant: {
-      name: "Taj Hotel"
-    },
-    totalPrice: 30,
-    status: "DELIVERED"
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel"
-    },
-    totalPrice: 30,
-    status: "DELIVERED"
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel"
-    },
-    totalPrice: 30,
-    status: "DELIVERED"
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel"
-    },
-    totalPrice: 30,
-    status: "DELIVERED"
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel"
-    },
-    totalPrice: 30,
-    status: "DELIVERED"
-  },
-]
-
-export default function D_DeliveredOrderScreen({ navigation }) {
+export default function D_DeliveredOrderScreen() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [search, setSearch] = useState("");
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER", payload: false });
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getDeliveredOrders());
+    });
   }, []);
 
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView>
-        {ORDERS.map((item, index) => {
-          let status = orderStatusData.filter(
-            (obj) => obj.type == item.status
-          );
+        {/* {ORDERS.map((item, index) => {
+          let status = orderStatusData.filter((obj) => obj.type == item.status);
           return (
             <TouchableOpacity
               onPress={() => {
@@ -80,12 +50,9 @@ export default function D_DeliveredOrderScreen({ navigation }) {
               />
             </TouchableOpacity>
           );
-        })}
+        })} */}
       </ScrollView>
-    </View >
+    </View>
   );
 }
-const styles = StyleSheet.create({
-
-
-});
+const styles = StyleSheet.create({});

@@ -1,26 +1,49 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, StyleSheet, FlatList, SafeAreaView, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import DriverItem from "../../Components/DeliveryComponent/DriverItem";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import PinkButton from "../../Components/PinkButton";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getDrivers } from "../../Services/DeliveryApi";
+import { useNavigation } from "@react-navigation/native";
+import { media_url } from "../../Config/AppConfig";
 
 export default function D_DriversScreen() {
-
-  const [driversList, setDriversList] = useState([1, 2, 3, 4, 5])
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [driversList, setDriversList] = useState([1, 2, 3, 4, 5]);
   const [firstname, setfirstname] = useState("Jasica");
   const [lastname, setlastname] = useState("Birnilvis");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [driverType, setDriverType] = useState("");
-
-
-
-
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
+  const companyProfile = useSelector((e) => e.delivery.companyProfile);
+  const DRIVERS = useSelector((e) => e.delivery.drivers);
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getDrivers());
+    });
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -29,20 +52,33 @@ export default function D_DriversScreen() {
           <View style={styles.header}>
             <Image
               style={styles.drawerImage}
-              source={require("../../Images/Merchant/xxxhdpi/bg_profile.png")}
+              source={
+                companyProfile.image
+                  ? { uri: media_url + companyProfile.image }
+                  : require("../../Images/Merchant/xxxhdpi/profile_placeholder.png")
+              }
             />
-            <Text style={styles.name}>Royal Restaurant</Text>
+            <Text style={styles.name}>{companyProfile.name}</Text>
           </View>
+
           <View>
-            <Text style={styles.title}>Driver Listing</Text>
-            <Text style={styles.title2}>Company List</Text>
-          </View>
-          <View>
-            {driversList.map((item, index) => {
-              return (
-                <DriverItem item={item} index={index} />
-              )
-            })}
+            {DRIVERS && DRIVERS.length !== 0 && (
+              <View>
+                <View>
+                  <Text style={styles.title}>Driver Listing</Text>
+                  <Text style={styles.title2}>Company List</Text>
+                </View>
+                <FlatList
+                  contentContainerStyle={{ flex: 1 }}
+                  data={DRIVERS}
+                  style={{ flex: 1 }}
+                  renderItem={({ item, index }) => {
+                    return <DriverItem item={item} index={index} />;
+                  }}
+                  keyExtractor={(item) => item.id}
+                />
+              </View>
+            )}
           </View>
           <View>
             <Text style={styles.title}>Driver Listing</Text>
@@ -102,22 +138,19 @@ export default function D_DriversScreen() {
             <View style={styles.buttonRow}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <PinkButton
-                  onPress={() => { }}
+                  onPress={() => {}}
                   style={styles.dbuttonStyle}
                   text={"small"}
                   name={"Add Drivers"}
                 />
               </View>
             </View>
-
           </View>
         </ScrollView>
       </View>
     </SafeAreaView>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   header: {
@@ -149,8 +182,6 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     marginVertical: hp(3),
-    alignSelf: 'center'
+    alignSelf: "center",
   },
-
-
 });

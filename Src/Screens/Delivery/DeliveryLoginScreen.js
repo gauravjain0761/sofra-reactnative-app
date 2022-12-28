@@ -15,8 +15,8 @@ import { getDeliveryLogin } from "../../Services/AuthApi";
 
 export default function DeliveryLoginScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("amir.shahzad@devicebee.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("amirmcs05@gmail.com");
+  const [password, setPassword] = useState("63abe8837df85");
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 
   const onLogin = () => {

@@ -78,7 +78,11 @@ export default function M_EditMenuItemScreen(props) {
       setImageItem(menuItem.image ? menuItem.image : "");
       setDescription(menuItem.description);
       setArabicDes(menuItem.description_ar);
-      setMenuDes(getArray(menuItem.menuDescriptors, "name"));
+      setMenuDes(
+        menuItem.menuDescriptors
+          ? getArray(menuItem.menuDescriptors, "name")
+          : ""
+      );
       setMenuIdEdit(menuItem.id);
     }
   }, [props, isFocused]);

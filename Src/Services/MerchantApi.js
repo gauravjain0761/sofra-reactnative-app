@@ -63,21 +63,45 @@ export const getUsers = () => async (dispatch) => {
   }
 };
 
-export const getOrders = (page, status) => async (dispatch) => {
+export const getOrders = (page, status, search) => async (dispatch) => {
   let token = await getToken();
   let url = "";
   if (page) {
     if (status == "ALL") {
-      url = merchant_url + "/getOrders?auth_token=" + token + "&page=" + page;
+      if (search) {
+        url =
+          merchant_url +
+          "/getOrders?auth_token=" +
+          token +
+          "&page=" +
+          page +
+          "&search=" +
+          search;
+      } else {
+        url = merchant_url + "/getOrders?auth_token=" + token + "&page=" + page;
+      }
     } else {
-      url =
-        merchant_url +
-        "/getOrders?auth_token=" +
-        token +
-        "&page=" +
-        page +
-        "&status=" +
-        status;
+      if (search) {
+        url =
+          merchant_url +
+          "/getOrders?auth_token=" +
+          token +
+          "&page=" +
+          page +
+          "&status=" +
+          status +
+          "&search=" +
+          search;
+      } else {
+        url =
+          merchant_url +
+          "/getOrders?auth_token=" +
+          token +
+          "&page=" +
+          page +
+          "&status=" +
+          status;
+      }
     }
   } else {
     url = merchant_url + "/getOrders?auth_token=" + token;
@@ -479,6 +503,7 @@ export const enableDisableMenues = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
+    console.log(error.message);
     dispatchErrorAction(dispatch, "Something went wrong!");
   }
 };
@@ -704,6 +729,22 @@ export const getNotifications = () => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       dispatchAction(dispatch, "SET_NOTIFICATIONS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, "Something went wrong!");
+  }
+};
+
+export const dashboardSearch = (query) => async (dispatch) => {
+  let token = await getToken();
+  const url =
+    merchant_url + "/dashboardSearch?auth_token=" + token + "&query=" + query;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_DASHBOARD_SEARCH_DATA", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

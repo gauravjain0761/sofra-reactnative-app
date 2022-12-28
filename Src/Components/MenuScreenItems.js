@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   menuImage: {
     marginBottom: hp(1.5),
     height: hp(20),
-    width: hp(34),
+    // width: hp(34),
     resizeMode: "cover",
   },
   menuImagePromoCode: {

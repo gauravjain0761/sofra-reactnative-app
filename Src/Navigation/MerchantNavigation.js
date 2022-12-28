@@ -376,7 +376,7 @@ function CustomDrawerContent(props) {
           source={
             RESTAURANT?.image
               ? { uri: media_url + RESTAURANT.image }
-              : require("../Images/Merchant/xxxhdpi/bg_profile.png")
+              : require("../Images/Delivery/xxxhdpi/profile_placeholder.png")
           }
         />
         <Text style={styles.name}>{RESTAURANT.name}</Text>

@@ -33,16 +33,6 @@ import {
   getFromDataJson,
 } from "../../Services/CommonFunctions";
 
-const citydata = [
-  {
-    id: 1,
-    strategicName: "SUPERTREND",
-  },
-  { id: 2, strategicName: "VWAP" },
-  { id: 3, strategicName: "RSIMA" },
-  { id: 6, strategicName: "TESTING" },
-  { id: 10, strategicName: "DEMATADE" },
-];
 export default function M_ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const [firstname, setfirstname] = useState("");
@@ -243,7 +233,7 @@ export default function M_ProfileScreen({ navigation }) {
               source={
                 RESTAURANT !== {}
                   ? { uri: media_url + image }
-                  : require("../../Images/Merchant/xxxhdpi/bg_profile.png")
+                  : require("../../Images/Delivery/xxxhdpi/profile_placeholder.png")
               }
             />
             <Text style={styles.name}>

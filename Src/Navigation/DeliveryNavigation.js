@@ -36,6 +36,8 @@ import D_DashboardScreen from "../Screens/Delivery/D_DashboardScreen";
 import D_NotificationScreen from "../Screens/Delivery/D_NotificationScreen";
 import HeaderLeftIcon from "../Components/NavigationComponent";
 import D_PickUpOrderScreen from "../Screens/Delivery/D_PickUpOrderScreen";
+import { getCompanyProfile } from "../Services/DeliveryApi";
+import { media_url } from "../Config/AppConfig";
 
 const data = {
   headerBackVisible: false,
@@ -235,9 +237,12 @@ const ImageContainer = ({ image }) => {
 };
 function CustomDrawerContent(props) {
   const _TOAST = useSelector((e) => e.merchant.toast);
-
+  const companyProfile = useSelector((e) => e.delivery.companyProfile);
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    dispatch(getCompanyProfile());
+  }, []);
+  console.log(companyProfile);
   useEffect(() => {
     if (_TOAST.message == "Auth Token is invalid") {
       onLogout();
@@ -270,9 +275,15 @@ function CustomDrawerContent(props) {
       <View style={styles.drawerMain}>
         <Image
           style={styles.drawerImage}
-          source={require("../Images/Merchant/xxxhdpi/bg_profile.png")}
+          source={
+            companyProfile?.image
+              ? { uri: media_url + companyProfile?.image }
+              : require("../Images/Merchant/xxxhdpi/profile_placeholder.png")
+          }
         />
-        <Text style={styles.name}>Jasica Birnilvis</Text>
+        <Text style={styles.name}>
+          {companyProfile?.first_name + " " + companyProfile?.last_name}
+        </Text>
         {DrawerItemArray.map((item, index) => {
           return (
             <DrawerItem

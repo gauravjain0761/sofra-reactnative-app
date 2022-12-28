@@ -95,9 +95,9 @@ export default function OrderItems({
             />
           </View>
           <View>
-            {status.type !== "PENDING" ||
-            status.type !== "ACCEPTED" ||
-            status.type !== "PREPARING" ? (
+            {status.type == "PENDING" ||
+            status.type == "ACCEPTED" ||
+            status.type == "PREPARING" ? (
               <TouchableOpacity
                 style={{
                   borderRadius: 3,
@@ -208,6 +208,7 @@ export default function OrderItems({
 const styles = StyleSheet.create({
   mainCardView: {
     flexDirection: "row",
+    // paddingHorizontal: 0,
   },
   leftView: {
     paddingHorizontal: hp(2),

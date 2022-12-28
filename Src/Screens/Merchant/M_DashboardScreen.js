@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -13,19 +14,61 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
-import { getDashboardReports } from "../../Services/MerchantApi";
+import {
+  dashboardSearch,
+  DeleteMenuItem,
+  enableDisableMenues,
+  getDashboardReports,
+} from "../../Services/MerchantApi";
 import Chart from "../../Components/Chart";
+import MenuScreenItems from "../../Components/MenuScreenItems";
+import OrderItems from "../../Components/OrderItems";
+import { orderStatusData } from "../../Constant/Constant";
+import OrderDetailModal from "../../Components/OrderDetailModal";
+
 export default function M_DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const DASHBOARD_DATA = useSelector((e) => e.merchant.dashBoardData);
+  const dashboardSearchData = useSelector((e) => e.merchant.dashboardSearch);
+  const [categoryDetail, setcategoryDetail] = useState(false);
+  const [selectedOrder, setselectedOrder] = useState({});
+
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: false });
     dispatch(getDashboardReports());
+    navigation.addListener("focus", () => {
+      setSearch("");
+      dispatch({ type: "SET_DASHBOARD_SEARCH_DATA", payload: {} });
+    });
   }, []);
 
+  const handleSearch = (text) => {
+    setSearch(text);
+    if (text !== "") {
+      dispatch(dashboardSearch(text));
+    } else {
+      dispatch({ type: "SET_DASHBOARD_SEARCH_DATA", payload: {} });
+    }
+  };
+  const onDeleteMenuItems = (id) => {
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = { menuId: id, language: "en" };
+          dispatch(DeleteMenuItem(data));
+        },
+      },
+    });
+  };
+  const onChangeStatus = (id, status) => {
+    let data = { menuId: id, status: status == 1 ? 0 : 1, language: "en" };
+    dispatch(enableDisableMenues(data));
+  };
   return (
-    <View style={ApplicationStyles.mainView}>
+    <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={ApplicationStyles.welcomeText}>Business Portal</Text>
         <View style={styles.searchBar}>
@@ -37,11 +80,77 @@ export default function M_DashboardScreen({ navigation }) {
             placeholder="Search for specific"
             style={styles.searchInput}
             value={search}
-            onChangeText={(text) => setSearch(text)}
+            onChangeText={(text) => handleSearch(text)}
             placeholderTextColor={Colors.placeholderColor}
           />
         </View>
-        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+        {Object.keys(dashboardSearchData).length !== 0 && (
+          <View>
+            {dashboardSearchData.menuItems.length !== 0 && (
+              <View style={styles.paddingView}>
+                <FlatList
+                  horizontal={true}
+                  data={dashboardSearchData.menuItems}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View key={index}>
+                        <MenuScreenItems
+                          onEdit={() => {
+                            navigation.navigate("M_EditMenuItemScreen", item);
+                          }}
+                          onDelete={() => onDeleteMenuItems(item.id)}
+                          item={item}
+                          screen={"item"}
+                          activeVisible={true}
+                          status={item.status}
+                          index={index}
+                          onChangeStatus={() =>
+                            onChangeStatus(item.id, item.status)
+                          }
+                        />
+                      </View>
+                    );
+                  }}
+                  keyExtractor={(item) => item.id}
+                />
+              </View>
+            )}
+            {dashboardSearchData.orders.length !== 0 && (
+              <View>
+                <FlatList
+                  data={dashboardSearchData.orders}
+                  renderItem={({ item, index }) => {
+                    let status = orderStatusData.filter(
+                      (obj) => obj.type == item.status
+                    );
+
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setcategoryDetail(true), setselectedOrder(item);
+                        }}
+                      >
+                        <OrderItems
+                          selectedStatus={"ALL"}
+                          item={item}
+                          navigation={navigation}
+                          status={status[0]}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                  keyExtractor={(item) => item.id}
+                />
+              </View>
+            )}
+          </View>
+        )}
+
+        <ScrollView
+          contentContainerStyle={styles.paddingView}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+        >
           <View style={styles.cardView}>
             <Text style={styles.cardTitle}>How it Works</Text>
             <Image
@@ -131,7 +240,7 @@ export default function M_DashboardScreen({ navigation }) {
             </View>
           </View>
         </View>
-        <View>
+        <View style={styles.paddingView}>
           {DASHBOARD_DATA?.grossVolume && (
             <Chart
               name={"Gross Volume"}
@@ -151,6 +260,14 @@ export default function M_DashboardScreen({ navigation }) {
           )}
         </View>
       </ScrollView>
+
+      <OrderDetailModal
+        visible={categoryDetail}
+        onClose={() => {
+          setcategoryDetail(!categoryDetail), setselectedOrder({});
+        }}
+        selectedOrder={selectedOrder}
+      />
     </View>
   );
 }
@@ -162,6 +279,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: hp(2),
     borderRadius: 8,
     marginBottom: hp(3),
+    marginHorizontal: hp(2),
+  },
+  paddingView: {
+    marginHorizontal: hp(2),
   },
   searchIcon: {
     height: hp(2),
@@ -211,6 +332,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: hp(2),
+    marginHorizontal: hp(2),
   },
   halfView: {
     backgroundColor: Colors.white,
