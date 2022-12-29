@@ -503,7 +503,6 @@ export const enableDisableMenues = (postObj) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    console.log(error.message);
     dispatchErrorAction(dispatch, error.message);
   }
 };

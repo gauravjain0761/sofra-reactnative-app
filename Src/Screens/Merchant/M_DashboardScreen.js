@@ -49,7 +49,6 @@ export default function M_DashboardScreen({ navigation }) {
     if (text !== "") {
       dispatch(dashboardSearch(text));
     } else {
-      console.log("here");
       dispatch({ type: "SET_DASHBOARD_SEARCH_DATA", payload: {} });
     }
   };

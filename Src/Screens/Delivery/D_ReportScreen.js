@@ -44,7 +44,6 @@ export default function D_ReportScreen({ navigation }) {
   const [EndDate, setEndDate] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [dateType, setdateType] = useState([]);
-  console.log("setteled_report--", setteled_report, unsetteled_report);
   const REPORT =
     Object.keys(setteled_report).length == 0
       ? unsetteled_report

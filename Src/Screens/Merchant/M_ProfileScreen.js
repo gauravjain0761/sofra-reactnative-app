@@ -434,7 +434,6 @@ export default function M_ProfileScreen({ navigation }) {
                   }}
                   thumbColor={orderNoti ? Colors.white : Colors.darkGrey}
                   onValueChange={(value) => {
-                    console.log(value);
                     setorderNoti(value);
                     let data = {
                       orderNotifications: value == true ? 1 : 0,

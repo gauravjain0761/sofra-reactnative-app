@@ -10,17 +10,15 @@ export const GET = async (dispatch, url, data) => {
       "Content-Type": "multipart/form-data",
       Authorization: "Bearer " + token,
     },
-    // body: JSON.stringify(data),
   })
     .then((response) => {
       return response.json().then((responseJson) => {
-        console.log("geturl-->", url, responseJson);
-
+        console.log("GET-->", url, responseJson);
         return responseJson;
       });
     })
     .catch((err) => {
-      console.log("GET--", url, err);
+      console.log("GET-->", url, err);
     });
 };
 export async function POST(dispatch, url, data) {
@@ -47,55 +45,11 @@ export async function POST(dispatch, url, data) {
   })
     .then((response) => {
       return response.json().then((responseJson) => {
-        console.log("posturl-->", url, formData, responseJson);
+        console.log("POST-->", url, data, responseJson);
         return responseJson;
       });
     })
     .catch((err) => {
-      console.log("post--", url, formData, err);
-    });
-}
-
-export async function PUT(dispatch, url, data) {
-  const token = await getToken();
-
-  return fetch(url, {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      return response.json().then((responseJson) => {
-        console.log("PUT-->", url, data, responseJson);
-        return responseJson;
-      });
-    })
-    .catch((err) => {
-      console.log("PUT--", url, data, err);
-    });
-}
-export async function DELETE(url, data) {
-  const token = await getToken();
-
-  return fetch(url, {
-    method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-    // body: JSON.stringify(data),
-  })
-    .then((response) => {
-      return response.json().then((responseJson) => {
-        return responseJson;
-      });
-    })
-    .catch((err) => {
-      console.log("post", err);
+      console.log("POST-->", url, data, err);
     });
 }
