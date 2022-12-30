@@ -50,12 +50,7 @@ export default function M_DashboardScreen({ navigation }) {
           <TouchableOpacity
             style={styles.addMenuButton}
             onPress={() => {
-              // D_DeliveredOrderScreen
-              // D_CancelledOrderScreen
-              // navigation.navigate('D_AddNewDriver')
-              // navigation.navigate('D_CancelledOrderScreen')
-              navigation.navigate("D_PickUpOrderScreen");
-              // navigation.navigate('D_ActiveOrderScreen')
+              navigation.navigate("D_DriverStack1");
             }}
           >
             <Text style={styles.addButton}>Add Driver</Text>

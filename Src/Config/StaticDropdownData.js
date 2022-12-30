@@ -26,6 +26,11 @@ export const reportDropdownData = [
   { id: 2, name: "Un-Settled Report" },
 ];
 
+export const driverTypeData = [
+  { id: 1, name: "Inside City" },
+  { id: 2, name: "Cross Border" },
+];
+
 export const vatType = [
   { id: 1, name: "EXCLUSIVE" },
   { id: 2, name: "INCLUSIVE" },

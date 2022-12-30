@@ -52,6 +52,74 @@ export const getDrivers = () => async (dispatch) => {
   }
 };
 
+export const addDriver = (postObj, onSuccess) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
+
+  const url = delivery_url + "/addDriver";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatch(getDrivers());
+      onSuccess();
+      dispatchSuccessAction(dispatch, data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.result);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const updateDriverStatus = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
+
+  const url = delivery_url + "/updateDriverStatus";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true || data.error == "false") {
+      dispatchAction(dispatch, "UPDATE_DRIVER_STATUS", postObj);
+      dispatchSuccessAction(dispatch, data.message);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const deleteDriver = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
+
+  const url = delivery_url + "/deleteDriver";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true || data.error == "false") {
+      dispatchAction(dispatch, "DELETE_DRIVER", postObj);
+      dispatchSuccessAction(dispatch, data.message);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+export const updateDriver = (postObj, navigation) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
+
+  const url = delivery_url + "/updateDriver";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      navigation.goBack();
+      dispatchSuccessAction(dispatch, data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
 export const getCompanySettledReports = (postObj) => async (dispatch) => {
   let token = await getToken();
   let url = "";
@@ -73,7 +141,7 @@ export const getCompanySettledReports = (postObj) => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       // onSuccess();
-      dispatchAction(dispatch, "SET_SETTELED_REPORT", data.result);
+      dispatchAction(dispatch, "SET_SETTELED_REPORT_COMPANY", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -83,7 +151,7 @@ export const getCompanySettledReports = (postObj) => async (dispatch) => {
 };
 
 export const getCompanyUnSettledReports = (postObj) => async (dispatch) => {
-  dispatch({ type: "PRE_LOADER", payload: true });
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
 
   let token = await getToken();
   let url = "";
@@ -105,7 +173,7 @@ export const getCompanyUnSettledReports = (postObj) => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       // onSuccess();
-      dispatchAction(dispatch, "SET_UNSETTELED_REPORT", data.result);
+      dispatchAction(dispatch, "SET_UNSETTELED_REPORT_COMPANY", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -137,7 +205,7 @@ export const getPickupOrders = (page) => async (dispatch) => {
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
-      dispatchAction(dispatch, "SET_PICKUP_ORDERS", data.result);
+      dispatchAction(dispatch, "SET_PICKUP_ORDERS", data);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -153,7 +221,7 @@ export const getActiveOrders = (page) => async (dispatch) => {
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
-      dispatchAction(dispatch, "SET_ACTIVE_ORDERS", data.result);
+      dispatchAction(dispatch, "SET_ACTIVE_ORDERS", data);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -170,6 +238,23 @@ export const getCancelledOrders = (page) => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       dispatchAction(dispatch, "SET_CANCELLED_ORDERS", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const changeOrderStatus = (postObj, onSuccess) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
+
+  const url = delivery_url + "/changeOrderStatus";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true || data.error == "false") {
+      onSuccess(data.message);
+      dispatchSuccessAction(dispatch, data.message);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

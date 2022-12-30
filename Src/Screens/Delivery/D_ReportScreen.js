@@ -38,8 +38,8 @@ export default function D_ReportScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const [reportType, setreportType] = useState(reportDropdownData[0].name);
-  const setteled_report = useSelector((e) => e.merchant.setteled_report);
-  const unsetteled_report = useSelector((e) => e.merchant.unsetteled_report);
+  const setteled_report = useSelector((e) => e.delivery.setteled_report);
+  const unsetteled_report = useSelector((e) => e.delivery.unsetteled_report);
   const [StartDate, setStartDate] = useState("");
   const [EndDate, setEndDate] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);

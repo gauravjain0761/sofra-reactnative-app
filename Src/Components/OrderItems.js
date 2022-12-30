@@ -19,6 +19,8 @@ import { useEffect } from "react";
 import { orderStatusData } from "../Constant/Constant";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatus } from "../Services/MerchantApi";
+import OrderSuccessStatusModal from "./OrderSuccessStatusModal";
+import OrderStatusModal from "./OrderStatusModal";
 
 export default function OrderItems({
   item,
@@ -132,76 +134,17 @@ export default function OrderItems({
         </View>
       </View>
       <View style={styles.line}></View>
-      <ReactNativeModal
-        style={ApplicationStyles.modalStyle}
-        isVisible={modalVisibleSuccess}
-        onBackButtonPress={() => onPressOk()}
-        onBackdropPress={() => onPressOk()}
-      >
-        <View
-          style={[
-            ApplicationStyles.modalViewStyle,
-            { paddingVertical: hp(4), paddingHorizontal: hp(2) },
-          ]}
-        >
-          <Image
-            source={require("../Images/Merchant/xxxhdpi/correct.png")}
-            style={styles.icon}
-          />
-          <Text style={styles.title}>{successModalMessage}</Text>
-
-          <View style={styles.buttonRow2}>
-            <View style={{ width: "50%" }}>
-              <PinkButton
-                onPress={() => onPressOk()}
-                text={"small"}
-                name={"Ok"}
-              />
-            </View>
-          </View>
-        </View>
-      </ReactNativeModal>
-      <ReactNativeModal
-        style={ApplicationStyles.modalStyle}
-        isVisible={modalVisible}
-        onBackButtonPress={() => setModalVisible(false)}
-        onBackdropPress={() => setModalVisible(false)}
-      >
-        <View
-          style={[
-            ApplicationStyles.modalViewStyle,
-            { paddingVertical: hp(4), paddingHorizontal: hp(2) },
-          ]}
-        >
-          <Image
-            source={require("../Images/Merchant/xxxhdpi/correct.png")}
-            style={styles.icon}
-          />
-          <Text style={styles.title}>Are you sure?</Text>
-          <Text style={styles.titleBottom}>
-            You want to change the order status to{" "}
-            <Text style={styles.titleBottomBold}>{nextStatus.title}</Text>. But
-            it will not revert back
-          </Text>
-          <View style={styles.buttonRow}>
-            <View style={{ width: "58%" }}>
-              <PinkButton
-                onPress={() => onStatusUpdate()}
-                text={"small"}
-                name={"Yes, do it!"}
-              />
-            </View>
-            <View style={{ width: "38%" }}>
-              <PinkButton
-                onPress={() => setModalVisible(false)}
-                style={{ backgroundColor: Colors.grayButtonBackground }}
-                text={"small"}
-                name={"Cancel"}
-              />
-            </View>
-          </View>
-        </View>
-      </ReactNativeModal>
+      <OrderSuccessStatusModal
+        modalVisibleSuccess={modalVisibleSuccess}
+        onPressOk={() => onPressOk()}
+        successModalMessage={successModalMessage}
+      />
+      <OrderStatusModal
+        modalVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        nextStatus={nextStatus}
+        onStatusUpdate={() => onStatusUpdate()}
+      />
     </View>
   );
 }

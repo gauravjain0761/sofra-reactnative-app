@@ -15,18 +15,12 @@ import {
 } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { orderStatusData } from "../../Constant/Constant";
 import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 import { useNavigation } from "@react-navigation/native";
 import { getActiveOrders } from "../../Services/DeliveryApi";
-
-const tagArray = [
-  { title: "Delivered", color: Colors.pink, type: "ACCEPTED" },
-  { title: "Cancelled", color: Colors.purple },
-  { title: "Active", color: Colors.green },
-  { title: "Ready for pick up", color: Colors.yellow },
-];
+import OrderDetailModal from "../../Components/OrderDetailModal";
 
 let ORDERS = [
   {
@@ -63,44 +57,28 @@ export default function D_ActiveOrderScreen({}) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const ACTIVE_ORDERS = useSelector((e) => e.delivery.activeOrders);
+  const PRELOADER = useSelector((e) => e.delivery.preLoader);
+  const PAGINATIONDATA = useSelector((e) => e.delivery.orderPaging);
+  const [categoryDetail, setcategoryDetail] = useState(false);
+  const [selectedOrder, setselectedOrder] = useState({});
+
   useEffect(() => {
-    dispatch({ type: "PRE_LOADER_DELIVERY", payload: false });
+    dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getActiveOrders(1));
     });
   }, []);
-
-  const renderActiveOrders = ({ item, index }) => {
-    return (
-      <View style={styles.mainListView}>
-        <View style={styles.secondView}>
-          <Image
-            style={styles.imageStyle}
-            source={{
-              uri: "https://c4.wallpaperflare.com/wallpaper/367/822/458/chicken-wings-fried-food-food-cuisine-wallpaper-preview.jpg",
-            }}
-          />
-        </View>
-        <View style={styles.desStyle}>
-          <View>
-            <Text style={styles.titleStyle}>Indian Thali</Text>
-            <Text style={styles.cousineStyle}>Breakfast, Lunch, Dinner</Text>
-            <Text style={styles.priceStyle}>AED 75.00</Text>
-            <Image
-              style={styles.truckLogo}
-              source={require("../../Images/Merchant/xxxhdpi/ic_car.png")}
-            />
-          </View>
-          <Text style={styles.statusTextStyle}>Cancel</Text>
-        </View>
-      </View>
-    );
+  const fetchMoreData = () => {
+    if (Number(PAGINATIONDATA.currentPage) + 1 <= PAGINATIONDATA.totalPages) {
+      dispatch(getActiveOrders(Number(PAGINATIONDATA.currentPage) + 1));
+    }
   };
 
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <View style={styles.tagView}>
-        {orderStatusData.map((item, index) => {
+        {/* {orderStatusData.map((item, index) => {
           return (
             <TouchableOpacity
               style={{
@@ -115,27 +93,47 @@ export default function D_ActiveOrderScreen({}) {
               </Text>
             </TouchableOpacity>
           );
-        })}
+        })} */}
       </View>
+      {!PRELOADER && (
+        <FlatList
+          data={ACTIVE_ORDERS}
+          ListEmptyComponent={
+            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+          }
+          style={{ flex: 1 }}
+          renderItem={({ item, index }) => {
+            let status = orderStatusData.filter(
+              (obj) => obj.type == item.status
+            );
 
-      <ScrollView>
-        {ORDERS.map((item, index) => {
-          let status = orderStatusData.filter((obj) => obj.type == item.status);
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                // setcategoryDetail(true), setselectedOrder(item);
-              }}
-            >
-              <D_OrderItems
-                item={item}
-                navigation={navigation}
-                status={status[0]}
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  setcategoryDetail(true), setselectedOrder(item);
+                }}
+              >
+                <D_OrderItems
+                  item={item}
+                  navigation={navigation}
+                  status={status[0]}
+                  screen={"active_order"}
+                />
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.id}
+          onEndReachedThreshold={0.2}
+          onEndReached={fetchMoreData}
+        />
+      )}
+      <OrderDetailModal
+        visible={categoryDetail}
+        onClose={() => {
+          setcategoryDetail(!categoryDetail), setselectedOrder({});
+        }}
+        selectedOrder={selectedOrder}
+      />
     </View>
   );
 }

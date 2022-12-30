@@ -39,8 +39,8 @@ export default function D_PickUpOrderScreen() {
     });
   }, []);
   const fetchMoreData = () => {
-    if (PAGINATIONDATA.currentPage + 1 <= PAGINATIONDATA.totalPages) {
-      dispatch(getPickupOrders(PAGINATIONDATA.currentPage + 1, selectedStatus));
+    if (Number(PAGINATIONDATA.currentPage) + 1 <= PAGINATIONDATA.totalPages) {
+      dispatch(getPickupOrders(Number(PAGINATIONDATA.currentPage) + 1));
     }
   };
 
@@ -48,7 +48,6 @@ export default function D_PickUpOrderScreen() {
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       {!PRELOADER && (
         <FlatList
-          // contentContainerStyle={{ flex: 1 }}
           data={PICKUP_ORDERS}
           ListEmptyComponent={
             <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
@@ -66,7 +65,6 @@ export default function D_PickUpOrderScreen() {
                 }}
               >
                 <D_OrderItems
-                  selectedStatus={selectedStatus}
                   item={item}
                   navigation={navigation}
                   status={status[0]}

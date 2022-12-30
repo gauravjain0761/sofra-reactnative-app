@@ -38,6 +38,7 @@ import HeaderLeftIcon from "../Components/NavigationComponent";
 import D_PickUpOrderScreen from "../Screens/Delivery/D_PickUpOrderScreen";
 import { getCompanyProfile } from "../Services/DeliveryApi";
 import { media_url } from "../Config/AppConfig";
+import D_EditDriverScreen from "../Screens/Delivery/D_EditDriverScreen";
 
 const data = {
   headerBackVisible: false,
@@ -107,6 +108,31 @@ let DrawerItemArray = [
     screen: "D_UpdatePassword",
   },
 ];
+
+const DriverStack = createNativeStackNavigator();
+function D_DriverStack() {
+  return (
+    <DriverStack.Navigator initialRouteName="D_DriversScreen">
+      <DriverStack.Screen
+        options={{
+          headerShown: false,
+        }}
+        component={D_DriversScreen}
+        name={"D_DriversScreen"}
+      />
+      <DriverStack.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          // headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
+        component={D_EditDriverScreen}
+        name={"D_EditDriverScreen"}
+      />
+    </DriverStack.Navigator>
+  );
+}
 
 const BottomTab = createBottomTabNavigator();
 function D_MyBottomTabs() {
@@ -186,8 +212,8 @@ function D_MyBottomTabs() {
           headerTitle: "",
           headerTransparent: true,
         })}
-        name="D_DriversScreen"
-        component={D_DriversScreen}
+        name="D_DriverStack1"
+        component={D_DriverStack}
       />
       <BottomTab.Screen
         options={({ navigation }) => ({
@@ -279,9 +305,7 @@ function CustomDrawerContent(props) {
               : require("../Images/Merchant/xxxhdpi/profile_placeholder.png")
           }
         />
-        <Text style={styles.name}>
-          {companyProfile?.first_name + " " + companyProfile?.last_name}
-        </Text>
+        <Text style={styles.name}>{companyProfile?.name}</Text>
         {DrawerItemArray.map((item, index) => {
           return (
             <DrawerItem
@@ -345,7 +369,7 @@ export function DeliveryDrawer({ navigation }) {
         options={{
           headerShown: false,
         }}
-        name={"DDashboard"}
+        name={"D_Dashboard"}
         component={D_MyBottomTabs}
       />
       <Drawer.Screen
@@ -407,6 +431,17 @@ export function DeliveryDrawer({ navigation }) {
         name="D_ReportScreen"
         component={D_ReportScreen}
       />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
+        name="D_EditDriverScreen"
+        component={D_EditDriverScreen}
+      />
+
       <Drawer.Screen
         options={({ navigation }) => ({
           headerTitleAlign: "center",

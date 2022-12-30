@@ -22,28 +22,98 @@ import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import PinkButton from "../../Components/PinkButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getDrivers } from "../../Services/DeliveryApi";
+import { addDriver, getDrivers } from "../../Services/DeliveryApi";
 import { useNavigation } from "@react-navigation/native";
 import { media_url } from "../../Config/AppConfig";
+import {
+  dispatchErrorAction,
+  validateEmail,
+} from "../../Services/CommonFunctions";
+import { driverTypeData } from "../../Config/StaticDropdownData";
+import ImagePicker from "react-native-image-crop-picker";
+import moment from "moment";
 
 export default function D_DriversScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [driversList, setDriversList] = useState([1, 2, 3, 4, 5]);
-  const [firstname, setfirstname] = useState("Jasica");
-  const [lastname, setlastname] = useState("Birnilvis");
+  const [firstname, setfirstname] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [driverType, setDriverType] = useState("");
   const PRELOADER = useSelector((e) => e.merchant.preLoader);
   const companyProfile = useSelector((e) => e.delivery.companyProfile);
   const DRIVERS = useSelector((e) => e.delivery.drivers);
+  const [image, setimage] = useState("");
+
   useEffect(() => {
     dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getDrivers());
     });
   }, []);
+  const openPicker = () => {
+    ImagePicker.openPicker({
+      mediaType: "photo",
+      includeBase64: true,
+    }).then((photo) => {
+      setimage(photo);
+    });
+  };
+  const onAddDriver = () => {
+    let data = {
+      name: firstname,
+      email: email,
+      password: password,
+      phone: phone,
+      type: driverType,
+      image: image.sourceURL
+        ? {
+            uri: image.sourceURL,
+            type: image.mime, // or photo.type image/jpg
+            name:
+              "image_" +
+              moment().unix() +
+              "_" +
+              image.sourceURL.split("/").pop(),
+          }
+        : undefined,
+    };
+    dispatch(
+      addDriver(data, () => {
+        setfirstname("");
+        setPhone("");
+        setEmail("");
+        setPassword("");
+        setDriverType("");
+        setimage("");
+      })
+    );
+  };
+
+  const validation = () => {
+    if (firstname.trim() !== "") {
+      if (phone.trim() !== "") {
+        if (validateEmail(email)) {
+          if (password.trim() !== "") {
+            if (driverType !== "") {
+              onAddDriver();
+            } else {
+              dispatchErrorAction(dispatch, "Please select driver type");
+            }
+          } else {
+            dispatchErrorAction(dispatch, "Please enter password");
+          }
+        } else {
+          dispatchErrorAction(dispatch, "Please enter valid email");
+        }
+      } else {
+        dispatchErrorAction(dispatch, "Please enter phone number");
+      }
+    } else {
+      dispatchErrorAction(dispatch, "Please enter firstname");
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -95,9 +165,11 @@ export default function D_DriversScreen() {
               </View>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationTextInput
-                  placeholder={"Lastname"}
-                  value={lastname}
-                  onChangeText={(text) => setlastname(text)}
+                  placeholder={"Phone Number"}
+                  value={phone}
+                  maxLength={12}
+                  keyboardType={"numeric"}
+                  onChangeText={(text) => setPhone(text)}
                 />
               </View>
             </View>
@@ -105,40 +177,59 @@ export default function D_DriversScreen() {
               placeholder={"Email"}
               value={email}
               onChangeText={(text) => setEmail(text)}
-              placeholderTextColor={Colors.black}
+              // placeholderTextColor={Colors.black}
             />
             <RegistrationTextInput
               placeholder={"Password"}
               value={password}
               onChangeText={(text) => setPassword(text)}
-              placeholderTextColor={Colors.black}
-            />
-            <RegistrationTextInput
-              placeholder={"Driver Type"}
-              value={driverType}
-              onChangeText={(text) => setDriverType(text)}
-              placeholderTextColor={Colors.black}
+              // placeholderTextColor={Colors.black}
             />
 
+            <RegistrationDropdown
+              data={driverTypeData}
+              value={driverType}
+              setData={(text) => {
+                setDriverType(text);
+              }}
+              placeholder={"Driver Type"}
+              valueField={"name"}
+              style={styles.dropdownRow}
+              placeholderTextColor={Colors.black}
+            />
             <Text style={styles.title2}>Images</Text>
             <View>
-              <RegistrationDropdown
-                // data={citydata}
-                // value={b_category}
-                // setData={(text) => {
-                //   setb_category(text);
-                // }}
-                placeholder={"Choose File"}
-                valueField={"strategicName"}
-                style={styles.dropdownRow}
-                placeholderTextColor={Colors.black}
-              />
+              <TouchableOpacity
+                onPress={() => openPicker()}
+                style={styles.imageView}
+              >
+                {image == "" ? (
+                  <View style={{ alignItems: "center" }}>
+                    <Image
+                      source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
+                      style={styles.imageVector}
+                    />
+                    <Text style={styles.attachText}>Choose File</Text>
+                  </View>
+                ) : (
+                  <View>
+                    <Image
+                      source={{
+                        uri: image.data
+                          ? `data:image/jpeg;base64,${image.data}`
+                          : media_url + image,
+                      }}
+                      style={styles.image}
+                    />
+                  </View>
+                )}
+              </TouchableOpacity>
             </View>
 
             <View style={styles.buttonRow}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <PinkButton
-                  onPress={() => {}}
+                  onPress={() => validation()}
                   style={styles.dbuttonStyle}
                   text={"small"}
                   name={"Add Drivers"}
@@ -183,5 +274,32 @@ const styles = StyleSheet.create({
   buttonRow: {
     marginVertical: hp(3),
     alignSelf: "center",
+  },
+  imageVector: {
+    width: hp(6),
+    // height: hp(6),
+    height: hp(6),
+    resizeMode: "contain",
+  },
+  image: {
+    height: hp(17),
+    resizeMode: "cover",
+    width: SCREEN_WIDTH - hp(4),
+  },
+  attachText: {
+    ...commonFontStyle(400, 12, Colors.darkGrey),
+    marginTop: hp(1),
+  },
+  imageView: {
+    backgroundColor: Colors.white,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    height: hp(17),
+    borderColor: Colors.placeholderColor,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    marginBottom: hp(2),
+    overflow: "hidden",
   },
 });

@@ -12,6 +12,8 @@ const initialState = {
   activeOrders: [],
   cancelledOrders: [],
   orderPaging: {},
+  unsetteled_report: {},
+  setteled_report: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -35,35 +37,119 @@ export default function (state = initialState, action) {
     case "SET_DRIVERS": {
       return { ...state, drivers: action.payload, preLoader: false };
     }
+    case "UPDATE_DRIVER_STATUS": {
+      let drivers = Object.assign([], state.drivers);
+      let index = drivers.findIndex((obj) => obj.id == action.payload.driverId);
+      drivers[index].status = action.payload.status;
+      return { ...state, drivers: drivers, preLoader: false };
+    }
+    case "DELETE_DRIVER": {
+      let drivers = Object.assign([], state.drivers);
+      drivers = drivers.filter((obj) => obj.id !== action.payload.driverId);
+      return { ...state, drivers: drivers, preLoader: false };
+    }
     case "SET_PICKUP_ORDERS": {
       let pickupOrders = Object.assign([], state.pickupOrders);
       if (action.payload.result.length !== 0)
         pickupOrders.push(...action.payload.result);
-      if (action.payload.paging.currentPage == 1) {
+      if (action.payload.pagination.currentPage == "1") {
         return {
           ...state,
           pickupOrders: action.payload.result,
-          orderPaging: action.payload.paging,
+          orderPaging: action.payload.pagination,
           preLoader: false,
         };
       } else {
         return {
           ...state,
           pickupOrders: pickupOrders,
-          orderPaging: action.payload.paging,
+          orderPaging: action.payload.pagination,
           preLoader: false,
         };
       }
-      return { ...state, pickupOrders: action.payload, preLoader: false };
     }
     case "SET_DELIVERED_ORDERS": {
-      return { ...state, deliveredOrders: action.payload, preLoader: false };
+      let deliveredOrders = Object.assign([], state.deliveredOrders);
+      if (action.payload.result.length !== 0)
+        deliveredOrders.push(...action.payload.result);
+      if (action.payload.pagination.currentPage == "1") {
+        return {
+          ...state,
+          deliveredOrders: action.payload.result,
+          orderPaging: action.payload.pagination,
+          preLoader: false,
+        };
+      } else {
+        return {
+          ...state,
+          deliveredOrders: deliveredOrders,
+          orderPaging: action.payload.pagination,
+          preLoader: false,
+        };
+      }
     }
     case "SET_ACTIVE_ORDERS": {
-      return { ...state, activeOrders: action.payload, preLoader: false };
+      let activeOrders = Object.assign([], state.activeOrders);
+      if (action.payload.result.length !== 0)
+        activeOrders.push(...action.payload.result);
+      if (action.payload.pagination.currentPage == "1") {
+        return {
+          ...state,
+          activeOrders: action.payload.result,
+          orderPaging: action.payload.pagination,
+          preLoader: false,
+        };
+      } else {
+        return {
+          ...state,
+          activeOrders: activeOrders,
+          orderPaging: action.payload.pagination,
+          preLoader: false,
+        };
+      }
     }
     case "SET_CANCELLED_ORDERS": {
-      return { ...state, cancelledOrders: action.payload, preLoader: false };
+      let cancelledOrders = Object.assign([], state.cancelledOrders);
+      if (action.payload.result.length !== 0)
+        cancelledOrders.push(...action.payload.result);
+      if (action.payload.pagination.currentPage == "1") {
+        return {
+          ...state,
+          cancelledOrders: action.payload.result,
+          orderPaging: action.payload.pagination,
+          preLoader: false,
+        };
+      } else {
+        return {
+          ...state,
+          cancelledOrders: cancelledOrders,
+          orderPaging: action.payload.pagination,
+          preLoader: false,
+        };
+      }
+    }
+    case "UPDATE_ORDER_STATUS_PICKUP": {
+      let pickupOrders = Object.assign([], state.pickupOrders);
+      pickupOrders = pickupOrders.filter(
+        (obj) => obj.id !== action.payload.orderId
+      );
+      return { ...state, pickupOrders: pickupOrders, preLoader: false };
+    }
+    case "SET_SETTELED_REPORT_COMPANY": {
+      return {
+        ...state,
+        unsetteled_report: {},
+        setteled_report: action.payload,
+        preLoader: false,
+      };
+    }
+    case "SET_UNSETTELED_REPORT_COMPANY": {
+      return {
+        ...state,
+        setteled_report: {},
+        unsetteled_report: action.payload,
+        preLoader: false,
+      };
     }
     default:
       return state;
