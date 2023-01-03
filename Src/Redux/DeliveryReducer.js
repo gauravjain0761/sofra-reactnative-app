@@ -14,6 +14,8 @@ const initialState = {
   orderPaging: {},
   unsetteled_report: {},
   setteled_report: {},
+  assignToDriverModal: {},
+  successModal: false,
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -35,6 +37,12 @@ export default function (state = initialState, action) {
       return { ...state, companyProfile: action.payload, preLoader: false };
     }
     case "SET_DRIVERS": {
+      let drivers = action.payload;
+      if (drivers.length !== 0) {
+        drivers.forEach((element) => {
+          element.itemDisplay = element.name + " [" + element.type + "]";
+        });
+      }
       return { ...state, drivers: action.payload, preLoader: false };
     }
     case "UPDATE_DRIVER_STATUS": {
@@ -135,6 +143,21 @@ export default function (state = initialState, action) {
       );
       return { ...state, pickupOrders: pickupOrders, preLoader: false };
     }
+    case "UPDATE_ORDER_ACTIVE": {
+      let activeOrders = Object.assign([], state.activeOrders);
+      if (action.payload.status == "DELIVERED") {
+        activeOrders = activeOrders.filter(
+          (obj) => obj.id !== action.payload.orderId
+        );
+      } else {
+        let index = activeOrders.findIndex(
+          (obj) => obj.id == action.payload.orderId
+        );
+        activeOrders[index].status = action.payload.status;
+      }
+
+      return { ...state, activeOrders: activeOrders, preLoader: false };
+    }
     case "SET_SETTELED_REPORT_COMPANY": {
       return {
         ...state,
@@ -149,6 +172,17 @@ export default function (state = initialState, action) {
         setteled_report: {},
         unsetteled_report: action.payload,
         preLoader: false,
+      };
+    }
+    case "ASSIGN_TO_DRIVER_MODAL": {
+      return { ...state, assignToDriverModal: action.payload };
+    }
+    case "SUCCESS_MODAL": {
+      return {
+        ...state,
+        preLoader: false,
+        successModal: action.payload.modal,
+        successModalMessage: action.payload.message,
       };
     }
     default:

@@ -8,7 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { orderStatusData } from "../../Constant/Constant";
 import OrderSuccessStatusModal from "../OrderSuccessStatusModal";
 import OrderStatusModal from "../OrderStatusModal";
-import { changeOrderStatus } from "../../Services/DeliveryApi";
+import {
+  assignDriver,
+  changeOrderStatus,
+  getActiveOrders,
+} from "../../Services/DeliveryApi";
+import AssignToDriverModal from "./AssignToDriverModal";
 
 export default function D_OrderItems({ item, navigation, status, screen }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,28 +24,43 @@ export default function D_OrderItems({ item, navigation, status, screen }) {
   const successModalMessage = useSelector(
     (e) => e.delivery.successModalMessage
   );
-
+  const [modalAccessDriver, setModalAccessDriver] = useState(false);
   useEffect(() => {
     if (status.type == "READY_FOR_PICKUP") {
-      // let index = orderStatusData.findIndex((obj) => obj.type == status.type);
       setnextStatus(orderStatusData[2]);
     }
-  }, []);
-
+    if (screen && screen == "active_order") {
+      if (item.status == "READY_FOR_PICKUP") {
+        setnextStatus(orderStatusData[5]);
+      } else if (item.status == "PICKED_UP") {
+        setnextStatus(orderStatusData[6]);
+      }
+    }
+  }, [status]);
+  console.log(status, item.status, item.bookingCode);
   const onStatusUpdate = () => {
     let data = { orderId: item.id, status: nextStatus.type, language: "en" };
     dispatch(
       changeOrderStatus(data, (message) => {
+        console.log("caled");
         setmessage(message);
         dispatch({
           type: "SUCCESS_MODAL",
           payload: { modal: true, message: message },
         });
+
         setTimeout(() => {
-          dispatch({
-            type: "UPDATE_ORDER_STATUS_PICKUP",
-            payload: data,
-          });
+          if (screen && screen == "active_order") {
+            dispatch({
+              type: "UPDATE_ORDER_ACTIVE",
+              payload: data,
+            });
+          } else {
+            dispatch({
+              type: "UPDATE_ORDER_STATUS_PICKUP",
+              payload: data,
+            });
+          }
         }, 2000);
       })
     );
@@ -52,7 +72,22 @@ export default function D_OrderItems({ item, navigation, status, screen }) {
       payload: { modal: false, message: "" },
     });
   };
-
+  const onDriverChange = (driver) => {
+    console.log("driver", driver);
+    let data = { driverId: driver, orderId: item.id };
+    dispatch(
+      assignDriver(data, (message) => {
+        setmessage(message);
+        console.log("hereee");
+        dispatch({
+          type: "SUCCESS_MODAL",
+          payload: { modal: true, message: message },
+        });
+        dispatch(getActiveOrders(1));
+      })
+    );
+    setModalAccessDriver(false);
+  };
   return (
     <View>
       <View style={styles.mainCardView}>
@@ -123,29 +158,46 @@ export default function D_OrderItems({ item, navigation, status, screen }) {
               overflow: "hidden",
               zIndex: 1111,
             }}
-            onPress={() => {}}
+            onPress={() => setModalAccessDriver(true)}
           >
             <Text style={[styles.tagText, { backgroundColor: Colors.yellow }]}>
-              {"Assign to Driver"}
+              {item.driver !== null ? "Change Driver" : "Assign to Driver"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              borderRadius: 3,
-              overflow: "hidden",
-              zIndex: 1111,
-            }}
-            onPress={() => {}}
-          >
-            <Text style={[styles.tagText, { backgroundColor: status?.color }]}>
-              {status?.title}
-            </Text>
-          </TouchableOpacity>
+          {item.status == "READY_FOR_PICKUP" || item.status == "PICKED_UP" ? (
+            <TouchableOpacity
+              style={{
+                borderRadius: 3,
+                overflow: "hidden",
+                zIndex: 1111,
+              }}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text
+                style={[styles.tagText, { backgroundColor: status?.color }]}
+              >
+                {status?.title}
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View
+              style={{
+                borderRadius: 3,
+                overflow: "hidden",
+                zIndex: 1111,
+              }}
+            >
+              <Text
+                style={[styles.tagText, { backgroundColor: status?.color }]}
+              >
+                {status?.title}
+              </Text>
+            </View>
+          )}
         </View>
       )}
 
       <View style={styles.line}></View>
-
       <OrderSuccessStatusModal
         modalVisibleSuccess={modalVisibleSuccess}
         onPressOk={() => onPressOk()}
@@ -157,6 +209,15 @@ export default function D_OrderItems({ item, navigation, status, screen }) {
         nextStatus={nextStatus}
         onStatusUpdate={() => onStatusUpdate()}
       />
+
+      {screen && screen == "active_order" && (
+        <AssignToDriverModal
+          modalVisible={modalAccessDriver}
+          onClose={() => setModalAccessDriver(false)}
+          onDriverChange={(driver) => onDriverChange(driver)}
+          driverAlready={item.driver}
+        />
+      )}
     </View>
   );
 }

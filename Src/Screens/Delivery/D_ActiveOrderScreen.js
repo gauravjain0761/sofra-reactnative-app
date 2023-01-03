@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { orderStatusData } from "../../Constant/Constant";
 import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 import { useNavigation } from "@react-navigation/native";
-import { getActiveOrders } from "../../Services/DeliveryApi";
+import { getActiveOrders, getDrivers } from "../../Services/DeliveryApi";
 import OrderDetailModal from "../../Components/OrderDetailModal";
 
 let ORDERS = [
@@ -67,6 +67,7 @@ export default function D_ActiveOrderScreen({}) {
     dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getActiveOrders(1));
+      dispatch(getDrivers());
     });
   }, []);
   const fetchMoreData = () => {
@@ -74,7 +75,6 @@ export default function D_ActiveOrderScreen({}) {
       dispatch(getActiveOrders(Number(PAGINATIONDATA.currentPage) + 1));
     }
   };
-
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <View style={styles.tagView}>

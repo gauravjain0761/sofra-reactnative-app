@@ -15,16 +15,24 @@ import {
 } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
-import { useDispatch } from "react-redux";
-import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
+import { useDispatch, useSelector } from "react-redux";
 import { orderStatusData } from "../../Constant/Constant";
+import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 import { useNavigation } from "@react-navigation/native";
+import { getActiveOrders, getDrivers } from "../../Services/DeliveryApi";
+import OrderDetailModal from "../../Components/OrderDetailModal";
 import { getDeliveredOrders } from "../../Services/DeliveryApi";
 
 export default function D_DeliveredOrderScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
+  const DELIVERED_ORDERS = useSelector((e) => e.delivery.deliveredOrders);
+  const PRELOADER = useSelector((e) => e.delivery.preLoader);
+  const PAGINATIONDATA = useSelector((e) => e.delivery.orderPaging);
+  const [categoryDetail, setcategoryDetail] = useState(false);
+  const [selectedOrder, setselectedOrder] = useState({});
+
   useEffect(() => {
     dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
     navigation.addListener("focus", () => {
@@ -32,26 +40,51 @@ export default function D_DeliveredOrderScreen() {
     });
   }, []);
 
+  const fetchMoreData = () => {
+    if (Number(PAGINATIONDATA.currentPage) + 1 <= PAGINATIONDATA.totalPages) {
+      dispatch(getDeliveredOrders(Number(PAGINATIONDATA.currentPage) + 1));
+    }
+  };
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
-      <ScrollView>
-        {/* {ORDERS.map((item, index) => {
-          let status = orderStatusData.filter((obj) => obj.type == item.status);
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                // setcategoryDetail(true), setselectedOrder(item);
-              }}
-            >
-              <D_OrderItems
-                item={item}
-                navigation={navigation}
-                status={status[0]}
-              />
-            </TouchableOpacity>
-          );
-        })} */}
-      </ScrollView>
+      {!PRELOADER && (
+        <FlatList
+          data={DELIVERED_ORDERS}
+          ListEmptyComponent={
+            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+          }
+          style={{ flex: 1 }}
+          renderItem={({ item, index }) => {
+            let status = orderStatusData.filter(
+              (obj) => obj.type == item.status
+            );
+
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  setcategoryDetail(true), setselectedOrder(item);
+                }}
+              >
+                <D_OrderItems
+                  item={item}
+                  navigation={navigation}
+                  status={status[0]}
+                />
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.id}
+          onEndReachedThreshold={0.2}
+          onEndReached={fetchMoreData}
+        />
+      )}
+      <OrderDetailModal
+        visible={categoryDetail}
+        onClose={() => {
+          setcategoryDetail(!categoryDetail), setselectedOrder({});
+        }}
+        selectedOrder={selectedOrder}
+      />
     </View>
   );
 }

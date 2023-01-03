@@ -38,10 +38,6 @@ export default function ChooseLoginScreen({ navigation }) {
     console.log("token--", token);
     let user = await getUser();
     if (token && user) {
-      dispatch(getCities());
-      dispatch(getUsers());
-      dispatch(getCuisines());
-      dispatch(getCategories());
       if (user == "delivery") {
         navigation.dispatch(
           CommonActions.reset({
@@ -58,12 +54,12 @@ export default function ChooseLoginScreen({ navigation }) {
         );
       }
     } else {
-      dispatch(getCities());
-      dispatch(getUsers());
-      dispatch(getCuisines());
-      dispatch(getCategories());
       dispatch({ type: "PRE_LOADER", payload: false });
     }
+    dispatch(getCities());
+    dispatch(getUsers());
+    dispatch(getCuisines());
+    dispatch(getCategories());
   }, []);
 
   if (preLoader == false) {

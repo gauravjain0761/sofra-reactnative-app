@@ -120,6 +120,23 @@ export const updateDriver = (postObj, navigation) => async (dispatch) => {
   }
 };
 
+export const assignDriver = (postObj, onSuccess) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
+
+  const url = delivery_url + "/assignDriver";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      onSuccess(data.message);
+      // dispatchSuccessAction(dispatch, data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
 export const getCompanySettledReports = (postObj) => async (dispatch) => {
   let token = await getToken();
   let url = "";
@@ -189,7 +206,7 @@ export const getDeliveredOrders = (page) => async (dispatch) => {
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
-      dispatchAction(dispatch, "SET_DELIVERED_ORDERS", data.result);
+      dispatchAction(dispatch, "SET_DELIVERED_ORDERS", data);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -237,7 +254,7 @@ export const getCancelledOrders = (page) => async (dispatch) => {
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
-      dispatchAction(dispatch, "SET_CANCELLED_ORDERS", data.result);
+      dispatchAction(dispatch, "SET_CANCELLED_ORDERS", data);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -254,11 +271,12 @@ export const changeOrderStatus = (postObj, onSuccess) => async (dispatch) => {
     const data = await POST(dispatch, url, postObj);
     if (data.status == true || data.error == "false") {
       onSuccess(data.message);
-      dispatchSuccessAction(dispatch, data.message);
+      // dispatchSuccessAction(dispatch, data.message);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
+    console.log(error);
     dispatchErrorAction(dispatch, error.message);
   }
 };

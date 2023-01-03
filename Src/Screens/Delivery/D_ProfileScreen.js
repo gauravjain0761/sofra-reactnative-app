@@ -19,26 +19,24 @@ import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import ImagePicker from "react-native-image-crop-picker";
 import PinkButton from "../../Components/PinkButton";
-import MapView from 'react-native-maps';
+import MapView from "react-native-maps";
+import { getCompanyProfile } from "../../Services/DeliveryApi";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { media_url } from "../../Config/AppConfig";
 
-const citydata = [
-  {
-    id: 1,
-    strategicName: "SUPERTREND",
-  },
-  { id: 2, strategicName: "VWAP" },
-  { id: 3, strategicName: "RSIMA" },
-  { id: 6, strategicName: "TESTING" },
-  { id: 10, strategicName: "DEMATADE" },
-];
 export default function D_ProfileScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [firstname, setfirstname] = useState("Jasica");
   const [lastname, setlastname] = useState("Birnilvis");
   const [phoneNumber, setphoneNumber] = useState("");
   const [businessName, setbusinessName] = useState("");
-  const [b_category, setb_category] = useState("");
-  const [deliveryTime, setdeliveryTime] = useState("");
+  const [licenceNo, setlicenceNo] = useState("");
+  const [location, setlocation] = useState("");
   const [image, setimage] = useState("");
+  const [city, setcity] = useState("");
+  const COMPANY = useSelector((e) => e.delivery.companyProfile);
+  const CITIES = useSelector((e) => e.merchant.cities);
 
   const openPicker = () => {
     ImagePicker.openPicker({
@@ -49,6 +47,27 @@ export default function D_ProfileScreen({ navigation }) {
     });
   };
 
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      dispatch(getCompanyProfile());
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(COMPANY);
+    if (COMPANY !== {} && Object.keys(COMPANY).length !== 0) {
+      let city = CITIES.filter((obj) => obj.id == Number(COMPANY.cityId));
+      setfirstname(COMPANY.first_name);
+      setlastname(COMPANY.last_name);
+      setbusinessName(COMPANY.name);
+      setphoneNumber(COMPANY.phone);
+      setimage(COMPANY.image ? COMPANY.image : "");
+      setlicenceNo(COMPANY.licenseNo);
+      setcity(city[0].name);
+      setlocation(COMPANY.location);
+    }
+  }, [COMPANY]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={ApplicationStyles.mainView}>
@@ -56,9 +75,13 @@ export default function D_ProfileScreen({ navigation }) {
           <View style={styles.header}>
             <Image
               style={styles.drawerImage}
-              source={require("../../Images/Merchant/xxxhdpi/bg_profile.png")}
+              source={
+                COMPANY?.image
+                  ? { uri: media_url + COMPANY?.image }
+                  : require("../../Images/Merchant/xxxhdpi/profile_placeholder.png")
+              }
             />
-            <Text style={styles.name}>Food Panda</Text>
+            <Text style={styles.name}>{COMPANY.name}</Text>
           </View>
           <View>
             <Text style={styles.title}>Update Profile</Text>
@@ -86,7 +109,6 @@ export default function D_ProfileScreen({ navigation }) {
                     placeholder={"Company Name"}
                     value={businessName}
                     onChangeText={(text) => setbusinessName(text)}
-                    placeholderTextColor={Colors.black}
                   />
                 </View>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
@@ -95,10 +117,8 @@ export default function D_ProfileScreen({ navigation }) {
                     placeholder={"Phone"}
                     value={phoneNumber}
                     onChangeText={(text) => setphoneNumber(text)}
-                    placeholderTextColor={Colors.black}
                   />
                 </View>
-
               </View>
             </View>
             <Text style={styles.title2}>Image</Text>
@@ -112,13 +132,15 @@ export default function D_ProfileScreen({ navigation }) {
                     source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
                     style={styles.imageVector}
                   />
-                  <Text style={styles.attachText}>Attach Logo Images</Text>
+                  <Text style={styles.attachText}>Attach Logo Image</Text>
                 </View>
               ) : (
                 <View>
                   <Image
                     source={{
-                      uri: `data:image/jpeg;base64,${ImageItem.data}`,
+                      uri: image.data
+                        ? `data:image/jpeg;base64,${image.data}`
+                        : media_url + image,
                     }}
                     style={styles.image}
                   />
@@ -130,28 +152,26 @@ export default function D_ProfileScreen({ navigation }) {
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationTextInput
                   placeholder={"Licence No"}
-                  value={businessName}
-                  onChangeText={(text) => setbusinessName(text)}
-                  placeholderTextColor={Colors.black}
+                  value={licenceNo}
+                  onChangeText={(text) => setlicenceNo(text)}
                 />
               </View>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationDropdown
-                  data={citydata}
-                  value={deliveryTime}
+                  data={CITIES}
+                  value={city}
                   setData={(text) => {
-                    setdeliveryTime(text);
+                    setcity(text);
                   }}
                   placeholder={"City"}
-                  valueField={"strategicName"}
+                  valueField={"name"}
                   style={styles.dropdownRow}
-                  placeholderTextColor={Colors.black}
                 />
               </View>
             </View>
 
             <View>
-              <RegistrationDropdown
+              {/* <RegistrationDropdown
                 data={citydata}
                 value={b_category}
                 setData={(text) => {
@@ -160,7 +180,11 @@ export default function D_ProfileScreen({ navigation }) {
                 placeholder={"Location"}
                 valueField={"strategicName"}
                 style={styles.dropdownRow}
-                placeholderTextColor={Colors.black}
+              /> */}
+              <RegistrationTextInput
+                placeholder={"Locations"}
+                value={location}
+                onChangeText={(text) => setlocation(text)}
               />
             </View>
             <Text style={styles.title2}>Set map location</Text>
@@ -202,7 +226,7 @@ export default function D_ProfileScreen({ navigation }) {
             <View style={styles.buttonRow}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <PinkButton
-                  onPress={() => { }}
+                  onPress={() => {}}
                   style={styles.dbuttonStyle}
                   text={"small"}
                   name={"Update Profile"}
@@ -258,7 +282,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   imageView: {
-    backgroundColor: Colors.white,
+    // backgroundColor: Colors.white,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
@@ -299,7 +323,7 @@ const styles = StyleSheet.create({
   docText: {
     ...commonFontStyle(700, 14, Colors.black),
     // marginTop: hp(1),
-    paddingVertical: hp(2)
+    paddingVertical: hp(2),
   },
   titleInput: {
     ...commonFontStyle(500, 14, Colors.pink),
@@ -317,6 +341,6 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     marginVertical: hp(3),
-    alignSelf: 'center'
+    alignSelf: "center",
   },
 });
