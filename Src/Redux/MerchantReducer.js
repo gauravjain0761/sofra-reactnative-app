@@ -220,10 +220,14 @@ export default function (state = initialState, action) {
         (obj) => obj.id == action.payload.postObj.orderId
       );
       filterOrders[index2].status = action.payload.postObj.status;
-
-      let filter = filterOrders.filter(
-        (obj) => obj.status == action.payload.selectedStatus
-      );
+      let filter = [];
+      if (action.payload.selectedStatus == "ALL") {
+        filter = filterOrders;
+      } else {
+        filter = filterOrders.filter(
+          (obj) => obj.status == action.payload.selectedStatus
+        );
+      }
 
       return {
         ...state,

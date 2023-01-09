@@ -45,11 +45,11 @@ export async function POST(dispatch, url, data) {
   })
     .then((response) => {
       return response.json().then((responseJson) => {
-        console.log("POST-->", url, formData, data, responseJson);
+        console.log("POST-->", url, formData, responseJson);
         return responseJson;
       });
     })
     .catch((err) => {
-      console.log("POST-->", url, formData, data, err);
+      console.log("POST-->", url, formData, err);
     });
 }

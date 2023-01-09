@@ -41,7 +41,7 @@ export default function M_EditCategoryScreen({ navigation, route }) {
 
   const validation = () => {
     if (name.trim() !== "") {
-      if (hasArabicCharacters(nameArabic)) {
+      if (nameArabic.trim() !== "") {
         onEditCategory();
       } else {
         dispatchErrorAction(dispatch, "Please enter name in arabic");

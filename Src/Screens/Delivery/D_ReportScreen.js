@@ -32,6 +32,7 @@ import {
   getCompanySettledReports,
   getCompanyUnSettledReports,
 } from "../../Services/DeliveryApi";
+import D_ReportSettled from "../../Components/DeliveryComponent/D_ReportSettled";
 
 export default function D_ReportScreen({ navigation }) {
   const [tab, setTab] = useState("report");
@@ -97,50 +98,43 @@ export default function D_ReportScreen({ navigation }) {
         </View>
         <View style={styles.itemList}>
           <View style={styles.row2}>
-            <Text style={styles.rightText}>Total Restaurant Sale(Vat Inc)</Text>
             <Text style={styles.rightText}>
-              AED {REPORT.totalResturantSale}
+              Total Delivery Charges(Vat Inc)
+            </Text>
+            <Text style={styles.rightText}>
+              AED{" "}
+              {reportType == reportDropdownData[0].name
+                ? REPORT.deliveryChargesVatInc
+                : REPORT.totalDeliveryCharges}
             </Text>
           </View>
           <View style={styles.row2}>
+            <Text style={styles.rightText}>Total Convenient Fee</Text>
             <Text style={styles.rightText}>
-              Total Sofra Charges(VAT Inclusive)
-            </Text>
-            <Text style={styles.rightText}>
-              -AED {REPORT.totalSofraCharges}
+              -AED {REPORT.totalConvienceFee}
             </Text>
           </View>
           <View style={styles.row2}>
-            <Text style={styles.rightText}>Net settlement Amount</Text>
-            <Text style={styles.rightText}>
-              AED {REPORT.netSettlementAmount}
-            </Text>
+            <Text style={styles.rightText}>Total Balance to Receive</Text>
+            <Text style={styles.rightText}>AED {REPORT.receiveAbleAmount}</Text>
           </View>
           {reportType == reportDropdownData[0].name && (
             <View>
               <View style={styles.row2}>
                 <Text style={styles.rightText}>Settlement Period</Text>
                 <Text style={styles.rightText}>
-                  {moment(
-                    REPORT.settlementPeriodStart
-                      ? REPORT.settlementPeriodStart
-                      : undefined
-                  ).format("DD MMM YYYY")}{" "}
-                  to{" "}
-                  {moment(
-                    REPORT.settlementPeriodEnd
-                      ? REPORT.settlementPeriodEnd
-                      : undefined
-                  ).format("DD MMM YYYY")}
+                  {REPORT.settlementPeriodStart && REPORT.settlementPeriodEnd
+                    ? moment(REPORT.settlementPeriodStart).format(
+                        "DD MMM YYYY"
+                      ) +
+                      " to " +
+                      moment(REPORT.settlementPeriodEnd).format("DD MMM YYYY")
+                    : "N/A"}
                 </Text>
               </View>
               <View style={styles.row2}>
                 <Text style={styles.rightText}>Settlement Date</Text>
-                <Text style={styles.rightText}>
-                  {REPORT.settlementPeriodStart
-                    ? moment(REPORT.settlementPeriodStart).format("DD MMM YYYY")
-                    : "N/A"}
-                </Text>
+                <Text style={styles.rightText}>{REPORT.settlementDate}</Text>
               </View>
               <View style={styles.row2}>
                 <Text style={styles.rightText}>Settlement Reference</Text>
@@ -288,7 +282,7 @@ export default function D_ReportScreen({ navigation }) {
         )}
 
         {tab == "order" && <OrderComponent />}
-        {tab == "report" && <ReportSettled reportType={reportType} />}
+        {tab == "report" && <D_ReportSettled reportType={reportType} />}
         {tab == "summary" && <SummaryComponent />}
       </ScrollView>
       <DateTimePickerModal
@@ -402,5 +396,12 @@ const styles = StyleSheet.create({
   },
   rightText: {
     ...commonFontStyle(400, 13, Colors.grayButtonBackground),
+  },
+  datesRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    flex: 1,
+    justifyContent: "space-between",
   },
 });

@@ -153,7 +153,7 @@ export default function M_ProfileScreen({ navigation }) {
       if (lastname.trim() !== "") {
         if (phoneNumber.trim() !== "") {
           if (businessName.trim() !== "") {
-            if (arabicBName !== "") {
+            if (arabicBName.trim() !== "") {
               if (b_category.length !== 0) {
                 if (vatType !== "") {
                   if (deliveryTime !== "") {
@@ -231,7 +231,7 @@ export default function M_ProfileScreen({ navigation }) {
             <Image
               style={styles.drawerImage}
               source={
-                RESTAURANT !== {}
+                RESTAURANT !== {} && RESTAURANT.image && RESTAURANT.image !== ""
                   ? { uri: media_url + image }
                   : require("../../Images/Delivery/xxxhdpi/profile_placeholder.png")
               }

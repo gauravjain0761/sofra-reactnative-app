@@ -142,7 +142,7 @@ export default function M_SlotScreen({ navigation }) {
     <View style={styles.itemList}>
       <View style={styles.row}>
         <Text style={styles.leftText}>SR</Text>
-        <Text style={styles.rightText}>{index}</Text>
+        <Text style={styles.rightText}>{index + 1}</Text>
       </View>
       <View style={styles.middleRow}>
         <Text style={styles.leftText}>Off Slot Date</Text>

@@ -84,7 +84,7 @@ export default function M_OfferScreen({ navigation }) {
         }}
         style={styles.dbuttonStyle}
         text={"small"}
-        name={"Create Offer"}
+        name={"Create New Offer"}
       />
       {!PRELOADER && (
         <FlatList

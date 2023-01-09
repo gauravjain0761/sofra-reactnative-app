@@ -45,19 +45,19 @@ export default function M_MenuScreen({ navigation }) {
 
   const onAddCategory = () => {
     if (name.trim() !== "") {
-      // if (hasArabicCharacters(nameArabic)) {
-      let data = {
-        name: name,
-        name_ar: nameArabic,
-      };
-      dispatch(
-        AddMenuCategory(data, () => {
-          setname(""), setnameArabic("");
-        })
-      );
-      // } else {
-      //   dispatchErrorAction(dispatch, "Please enter name in arabic");
-      // }
+      if (nameArabic.trim() !== "") {
+        let data = {
+          name: name,
+          name_ar: nameArabic,
+        };
+        dispatch(
+          AddMenuCategory(data, () => {
+            setname(""), setnameArabic("");
+          })
+        );
+      } else {
+        dispatchErrorAction(dispatch, "Please enter name in arabic");
+      }
     } else {
       dispatchErrorAction(dispatch, "Please enter category name");
     }

@@ -18,27 +18,6 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { LineChart } from "react-native-chart-kit";
 
 export default function Chart({ name, x, totalData, value }) {
-  const [Data, setData] = useState([]);
-  const [Xaxis, setXaxis] = useState([]);
-  const [DomainValue, setDomainValue] = useState([]);
-  useEffect(() => {
-    let Data = [];
-    let Xaxis = x;
-    let DomainValue = [0, 0];
-
-    value.forEach((element, index) => {
-      if (DomainValue[1] < Number(element)) {
-        DomainValue[1] = Number(element);
-      }
-      let a = { x: x[index], y: Number(element) };
-      Data.push(a);
-    });
-    DomainValue[1] = DomainValue[1] + (15 / 100) * DomainValue[1];
-    setData(Data);
-    setXaxis(Xaxis);
-    setDomainValue(DomainValue);
-  }, []);
-
   return (
     <View
       style={{
@@ -51,7 +30,11 @@ export default function Chart({ name, x, totalData, value }) {
     >
       <View style={styles.titleView}>
         <Text style={styles.titleText}>{name}</Text>
-        <Text style={styles.totalText}>AED {totalData}</Text>
+        {name == "Orders Delivered" ? (
+          <Text style={styles.totalText}>{totalData}</Text>
+        ) : (
+          <Text style={styles.totalText}>AED {totalData}</Text>
+        )}
       </View>
       <LineChart
         width={Dimensions.get("screen").width + 28}

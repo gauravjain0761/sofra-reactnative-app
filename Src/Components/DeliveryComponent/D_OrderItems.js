@@ -37,12 +37,10 @@ export default function D_OrderItems({ item, navigation, status, screen }) {
       }
     }
   }, [status]);
-  console.log(status, item.status, item.bookingCode);
   const onStatusUpdate = () => {
     let data = { orderId: item.id, status: nextStatus.type, language: "en" };
     dispatch(
       changeOrderStatus(data, (message) => {
-        console.log("caled");
         setmessage(message);
         dispatch({
           type: "SUCCESS_MODAL",
@@ -73,12 +71,10 @@ export default function D_OrderItems({ item, navigation, status, screen }) {
     });
   };
   const onDriverChange = (driver) => {
-    console.log("driver", driver);
     let data = { driverId: driver, orderId: item.id };
     dispatch(
       assignDriver(data, (message) => {
         setmessage(message);
-        console.log("hereee");
         dispatch({
           type: "SUCCESS_MODAL",
           payload: { modal: true, message: message },

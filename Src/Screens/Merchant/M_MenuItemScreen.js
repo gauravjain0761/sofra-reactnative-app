@@ -106,7 +106,7 @@ export default function M_MenuItemScreen({ navigation }) {
   };
   const validation = () => {
     if (Name.trim() !== "") {
-      if (hasArabicCharacters(ArabicName)) {
+      if (ArabicName.trim() !== "") {
         if (MenuCategory.trim() !== "") {
           if (ItemType.trim() !== "") {
             if (Price.trim() !== "") {
@@ -114,7 +114,7 @@ export default function M_MenuItemScreen({ navigation }) {
                 if (MaxLimit.trim() !== "") {
                   if (ImageItem !== "") {
                     if (Description.trim() !== "") {
-                      if (hasArabicCharacters(ArabicDes)) {
+                      if (ArabicDes.trim() !== "") {
                         if (MenuDes.trim() !== "") {
                           onAddMenuItem();
                         } else {

@@ -143,9 +143,9 @@ export default function M_PromocodeScreen({ navigation }) {
   };
   const validation = () => {
     if (title.trim() !== "") {
-      if (arabicTitle !== "") {
+      if (arabicTitle.trim() !== "") {
         if (des.trim() !== "") {
-          if (Arabicdes !== "") {
+          if (Arabicdes.trim() !== "") {
             if (validityType == "USERS") {
               if (Users.length !== 0) {
                 checkExpiryTypeValidation();

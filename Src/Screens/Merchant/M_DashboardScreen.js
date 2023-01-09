@@ -44,9 +44,17 @@ export default function M_DashboardScreen({ navigation }) {
     });
   }, []);
 
+  useEffect(() => {
+    if (search == "") {
+      setTimeout(() => {
+        dispatch({ type: "SET_DASHBOARD_SEARCH_DATA", payload: {} });
+      }, 1000);
+    }
+  }, [search]);
+
   const handleSearch = (text) => {
     setSearch(text);
-    if (text !== "") {
+    if (text.trim() !== "") {
       dispatch(dashboardSearch(text));
     } else {
       dispatch({ type: "SET_DASHBOARD_SEARCH_DATA", payload: {} });

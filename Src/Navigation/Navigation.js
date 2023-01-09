@@ -12,10 +12,6 @@ import { DeliveryDrawer } from "./DeliveryNavigation";
 import M_RegistrationScreen from "../Screens/Merchant/M_RegistrationScreen";
 import D_RegistrationScreen from "../Screens/Delivery/D_RegistrationScreen";
 import ApplicationStyles from "../Themes/ApplicationStyles";
-import D_AddNewDriver from "../Screens/Delivery/D_AddNewDriver";
-import D_DeliveredOrderScreen from "../Screens/Delivery/D_DeliveredOrderScreen";
-import D_CancelledOrderScreen from "../Screens/Delivery/D_CancelledOrderScreen";
-import D_PickUpOrderScreen from "../Screens/Delivery/D_PickUpOrderScreen";
 import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen";
 const data = {
   headerBackVisible: false,
@@ -81,17 +77,17 @@ export default function Navigation() {
 
         <Stack.Screen
           options={({ navigation }) => ({
-            headerLeft: () => (
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={ApplicationStyles.headerRightView}
-              >
-                <Image
-                  source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                  style={{ height: 18, width: 18, resizeMode: "contain" }}
-                />
-              </TouchableOpacity>
-            ),
+            // headerLeft: () => (
+            //   <TouchableOpacity
+            //     onPress={() => navigation.goBack()}
+            //     style={ApplicationStyles.headerRightView}
+            //   >
+            //     <Image
+            //       source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+            //       style={{ height: 18, width: 18, resizeMode: "contain" }}
+            //     />
+            //   </TouchableOpacity>
+            // ),
             ...data,
             ...transparentHeader,
           })}
@@ -116,17 +112,17 @@ export default function Navigation() {
 
         <Stack.Screen
           options={({ navigation }) => ({
-            headerLeft: () => (
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={ApplicationStyles.headerRightView}
-              >
-                <Image
-                  source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                  style={{ height: 18, width: 18, resizeMode: "contain" }}
-                />
-              </TouchableOpacity>
-            ),
+            // headerLeft: () => (
+            //   <TouchableOpacity
+            //     onPress={() => navigation.goBack()}
+            //     style={ApplicationStyles.headerRightView}
+            //   >
+            //     <Image
+            //       source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
+            //       style={{ height: 18, width: 18, resizeMode: "contain" }}
+            //     />
+            //   </TouchableOpacity>
+            // ),
             ...data,
             ...transparentHeader,
           })}

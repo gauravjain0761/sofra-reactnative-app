@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: hp(15),
     width: hp(15),
+    borderRadius: hp(15) / 2,
   },
   name: {
     ...commonFontStyle(600, hp(2.5), Colors.black),

@@ -19,31 +19,40 @@ import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import ImagePicker from "react-native-image-crop-picker";
 import PinkButton from "../../Components/PinkButton";
-import MapView from "react-native-maps";
-import { getCompanyProfile } from "../../Services/DeliveryApi";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import DocumentPicker from "react-native-document-picker";
+
+import {
+  getCompanyProfile,
+  updateProfileCompany,
+} from "../../Services/DeliveryApi";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { media_url } from "../../Config/AppConfig";
+import { dispatchErrorAction } from "../../Services/CommonFunctions";
 
 export default function D_ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [firstname, setfirstname] = useState("Jasica");
-  const [lastname, setlastname] = useState("Birnilvis");
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setlastname] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
   const [businessName, setbusinessName] = useState("");
   const [licenceNo, setlicenceNo] = useState("");
   const [location, setlocation] = useState("");
   const [image, setimage] = useState("");
   const [city, setcity] = useState("");
+  const [lat, setlat] = useState("");
+  const [long, setlong] = useState("");
   const COMPANY = useSelector((e) => e.delivery.companyProfile);
   const CITIES = useSelector((e) => e.merchant.cities);
+  const [document, setdocument] = useState("");
 
   const openPicker = () => {
     ImagePicker.openPicker({
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
-      setImageItem(photo);
+      setimage(photo);
     });
   };
 
@@ -53,8 +62,18 @@ export default function D_ProfileScreen({ navigation }) {
     });
   }, []);
 
+  const openDocumentPicker = async () => {
+    try {
+      const response = await DocumentPicker.pick({
+        presentationStyle: "fullScreen",
+      });
+      setdocument(response[0]);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
   useEffect(() => {
-    console.log(COMPANY);
     if (COMPANY !== {} && Object.keys(COMPANY).length !== 0) {
       let city = CITIES.filter((obj) => obj.id == Number(COMPANY.cityId));
       setfirstname(COMPANY.first_name);
@@ -65,8 +84,78 @@ export default function D_ProfileScreen({ navigation }) {
       setlicenceNo(COMPANY.licenseNo);
       setcity(city[0].name);
       setlocation(COMPANY.location);
+      setlat(COMPANY.lat ? Number(COMPANY.lat) : "");
+      setlong(COMPANY.lng ? Number(COMPANY.lng) : "");
     }
   }, [COMPANY]);
+
+  const onUpdateProfile = () => {
+    let cityName = CITIES.filter((obj) => obj.name == city);
+    let data = {
+      first_name: firstname,
+      last_name: lastname,
+      name: businessName,
+      phone: phoneNumber,
+      image: image.sourceURL
+        ? {
+            uri: image.sourceURL,
+            type: image.mime, // or photo.type image/jpg
+            name:
+              "image_" +
+              moment().unix() +
+              "_" +
+              image.sourceURL.split("/").pop(),
+          }
+        : undefined,
+      cityId: cityName[0].id,
+      location: location,
+      lat: String(lat),
+      lng: String(long),
+      licenseNo: licenceNo,
+      email: COMPANY.email,
+      currentlyDeliver: COMPANY.currentlyDeliver,
+      social_account: COMPANY.social_account,
+      onboardLanguage: COMPANY.onboardLanguage,
+      "files[0]":
+        document !== "" && document.uri
+          ? {
+              uri: document.uri,
+              type: document.type, // or photo.type image/jpg
+              name: moment().unix() + "_" + document.name,
+            }
+          : undefined,
+    };
+
+    dispatch(updateProfileCompany(data));
+  };
+
+  const validation = () => {
+    if (firstname.trim() !== "") {
+      if (businessName.trim() !== "") {
+        if (phoneNumber.trim() !== "") {
+          if (licenceNo.trim() !== "") {
+            if (city.trim() !== "") {
+              if (location.trim() !== "") {
+                onUpdateProfile();
+              } else {
+                dispatchErrorAction(dispatch, "Please enter location.");
+              }
+            } else {
+              dispatchErrorAction(dispatch, "Please select city.");
+            }
+          } else {
+            dispatchErrorAction(dispatch, "Please enter licence number.");
+          }
+        } else {
+          dispatchErrorAction(dispatch, "Please enter phone number.");
+        }
+      } else {
+        dispatchErrorAction(dispatch, "Please enter company name.");
+      }
+    } else {
+      dispatchErrorAction(dispatch, "Please enter firstname.");
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -187,22 +276,34 @@ export default function D_ProfileScreen({ navigation }) {
                 onChangeText={(text) => setlocation(text)}
               />
             </View>
-            <Text style={styles.title2}>Set map location</Text>
-            {/* <MapView
-              region={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            // onRegionChange={this.onRegionChange}
-            /> */}
+            {lat !== "" && long !== "" && (
+              <View>
+                <Text style={styles.title2}>Set map location</Text>
+                <MapView
+                  provider={PROVIDER_GOOGLE}
+                  region={{
+                    latitude: lat,
+                    longitude: long,
+                    latitudeDelta: 0.02,
+                    longitudeDelta: 0.02,
+                  }}
+                  style={{ height: 200, marginBottom: hp(3) }}
+                  // onRegionChange={this.onRegionChange}
+                >
+                  <Marker
+                    coordinate={{ latitude: lat, longitude: long }}
+                    // image={{uri: 'custom_pin'}}
+                  />
+                </MapView>
+              </View>
+            )}
+
             <Text style={styles.title2}>Upload Files/Documents</Text>
             <TouchableOpacity
-              onPress={() => openPicker()}
+              onPress={() => openDocumentPicker()}
               style={styles.docView}
             >
-              {image == "" ? (
+              {document == "" ? (
                 <View style={{ alignItems: "center" }}>
                   <Text style={styles.docText}>Upload Files Here</Text>
                   <Image
@@ -213,12 +314,7 @@ export default function D_ProfileScreen({ navigation }) {
                 </View>
               ) : (
                 <View>
-                  <Image
-                    source={{
-                      uri: `data:image/jpeg;base64,${ImageItem.data}`,
-                    }}
-                    style={styles.image}
-                  />
+                  <Text style={styles.uploadTextTitle}>{document.name}</Text>
                 </View>
               )}
             </TouchableOpacity>
@@ -226,7 +322,7 @@ export default function D_ProfileScreen({ navigation }) {
             <View style={styles.buttonRow}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <PinkButton
-                  onPress={() => {}}
+                  onPress={() => validation()}
                   style={styles.dbuttonStyle}
                   text={"small"}
                   name={"Update Profile"}
@@ -249,6 +345,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: hp(15),
     width: hp(15),
+    borderRadius: hp(15) / 2,
   },
   name: {
     ...commonFontStyle(600, hp(2.5), Colors.black),
@@ -342,5 +439,9 @@ const styles = StyleSheet.create({
   buttonRow: {
     marginVertical: hp(3),
     alignSelf: "center",
+  },
+  uploadTextTitle: {
+    ...commonFontStyle("M_700", 18, Colors.black),
+    marginBottom: hp(1.5),
   },
 });

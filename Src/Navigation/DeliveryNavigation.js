@@ -70,7 +70,7 @@ let DrawerItemArray = [
   {
     label: "Drivers",
     image: require("../Images/Delivery/xxxhdpi/ic_drivers.png"),
-    screen: "D_DriversScreen",
+    screen: "D_DriverStack1",
   },
   {
     label: "Orders For Pickup",
@@ -474,6 +474,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: hp(15),
     width: hp(15),
+    borderRadius: hp(15) / 2,
   },
   drawerMain: {
     paddingHorizontal: hp(2),

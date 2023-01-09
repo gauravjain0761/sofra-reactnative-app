@@ -276,7 +276,60 @@ export const changeOrderStatus = (postObj, onSuccess) => async (dispatch) => {
       dispatchErrorAction(dispatch, data.message);
     }
   } catch (error) {
-    console.log(error);
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const dashboardSearchDelivery = (query) => async (dispatch) => {
+  let token = await getToken();
+  const url =
+    delivery_url + "/dashboardSearch?auth_token=" + token + "&query=" + query;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(
+        dispatch,
+        "SET_DASHBOARD_SEARCH_DATA_DELIVERY",
+        data.result
+      );
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const updateProfileCompany = (postObj) => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = delivery_url + "/updateProfile";
+  try {
+    const data = await POST(dispatch, url, postObj);
+    if (data.status == true) {
+      dispatchSuccessAction(dispatch, data.message);
+      setTimeout(() => {
+        dispatch(getCompanyProfile());
+      }, 1000);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const getNotificationsCompany = () => async (dispatch) => {
+  let token = await getToken();
+  const url = delivery_url + "/getNotifications?auth_token=" + token;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_NOTIFICATIONS_COMPANY", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
     dispatchErrorAction(dispatch, error.message);
   }
 };

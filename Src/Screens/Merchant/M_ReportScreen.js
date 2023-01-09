@@ -399,4 +399,11 @@ const styles = StyleSheet.create({
   rightText: {
     ...commonFontStyle(400, 13, Colors.grayButtonBackground),
   },
+  datesRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    flex: 1,
+    justifyContent: "space-between",
+  },
 });

@@ -16,6 +16,8 @@ const initialState = {
   setteled_report: {},
   assignToDriverModal: {},
   successModal: false,
+  dashboardSearch: {},
+  notifications: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -184,6 +186,12 @@ export default function (state = initialState, action) {
         successModal: action.payload.modal,
         successModalMessage: action.payload.message,
       };
+    }
+    case "SET_DASHBOARD_SEARCH_DATA_DELIVERY": {
+      return { ...state, dashboardSearch: action.payload };
+    }
+    case "SET_NOTIFICATIONS_COMPANY": {
+      return { ...state, notifications: action.payload, preLoader: false };
     }
     default:
       return state;
