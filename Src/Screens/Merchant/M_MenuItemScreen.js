@@ -107,7 +107,7 @@ export default function M_MenuItemScreen({ navigation }) {
   const validation = () => {
     if (Name.trim() !== "") {
       if (ArabicName.trim() !== "") {
-        if (MenuCategory.trim() !== "") {
+        if (MenuCategory.length !== 0) {
           if (ItemType.trim() !== "") {
             if (Price.trim() !== "") {
               if (Discount.trim() !== "") {
@@ -115,7 +115,7 @@ export default function M_MenuItemScreen({ navigation }) {
                   if (ImageItem !== "") {
                     if (Description.trim() !== "") {
                       if (ArabicDes.trim() !== "") {
-                        if (MenuDes.trim() !== "") {
+                        if (MenuDes.length !== 0) {
                           onAddMenuItem();
                         } else {
                           dispatchErrorAction(
@@ -139,7 +139,7 @@ export default function M_MenuItemScreen({ navigation }) {
                   dispatchErrorAction(dispatch, "Please enter max limit");
                 }
               } else {
-                dispatchErrorAction(dispatch, "Please select Discount");
+                dispatchErrorAction(dispatch, "Please enter Discount");
               }
             } else {
               dispatchErrorAction(dispatch, "Please enter price");

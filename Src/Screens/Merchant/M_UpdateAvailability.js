@@ -74,9 +74,10 @@ export default function M_UpdateAvailability({ navigation }) {
     if (openTime !== "") {
       if (closeTime !== "") {
         data.forEach((element) => {
-          element.openingTime = openTime;
-          element.closingTime = closeTime;
+          element.openingTime = moment(openTime).format("hh:mm:ss");
+          element.closingTime = moment(closeTime).format("hh:mm:ss");
         });
+        console.log(data);
         setavailability(data);
         applysameTime();
       } else {

@@ -76,7 +76,8 @@ export default function M_ProfileScreen({ navigation }) {
     if (
       RESTAURANT !== {} &&
       Object.keys(RESTAURANT).length !== 0 &&
-      timeData.length !== 0
+      timeData.length !== 0 &&
+      CITIES.length !== 0
     ) {
       let city = CITIES.filter((obj) => obj.id == RESTAURANT.cityId);
       let deliveryTime = timeData.filter(
@@ -98,7 +99,7 @@ export default function M_ProfileScreen({ navigation }) {
       setlocation(RESTAURANT.location);
       setorderNoti(RESTAURANT.orderNotifications);
     }
-  }, [RESTAURANT, timeData]);
+  }, [RESTAURANT, timeData, CITIES]);
 
   const openPicker = () => {
     ImagePicker.openPicker({

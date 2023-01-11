@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import Colors from "../../Themes/Colors";
@@ -73,7 +73,13 @@ export default function DeliveryLoginScreen({ navigation }) {
             style={styles.dbuttonStyle}
             name={"Login"}
           />
-          <Text style={styles.forgot}>Forgot password?</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("ForgotPasswordScreen", { email: email })
+            }
+          >
+            <Text style={styles.forgot}>Forgot password?</Text>
+          </TouchableOpacity>
           <Text style={styles.forgot2}>
             Don't have an accout?{" "}
             <Text

@@ -152,7 +152,7 @@ export default function D_DriversScreen() {
           </View>
           <View>
             <Text style={styles.title}>Driver Listing</Text>
-            <Text style={styles.title2}>Add Driver</Text>
+            <Text style={styles.title2}>Add New Driver</Text>
           </View>
           <View>
             <View style={styles.row}>
@@ -232,7 +232,7 @@ export default function D_DriversScreen() {
                   onPress={() => validation()}
                   style={styles.dbuttonStyle}
                   text={"small"}
-                  name={"Add Drivers"}
+                  name={"Add Driver"}
                 />
               </View>
             </View>

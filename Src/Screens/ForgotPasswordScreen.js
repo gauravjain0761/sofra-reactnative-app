@@ -21,10 +21,10 @@ import {
 } from "../Services/CommonFunctions";
 import { forgotPassword, getLogin } from "../Services/AuthApi";
 
-export default function MerchantLoginScreen() {
+export default function ForgotPasswordScreen({ route }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [email, setEmail] = useState("amer_bakour@hotmail.com");
+  const [email, setEmail] = useState(route.params.email);
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 
   const onSendMail = () => {

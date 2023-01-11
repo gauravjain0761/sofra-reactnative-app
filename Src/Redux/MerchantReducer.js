@@ -151,7 +151,11 @@ export default function (state = initialState, action) {
           return el.id !== action.payload.menuId;
         });
       }
-      if (dashboardSearch !== {} && dashboardSearch.menuItems.length !== 0) {
+      if (
+        dashboardSearch !== {} &&
+        dashboardSearch.menuItems &&
+        dashboardSearch.menuItems.length !== 0
+      ) {
         let menuItemsTemp = dashboardSearch.menuItems.filter((el) => {
           return el.id !== action.payload.menuId;
         });

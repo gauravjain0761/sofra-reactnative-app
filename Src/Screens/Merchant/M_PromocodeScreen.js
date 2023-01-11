@@ -110,15 +110,16 @@ export default function M_PromocodeScreen({ navigation }) {
           }
         : undefined,
       discountType: price,
-      code: discountCode !== "" ? discountCode.toUpperCase() : null,
+      code: discountCode !== "" ? discountCode.toUpperCase() : undefined,
       expiryType: expiryType,
       startDate:
-        StartDate !== "" ? moment(StartDate).format("YYYY-MM-DD") : null,
-      endDate: EndDate !== "" ? moment(EndDate).format("YYYY-MM-DD") : null,
+        StartDate !== "" ? moment(StartDate).format("YYYY-MM-DD") : undefined,
+      endDate:
+        EndDate !== "" ? moment(EndDate).format("YYYY-MM-DD") : undefined,
       discountValue: discountValue !== "" ? Number(discountValue) : "",
       maxDiscountPrice: maxDiscount !== "" ? Number(maxDiscount) : "",
       minimumOrderValue: minOrderValue !== "" ? Number(minOrderValue) : "",
-      count: count !== "" ? Number(count) : null,
+      count: count !== "" ? Number(count) : undefined,
       ...userIdJson,
     };
     dispatch(AddPromoCode(data));

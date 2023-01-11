@@ -6,6 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
+  PermissionsAndroid,
 } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../Themes/ApplicationStyles";
@@ -19,7 +21,9 @@ import RegistrationTextInput from "../Components/RegistrationTextInput";
 import PinkButton from "../Components/PinkButton";
 import { useSelector } from "react-redux";
 import moment from "moment";
-
+import RNFetchBlob from "rn-fetch-blob";
+import XLSX from "xlsx";
+import { DownloadDirectoryPath, writeFile } from "react-native-fs";
 export default function ReportSettled({ reportType }) {
   const setteled_report = useSelector((e) => e.merchant.setteled_report);
   const unsetteled_report = useSelector((e) => e.merchant.unsetteled_report);
@@ -37,9 +41,16 @@ export default function ReportSettled({ reportType }) {
       </View>
     );
   };
+
   return (
     <View>
-      <PinkButton name={"Export to CSV"} onPress={() => {}} text={"small"} />
+      <PinkButton
+        name={"Export to CSV"}
+        onPress={() => {
+          isPermitted();
+        }}
+        text={"small"}
+      />
       <View>
         <Text style={styles.tabTitle}>{reportType + "s"}</Text>
         {REPORT?.items && REPORT?.items?.length !== 0 ? (

@@ -74,7 +74,11 @@ export default function D_ProfileScreen({ navigation }) {
   };
 
   useEffect(() => {
-    if (COMPANY !== {} && Object.keys(COMPANY).length !== 0) {
+    if (
+      COMPANY !== {} &&
+      Object.keys(COMPANY).length !== 0 &&
+      CITIES.length !== 0
+    ) {
       let city = CITIES.filter((obj) => obj.id == Number(COMPANY.cityId));
       setfirstname(COMPANY.first_name);
       setlastname(COMPANY.last_name);
@@ -87,7 +91,7 @@ export default function D_ProfileScreen({ navigation }) {
       setlat(COMPANY.lat ? Number(COMPANY.lat) : "");
       setlong(COMPANY.lng ? Number(COMPANY.lng) : "");
     }
-  }, [COMPANY]);
+  }, [COMPANY, CITIES]);
 
   const onUpdateProfile = () => {
     let cityName = CITIES.filter((obj) => obj.name == city);
@@ -155,6 +159,20 @@ export default function D_ProfileScreen({ navigation }) {
     } else {
       dispatchErrorAction(dispatch, "Please enter firstname.");
     }
+  };
+
+  const getLocation = (text) => {
+    let url = "https://maps.googleapis.com/maps/api/place";
+    const apiUrl = `${url}/autocomplete/json?key=AIzaSyBnx_RKjRZvHI6mTNZxxAE044YWATD5jTs&input=${text}`;
+
+    return fetch(apiUrl)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -273,25 +291,33 @@ export default function D_ProfileScreen({ navigation }) {
               <RegistrationTextInput
                 placeholder={"Locations"}
                 value={location}
-                onChangeText={(text) => setlocation(text)}
+                onChangeText={(text) => {
+                  setlocation(text), getLocation(text);
+                }}
               />
             </View>
             {lat !== "" && long !== "" && (
               <View>
                 <Text style={styles.title2}>Set map location</Text>
+                {console.log(lat, long)}
                 <MapView
                   provider={PROVIDER_GOOGLE}
                   region={{
                     latitude: lat,
                     longitude: long,
-                    latitudeDelta: 0.02,
-                    longitudeDelta: 0.02,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
                   }}
                   style={{ height: 200, marginBottom: hp(3) }}
                   // onRegionChange={this.onRegionChange}
                 >
                   <Marker
-                    coordinate={{ latitude: lat, longitude: long }}
+                    coordinate={{
+                      latitude: lat,
+                      longitude: long,
+                      latitudeDelta: 0.01,
+                      longitudeDelta: 0.01,
+                    }}
                     // image={{uri: 'custom_pin'}}
                   />
                 </MapView>

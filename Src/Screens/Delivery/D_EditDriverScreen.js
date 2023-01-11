@@ -189,7 +189,7 @@ export default function D_EditDriverScreen(props) {
                 onPress={() => validation()}
                 style={styles.dbuttonStyle}
                 text={"small"}
-                name={"Edit Driver"}
+                name={"Update"}
               />
             </View>
           </View>
