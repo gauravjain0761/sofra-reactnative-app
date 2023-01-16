@@ -1,9 +1,9 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
 import MerchantLoginScreen from "../Screens/Merchant/MerchantLoginScreen";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Platform, StyleSheet, TouchableOpacity } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import Colors from "../Themes/Colors";
 import DeliveryLoginScreen from "../Screens/Delivery/DeliveryLoginScreen";
@@ -13,6 +13,9 @@ import M_RegistrationScreen from "../Screens/Merchant/M_RegistrationScreen";
 import D_RegistrationScreen from "../Screens/Delivery/D_RegistrationScreen";
 import ApplicationStyles from "../Themes/ApplicationStyles";
 import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen";
+import messaging from "@react-native-firebase/messaging";
+import notifee, { AndroidImportance } from "@notifee/react-native";
+
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
@@ -34,6 +37,116 @@ const transparentHeader = {
 };
 const Stack = createNativeStackNavigator();
 export default function Navigation() {
+  const setNotification = async () => {
+    messaging()
+      .hasPermission()
+      .then((enabled) => {
+        if (enabled) {
+          registerAppWithFCM();
+        } else {
+          requestPermission();
+        }
+      })
+      .catch((error) => {
+        requestPermission();
+        let err = `check permission error${error}`;
+        console.log(err);
+      });
+  };
+
+  const registerAppWithFCM = () => {
+    if (Platform.OS === "ios") {
+      messaging()
+        .registerDeviceForRemoteMessages()
+        .then((register) => {
+          getToken();
+        });
+    } else {
+      getToken();
+    }
+  };
+  const requestPermission = () => {
+    messaging()
+      .requestPermission()
+      .then(() => {
+        registerAppWithFCM();
+      })
+      .catch((error) => {});
+  };
+
+  const getToken = async () => {
+    messaging()
+      .getToken()
+      .then((fcmToken) => {
+        if (fcmToken) {
+          console.log("fcm--", fcmToken);
+        } else {
+          console.log("[FCMService] User does not have a device token");
+          // console.log("[FCMService] User does not have a device token")
+        }
+      })
+      .catch((error) => {
+        let err = `FCm token get error${error}`;
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+    setNotification();
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.log(
+        "Notification caused app to open from background state:",
+        remoteMessage.notification
+      );
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            "Notification caused app to open from quit state:",
+            remoteMessage.notification
+          );
+        }
+      });
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log("Message handled in the background!", remoteMessage);
+    });
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      console.log("A new FCM message arrived!", remoteMessage);
+      onDisplayNotification(remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  async function onDisplayNotification(message) {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
+
+    const channelId = await notifee.createChannel({
+      id: "default",
+      name: "Default Channel",
+      importance: AndroidImportance.HIGH,
+    });
+    notifee.displayNotification({
+      title: message.notification.title,
+      body: message.notification.body,
+      android: {
+        // largeIcon:
+        //   message.data.icon == ""
+        //     ? require("../Images/logo.png")
+        //     : message.data.icon,
+        channelId,
+        // smallIcon: "ic_launcher_notification",
+      },
+    });
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator
