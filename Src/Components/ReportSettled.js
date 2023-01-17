@@ -19,15 +19,19 @@ import { commonFontStyle } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
 import RegistrationTextInput from "../Components/RegistrationTextInput";
 import PinkButton from "../Components/PinkButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import RNFetchBlob from "rn-fetch-blob";
 import XLSX from "xlsx";
 import { DownloadDirectoryPath, writeFile } from "react-native-fs";
+import {
+  dispatchSuccessAction,
+  exportToCsv,
+} from "../Services/CommonFunctions";
 export default function ReportSettled({ reportType }) {
   const setteled_report = useSelector((e) => e.merchant.setteled_report);
   const unsetteled_report = useSelector((e) => e.merchant.unsetteled_report);
-
+  const dispatch = useDispatch();
   const REPORT =
     Object.keys(setteled_report).length == 0
       ? unsetteled_report
@@ -47,7 +51,7 @@ export default function ReportSettled({ reportType }) {
       <PinkButton
         name={"Export to CSV"}
         onPress={() => {
-          isPermitted();
+          exportToCsv(REPORT, reportType, dispatch, "merchant");
         }}
         text={"small"}
       />

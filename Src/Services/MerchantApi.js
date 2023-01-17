@@ -439,16 +439,16 @@ export const getMenuDescriptors = () => async (dispatch) => {
   }
 };
 
-export const AddMenuItem = (postObj, navigation) => async (dispatch) => {
+export const AddMenuItem = (postObj, onSuccess) => async (dispatch) => {
   dispatch({ type: "PRE_LOADER", payload: true });
 
   const url = merchant_url + "/AddMenuItem";
   try {
     const data = await POST(dispatch, url, postObj);
     if (data.status == true) {
+      onSuccess();
       dispatch(getMenuItems());
       dispatchSuccessAction(dispatch, data.message);
-      // dispatchAction(dispatch, "SET_MENU_CATEGORIES", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -744,6 +744,23 @@ export const dashboardSearch = (query) => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       dispatchAction(dispatch, "SET_DASHBOARD_SEARCH_DATA", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const getOrderDetail = (query, onSuccess) => async (dispatch) => {
+  let token = await getToken();
+  const url =
+    merchant_url + "/getOrderDetails?auth_token=" + token + "&orderId=" + query;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      onSuccess(data.result[0]);
+      // dispatchAction(dispatch, "SET_DASHBOARD_SEARCH_DATA", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

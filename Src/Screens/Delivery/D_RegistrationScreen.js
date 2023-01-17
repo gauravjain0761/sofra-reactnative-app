@@ -118,12 +118,12 @@ export default function D_RegistrationScreen() {
           value={BName}
           onChangeText={(text) => setBName(text)}
         />
-        {/* <RegistrationTextInput
+        <RegistrationTextInput
           placeholder={"Business Address*"}
           value={BAddress}
           onChangeText={(text) => setBAddress(text)}
-        /> */}
-        <GooglePlacesAutocomplete
+        />
+        {/* <GooglePlacesAutocomplete
           placeholder="Search"
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
@@ -136,7 +136,7 @@ export default function D_RegistrationScreen() {
             key: "AIzaSyBnx_RKjRZvHI6mTNZxxAE044YWATD5jTs",
             language: "en",
           }}
-        />
+        /> */}
         <RegistrationDropdown
           data={CITIES}
           value={city}

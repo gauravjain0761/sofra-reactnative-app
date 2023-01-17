@@ -26,6 +26,8 @@ import {
 } from "../../Services/DeliveryApi";
 import OrderDetailModal from "../../Components/OrderDetailModal";
 import { getDeliveredOrders } from "../../Services/DeliveryApi";
+import { exportToCsvOrder } from "../../Services/CommonFunctions";
+import PinkButton from "../../Components/PinkButton";
 
 export default function D_DeliveredOrderScreen() {
   const dispatch = useDispatch();
@@ -53,6 +55,22 @@ export default function D_DeliveredOrderScreen() {
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       {!PRELOADER && (
         <FlatList
+          ListHeaderComponent={
+            <View style={{ marginBottom: hp(2), marginHorizontal: hp(2) }}>
+              <PinkButton
+                name={"Export to CSV"}
+                onPress={() => {
+                  exportToCsvOrder(
+                    CANCELLED_ORDERS,
+                    "active",
+                    dispatch,
+                    "cancelled_orders_"
+                  );
+                }}
+                text={"small"}
+              />
+            </View>
+          }
           data={CANCELLED_ORDERS}
           ListEmptyComponent={
             <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
@@ -88,6 +106,7 @@ export default function D_DeliveredOrderScreen() {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
         selectedOrder={selectedOrder}
+        type={"delivery"}
       />
     </View>
   );

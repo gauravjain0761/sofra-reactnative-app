@@ -42,6 +42,6 @@ export default StyleSheet.create({
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
     // paddingBottom: hp(3),
-    maxHeight: hp(85),
+    minHeight: hp(85),
   },
 });

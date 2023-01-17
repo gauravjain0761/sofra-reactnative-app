@@ -22,6 +22,8 @@ import { useNavigation } from "@react-navigation/native";
 import { getActiveOrders, getDrivers } from "../../Services/DeliveryApi";
 import OrderDetailModal from "../../Components/OrderDetailModal";
 import { getDeliveredOrders } from "../../Services/DeliveryApi";
+import PinkButton from "../../Components/PinkButton";
+import { exportToCsvOrder } from "../../Services/CommonFunctions";
 
 export default function D_DeliveredOrderScreen() {
   const dispatch = useDispatch();
@@ -52,6 +54,22 @@ export default function D_DeliveredOrderScreen() {
           data={DELIVERED_ORDERS}
           ListEmptyComponent={
             <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+          }
+          ListHeaderComponent={
+            <View style={{ marginBottom: hp(2), marginHorizontal: hp(2) }}>
+              <PinkButton
+                name={"Export to CSV"}
+                onPress={() => {
+                  exportToCsvOrder(
+                    DELIVERED_ORDERS,
+                    "active",
+                    dispatch,
+                    "delivered_orders_"
+                  );
+                }}
+                text={"small"}
+              />
+            </View>
           }
           style={{ flex: 1 }}
           renderItem={({ item, index }) => {
@@ -84,6 +102,7 @@ export default function D_DeliveredOrderScreen() {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
         selectedOrder={selectedOrder}
+        type={"delivery"}
       />
     </View>
   );

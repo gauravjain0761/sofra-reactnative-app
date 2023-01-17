@@ -21,6 +21,8 @@ import { getOrders } from "../../Services/MerchantApi";
 import { orderStatusData } from "../../Constant/Constant";
 import moment from "moment";
 import OrderDetailModal from "../../Components/OrderDetailModal";
+import PinkButton from "../../Components/PinkButton";
+import { exportToCsvOrder } from "../../Services/CommonFunctions";
 
 export default function M_OrderScreen({ navigation }) {
   const [search, setSearch] = useState("");
@@ -128,6 +130,22 @@ export default function M_OrderScreen({ navigation }) {
       {!PRELOADER && (
         <FlatList
           // contentContainerStyle={{ flex: 1 }}
+          ListHeaderComponent={
+            <View style={{ marginBottom: hp(2), marginHorizontal: hp(2) }}>
+              <PinkButton
+                name={"Export to CSV"}
+                onPress={() => {
+                  exportToCsvOrder(
+                    filterOrders,
+                    "merchant",
+                    dispatch,
+                    "orders_"
+                  );
+                }}
+                text={"small"}
+              />
+            </View>
+          }
           data={filterOrders}
           ListEmptyComponent={
             <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
@@ -164,6 +182,7 @@ export default function M_OrderScreen({ navigation }) {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
         selectedOrder={selectedOrder}
+        type="merchant"
       />
     </View>
   );

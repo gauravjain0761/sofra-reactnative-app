@@ -102,7 +102,21 @@ export default function M_MenuItemScreen({ navigation }) {
           }
         : undefined,
     };
-    dispatch(AddMenuItem(data));
+    dispatch(
+      AddMenuItem(data, () => {
+        setName("");
+        setArabicName("");
+        setMenuCategory("");
+        setItemType("");
+        setPrice("");
+        setDiscount("");
+        setMaxLimit("");
+        setImageItem("");
+        setDescription("");
+        setArabicDes("");
+        setMenuDes("");
+      })
+    );
   };
   const validation = () => {
     if (Name.trim() !== "") {

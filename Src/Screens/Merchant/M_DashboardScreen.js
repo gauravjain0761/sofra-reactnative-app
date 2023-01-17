@@ -276,6 +276,7 @@ export default function M_DashboardScreen({ navigation }) {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
         selectedOrder={selectedOrder}
+        type="merchant"
       />
     </View>
   );

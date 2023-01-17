@@ -21,6 +21,8 @@ import { orderStatusData } from "../../Constant/Constant";
 import { useNavigation } from "@react-navigation/native";
 import { getPickupOrders } from "../../Services/DeliveryApi";
 import OrderDetailModal from "../../Components/OrderDetailModal";
+import { exportToCsvOrder } from "../../Services/CommonFunctions";
+import PinkButton from "../../Components/PinkButton";
 
 export default function D_PickUpOrderScreen() {
   const dispatch = useDispatch();
@@ -49,6 +51,22 @@ export default function D_PickUpOrderScreen() {
       {!PRELOADER && (
         <FlatList
           data={PICKUP_ORDERS}
+          ListHeaderComponent={
+            <View style={{ marginBottom: hp(2), marginHorizontal: hp(2) }}>
+              <PinkButton
+                name={"Export to CSV"}
+                onPress={() => {
+                  exportToCsvOrder(
+                    PICKUP_ORDERS,
+                    "pickup",
+                    dispatch,
+                    "orders_pickup_"
+                  );
+                }}
+                text={"small"}
+              />
+            </View>
+          }
           ListEmptyComponent={
             <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
           }
@@ -84,6 +102,7 @@ export default function D_PickUpOrderScreen() {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
         selectedOrder={selectedOrder}
+        type={"delivery"}
       />
     </View>
   );

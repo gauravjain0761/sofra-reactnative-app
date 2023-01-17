@@ -21,37 +21,8 @@ import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 import { useNavigation } from "@react-navigation/native";
 import { getActiveOrders, getDrivers } from "../../Services/DeliveryApi";
 import OrderDetailModal from "../../Components/OrderDetailModal";
-
-let ORDERS = [
-  {
-    restaurant: {
-      name: "Taj Hotel",
-    },
-    totalPrice: 30,
-    status: "PENDING",
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel",
-    },
-    totalPrice: 30,
-    status: "PENDING",
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel",
-    },
-    totalPrice: 30,
-    status: "PENDING",
-  },
-  {
-    restaurant: {
-      name: "Taj Hotel",
-    },
-    totalPrice: 30,
-    status: "PENDING",
-  },
-];
+import PinkButton from "../../Components/PinkButton";
+import { exportToCsvOrder } from "../../Services/CommonFunctions";
 
 export default function D_ActiveOrderScreen({}) {
   const navigation = useNavigation();
@@ -95,11 +66,28 @@ export default function D_ActiveOrderScreen({}) {
           );
         })} */}
       </View>
+
       {!PRELOADER && (
         <FlatList
           data={ACTIVE_ORDERS}
           ListEmptyComponent={
             <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+          }
+          ListHeaderComponent={
+            <View style={{ marginBottom: hp(2), marginHorizontal: hp(2) }}>
+              <PinkButton
+                name={"Export to CSV"}
+                onPress={() => {
+                  exportToCsvOrder(
+                    ACTIVE_ORDERS,
+                    "active",
+                    dispatch,
+                    "active_orders_"
+                  );
+                }}
+                text={"small"}
+              />
+            </View>
           }
           style={{ flex: 1 }}
           renderItem={({ item, index }) => {
@@ -133,6 +121,7 @@ export default function D_ActiveOrderScreen({}) {
           setcategoryDetail(!categoryDetail), setselectedOrder({});
         }}
         selectedOrder={selectedOrder}
+        type={"delivery"}
       />
     </View>
   );
