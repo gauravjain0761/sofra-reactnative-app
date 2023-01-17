@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Colors from "../Themes/Colors";
+
 import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import ApplicationStyles from "../Themes/ApplicationStyles";
@@ -20,6 +21,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrderDetail, getOrders } from "../Services/MerchantApi";
 import { orderStatusData } from "../Constant/Constant";
 import moment from "moment";
+import { getOrderDetailDelivery } from "../Services/DeliveryApi";
+import { merchant_url, media_url } from "../Config/AppConfig";
 
 export default function OrderDetailModal({
   visible,
@@ -35,20 +38,26 @@ export default function OrderDetailModal({
     "User Details",
     type == "merchant" ? "Order Tracking History" : "Merchant Details",
   ];
+
   const dispatch = useDispatch();
   useEffect(() => {
+    seTtab(0);
     if (selectedOrder.id) {
       dispatch(
-        getOrderDetail(selectedOrder.id, (data) => setOrderDetail(data))
+        type == "merchant"
+          ? getOrderDetail(selectedOrder.id, (data) => setOrderDetail(data))
+          : getOrderDetailDelivery(selectedOrder.id, (data) =>
+              setOrderDetail(data)
+            )
       );
     }
   }, [selectedOrder]);
 
-  const RenderRow = ({ title, value }) => {
+  const RenderRow = ({ title, value, style }) => {
     return (
       <View style={styles.row}>
         <Text style={styles.leftText}>{title}</Text>
-        <Text style={styles.rightText}>{value}</Text>
+        <Text style={[styles.rightText, style]}>{value}</Text>
       </View>
     );
   };
@@ -107,7 +116,58 @@ export default function OrderDetailModal({
   };
 
   const RenderTab1 = () => {
-    return <View></View>;
+    return (
+      <View>
+        {orderDetail.cartItems &&
+          orderDetail.cartItems.length !== 0 &&
+          orderDetail.cartItems.map((element, index) => {
+            return (
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: hp(2),
+                  marginHorizontal: hp(2),
+                }}
+              >
+                <View>
+                  <Image
+                    source={
+                      element.image ? { uri: media_url + element.image } : null
+                    }
+                    style={{
+                      height: hp(10),
+                      width: hp(10),
+                      backgroundColor: Colors.backgroundScreen,
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+                <View style={{ marginLeft: hp(1), flex: 1 }}>
+                  <Text style={styles.rightText}>
+                    {element.itemName} (AED {element.price})
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: 2,
+                      ...commonFontStyle(500, 13, Colors.darkGrey),
+                    }}
+                  >
+                    {"Quantity: " + element.qty}
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: 2,
+                      ...commonFontStyle(500, 13, Colors.darkGrey),
+                    }}
+                  >
+                    {"Total Price: AED " + element.totalPrice}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
+      </View>
+    );
   };
   const RenderTab2 = () => {
     return (
@@ -120,10 +180,76 @@ export default function OrderDetailModal({
     );
   };
   const RenderTab3 = () => {
-    return <View></View>;
+    return (
+      <View>
+        {orderDetail.statusTrack.length !== 0 &&
+          orderDetail.statusTrack.map((item, index) => {
+            return (
+              <View style={{ flexDirection: "row", marginHorizontal: hp(2) }}>
+                <View>
+                  <Image
+                    source={require("../Images/Merchant/xxxhdpi/check1.png")}
+                    style={{
+                      tintColor: Colors.pink,
+                      height: hp(3),
+                      width: hp(3),
+                    }}
+                  />
+                  <View
+                    style={{
+                      backgroundColor:
+                        index == orderDetail.statusTrack.length - 1
+                          ? "transparent"
+                          : Colors.pink,
+                      width: 2,
+                      height: "100%",
+                      flex: 1,
+                      alignSelf: "center",
+                    }}
+                  ></View>
+                </View>
+                <View
+                  style={{ flex: 1, marginLeft: hp(1), paddingBottom: hp(4) }}
+                >
+                  <Text style={styles.rightText}>{item.msg}</Text>
+                  <Text style={styles.leftText}>
+                    {moment(item.created).format("MMM DD YYYY hh:mm A")}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
+      </View>
+    );
   };
   const RenderTab4 = () => {
-    return <View></View>;
+    return (
+      <View>
+        <RenderRow
+          title={"Owner Name:"}
+          value={
+            orderDetail.restaurant.first_name +
+            " " +
+            orderDetail.restaurant.last_name
+          }
+        />
+        <RenderRow
+          title={"Business Name:"}
+          value={orderDetail.restaurant.name}
+        />
+        <RenderRow
+          style={{ width: "75%", textAlign: "right" }}
+          title={"Details:"}
+          value={
+            orderDetail.restaurant.description +
+            " (" +
+            orderDetail.restaurant.description_ar +
+            ")"
+          }
+        />
+        <RenderRow title={"Phone:"} value={orderDetail.restaurant.phone} />
+      </View>
+    );
   };
   if (Object.keys(orderDetail).length !== 0) {
     return (
@@ -149,6 +275,7 @@ export default function OrderDetailModal({
           </View>
           <View>
             <ScrollView
+              contentContainerStyle={{ height: hp(7) }}
               style={{ marginBottom: hp(1.4) }}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
@@ -168,7 +295,7 @@ export default function OrderDetailModal({
                   >
                     <Text
                       style={{
-                        paddingVertical: 20,
+                        paddingTop: 20,
                         ...commonFontStyle(
                           500,
                           18,

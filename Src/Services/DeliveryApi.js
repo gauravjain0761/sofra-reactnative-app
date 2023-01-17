@@ -333,3 +333,25 @@ export const getNotificationsCompany = () => async (dispatch) => {
     dispatchErrorAction(dispatch, error.message);
   }
 };
+
+export const getOrderDetailDelivery =
+  (query, onSuccess) => async (dispatch) => {
+    let token = await getToken();
+    const url =
+      delivery_url +
+      "/getOrderDetails?auth_token=" +
+      token +
+      "&orderId=" +
+      query;
+    try {
+      const data = await GET(dispatch, url);
+      if (data.status == true) {
+        onSuccess(data.result);
+        // dispatchAction(dispatch, "SET_DASHBOARD_SEARCH_DATA", data.result);
+      } else {
+        dispatchErrorAction(dispatch, data.message);
+      }
+    } catch (error) {
+      dispatchErrorAction(dispatch, error.message);
+    }
+  };
