@@ -42,6 +42,13 @@ export default StyleSheet.create({
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
     // paddingBottom: hp(3),
+    // minHeight: hp(85),
+  },
+  modalViewStyle1: {
+    backgroundColor: Colors.white,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    // paddingBottom: hp(3),
     minHeight: hp(85),
   },
 });

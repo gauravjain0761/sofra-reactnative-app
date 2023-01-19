@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Platform,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -64,6 +65,9 @@ export default function M_MenuItemScreen({ navigation }) {
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
+      if (Platform.OS == "android") {
+        photo.sourceURL = photo.path;
+      }
       setImageItem(photo);
     });
   };

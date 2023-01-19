@@ -17,6 +17,7 @@ import { CurrentDeliverData } from "../../Config/StaticDropdownData";
 import { deliveryRegistaer } from "../../Services/AuthApi";
 import { ReactNativeModal } from "react-native-modal";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import LocationGoogleInput from "../../Components/LocationGoogleInput";
 
 export default function D_RegistrationScreen() {
   const dispatch = useDispatch();
@@ -111,32 +112,22 @@ export default function D_RegistrationScreen() {
 
   return (
     <View style={ApplicationStyles.mainView}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        keyboardShouldPersistTaps={"always"}
+        showsVerticalScrollIndicator={false}
+      >
         <Text style={styles.title}>Become a delivery partner</Text>
         <RegistrationTextInput
           placeholder={"Business Name*"}
           value={BName}
           onChangeText={(text) => setBName(text)}
         />
-        <RegistrationTextInput
+
+        <LocationGoogleInput
           placeholder={"Business Address*"}
+          setLocation={(location) => setBAddress(location)}
           value={BAddress}
-          onChangeText={(text) => setBAddress(text)}
         />
-        {/* <GooglePlacesAutocomplete
-          placeholder="Search"
-          onPress={(data, details = null) => {
-            // 'details' is provided when fetchDetails = true
-            console.log(data, details);
-          }}
-          onFail={(error) => {
-            console.log(error);
-          }}
-          query={{
-            key: "AIzaSyBnx_RKjRZvHI6mTNZxxAE044YWATD5jTs",
-            language: "en",
-          }}
-        /> */}
         <RegistrationDropdown
           data={CITIES}
           value={city}

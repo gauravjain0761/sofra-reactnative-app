@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
@@ -57,10 +58,14 @@ export default function D_DriversScreen() {
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
+      if (Platform.OS == "android") {
+        photo.sourceURL = photo.path;
+      }
       setimage(photo);
     });
   };
   const onAddDriver = () => {
+    console.log(image);
     let data = {
       name: firstname,
       email: email,

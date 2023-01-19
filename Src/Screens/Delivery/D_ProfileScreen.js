@@ -21,7 +21,7 @@ import ImagePicker from "react-native-image-crop-picker";
 import PinkButton from "../../Components/PinkButton";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import DocumentPicker from "react-native-document-picker";
-
+import moment from "moment";
 import {
   getCompanyProfile,
   updateProfileCompany,
@@ -30,6 +30,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { media_url } from "../../Config/AppConfig";
 import { dispatchErrorAction } from "../../Services/CommonFunctions";
+import LocationGoogleInput from "../../Components/LocationGoogleInput";
 
 export default function D_ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -52,6 +53,9 @@ export default function D_ProfileScreen({ navigation }) {
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
+      if (Platform.OS == "android") {
+        photo.sourceURL = photo.path;
+      }
       setimage(photo);
     });
   };
@@ -161,24 +165,13 @@ export default function D_ProfileScreen({ navigation }) {
     }
   };
 
-  const getLocation = (text) => {
-    let url = "https://maps.googleapis.com/maps/api/place";
-    const apiUrl = `${url}/autocomplete/json?key=AIzaSyBnx_RKjRZvHI6mTNZxxAE044YWATD5jTs&input=${text}`;
-
-    return fetch(apiUrl)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={ApplicationStyles.mainView}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          keyboardShouldPersistTaps={true}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.header}>
             <Image
               style={styles.drawerImage}
@@ -278,21 +271,15 @@ export default function D_ProfileScreen({ navigation }) {
             </View>
 
             <View>
-              {/* <RegistrationDropdown
-                data={citydata}
-                value={b_category}
-                setData={(text) => {
-                  setb_category(text);
-                }}
-                placeholder={"Location"}
-                valueField={"strategicName"}
-                style={styles.dropdownRow}
-              /> */}
-              <RegistrationTextInput
+              <LocationGoogleInput
                 placeholder={"Locations"}
                 value={location}
-                onChangeText={(text) => {
-                  setlocation(text), getLocation(text);
+                screen={"company"}
+                setText={(location) => setlocation(location)}
+                setLocation={(location) => {
+                  setlocation(location.data.description);
+                  setlat(location.details.geometry.location.lat);
+                  setlong(location.details.geometry.location.lng);
                 }}
               />
             </View>

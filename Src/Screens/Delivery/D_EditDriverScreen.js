@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
@@ -69,6 +70,9 @@ export default function D_EditDriverScreen(props) {
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
+      if (Platform.OS == "android") {
+        photo.sourceURL = photo.path;
+      }
       setimage(photo);
     });
   };

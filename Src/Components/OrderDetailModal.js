@@ -260,7 +260,7 @@ export default function OrderDetailModal({
         onBackButtonPress={() => onClose()}
         onBackdropPress={() => onClose()}
       >
-        <View style={ApplicationStyles.modalViewStyle}>
+        <View style={ApplicationStyles.modalViewStyle1}>
           <View style={styles.titleView}>
             <Text style={styles.detailText}>Order Details</Text>
             <TouchableOpacity

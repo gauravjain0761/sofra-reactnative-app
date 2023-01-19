@@ -5,6 +5,7 @@ import { commonFontStyle } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { media_url } from "../Config/AppConfig";
+import PlaceHolderImage from "./PlaceHolderImage";
 
 export default function MenuScreenItems({
   item,
@@ -20,21 +21,17 @@ export default function MenuScreenItems({
   return (
     <View key={index} style={styles.cardView}>
       {screen == "promocode" ? (
-        <View style={styles.promoView}>
-          <Image
-            style={styles.menuImagePromoCode}
-            source={require("../Images/Merchant/xxxhdpi/ic_persentage.png")}
-          />
-        </View>
+        <PlaceHolderImage image={item.image} style={styles.menuImage} />
       ) : (
-        <Image
-          style={styles.menuImage}
-          source={
-            item.image
-              ? { uri: media_url + item.image }
-              : require("../Images/Merchant/xxxhdpi/foodDish.jpeg")
-          }
-        />
+        // <Image
+        //   style={styles.menuImage}
+        //   source={
+        //     item.image
+        //       ? { uri: media_url + item.image }
+        //       : require("../Images/Delivery/xxxhdpi/user.png")
+        //   }
+        // />
+        <PlaceHolderImage image={item.image} style={styles.menuImage} />
       )}
 
       <Text style={styles.addText}>

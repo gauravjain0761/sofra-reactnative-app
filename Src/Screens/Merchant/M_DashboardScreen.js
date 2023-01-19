@@ -204,7 +204,10 @@ export default function M_DashboardScreen({ navigation }) {
               <Text style={styles.rightText}>Total{"\n"}Earning</Text>
             </View>
           </View>
-          <View style={styles.halfView}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("M_OrderScreen")}
+            style={styles.halfView}
+          >
             <Text style={styles.halfViewTitle}>
               {DASHBOARD_DATA?.bookingsCompleted
                 ? DASHBOARD_DATA?.bookingsCompleted
@@ -217,10 +220,13 @@ export default function M_DashboardScreen({ navigation }) {
               />
               <Text style={styles.rightText}>Completed{"\n"}Orders</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.rowView}>
-          <View style={styles.halfView}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("M_MenuItemScreen")}
+            style={styles.halfView}
+          >
             <Text style={styles.halfViewTitle}>
               {DASHBOARD_DATA?.totalMenuItems
                 ? DASHBOARD_DATA?.totalMenuItems
@@ -233,8 +239,11 @@ export default function M_DashboardScreen({ navigation }) {
               />
               <Text style={styles.rightText}>Total{"\n"}Menu Items</Text>
             </View>
-          </View>
-          <View style={styles.halfView}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("M_OrderScreen")}
+            style={styles.halfView}
+          >
             <Text style={styles.halfViewTitle}>
               {DASHBOARD_DATA?.bookingsActive
                 ? DASHBOARD_DATA?.bookingsActive
@@ -247,7 +256,7 @@ export default function M_DashboardScreen({ navigation }) {
               />
               <Text style={styles.rightText}>Active{"\n"}Orders</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.paddingView}>
           {DASHBOARD_DATA?.grossVolume && (

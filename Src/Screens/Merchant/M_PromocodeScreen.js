@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -86,6 +87,9 @@ export default function M_PromocodeScreen({ navigation }) {
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
+      if (Platform.OS == "android") {
+        photo.sourceURL = photo.path;
+      }
       setimage(photo);
     });
   };

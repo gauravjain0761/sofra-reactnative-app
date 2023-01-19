@@ -30,7 +30,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSServices provideAPIKey:@"AIzaSyBnx_RKjRZvHI6mTNZxxAE044YWATD5jTs"];
+  [GMSServices provideAPIKey:@"AIzaSyDEjeEjROHSLP3YfRln7Sk1GxUQSTGOGCI"];
   [FIRApp configure];
   RCTAppSetupPrepareApp(application);
 

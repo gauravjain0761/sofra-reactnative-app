@@ -32,6 +32,7 @@ import {
   getDataJsonAvailability,
   getFromDataJson,
 } from "../../Services/CommonFunctions";
+import LocationGoogleInput from "../../Components/LocationGoogleInput";
 
 export default function M_ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -57,6 +58,8 @@ export default function M_ProfileScreen({ navigation }) {
   const CATEGORIES = useSelector((e) => e.merchant.categories);
   const fcmToken = useSelector((e) => e.auth.fcmToken);
   const [timeData, settimeData] = useState([]);
+  const [lat, setlat] = useState("");
+  const [long, setlong] = useState("");
 
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
@@ -98,6 +101,8 @@ export default function M_ProfileScreen({ navigation }) {
       setarabicDes(RESTAURANT.description_ar);
       setlocation(RESTAURANT.location);
       setorderNoti(RESTAURANT.orderNotifications);
+      setlat(RESTAURANT.lat ? Number(RESTAURANT.lat) : "");
+      setlong(RESTAURANT.lng ? Number(RESTAURANT.lng) : "");
     }
   }, [RESTAURANT, timeData, CITIES]);
 
@@ -106,6 +111,9 @@ export default function M_ProfileScreen({ navigation }) {
       mediaType: "photo",
       includeBase64: true,
     }).then((photo) => {
+      if (Platform.OS == "android") {
+        photo.sourceURL = photo.path;
+      }
       setimage(photo);
     });
   };
@@ -141,11 +149,13 @@ export default function M_ProfileScreen({ navigation }) {
         : undefined,
       ...cusineJson,
       ...categoriesJson,
+      lat: String(lat),
+      lng: String(long),
       deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
       deviceToken: fcmToken,
       language: "en",
     };
-
+    console.log(data);
     dispatch(updateProfile(data));
   };
 
@@ -227,7 +237,10 @@ export default function M_ProfileScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={ApplicationStyles.mainView}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps={true}
+        >
           <View style={styles.header}>
             <Image
               style={styles.drawerImage}
@@ -412,12 +425,25 @@ export default function M_ProfileScreen({ navigation }) {
                   textAlignVertical={"top"}
                 />
               </View>
-              <RegistrationTextInput
+
+              <LocationGoogleInput
+                placeholder={"Locations"}
+                value={location}
+                screen={"company"}
+                setText={(location) => setlocation(location)}
+                setLocation={(location) => {
+                  setlocation(location.data.description);
+                  setlat(location.details.geometry.location.lat);
+                  setlong(location.details.geometry.location.lng);
+                }}
+              />
+
+              {/* <RegistrationTextInput
                 placeholder={"Locations"}
                 value={location}
                 onChangeText={(text) => setlocation(text)}
                 placeholderTextColor={Colors.black}
-              />
+              /> */}
             </View>
             <Text style={styles.title}>Notifications</Text>
             <View>

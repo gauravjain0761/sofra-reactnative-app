@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CurrentDeliverData } from "../../Config/StaticDropdownData";
 import { register } from "../../Services/AuthApi";
 import { ReactNativeModal } from "react-native-modal";
+import LocationGoogleInput from "../../Components/LocationGoogleInput";
 
 export default function M_RegistrationScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -131,21 +132,28 @@ export default function M_RegistrationScreen({ navigation }) {
     navigation.goBack();
     dispatch({ type: "PRE_LOADER", payload: false });
   };
-
   return (
     <View style={ApplicationStyles.mainView}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        keyboardShouldPersistTaps="always"
+        showsVerticalScrollIndicator={false}
+      >
         <Text style={styles.title}>Become a Sofra partner</Text>
         <RegistrationTextInput
           placeholder={"Business Name*"}
           value={BName}
           onChangeText={(text) => setBName(text)}
         />
-        <RegistrationTextInput
+        <LocationGoogleInput
+          placeholder={"Business Address*"}
+          setLocation={(location) => setBAddress(location)}
+          value={BAddress}
+        />
+        {/* <RegistrationTextInput
           placeholder={"Business Address*"}
           value={BAddress}
           onChangeText={(text) => setBAddress(text)}
-        />
+        /> */}
         <RegistrationDropdown
           data={CITIES}
           value={city}
