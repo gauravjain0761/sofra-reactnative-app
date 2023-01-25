@@ -12,7 +12,8 @@ export default function PlaceHolderImage({ style, image, placeHolder }) {
         {
           justifyContent: "center",
           alignItems: "center",
-          //   backgroundColor: Colors.backgroundScreen,
+          backgroundColor: Colors.placeholde,
+          marginBottom: hp(1.5),
         },
       ]}
     >

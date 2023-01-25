@@ -111,10 +111,42 @@ export default function OrderDetailModal({
           title={"Created At:"}
           value={moment(orderDetail.created).format("YYYY MM DD, hh:mm A")}
         />
+
+        <Text
+          style={{
+            ...commonFontStyle(600, 18, Colors.black),
+            marginTop: hp(3),
+
+            marginLeft: hp(1.5),
+          }}
+        >
+          Delivery Address
+        </Text>
+        <RenderRow
+          title={"Title:"}
+          value={JSON.parse(orderDetail.deliveryAddress).title}
+        />
+        <RenderRow
+          title={"Area:"}
+          value={JSON.parse(orderDetail.deliveryAddress).area}
+        />
+        <RenderRow
+          title={"Building:"}
+          value={JSON.parse(orderDetail.deliveryAddress).buildingName}
+        />
+        <RenderRow
+          title={"Apartment:"}
+          value={JSON.parse(orderDetail.deliveryAddress).apartment}
+        />
+        <RenderRow
+          style={{ width: "75%", textAlign: "right" }}
+          title={"Address:"}
+          value={JSON.parse(orderDetail.deliveryAddress).address}
+        />
       </View>
     );
   };
-
+  console.log(orderDetail);
   const RenderTab1 = () => {
     return (
       <View>

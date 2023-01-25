@@ -14,6 +14,7 @@ import {
   getActiveOrders,
 } from "../../Services/DeliveryApi";
 import AssignToDriverModal from "./AssignToDriverModal";
+import { media_url } from "../../Config/AppConfig";
 
 export default function D_OrderItems({ item, navigation, status, screen }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -24,7 +25,22 @@ export default function D_OrderItems({ item, navigation, status, screen }) {
   const successModalMessage = useSelector(
     (e) => e.delivery.successModalMessage
   );
+  const [orderImage, setOrderImage] = useState("");
+
   const [modalAccessDriver, setModalAccessDriver] = useState(false);
+  useEffect(() => {
+    if (item.cartItems && item.cartItems.length !== 0) {
+      let image = [];
+      item.cartItems.forEach((element) => {
+        image.push(element.image);
+      });
+      let temp = image.sort(function (a, b) {
+        return (a === null) - (b === null) || -(a > b) || +(a < b);
+      });
+      setOrderImage(temp[0]);
+    }
+  }, [item]);
+
   useEffect(() => {
     if (status.type == "READY_FOR_PICKUP") {
       setnextStatus(orderStatusData[2]);
@@ -88,10 +104,36 @@ export default function D_OrderItems({ item, navigation, status, screen }) {
     <View>
       <View style={styles.mainCardView}>
         <View style={styles.leftView}>
-          <Image
-            style={styles.resImage}
-            source={require("../../Images/Merchant/xxxhdpi/foodDish.jpeg")}
-          />
+          {orderImage && orderImage !== "" ? (
+            <Image
+              style={styles.resImage}
+              source={{ uri: media_url + orderImage }}
+            />
+          ) : (
+            <View
+              style={{
+                width: hp(20),
+                height: hp(16),
+                resizeMode: "contain",
+                borderRadius: 10,
+                backgroundColor: Colors.placeholde,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                style={{
+                  width: hp(8),
+                  height: hp(8),
+                  resizeMode: "contain",
+                  borderRadius: 10,
+                  tintColor: Colors.placeholderColor,
+                }}
+                source={require("../../Images/Delivery/xxxhdpi/user.png")}
+                resizeMode={"contain"}
+              />
+            </View>
+          )}
         </View>
         <View style={styles.RightView}>
           <View>

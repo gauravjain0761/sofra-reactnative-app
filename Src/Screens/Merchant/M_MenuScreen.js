@@ -83,6 +83,7 @@ export default function M_MenuScreen({ navigation }) {
         }}
         item={item}
         activeVisible={false}
+        screen={"category"}
       />
     </View>
   );

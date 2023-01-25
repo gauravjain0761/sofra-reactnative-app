@@ -22,15 +22,12 @@ export default function MenuScreenItems({
     <View key={index} style={styles.cardView}>
       {screen == "promocode" ? (
         <PlaceHolderImage image={item.image} style={styles.menuImage} />
+      ) : screen == "category" ? (
+        <Image
+          style={[styles.menuImage, { marginBottom: hp(1.5) }]}
+          source={require("../Images/Merchant/xxxhdpi/foodDish.jpeg")}
+        />
       ) : (
-        // <Image
-        //   style={styles.menuImage}
-        //   source={
-        //     item.image
-        //       ? { uri: media_url + item.image }
-        //       : require("../Images/Delivery/xxxhdpi/user.png")
-        //   }
-        // />
         <PlaceHolderImage image={item.image} style={styles.menuImage} />
       )}
 
@@ -144,9 +141,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   menuImage: {
-    marginBottom: hp(1.5),
     height: hp(20),
-    // width: hp(34),
     resizeMode: "cover",
   },
   menuImagePromoCode: {

@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeStatus } from "../Services/MerchantApi";
 import OrderSuccessStatusModal from "./OrderSuccessStatusModal";
 import OrderStatusModal from "./OrderStatusModal";
+import { media_url } from "../Config/AppConfig";
 
 export default function OrderItems({
   item,
@@ -32,6 +33,7 @@ export default function OrderItems({
   const [nextStatus, setnextStatus] = useState({});
   const dispatch = useDispatch();
   const [message, setmessage] = useState("");
+  const [orderImage, setOrderImage] = useState("");
   // const [modalVisibleSuccess, setModalVisibleSuccess] = useState(false);
   const modalVisibleSuccess = useSelector((e) => e.merchant.successModal);
   const successModalMessage = useSelector(
@@ -47,6 +49,20 @@ export default function OrderItems({
       setnextStatus(orderStatusData[index + 1]);
     }
   }, []);
+
+  useEffect(() => {
+    if (item.cartItems && item.cartItems.length !== 0) {
+      let image = [];
+      item.cartItems.forEach((element) => {
+        image.push(element.image);
+      });
+      let temp = image.sort(function (a, b) {
+        return (a === null) - (b === null) || -(a > b) || +(a < b);
+      });
+      setOrderImage(temp[0]);
+    }
+  }, [item]);
+
   const onStatusUpdate = () => {
     let data = { orderId: item.id, status: nextStatus.type, language: "en" };
     dispatch(
@@ -76,10 +92,36 @@ export default function OrderItems({
     <View>
       <View style={styles.mainCardView}>
         <View style={styles.leftView}>
-          <Image
-            style={styles.resImage}
-            source={require("../Images/Merchant/xxxhdpi/foodDish.jpeg")}
-          />
+          {orderImage && orderImage !== "" ? (
+            <Image
+              style={styles.resImage}
+              source={{ uri: media_url + orderImage }}
+            />
+          ) : (
+            <View
+              style={{
+                width: hp(20),
+                height: hp(16),
+                resizeMode: "contain",
+                borderRadius: 10,
+                backgroundColor: Colors.placeholde,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                style={{
+                  width: hp(8),
+                  height: hp(8),
+                  resizeMode: "contain",
+                  borderRadius: 10,
+                  tintColor: Colors.placeholderColor,
+                }}
+                source={require("../Images/Delivery/xxxhdpi/user.png")}
+                resizeMode={"contain"}
+              />
+            </View>
+          )}
         </View>
         <View style={styles.RightView}>
           <View>
@@ -154,6 +196,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 0,
   },
   leftView: {
+    // width: hp(20),
     paddingHorizontal: hp(2),
   },
   RightView: {
