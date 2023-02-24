@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput,I18nManager } from "react-native";
 import React from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
+import i18n from "../Config/I18n/I18n";
 export default function LoginTextInput({
   name,
   placeholder,
@@ -10,6 +11,7 @@ export default function LoginTextInput({
   onChangeText,
   style,
 }) {
+  console.log('i18Manager==>',I18nManager.isRTL);
   return (
     <View style={style}>
       <Text style={styles.name}>{name}</Text>
@@ -29,6 +31,8 @@ const styles = StyleSheet.create({
   name: {
     ...commonFontStyle(400, 16, Colors.pink),
     alignSelf: "flex-start",
+    textAlign: 'left',
+    width:'100%'
   },
   input: {
     ...commonFontStyle(500, 14, Colors.black),
@@ -38,6 +42,7 @@ const styles = StyleSheet.create({
     height: hp(6),
     paddingHorizontal: hp(3),
     borderRadius: 5,
+    textAlign:I18nManager.isRTL ? "right" : "left",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

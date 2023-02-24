@@ -5,6 +5,7 @@ import {
   Image,
   Platform,
   TouchableOpacity,
+  I18nManager
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -20,6 +21,7 @@ import {
   validateEmail,
 } from "../../Services/CommonFunctions";
 import { getLogin } from "../../Services/AuthApi";
+import {strings} from '../../Config/I18n'
 
 export default function MerchantLoginScreen() {
   const dispatch = useDispatch();
@@ -44,10 +46,10 @@ export default function MerchantLoginScreen() {
           })
         );
       } else {
-        dispatchErrorAction(dispatch, "Please enter password");
+        dispatchErrorAction(dispatch,strings('login.please_enter_password'));
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter valid email");
+      dispatchErrorAction(dispatch, strings('login.please_enter_valid_email'));
     }
     // navigation.navigate("MerchantDrawerHome");
   };
@@ -58,17 +60,17 @@ export default function MerchantLoginScreen() {
           source={require("../../Images/Delivery/xxxhdpi/top_logo.png")}
           style={styles.imageLogo}
         />
-        <Text style={styles.welcomeText}>Welcome Merchant</Text>
+        <Text style={styles.welcomeText}>{strings('login.welcome')}</Text>
         <View>
           <LoginTextInput
-            name={"Email"}
-            placeholder={"Enter your email address"}
+            name={strings('login.email')}
+            placeholder={strings('login.enter_your_email_address')}
             value={email}
             onChangeText={(text) => setEmail(text)}
           />
           <LoginTextInput
-            name={"Password"}
-            placeholder={"Enter your password"}
+            name={strings('login.password')}
+            placeholder={strings('login.enter_your_password')}
             value={password}
             onChangeText={(text) => setPassword(text)}
             style={styles.textinputStyle}
@@ -76,23 +78,23 @@ export default function MerchantLoginScreen() {
           <PinkButton
             onPress={() => onLogin()}
             style={styles.dbuttonStyle}
-            name={"Login"}
+            name={strings('login.login_button')}
           />
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("ForgotPasswordScreen", { email: email })
             }
           >
-            <Text style={styles.forgot}>Forgot password?</Text>
+            <Text style={styles.forgot}>{strings('login.forgot_password')}</Text>
           </TouchableOpacity>
 
           <Text style={styles.forgot2}>
-            Don't have an accout?{" "}
+            {strings('login.Do_not_have_your_account')}{" "}
             <Text
               style={{ color: Colors.pink }}
               onPress={() => navigation.navigate("M_RegistrationScreen")}
             >
-              Sign Up
+              {strings('login.signup_button')}
             </Text>
           </Text>
         </View>

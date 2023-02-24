@@ -19,6 +19,7 @@ export default function ChooseLoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const preLoader = useSelector((e) => e.merchant.preLoader);
   useEffect(async () => {
+   async function getDeviceToken(){
     messaging()
       .getToken()
       .then((fcmToken) => {
@@ -60,6 +61,8 @@ export default function ChooseLoginScreen({ navigation }) {
     dispatch(getUsers());
     dispatch(getCuisines());
     dispatch(getCategories());
+  }
+  getDeviceToken();
   }, []);
 
   if (preLoader == false) {
