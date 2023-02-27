@@ -19,11 +19,11 @@ console.log(currentLocale, 'currentLocale');
 export const isRTL =
   currentLocale.indexOf('he') === 0 || currentLocale.indexOf('ar') === 0;
 
-I18nManager.allowRTL(isRTL);
+// I18nManager.allowRTL(isRTL);
 
 export const strings = (name, params = {}) => {
   I18n.locale = 'ar';
-  I18nManager.allowRTL(false)
+  I18nManager.allowRTL(true)
   // AsyncStorage.getItem('Language').then((res) => {
   //   if (res) {
   //     I18n.locale = res;

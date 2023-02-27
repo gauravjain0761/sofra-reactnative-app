@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     height: hp(6),
     paddingHorizontal: hp(2),
     borderRadius: 5,
+    // flexDirection:''
   },
   textItem: {
     ...commonFontStyle(400, 14, Colors.black),
@@ -132,9 +133,11 @@ const styles = StyleSheet.create({
   selectedItemsDropdown: {
     flexDirection: "row",
     justifyContent: "space-between",
+    // justifyContent:'center',
     paddingVertical: hp(1),
     paddingHorizontal: hp(3),
     alignItems: "center",
+    backgroundColor:'red'
   },
   tickIcon: {
     resizeMode: "contain",

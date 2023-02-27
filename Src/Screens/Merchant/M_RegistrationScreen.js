@@ -24,7 +24,7 @@ import { CurrentDeliverData } from "../../Config/StaticDropdownData";
 import { register } from "../../Services/AuthApi";
 import { ReactNativeModal } from "react-native-modal";
 import LocationGoogleInput from "../../Components/LocationGoogleInput";
-
+import {strings} from '../../Config/I18n'
 export default function M_RegistrationScreen({ navigation }) {
   const dispatch = useDispatch();
   const CITIES = useSelector((e) => e.merchant.cities);
@@ -89,41 +89,41 @@ export default function M_RegistrationScreen({ navigation }) {
                         } else {
                           dispatchErrorAction(
                             dispatch,
-                            "Please enter Mobile number"
+                            strings('validationString.please_enter_mobile_number')
                           );
                         }
                       } else {
                         dispatchErrorAction(
                           dispatch,
-                          "Please enter valid Email"
+                         strings('validationString.please_enter_valid_email')
                         );
                       }
                     } else {
-                      dispatchErrorAction(dispatch, "Please enter Lastname");
+                      dispatchErrorAction(dispatch,strings('validationString.please_enter_lastname'));
                     }
                   } else {
-                    dispatchErrorAction(dispatch, "Please enter Firstname");
+                    dispatchErrorAction(dispatch, strings('validationString.please_enter_firstname'));
                   }
                 } else {
-                  dispatchErrorAction(dispatch, "Please select cuisine");
+                  dispatchErrorAction(dispatch, strings('validationString.please_select_cuisine'));
                 }
               } else {
-                dispatchErrorAction(dispatch, "Please select category");
+                dispatchErrorAction(dispatch, strings('validationString.please_select_category'));
               }
             } else {
-              dispatchErrorAction(dispatch, "Please select currently deliver");
+              dispatchErrorAction(dispatch, strings('validationString.please_select_currently_deliver'));
             }
           } else {
-            dispatchErrorAction(dispatch, "Please enter trade licence number");
+            dispatchErrorAction(dispatch, strings('validationString.please_enter_trade_licence_number'));
           }
         } else {
-          dispatchErrorAction(dispatch, "Please enter City");
+          dispatchErrorAction(dispatch, strings('validationString.please_enter_city'));
         }
       } else {
-        dispatchErrorAction(dispatch, "Please enter Business Address");
+        dispatchErrorAction(dispatch, strings('validationString.please_enter_busi_address'));
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter Business Name");
+      dispatchErrorAction(dispatch, strings('validationString.please_enter_busi_name') );
     }
   };
 
@@ -138,14 +138,14 @@ export default function M_RegistrationScreen({ navigation }) {
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>Become a Sofra partner</Text>
+        <Text style={styles.title}>{strings('SignUp.become_sofra_parter')}</Text>
         <RegistrationTextInput
-          placeholder={"Business Name*"}
+          placeholder={`${strings('SignUp.business_name')}*`}
           value={BName}
           onChangeText={(text) => setBName(text)}
         />
         <LocationGoogleInput
-          placeholder={"Business Address*"}
+          placeholder={`${strings('SignUp.business_address')}*`}
           setLocation={(location) => setBAddress(location)}
           value={BAddress}
         />
@@ -160,11 +160,11 @@ export default function M_RegistrationScreen({ navigation }) {
           setData={(text) => {
             setCity(text);
           }}
-          placeholder={"City or Town*"}
+          placeholder={`${strings('SignUp.city_town')}*`}
           valueField={"name"}
         />
         <RegistrationTextInput
-          placeholder={"Trade Licence number"}
+          placeholder={strings('SignUp.trade_licence_number')}
           value={licenceNumber}
           onChangeText={(text) => setLicenceNUmber(text)}
         />
@@ -174,18 +174,18 @@ export default function M_RegistrationScreen({ navigation }) {
           setData={(text) => {
             setCurrentlyDeliver(text);
           }}
-          placeholder={"Do you currently deliver?*"}
+          placeholder={`${strings('SignUp.do_you_currently_deliver')}*`}
           valueField={"name"}
         />
         <RegistrationTextInput
-          placeholder={"Website, Instagram, Facebook account"}
+          placeholder={strings('SignUp.web_insta_face_account')}
           value={socialLink}
           onChangeText={(text) => setSocialLink(text)}
         />
         <View style={styles.row}>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationTextInput
-              placeholder={"Restaurant"}
+              placeholder={strings('SignUp.restaurant')}
               value={"Restaurant"}
               onChangeText={(text) => setRestaurant(text)}
             />
@@ -208,7 +208,7 @@ export default function M_RegistrationScreen({ navigation }) {
               setData={(text) => {
                 setCategory(text);
               }}
-              placeholder={"Category"}
+              placeholder={strings('SignUp.category')}
               valueField={"name"}
               style={styles.dropdownRow}
             />
@@ -221,35 +221,35 @@ export default function M_RegistrationScreen({ navigation }) {
           setData={(text) => {
             setCuisine(text);
           }}
-          placeholder={"Type of Cuisine"}
+          placeholder={strings('SignUp.type_of_cuisine')}
           valueField={"name"}
           style={styles.dropdownRow}
         />
         <View style={styles.row}>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationTextInput
-              placeholder={"First name*"}
+              placeholder={`${strings('SignUp.first_name')}*`}
               value={Firstname}
               onChangeText={(text) => setFirstname(text)}
             />
           </View>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationTextInput
-              placeholder={"Last name*"}
+              placeholder={`${strings('SignUp.last_name')}*`}
               value={Lastname}
               onChangeText={(text) => setLastname(text)}
             />
           </View>
         </View>
         <RegistrationTextInput
-          placeholder={"Email"}
+          placeholder={strings('SignUp.email')}
           value={Email}
           onChangeText={(text) => setEmail(text)}
         />
         <RegistrationTextInput
           maxLength={12}
           keyboardType={"numeric"}
-          placeholder={"Mobile number (+971...)*"}
+          placeholder={`${strings('SignUp.mobile_number')} *`}
           value={MobileNo}
           onChangeText={(text) => setMobileNo(text)}
         />
@@ -257,17 +257,16 @@ export default function M_RegistrationScreen({ navigation }) {
         <PinkButton
           onPress={() => validation()}
           style={styles.dbuttonStyle}
-          name={"Submit"}
+          name={strings('SignUp.submit')}
         />
 
         <Text style={styles.forgot2}>
-          By clicking 'Submit', I hereby acknowledge & agree that I have read &
-          understood Sofra{" "}
+          {strings('SignUp.by_clicking_submit')}{" "}
           <Text
             style={{ ...commonFontStyle(700, 14, Colors.pink) }}
             onPress={() => {}}
           >
-            Terms and Conditions
+            {strings('SignUp.terms_and_condition')}
           </Text>
         </Text>
       </ScrollView>
@@ -289,7 +288,7 @@ export default function M_RegistrationScreen({ navigation }) {
             style={styles.icon}
           />
           <Text style={styles.title2}>
-            {"Your request has been submitted. We will get back to you soon."}
+            {strings('lateral_entry.your_request_has_been_submitted')}
           </Text>
 
           <View style={styles.buttonRow2}>
