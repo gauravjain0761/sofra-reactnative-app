@@ -20,6 +20,11 @@ export default StyleSheet.create({
     paddingHorizontal: hp(2),
     paddingVertical: hp(1),
   },
+  headerRightView1: {
+    paddingRight: hp(2),
+    paddingVertical: hp(1),
+    // paddingLeft: hp(1),
+  },
   welcomeText: {
     ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,

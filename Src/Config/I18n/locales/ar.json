@@ -81,14 +81,14 @@
     "please_select_users":"الرجاء تحديد المستخدمين",
     "please_enter_offer_detail":"الرجاء إدخال تفاصيل العرض",
     "lateralEntry":{
-      "please_select_document":"Please select document",
-      "documents_download_successfull":"Documents download successfull",
-      "something_went_wrong":"Something went wrong! Please try again later",
-      "please_select_end_date":"Please select end date",
-      "please_select_start_date":"Please select start date",
-      "confirm_pass_match_new_and_pass":"Confirm password doesn't match with new password",
-      "please_select_closing_time":"Please select closing time",
-      "please_select_opening_time":"Please select opening time"
+      "please_select_document":"الرجاء تحديد الوثيقة",
+      "documents_download_successfull":"تم تنزيل المستندات بنجاح",
+      "something_went_wrong":"هناك خطأ ما! الرجاء معاودة المحاولة في وقت لاحق",
+      "please_select_end_date":"الرجاء تحديد تاريخ الانتهاء",
+      "please_select_start_date":"الرجاء تحديد تاريخ البدء",
+      "confirm_pass_match_new_and_pass":"تأكيد كلمة المرور لا يتطابق مع كلمة المرور الجديدة",
+      "please_select_closing_time":"الرجاء تحديد وقت الإغلاق",
+      "please_select_opening_time":"الرجاء تحديد وقت الافتتاح"
     }
   },
   "dashboard":{
@@ -105,10 +105,10 @@
    "completed":"مكتمل",
    "orders":"الطلبات",
    "lateralEntry":{
-    "menu_items":"Menu Items",
-    "active":"Active",
-    "gross_volume":"Gross Volume",
-    "net_earnings":"Net Earnings"
+    "menu_items":"عناصر القائمة",
+    "active":"نشيط",
+    "gross_volume":"الحجم الإجمالي",
+    "net_earnings":"صافي الأرباح"
    }
   },
   "menu_screen":{
@@ -141,7 +141,7 @@
       "update_menu_item":"تحديث عنصر القائمة",
       "edit_menu_items":"تحرير عناصر القائمة",
       "lateralEntry":{
-        "attach_image":"Attach Image"
+        "attach_image":"إرفاق صورة"
       }
   },
   "editCategories":{
@@ -155,7 +155,7 @@
     "choose_file_here":"اختر ملفًا هنا ..",
     "upload":"تحميل",
     "lateralEntry":{
-      "no_data_found":"No Data Found"
+      "no_data_found":"لاتوجد بيانات"
     }
   },
   "orders":{
@@ -168,11 +168,11 @@
     "canceled":"مُلغى",
     "Rejected":"مرفوض",
     "lateralEntry":{
-      "preparing":"Preparing",
-      "all":"All",
-      "canceled_by_user":"Canceled by User",
-      "export_to_CSV":"Export to CSV",
-      "no_data_found":"No Data Found"
+      "preparing":"خطة",
+      "all":"الجميع",
+      "canceled_by_user":"ألغاها المستخدم",
+      "export_to_CSV":"تصدير إلى CSV",
+      "no_data_found":"لاتوجد بيانات"
     }
   },
   "order_detail":{
@@ -249,11 +249,11 @@
     "cancel":"إلغاء",
     "attach_image":"أرفق صورة",
     "lateralEntry":{
-      "select_user":"Select Users",
-      "start_date":"Start Date",
-      "end_date":"End Date",
-      "enter_discount_code_expire_count":"Enter the discount code expire count",
-      "edit_promo_code":"Edit Promo Code"
+      "select_user":"حدد المستخدمون",
+      "start_date":"تاريخ البدء",
+      "end_date":"تاريخ الانتهاء",
+      "enter_discount_code_expire_count":"أدخل رمز الخصم الذي تنتهي صلاحيته",
+      "edit_promo_code":"تحرير الرمز الترويجي"
     }
   },
 
@@ -275,11 +275,11 @@
      "apply_date_filters":"تطبيق مرشحات التاريخ",
      "search_by_date_range":"البحث حسب النطاق الزمني",
      "lateralEntry":{
-      "start_date":"Start Date",
-      "end_date":"End Date",
-      "export_to_csv":"Export to CSV",
-      "settled_report":"Settled Report",
-      "unSettled_report":"Un-Settled Report"
+      "start_date":"تاريخ البدء",
+      "end_date":"تاريخ الانتهاء",
+      "export_to_csv":"تصدير إلى CSV",
+      "settled_report":"تقرير مستقر",
+      "unSettled_report":"تقرير لم تتم تسويته"
      }
 
   },
@@ -324,12 +324,12 @@
     "vat":"ضريبة القيمة المضافة",
     "N/A":"غير متاح",
     "lateralEntry":{
-      "credit_card_payments":"Credit Card payments",
-      "discounts_values":"Discounts Values",
-      "sofra_commission_amount":"Sofra commission Amount",
-      "sofra_vat":"Sofra Vat",
-      "sofra_convenience_fee":"Sofra Convenience Fee",
-      "partners_total_net_profit":"Partners Total Net Profit"
+      "credit_card_payments":"مدفوعات بطاقات الائتمان",
+      "discounts_values":"قيم الخصومات",
+      "sofra_commission_amount":"مبلغ عمولة سفرة",
+      "sofra_vat":"سفرة فات",
+      "sofra_convenience_fee":"رسوم المرافق سوفرا",
+      "partners_total_net_profit":"إجمالي صافي ربح الشركاء"
     }
   },
   "updateAvailability":{
@@ -348,8 +348,8 @@
     "close":"إغلاق",
     "hhmm":"hh:mm",
     "lateralEntry":{
-      "select_opening_time":"Select Opening Time",
-      "select_closing_time":"Select Closing Time"
+      "select_opening_time":"حدد وقت الافتتاح",
+      "select_closing_time":"حدد وقت الإغلاق"
       
     }
   },
@@ -375,11 +375,11 @@
     "please_select_users_here":"الرجاء تحديد المستخدمين هنا",
     "Enter_Detail":"أدخل التفاصيل",
     "lateralEntry":{
-      "type":"Type",
-      "please_select_here":"Please select here",
-      "select_user":"Select user*",
-      "please_select_user_from_list":"Please select users from list",
-      "create_new_offer":"Create New Offer"
+      "type":"يكتب",
+      "please_select_here":"الرجاء التحديد هنا",
+      "select_user":"اختر المستخدم*",
+      "please_select_user_from_list":"الرجاء تحديد المستخدمين من القائمة",
+      "create_new_offer":"إنشاء عرض جديد"
       
     }
   },
@@ -390,7 +390,7 @@
     "yes":"نعم",
     "No":"لا",
     "lateralEntry":{
-      "select_language":"Select Language"
+      "select_language":"اختار اللغة"
     }
   },
 
@@ -398,14 +398,14 @@
     "title": "ملفك الشخصي"
   },
   "lateral_entry":{
-    "your_request_has_been_submitted":"Your request has been submitted. We will get back to you soon.",
+    "your_request_has_been_submitted":"تم تقديم طلبك. سوف نعود اليك قريبا.",
     "days":{
-       "today":"Today",
-       "yesterday":"Yesterday",
-       "last7days":"Last 7 Days",
-       "last30days":"Last 30 Days",
-       "this_month":"This Month",
-       "last_month":"This Month"
+       "today":"اليوم",
+       "yesterday":"أمس",
+       "last7days":"اخر 7 ايام",
+       "last30days":"آخر 30 يومًا",
+       "this_month":"هذا الشهر",
+       "last_month":"الشهر الماضي"
     }
     
   }

@@ -20,6 +20,7 @@ import {
   validateEmail,
 } from "../Services/CommonFunctions";
 import { forgotPassword, getLogin } from "../Services/AuthApi";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ForgotPasswordScreen({ route }) {
   const dispatch = useDispatch();
@@ -29,12 +30,14 @@ export default function ForgotPasswordScreen({ route }) {
 
   const onSendMail = () => {
     if (validateEmail(email)) {
-      let data = { email: email };
-      dispatch(
-        forgotPassword(data, () => {
-          navigation.goBack();
-        })
-      );
+      AsyncStorage.getItem("Language").then((res) => {
+        let data = { email: email, language: res };
+        dispatch(
+          forgotPassword(data, () => {
+            navigation.goBack();
+          })
+        );
+      });
     } else {
       dispatchErrorAction(dispatch, "Please enter valid email");
     }

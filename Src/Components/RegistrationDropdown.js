@@ -16,7 +16,6 @@ export default function RegistrationDropdown({
   multiSelect,
   labelField,
 }) {
-  console.log('data ==>',data);
   return (
     <View>
       {multiSelect && multiSelect == true ? (
@@ -90,7 +89,7 @@ export default function RegistrationDropdown({
           placeholder={placeholder}
           value={value}
           onChange={(item) => {
-            console.log('item ==>',item);
+            console.log("item ==>", item);
             setData(item[valueField]);
           }}
           renderItem={(item) => {
@@ -139,7 +138,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp(1),
     paddingHorizontal: hp(3),
     alignItems: "center",
-    backgroundColor:'red'
   },
   tickIcon: {
     resizeMode: "contain",

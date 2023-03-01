@@ -23,7 +23,7 @@ import moment from "moment";
 import OrderDetailModal from "../../Components/OrderDetailModal";
 import PinkButton from "../../Components/PinkButton";
 import { exportToCsvOrder } from "../../Services/CommonFunctions";
-import {strings} from '../../Config/I18n';
+import { strings } from "../../Config/I18n";
 
 export default function M_OrderScreen({ navigation }) {
   const [search, setSearch] = useState("");
@@ -73,7 +73,7 @@ export default function M_OrderScreen({ navigation }) {
             />
           </TouchableOpacity>
           <TextInput
-            placeholder= {strings('dashboard.search_for_specific')}
+            placeholder={strings("dashboard.search_for_specific")}
             style={styles.searchInput}
             value={search}
             onChangeText={(text) => onChangeSearch(text)}
@@ -134,7 +134,7 @@ export default function M_OrderScreen({ navigation }) {
           ListHeaderComponent={
             <View style={{ marginBottom: hp(2), marginHorizontal: hp(2) }}>
               <PinkButton
-                name={strings('orders.lateralEntry.no_data_found')}
+                name={strings("orders.lateralEntry.export_to_CSV")}
                 onPress={() => {
                   exportToCsvOrder(
                     filterOrders,
@@ -149,7 +149,9 @@ export default function M_OrderScreen({ navigation }) {
           }
           data={filterOrders}
           ListEmptyComponent={
-            <Text style={ApplicationStyles.nodataStyle}>{strings('orders.lateralEntry.no_data_found')}</Text>
+            <Text style={ApplicationStyles.nodataStyle}>
+              {strings("orders.lateralEntry.no_data_found")}
+            </Text>
           }
           style={{ flex: 1 }}
           renderItem={({ item, index }) => {

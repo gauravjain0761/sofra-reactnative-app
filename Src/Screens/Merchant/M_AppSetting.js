@@ -21,13 +21,13 @@ import CheckBox from "@react-native-community/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppSetting, UpdateAppSetting } from "../../Services/MerchantApi";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import {strings} from '../../Config/I18n';
+import { strings } from "../../Config/I18n";
 import { language } from "../../Config/StaticDropdownData";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import RNRestart from 'react-native-restart';
+import RNRestart from "react-native-restart";
 
 export default function M_AppSetting() {
-  console.log('i18Manager ==>',I18nManager.isRTL);
+  console.log("i18Manager ==>", I18nManager.isRTL);
   const dispatch = useDispatch();
   const isTakingOrders = useSelector((e) => e.merchant.isTakingOrders);
   const [switchEmable, setswitchEmable] = useState(false);
@@ -37,16 +37,16 @@ export default function M_AppSetting() {
   useEffect(() => {
     navigation.addListener("focus", () => {
       dispatch(getAppSetting());
+      AsyncStorage.getItem("Language").then((res) => {
+        console.log("res", res);
+        res == "en"
+          ? setlangSelect(language[0].name)
+          : setlangSelect(language[1].name);
+      });
     });
   }, []);
   useEffect(() => {
     setswitchEmable(isTakingOrders);
-    AsyncStorage.getItem('Language').then((res) => {
-
-      (res == 'en') ? 
-      setlangSelect(language[0].name) :
-      setlangSelect(language[1].name) 
-    })
   }, [isTakingOrders]);
   const onUpdateAppSetting = () => {
     let data = {
@@ -55,14 +55,13 @@ export default function M_AppSetting() {
     dispatch(UpdateAppSetting(data));
     onLanguageSelect();
   };
-  const onLanguageSelect =async() =>{
-    console.log('onLanguage select call',langSelect)
+  const onLanguageSelect = async () => {
+    console.log("onLanguage select call", langSelect);
     try {
-      const lang = langSelect == 'English' ? 'en' :'ar';
-      await AsyncStorage.setItem('Language', lang);
-      AsyncStorage.getItem('Language').then((res) => {
-        // dispatch(handleLanguageChange(language));
-        if (res === 'ar') {
+      const lang = langSelect == "English" ? "en" : "ar";
+      await AsyncStorage.setItem("Language", lang);
+      AsyncStorage.getItem("Language").then((res) => {
+        if (res === "ar") {
           I18nManager.forceRTL(true);
         } else {
           I18nManager.forceRTL(false);
@@ -70,14 +69,16 @@ export default function M_AppSetting() {
         RNRestart.Restart();
       });
     } catch (e) {}
-  }
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>{strings('appSetting.update_app_settings')}</Text>
+        <Text style={styles.title}>
+          {strings("appSetting.update_app_settings")}
+        </Text>
         <View style={styles.row}>
           <Text style={[styles.title2, { marginBottom: 0 }]}>
-            {strings('appSetting.taking_orders')}
+            {strings("appSetting.taking_orders")}
           </Text>
           <Switch
             ios_backgroundColor={"#cccccc"}
@@ -95,22 +96,21 @@ export default function M_AppSetting() {
           />
         </View>
 
-        <View style={{...styles.row}}>
+        <View style={{ ...styles.row }}>
           <Text style={[styles.title2, { marginTop: 20 }]}>
-            {strings('appSetting.lateralEntry.select_language')}
+            {strings("appSetting.lateralEntry.select_language")}
           </Text>
           <RegistrationDropdown
-        data={language}
-        value={langSelect}
-        setData={(text) => {
-            setlangSelect(text);
-           
-        }}
-        placeholder={langSelect}
-        valueField={"name"}
-        style={{width:130,height:30,marginTop:40}}
-        placeholderTextColor={Colors.black}
-      />
+            data={language}
+            value={langSelect}
+            setData={(text) => {
+              setlangSelect(text);
+            }}
+            placeholder={langSelect}
+            valueField={"name"}
+            style={{ width: 130, height: 30, marginTop: 40 }}
+            placeholderTextColor={Colors.black}
+          />
         </View>
         <PinkButton
           onPress={() => {
@@ -118,7 +118,7 @@ export default function M_AppSetting() {
           }}
           style={styles.dbuttonStyle}
           text={"small"}
-          name={strings('appSetting.update_settings')}
+          name={strings("appSetting.update_settings")}
         />
       </ScrollView>
     </View>

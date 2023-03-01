@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Linking,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -25,7 +26,8 @@ import MenuScreenItems from "../../Components/MenuScreenItems";
 import OrderItems from "../../Components/OrderItems";
 import { orderStatusData } from "../../Constant/Constant";
 import OrderDetailModal from "../../Components/OrderDetailModal";
-import {strings} from '../../Config/I18n';
+import { strings } from "../../Config/I18n";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function M_DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -80,14 +82,16 @@ export default function M_DashboardScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>{strings('dashboard.business_portal')}</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("dashboard.business_portal")}
+        </Text>
         <View style={styles.searchBar}>
           <Image
             source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
             style={styles.searchIcon}
           />
           <TextInput
-            placeholder={strings('dashboard.search_for_specific')}
+            placeholder={strings("dashboard.search_for_specific")}
             style={styles.searchInput}
             value={search}
             onChangeText={(text) => handleSearch(text)}
@@ -162,31 +166,65 @@ export default function M_DashboardScreen({ navigation }) {
           horizontal={true}
         >
           <View style={styles.cardView}>
-            <Text style={styles.cardTitle}>{strings('dashboard.how_it_works')}</Text>
+            <Text style={styles.cardTitle}>
+              {strings("dashboard.how_it_works")}
+            </Text>
             <Image
               style={styles.menuImage}
               source={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
             />
-            <Text style={styles.addText}>{strings('dashboard.add_your_restaurant_menu')}</Text>
+            <Text style={styles.addText}>
+              {strings("dashboard.add_your_restaurant_menu")}
+            </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("M_MenuItemScreen")}
               style={styles.addMenuButton}
             >
-              <Text style={styles.addButton}>{strings('dashboard.add_menu')}</Text>
+              <Text style={styles.addButton}>
+                {strings("dashboard.add_menu")}
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.cardView}>
-            <Text style={styles.cardTitle}>{strings('dashboard.how_it_works')}</Text>
+            <Text style={styles.cardTitle}>
+              {strings("dashboard.how_it_works")}
+            </Text>
             <Image
               style={styles.menuImage}
               source={require("../../Images/Merchant/xxxhdpi/img_category.png")}
             />
-            <Text style={styles.addText}>{strings('dashboard.add_your_category')}</Text>
+            <Text style={styles.addText}>
+              {strings("dashboard.add_your_category")}
+            </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("M_MenuStack1")}
               style={styles.addMenuButton}
             >
-              <Text style={styles.addButton}>{strings('dashboard.add_categories')}</Text>
+              <Text style={styles.addButton}>
+                {strings("dashboard.add_categories")}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.cardView}>
+            <Text style={styles.cardTitle}>
+              {strings("dashboard.how_it_works")}
+            </Text>
+            <Image
+              style={styles.menuImage}
+              source={require("../../Images/Merchant/xxxhdpi/ic_instructions.png")}
+            />
+            <Text style={styles.addText}>
+              {strings("dashboard.add_your_restaurant_menu")}
+            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL("https://www.mysofra.com/merchant-tutorial")
+              }
+              style={styles.addMenuButton}
+            >
+              <Text style={styles.addButton}>
+                {strings("dashboard.add_menu")}
+              </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -202,7 +240,11 @@ export default function M_DashboardScreen({ navigation }) {
                 style={styles.bottomcardRowImage}
                 source={require("../../Images/Merchant/xxxhdpi/ic_eraning.png")}
               />
-              <Text style={styles.rightText}>{strings('dashboard.total')}{"\n"}{strings('dashboard.earning')}</Text>
+              <Text style={styles.rightText}>
+                {strings("dashboard.total")}
+                {"\n"}
+                {strings("dashboard.earning")}
+              </Text>
             </View>
           </View>
           <TouchableOpacity
@@ -219,7 +261,11 @@ export default function M_DashboardScreen({ navigation }) {
                 style={styles.bottomcardRowImage}
                 source={require("../../Images/Merchant/xxxhdpi/ic_complete_orders.png")}
               />
-              <Text style={styles.rightText}>{strings('dashboard.completed')}{"\n"}{strings('dashboard.orders')}</Text>
+              <Text style={styles.rightText}>
+                {strings("dashboard.completed")}
+                {"\n"}
+                {strings("dashboard.orders")}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -238,7 +284,11 @@ export default function M_DashboardScreen({ navigation }) {
                 style={styles.bottomcardRowImage}
                 source={require("../../Images/Merchant/xxxhdpi/ic_menu_dashboard.png")}
               />
-              <Text style={styles.rightText}>{strings('dashboard.total')}{"\n"}{strings('dashboard.lateralEntry.menu_items')}</Text>
+              <Text style={styles.rightText}>
+                {strings("dashboard.total")}
+                {"\n"}
+                {strings("dashboard.lateralEntry.menu_items")}
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -255,14 +305,18 @@ export default function M_DashboardScreen({ navigation }) {
                 style={styles.bottomcardRowImage}
                 source={require("../../Images/Merchant/xxxhdpi/ic_active_order.png")}
               />
-              <Text style={styles.rightText}>{strings('dashboard.lateralEntry.active')}{"\n"}{strings('dashboard.orders')}</Text>
+              <Text style={styles.rightText}>
+                {strings("dashboard.lateralEntry.active")}
+                {"\n"}
+                {strings("dashboard.orders")}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
         <View style={styles.paddingView}>
           {DASHBOARD_DATA?.grossVolume && (
             <Chart
-              name={strings('dashboard.lateralEntry.gross_volume')}
+              name={strings("dashboard.lateralEntry.gross_volume")}
               x={DASHBOARD_DATA.grossVolume.dates}
               value={DASHBOARD_DATA.grossVolume.grossAmount}
               totalData={DASHBOARD_DATA.grossVolume.totalGrossAmount}
@@ -271,7 +325,7 @@ export default function M_DashboardScreen({ navigation }) {
 
           {DASHBOARD_DATA?.grossVolume && (
             <Chart
-              name={strings('dashboard.lateralEntry.net_earnings')}
+              name={strings("dashboard.lateralEntry.net_earnings")}
               x={DASHBOARD_DATA.netEarnings.dates}
               value={DASHBOARD_DATA.netEarnings.netEarningArr}
               totalData={DASHBOARD_DATA.netEarnings.totalNetEarnings}

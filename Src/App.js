@@ -18,6 +18,7 @@ import Colors from "./Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "./Themes/Fonts";
 import DeleteModal from "./Components/DeleteModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function App() {
   const _TOAST = useSelector((e) => e.merchant.toast);
@@ -28,6 +29,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    AsyncStorage.getItem("Language").then((res) => {
+      if (res == null) {
+        console.log("null here");
+        AsyncStorage.setItem("Language", "en");
+      }
+    });
     dispatch({ type: "TOAST", payload: "initial" });
     LogBox.ignoreAllLogs(true);
     Text.defaultProps = Text.defaultProps || {};

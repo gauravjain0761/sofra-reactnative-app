@@ -1,10 +1,10 @@
-import {I18nManager} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { I18nManager } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import I18n from 'react-native-i18n';
+import I18n from "react-native-i18n";
 
-import en from './locales/en.json';
-import ar from './locales/ar.json';
+import en from "./locales/en.json";
+import ar from "./locales/ar.json";
 
 I18n.fallbacks = true;
 
@@ -14,22 +14,20 @@ I18n.translations = {
 };
 
 export const currentLocale = I18n.currentLocale();
-console.log(currentLocale, 'currentLocale');
+console.log(currentLocale, "currentLocale");
 
 export const isRTL =
-  currentLocale.indexOf('he') === 0 || currentLocale.indexOf('ar') === 0;
+  currentLocale.indexOf("he") === 0 || currentLocale.indexOf("ar") === 0;
 
 I18nManager.forceRTL(isRTL);
 
 export const strings = (name, params = {}) => {
-  // I18n.locale = 'er';
-  // I18nManager.forceRTL(false)
-  AsyncStorage.getItem('Language').then((res) => {
-    console.log('language sselect ==>',res)
+  AsyncStorage.getItem("Language").then((res) => {
+    console.log("language sselect ==>", res);
     if (res) {
       I18n.locale = res;
     } else {
-      I18n.locale = 'en';
+      I18n.locale = "en";
     }
   });
   return I18n.t(name, params);

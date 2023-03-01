@@ -35,7 +35,8 @@ import {
 } from "../../Services/MerchantApi";
 import { ItemTypeData } from "../../Config/StaticDropdownData";
 import moment from "moment";
-import {strings} from '../../Config/I18n';
+import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 
 export default function M_MenuItemScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -72,7 +73,7 @@ export default function M_MenuItemScreen({ navigation }) {
       setImageItem(photo);
     });
   };
-  const onAddMenuItem = () => {
+  const onAddMenuItem = async () => {
     let menuCatJson = getFromDataJson(
       ALL_CATEGORIES,
       MenuCategory,
@@ -83,10 +84,11 @@ export default function M_MenuItemScreen({ navigation }) {
       MenuDes,
       "menuDescriptorsIds"
     );
+    let lang = await getLanguage();
     let data = {
       name: Name,
       name_ar: ArabicName,
-      language: "en",
+      language: lang,
       description: Description,
       description_ar: ArabicDes,
       item_type: ItemType,
@@ -176,20 +178,22 @@ export default function M_MenuItemScreen({ navigation }) {
       dispatchErrorAction(dispatch, "Please enter name");
     }
   };
-  const onDeleteMenuItems = (id) => {
+  const onDeleteMenuItems = async (id) => {
+    let lang = await getLanguage();
     dispatch({
       type: "DELETE_MODAL",
       payload: {
         isVisible: true,
         onDelete: () => {
-          let data = { menuId: id, language: "en" };
+          let data = { menuId: id, language: lang };
           dispatch(DeleteMenuItem(data));
         },
       },
     });
   };
-  const onChangeStatus = (id, status) => {
-    let data = { menuId: id, status: status == 1 ? 0 : 1, language: "en" };
+  const onChangeStatus = async (id, status) => {
+    let lang = await getLanguage();
+    let data = { menuId: id, status: status == 1 ? 0 : 1, language: lang };
     dispatch(enableDisableMenues(data));
   };
 
@@ -220,21 +224,27 @@ export default function M_MenuItemScreen({ navigation }) {
           />
         )}
         <View style={styles.rowView}>
-          <Text style={styles.title}>{strings('menu_screen.add_menu_items')}</Text>
-          <Text style={styles.title2}>{strings('menu_screen.menu_items_details')}</Text>
+          <Text style={styles.title}>
+            {strings("menu_screen.add_menu_items")}
+          </Text>
+          <Text style={styles.title2}>
+            {strings("menu_screen.menu_items_details")}
+          </Text>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.name')}</Text>
+            <Text style={styles.titleInput}>{strings("menu_screen.name")}</Text>
             <RegistrationTextInput
-              placeholder={strings('menu_screen.enter_name')}
+              placeholder={strings("menu_screen.enter_name")}
               value={Name}
               onChangeText={(text) => setName(text)}
               placeholderTextColor={Colors.black}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.name_in_arabic')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.name_in_arabic")}
+            </Text>
             <RegistrationTextInput
-              placeholder={strings('menu_screen.enter_name_in_arabic')}
+              placeholder={strings("menu_screen.enter_name_in_arabic")}
               value={ArabicName}
               onChangeText={(text) => setArabicName(text)}
               placeholderTextColor={Colors.black}
@@ -242,7 +252,9 @@ export default function M_MenuItemScreen({ navigation }) {
           </View>
           <View style={styles.row}>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>{strings('menu_screen.menu_categories')}</Text>
+              <Text style={styles.titleInput}>
+                {strings("menu_screen.menu_categories")}
+              </Text>
               <RegistrationDropdown
                 data={ALL_CATEGORIES}
                 value={MenuCategory[0]}
@@ -250,21 +262,23 @@ export default function M_MenuItemScreen({ navigation }) {
                   setMenuCategory([text]);
                 }}
                 // multiSelect={true}
-                placeholder={strings('menu_screen.categories')}
+                placeholder={strings("menu_screen.categories")}
                 valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>{strings('menu_screen.item_type')}</Text>
+              <Text style={styles.titleInput}>
+                {strings("menu_screen.item_type")}
+              </Text>
               <RegistrationDropdown
                 data={ItemTypeData}
                 value={ItemType}
                 setData={(text) => {
                   setItemType(text);
                 }}
-                placeholder={strings('menu_screen.type')}
+                placeholder={strings("menu_screen.type")}
                 valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
@@ -273,20 +287,24 @@ export default function M_MenuItemScreen({ navigation }) {
           </View>
           <View style={styles.row}>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>{strings('menu_screen.price_in_AED')}</Text>
+              <Text style={styles.titleInput}>
+                {strings("menu_screen.price_in_AED")}
+              </Text>
               <RegistrationTextInput
                 keyboardType={"numeric"}
-                placeholder={strings('menu_screen.enter_price')}
+                placeholder={strings("menu_screen.enter_price")}
                 value={Price}
                 onChangeText={(text) => setPrice(text)}
                 placeholderTextColor={Colors.black}
               />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>{strings('menu_screen.discount')}</Text>
+              <Text style={styles.titleInput}>
+                {strings("menu_screen.discount")}
+              </Text>
               <RegistrationTextInput
                 keyboardType={"numeric"}
-                placeholder={strings('menu_screen.discount')}
+                placeholder={strings("menu_screen.discount")}
                 value={Discount}
                 onChangeText={(text) => setDiscount(text)}
                 placeholderTextColor={Colors.black}
@@ -294,9 +312,11 @@ export default function M_MenuItemScreen({ navigation }) {
             </View>
           </View>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-            <Text style={styles.titleInput}>{strings('menu_screen.max_Limit')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.max_Limit")}
+            </Text>
             <RegistrationTextInput
-              placeholder={strings('menu_screen.enter_price')}
+              placeholder={strings("menu_screen.enter_price")}
               value={MaxLimit}
               keyboardType={"numeric"}
               onChangeText={(text) => setMaxLimit(text)}
@@ -304,17 +324,22 @@ export default function M_MenuItemScreen({ navigation }) {
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.image')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.image")}
+            </Text>
             <TouchableOpacity
               onPress={() => openPicker()}
-              style={styles.imageView}>
+              style={styles.imageView}
+            >
               {ImageItem == "" ? (
                 <View style={{ alignItems: "center" }}>
                   <Image
                     source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
                     style={styles.imageVector}
                   />
-                  <Text style={styles.attachText}>{strings('menu_screen.lateralEntry.attach_image')}</Text>
+                  <Text style={styles.attachText}>
+                    {strings("menu_screen.lateralEntry.attach_image")}
+                  </Text>
                 </View>
               ) : (
                 <View>
@@ -329,31 +354,37 @@ export default function M_MenuItemScreen({ navigation }) {
             </TouchableOpacity>
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.description')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.description")}
+            </Text>
             <TextInput
               value={Description}
               onChangeText={(text) => setDescription(text)}
               multiline={true}
               style={styles.textInput}
-              placeholder={strings('menu_screen.description')}
+              placeholder={strings("menu_screen.description")}
               placeholderTextColor={Colors.black}
               textAlignVertical={"top"}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.descripition_in_arabic')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.descripition_in_arabic")}
+            </Text>
             <TextInput
               value={ArabicDes}
               onChangeText={(text) => setArabicDes(text)}
               multiline={true}
               style={styles.textInput}
-              placeholder={strings('menu_screen.description')}
+              placeholder={strings("menu_screen.description")}
               placeholderTextColor={Colors.black}
               textAlignVertical={"top"}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.menu_description')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.menu_description")}
+            </Text>
             <RegistrationDropdown
               data={DESCRIPTOR}
               value={MenuDes}
@@ -361,7 +392,7 @@ export default function M_MenuItemScreen({ navigation }) {
                 setMenuDes(text);
               }}
               multiSelect={true}
-              placeholder={strings('menu_screen.menu_description')}
+              placeholder={strings("menu_screen.menu_description")}
               valueField={"name"}
               style={styles.dropdownRow}
               placeholderTextColor={Colors.black}
@@ -371,7 +402,7 @@ export default function M_MenuItemScreen({ navigation }) {
             text={"small"}
             onPress={() => validation()}
             style={styles.dbuttonStyle}
-            name={strings('menu_screen.Submit')}
+            name={strings("menu_screen.Submit")}
           />
         </View>
       </ScrollView>

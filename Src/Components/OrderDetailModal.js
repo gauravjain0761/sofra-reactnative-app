@@ -146,7 +146,6 @@ export default function OrderDetailModal({
       </View>
     );
   };
-  console.log(orderDetail);
   const RenderTab1 = () => {
     return (
       <View>

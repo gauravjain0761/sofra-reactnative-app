@@ -1,5 +1,5 @@
 import { merchant_url } from "../Config/AppConfig";
-import { getToken } from "./asyncStorage";
+import { getLanguage, getToken } from "./asyncStorage";
 import {
   dispatchAction,
   dispatchErrorAction,
@@ -8,7 +8,8 @@ import {
 import { GET, POST } from "./ResponseHandler";
 
 export const getCities = () => async (dispatch) => {
-  const url = merchant_url + "/getCities";
+  let lang = await getLanguage();
+  const url = merchant_url + "/getCities?language=" + lang;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -22,7 +23,8 @@ export const getCities = () => async (dispatch) => {
 };
 
 export const getCuisines = () => async (dispatch) => {
-  const url = merchant_url + "/getCuisines";
+  let lang = await getLanguage();
+  const url = merchant_url + "/getCuisines?language=" + lang;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -36,7 +38,8 @@ export const getCuisines = () => async (dispatch) => {
 };
 
 export const getCategories = () => async (dispatch) => {
-  const url = merchant_url + "/getCategories";
+  let lang = await getLanguage();
+  const url = merchant_url + "/getCategories?language=" + lang;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -50,7 +53,8 @@ export const getCategories = () => async (dispatch) => {
 };
 
 export const getUsers = () => async (dispatch) => {
-  const url = merchant_url + "/getUsers";
+  let lang = await getLanguage();
+  const url = merchant_url + "/getUsers?language=" + lang;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -329,7 +333,13 @@ export const getDashboardReports = () => async (dispatch) => {
   // dispatch({ type: "PRE_LOADER", payload: true });
 
   let token = await getToken();
-  const url = merchant_url + "/getDashboardReports?auth_token=" + token;
+  let lang = await getLanguage();
+  const url =
+    merchant_url +
+    "/getDashboardReports?auth_token=" +
+    token +
+    "&language=" +
+    lang;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -344,7 +354,13 @@ export const getDashboardReports = () => async (dispatch) => {
 
 export const getMenuCategories = () => async (dispatch) => {
   let token = await getToken();
-  const url = merchant_url + "/getMenuCategories?auth_token=" + token;
+  let lang = await getLanguage();
+  const url =
+    merchant_url +
+    "/getMenuCategories?auth_token=" +
+    token +
+    "&language=" +
+    lang;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -723,7 +739,13 @@ export const updateNotificationSetting = (postObj) => async (dispatch) => {
 
 export const getNotifications = () => async (dispatch) => {
   let token = await getToken();
-  const url = merchant_url + "/getNotifications?auth_token=" + token;
+  let lang = await getLanguage();
+  const url =
+    merchant_url +
+    "/getNotifications?auth_token=" +
+    token +
+    "&language=" +
+    lang;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -738,8 +760,15 @@ export const getNotifications = () => async (dispatch) => {
 
 export const dashboardSearch = (query) => async (dispatch) => {
   let token = await getToken();
+  let lang = await getLanguage();
   const url =
-    merchant_url + "/dashboardSearch?auth_token=" + token + "&query=" + query;
+    merchant_url +
+    "/dashboardSearch?auth_token=" +
+    token +
+    "&query=" +
+    query +
+    "&language=" +
+    lang;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {

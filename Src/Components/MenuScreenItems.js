@@ -6,6 +6,9 @@ import Colors from "../Themes/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { media_url } from "../Config/AppConfig";
 import PlaceHolderImage from "./PlaceHolderImage";
+import { useEffect } from "react";
+import { getLanguage } from "../Services/asyncStorage";
+import { useState } from "react";
 
 export default function MenuScreenItems({
   item,
@@ -17,6 +20,11 @@ export default function MenuScreenItems({
   onChangeStatus,
   index,
 }) {
+  const [lan, setlan] = useState("en");
+  useEffect(async () => {
+    let lang = await getLanguage();
+    setlan(lang);
+  }, []);
   const navigation = useNavigation();
   return (
     <View key={index} style={styles.cardView}>
@@ -32,7 +40,13 @@ export default function MenuScreenItems({
       )}
 
       <Text style={styles.addText}>
-        {screen == "promocode" ? item.title + "(" + item.code + ")" : item.name}
+        {screen == "promocode"
+          ? lan == "en"
+            ? item.title
+            : item.title_ar + "(" + item.code + ")"
+          : lan == "en"
+          ? item.name
+          : item.name_ar}
       </Text>
       <View style={styles.cardBotomBtn}>
         {screen !== "promocode" && (

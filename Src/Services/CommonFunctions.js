@@ -43,20 +43,39 @@ export const dispatchSuccessAction = (dispatch, message) => {
   });
 };
 
-export const getFromDataJson = (mainArray, selectedData, keyName) => {
-  let tempArray = [];
-  selectedData.map((element, index) => {
-    const temp = mainArray.filter((obj) => obj.name == element);
-    if (temp.length !== 0) {
-      tempArray.push(keyName + "[" + index + "]");
-      tempArray.push(temp[0].id);
+export const getFromDataJson = (mainArray, selectedData, keyName, language) => {
+  if (language) {
+    let tempArray = [];
+    selectedData.map((element, index) => {
+      const temp =
+        language == "en"
+          ? mainArray.filter((obj) => obj.name == element)
+          : mainArray.filter((obj) => obj.name_ar == element);
+      if (temp.length !== 0) {
+        tempArray.push(keyName + "[" + index + "]");
+        tempArray.push(temp[0].id);
+      }
+    });
+    var ob2 = {};
+    for (var i = 0; i < tempArray.length; i += 2) {
+      ob2[tempArray[i]] = tempArray[i + 1];
     }
-  });
-  var ob2 = {};
-  for (var i = 0; i < tempArray.length; i += 2) {
-    ob2[tempArray[i]] = tempArray[i + 1];
+    return ob2;
+  } else {
+    let tempArray = [];
+    selectedData.map((element, index) => {
+      const temp = mainArray.filter((obj) => obj.name == element);
+      if (temp.length !== 0) {
+        tempArray.push(keyName + "[" + index + "]");
+        tempArray.push(temp[0].id);
+      }
+    });
+    var ob2 = {};
+    for (var i = 0; i < tempArray.length; i += 2) {
+      ob2[tempArray[i]] = tempArray[i + 1];
+    }
+    return ob2;
   }
-  return ob2;
 };
 
 export const getDataJsonAvailability = (data, keyname) => {

@@ -101,7 +101,7 @@ export default function M_EditMenuItemScreen(props) {
       setImageItem(photo);
     });
   };
-  const onEditMenuItem = () => {
+  const onEditMenuItem = async () => {
     let menuCatJson = getFromDataJson(
       ALL_CATEGORIES,
       MenuCategory,
@@ -112,13 +112,14 @@ export default function M_EditMenuItemScreen(props) {
       MenuDes,
       "menuDescriptorsIds"
     );
+    let lang = await getLanguage();
     let data = {};
     if (ImageItem.sourceURL) {
       data = {
         menuId: MenuIdEdit,
         name: Name,
         name_ar: ArabicName,
-        language: "en",
+        language: lang,
         description: Description,
         description_ar: ArabicDes,
         item_type: ItemType,
@@ -144,7 +145,7 @@ export default function M_EditMenuItemScreen(props) {
         menuId: MenuIdEdit,
         name: Name,
         name_ar: ArabicName,
-        language: "en",
+        language: lang,
         description: Description,
         description_ar: ArabicDes,
         item_type: ItemType,
@@ -214,22 +215,26 @@ export default function M_EditMenuItemScreen(props) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>{strings('menu_screen.edit_menu_items')}</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("menu_screen.edit_menu_items")}
+        </Text>
 
         <View style={styles.rowView}>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.name')}</Text>
+            <Text style={styles.titleInput}>{strings("menu_screen.name")}</Text>
             <RegistrationTextInput
-              placeholder={strings('menu_screen.enter_name')}
+              placeholder={strings("menu_screen.enter_name")}
               value={Name}
               onChangeText={(text) => setName(text)}
               placeholderTextColor={Colors.black}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.name_in_arabic')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.name_in_arabic")}
+            </Text>
             <RegistrationTextInput
-              placeholder={strings('menu_screen.enter_name_in_arabic')}
+              placeholder={strings("menu_screen.enter_name_in_arabic")}
               value={ArabicName}
               onChangeText={(text) => setArabicName(text)}
               placeholderTextColor={Colors.black}
@@ -237,7 +242,9 @@ export default function M_EditMenuItemScreen(props) {
           </View>
           <View style={styles.row}>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>{strings('menu_screen.menu_categories')}</Text>
+              <Text style={styles.titleInput}>
+                {strings("menu_screen.menu_categories")}
+              </Text>
               <RegistrationDropdown
                 data={ALL_CATEGORIES}
                 value={MenuCategory[0]}
@@ -245,21 +252,23 @@ export default function M_EditMenuItemScreen(props) {
                   setMenuCategory([text]);
                 }}
                 // multiSelect={true}
-                placeholder={strings('manu_screen.categories')}
+                placeholder={strings("manu_screen.categories")}
                 valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>{strings('menu_screen.item_type')}</Text>
+              <Text style={styles.titleInput}>
+                {strings("menu_screen.item_type")}
+              </Text>
               <RegistrationDropdown
                 data={ItemTypeData}
                 value={ItemType}
                 setData={(text) => {
                   setItemType(text);
                 }}
-                placeholder={strings('menu_screen.type')}
+                placeholder={strings("menu_screen.type")}
                 valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
@@ -268,20 +277,24 @@ export default function M_EditMenuItemScreen(props) {
           </View>
           <View style={styles.row}>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>{strings('menu_screen.price_in_AED')}</Text>
+              <Text style={styles.titleInput}>
+                {strings("menu_screen.price_in_AED")}
+              </Text>
               <RegistrationTextInput
                 keyboardType={"numeric"}
-                placeholder={strings('menu_screen.enter_price')}
+                placeholder={strings("menu_screen.enter_price")}
                 value={Price}
                 onChangeText={(text) => setPrice(text)}
                 placeholderTextColor={Colors.black}
               />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>{strings('menu_screen.discount')}</Text>
+              <Text style={styles.titleInput}>
+                {strings("menu_screen.discount")}
+              </Text>
               <RegistrationTextInput
                 keyboardType={"numeric"}
-                placeholder={strings('menu_screen.discount')}
+                placeholder={strings("menu_screen.discount")}
                 value={Discount}
                 onChangeText={(text) => setDiscount(text)}
                 placeholderTextColor={Colors.black}
@@ -289,17 +302,21 @@ export default function M_EditMenuItemScreen(props) {
             </View>
           </View>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-            <Text style={styles.titleInput}>{strings('menu_screen.max_Limit')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.max_Limit")}
+            </Text>
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={strings('menu_screen.enter_price')}
+              placeholder={strings("menu_screen.enter_price")}
               value={MaxLimit}
               onChangeText={(text) => setMaxLimit(text)}
               placeholderTextColor={Colors.black}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.image')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.image")}
+            </Text>
             <TouchableOpacity
               onPress={() => openPicker()}
               style={styles.imageView}
@@ -310,7 +327,9 @@ export default function M_EditMenuItemScreen(props) {
                     source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
                     style={styles.imageVector}
                   />
-                  <Text style={styles.attachText}>{strings('menu_screen.lateralEntry.attach_image')}</Text>
+                  <Text style={styles.attachText}>
+                    {strings("menu_screen.lateralEntry.attach_image")}
+                  </Text>
                 </View>
               ) : (
                 <View>
@@ -328,38 +347,44 @@ export default function M_EditMenuItemScreen(props) {
           </View>
 
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.description')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.description")}
+            </Text>
             <TextInput
               value={Description}
               onChangeText={(text) => setDescription(text)}
               multiline={true}
               style={styles.textInput}
-              placeholder={strings('menu_screen.description')}
+              placeholder={strings("menu_screen.description")}
               placeholderTextColor={Colors.black}
               textAlignVertical={"top"}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.descripition_in_arabic')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.descripition_in_arabic")}
+            </Text>
             <TextInput
               value={ArabicDes}
               onChangeText={(text) => setArabicDes(text)}
               multiline={true}
               style={styles.textInput}
-              placeholder={strings('menu_screen.descripition_in_arabic')}
+              placeholder={strings("menu_screen.descripition_in_arabic")}
               placeholderTextColor={Colors.black}
               textAlignVertical={"top"}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.menu_description')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.menu_description")}
+            </Text>
             <RegistrationDropdown
               data={DESCRIPTOR}
               value={MenuDes}
               setData={(text) => {
                 setMenuDes(text);
               }}
-              placeholder={strings('menu_screen.menu_description')}
+              placeholder={strings("menu_screen.menu_description")}
               valueField={"name"}
               style={styles.dropdownRow}
               multiSelect={true}
@@ -371,7 +396,7 @@ export default function M_EditMenuItemScreen(props) {
             text={"small"}
             onPress={() => validation()}
             style={styles.dbuttonStyle}
-            name={strings('menu_screen.update_menu_item')}
+            name={strings("menu_screen.update_menu_item")}
           />
         </View>
       </ScrollView>

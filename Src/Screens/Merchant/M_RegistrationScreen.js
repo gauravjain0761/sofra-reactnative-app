@@ -24,7 +24,9 @@ import { CurrentDeliverData } from "../../Config/StaticDropdownData";
 import { register } from "../../Services/AuthApi";
 import { ReactNativeModal } from "react-native-modal";
 import LocationGoogleInput from "../../Components/LocationGoogleInput";
-import {strings} from '../../Config/I18n'
+import { strings } from "../../Config/I18n";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 export default function M_RegistrationScreen({ navigation }) {
   const dispatch = useDispatch();
   const CITIES = useSelector((e) => e.merchant.cities);
@@ -45,33 +47,58 @@ export default function M_RegistrationScreen({ navigation }) {
   const [Email, setEmail] = useState("");
   const [MobileNo, setMobileNo] = useState("");
   const registerSuccess = useSelector((e) => e.auth.registerSuccess);
+  const [Language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    AsyncStorage.getItem("Language").then((res) => {
+      setLanguage(res);
+    });
+  }, []);
 
   const onRegistration = () => {
-    let cityName = CITIES.filter((obj) => obj.name == city);
-    let cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds");
-    let categoriesJson = getFromDataJson(CATEGORIES, category, "categoryIds");
-    let data = {
-      name: BName,
-      email: Email,
-      first_name: Firstname,
-      last_name: Lastname,
-      phone: MobileNo,
-      currentlyDeliver: currentlyDeliver,
-      cityId: cityName[0].id,
-      location: BAddress,
-      licenseNo: licenceNumber,
-      social_account: socialLink,
-      ...cusineJson,
-      ...categoriesJson,
-      deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
-      deviceToken: fcmToken,
-      language: "en",
-    };
-    dispatch(
-      register(data, () => {
-        dispatch({ type: "REGISTER_SUCCESS", payload: true });
-      })
-    );
+    AsyncStorage.getItem("Language").then((res) => {
+      let cityName;
+      let cusineJson;
+      let categoriesJson;
+
+      if (Language == "en") {
+        cityName = CITIES.filter((obj) => obj.name == city);
+        cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds");
+        categoriesJson = getFromDataJson(CATEGORIES, category, "categoryIds");
+      } else {
+        cityName = CITIES.filter((obj) => obj.name_ar == city);
+        cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds", res);
+        categoriesJson = getFromDataJson(
+          CATEGORIES,
+          category,
+          "categoryIds",
+          res
+        );
+      }
+
+      let data = {
+        name: BName,
+        email: Email,
+        first_name: Firstname,
+        last_name: Lastname,
+        phone: MobileNo,
+        currentlyDeliver: currentlyDeliver,
+        cityId: cityName[0].id,
+        location: BAddress,
+        licenseNo: licenceNumber,
+        social_account: socialLink,
+        ...cusineJson,
+        ...categoriesJson,
+        deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
+        deviceToken: fcmToken,
+        language: res,
+      };
+      dispatch(
+        register(data, () => {
+          dispatch({ type: "REGISTER_SUCCESS", payload: true });
+        })
+      );
+    });
   };
   const validation = () => {
     if (BName.trim() !== "") {
@@ -89,41 +116,70 @@ export default function M_RegistrationScreen({ navigation }) {
                         } else {
                           dispatchErrorAction(
                             dispatch,
-                            strings('validationString.please_enter_mobile_number')
+                            strings(
+                              "validationString.please_enter_mobile_number"
+                            )
                           );
                         }
                       } else {
                         dispatchErrorAction(
                           dispatch,
-                         strings('validationString.please_enter_valid_email')
+                          strings("validationString.please_enter_valid_email")
                         );
                       }
                     } else {
-                      dispatchErrorAction(dispatch,strings('validationString.please_enter_lastname'));
+                      dispatchErrorAction(
+                        dispatch,
+                        strings("validationString.please_enter_lastname")
+                      );
                     }
                   } else {
-                    dispatchErrorAction(dispatch, strings('validationString.please_enter_firstname'));
+                    dispatchErrorAction(
+                      dispatch,
+                      strings("validationString.please_enter_firstname")
+                    );
                   }
                 } else {
-                  dispatchErrorAction(dispatch, strings('validationString.please_select_cuisine'));
+                  dispatchErrorAction(
+                    dispatch,
+                    strings("validationString.please_select_cuisine")
+                  );
                 }
               } else {
-                dispatchErrorAction(dispatch, strings('validationString.please_select_category'));
+                dispatchErrorAction(
+                  dispatch,
+                  strings("validationString.please_select_category")
+                );
               }
             } else {
-              dispatchErrorAction(dispatch, strings('validationString.please_select_currently_deliver'));
+              dispatchErrorAction(
+                dispatch,
+                strings("validationString.please_select_currently_deliver")
+              );
             }
           } else {
-            dispatchErrorAction(dispatch, strings('validationString.please_enter_trade_licence_number'));
+            dispatchErrorAction(
+              dispatch,
+              strings("validationString.please_enter_trade_licence_number")
+            );
           }
         } else {
-          dispatchErrorAction(dispatch, strings('validationString.please_enter_city'));
+          dispatchErrorAction(
+            dispatch,
+            strings("validationString.please_enter_city")
+          );
         }
       } else {
-        dispatchErrorAction(dispatch, strings('validationString.please_enter_busi_address'));
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_busi_address")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, strings('validationString.please_enter_busi_name') );
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_busi_name")
+      );
     }
   };
 
@@ -138,14 +194,16 @@ export default function M_RegistrationScreen({ navigation }) {
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>{strings('SignUp.become_sofra_parter')}</Text>
+        <Text style={styles.title}>
+          {strings("SignUp.become_sofra_parter")}
+        </Text>
         <RegistrationTextInput
-          placeholder={`${strings('SignUp.business_name')}*`}
+          placeholder={`${strings("SignUp.business_name")}*`}
           value={BName}
           onChangeText={(text) => setBName(text)}
         />
         <LocationGoogleInput
-          placeholder={`${strings('SignUp.business_address')}*`}
+          placeholder={`${strings("SignUp.business_address")}*`}
           setLocation={(location) => setBAddress(location)}
           value={BAddress}
         />
@@ -160,11 +218,11 @@ export default function M_RegistrationScreen({ navigation }) {
           setData={(text) => {
             setCity(text);
           }}
-          placeholder={`${strings('SignUp.city_town')}*`}
-          valueField={"name"}
+          placeholder={`${strings("SignUp.city_town")}*`}
+          valueField={Language == "en" ? "name" : "name_ar"}
         />
         <RegistrationTextInput
-          placeholder={strings('SignUp.trade_licence_number')}
+          placeholder={strings("SignUp.trade_licence_number")}
           value={licenceNumber}
           onChangeText={(text) => setLicenceNUmber(text)}
         />
@@ -174,18 +232,18 @@ export default function M_RegistrationScreen({ navigation }) {
           setData={(text) => {
             setCurrentlyDeliver(text);
           }}
-          placeholder={`${strings('SignUp.do_you_currently_deliver')}*`}
-          valueField={"name"}
+          placeholder={`${strings("SignUp.do_you_currently_deliver")}*`}
+          valueField={Language == "en" ? "name" : "name_ar"}
         />
         <RegistrationTextInput
-          placeholder={strings('SignUp.web_insta_face_account')}
+          placeholder={strings("SignUp.web_insta_face_account")}
           value={socialLink}
           onChangeText={(text) => setSocialLink(text)}
         />
         <View style={styles.row}>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationTextInput
-              placeholder={strings('SignUp.restaurant')}
+              placeholder={strings("SignUp.restaurant")}
               value={"Restaurant"}
               onChangeText={(text) => setRestaurant(text)}
             />
@@ -208,9 +266,9 @@ export default function M_RegistrationScreen({ navigation }) {
               setData={(text) => {
                 setCategory(text);
               }}
-              placeholder={strings('SignUp.category')}
-              valueField={"name"}
+              placeholder={strings("SignUp.category")}
               style={styles.dropdownRow}
+              valueField={Language == "en" ? "name" : "name_ar"}
             />
           </View>
         </View>
@@ -221,35 +279,35 @@ export default function M_RegistrationScreen({ navigation }) {
           setData={(text) => {
             setCuisine(text);
           }}
-          placeholder={strings('SignUp.type_of_cuisine')}
-          valueField={"name"}
+          placeholder={strings("SignUp.type_of_cuisine")}
+          valueField={Language == "en" ? "name" : "name_ar"}
           style={styles.dropdownRow}
         />
         <View style={styles.row}>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationTextInput
-              placeholder={`${strings('SignUp.first_name')}*`}
+              placeholder={`${strings("SignUp.first_name")}*`}
               value={Firstname}
               onChangeText={(text) => setFirstname(text)}
             />
           </View>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationTextInput
-              placeholder={`${strings('SignUp.last_name')}*`}
+              placeholder={`${strings("SignUp.last_name")}*`}
               value={Lastname}
               onChangeText={(text) => setLastname(text)}
             />
           </View>
         </View>
         <RegistrationTextInput
-          placeholder={strings('SignUp.email')}
+          placeholder={strings("SignUp.email")}
           value={Email}
           onChangeText={(text) => setEmail(text)}
         />
         <RegistrationTextInput
           maxLength={12}
           keyboardType={"numeric"}
-          placeholder={`${strings('SignUp.mobile_number')} *`}
+          placeholder={`${strings("SignUp.mobile_number")} *`}
           value={MobileNo}
           onChangeText={(text) => setMobileNo(text)}
         />
@@ -257,16 +315,16 @@ export default function M_RegistrationScreen({ navigation }) {
         <PinkButton
           onPress={() => validation()}
           style={styles.dbuttonStyle}
-          name={strings('SignUp.submit')}
+          name={strings("SignUp.submit")}
         />
 
         <Text style={styles.forgot2}>
-          {strings('SignUp.by_clicking_submit')}{" "}
+          {strings("SignUp.by_clicking_submit")}{" "}
           <Text
             style={{ ...commonFontStyle(700, 14, Colors.pink) }}
             onPress={() => {}}
           >
-            {strings('SignUp.terms_and_condition')}
+            {strings("SignUp.terms_and_condition")}
           </Text>
         </Text>
       </ScrollView>
@@ -288,7 +346,7 @@ export default function M_RegistrationScreen({ navigation }) {
             style={styles.icon}
           />
           <Text style={styles.title2}>
-            {strings('lateral_entry.your_request_has_been_submitted')}
+            {strings("lateral_entry.your_request_has_been_submitted")}
           </Text>
 
           <View style={styles.buttonRow2}>

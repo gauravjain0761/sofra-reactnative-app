@@ -166,11 +166,16 @@ export default function Navigation() {
             headerLeft: () => (
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={ApplicationStyles.headerRightView}
+                style={ApplicationStyles.headerRightView1}
               >
                 <Image
-                  source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-                  style={{ height: 18, width: 18, resizeMode: "contain" }}
+                  source={require("../Images/Delivery/xxxhdpi/ic_drop_down.png")}
+                  style={{
+                    height: 18,
+                    width: 18,
+                    resizeMode: "contain",
+                    transform: [{ rotate: "90deg" }],
+                  }}
                 />
               </TouchableOpacity>
             ),
@@ -181,26 +186,49 @@ export default function Navigation() {
           component={ForgotPasswordScreen}
         />
         <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={ApplicationStyles.headerRightView1}
+              >
+                <Image
+                  source={require("../Images/Delivery/xxxhdpi/ic_drop_down.png")}
+                  style={{
+                    height: 18,
+                    width: 18,
+                    resizeMode: "contain",
+                    transform: [{ rotate: "90deg" }],
+                  }}
+                />
+              </TouchableOpacity>
+            ),
+            // ...data,
+            headerTitle: "",
+            ...transparentHeader,
+          })}
           name="MerchantLoginScreen"
           component={MerchantLoginScreen}
         />
 
         <Stack.Screen
           options={({ navigation }) => ({
-            // headerLeft: () => (
-            //   <TouchableOpacity
-            //     onPress={() => navigation.goBack()}
-            //     style={ApplicationStyles.headerRightView}
-            //   >
-            //     <Image
-            //       source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-            //       style={{ height: 18, width: 18, resizeMode: "contain" }}
-            //     />
-            //   </TouchableOpacity>
-            // ),
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={ApplicationStyles.headerRightView1}
+              >
+                <Image
+                  source={require("../Images/Delivery/xxxhdpi/ic_drop_down.png")}
+                  style={{
+                    height: 18,
+                    width: 18,
+                    resizeMode: "contain",
+                    transform: [{ rotate: "90deg" }],
+                  }}
+                />
+              </TouchableOpacity>
+            ),
             ...data,
             ...transparentHeader,
           })}
@@ -216,26 +244,49 @@ export default function Navigation() {
           component={MerchantDrawer}
         />
         <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={ApplicationStyles.headerRightView1}
+              >
+                <Image
+                  source={require("../Images/Delivery/xxxhdpi/ic_drop_down.png")}
+                  style={{
+                    height: 18,
+                    width: 18,
+                    resizeMode: "contain",
+                    transform: [{ rotate: "90deg" }],
+                  }}
+                />
+              </TouchableOpacity>
+            ),
+            // ...data,
+            headerTitle: "",
+            ...transparentHeader,
+          })}
           name="DeliveryLoginScreen"
           component={DeliveryLoginScreen}
         />
 
         <Stack.Screen
           options={({ navigation }) => ({
-            // headerLeft: () => (
-            //   <TouchableOpacity
-            //     onPress={() => navigation.goBack()}
-            //     style={ApplicationStyles.headerRightView}
-            //   >
-            //     <Image
-            //       source={require("../Images/Delivery/xxxhdpi/ic_menu.png")}
-            //       style={{ height: 18, width: 18, resizeMode: "contain" }}
-            //     />
-            //   </TouchableOpacity>
-            // ),
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={ApplicationStyles.headerRightView1}
+              >
+                <Image
+                  source={require("../Images/Delivery/xxxhdpi/ic_drop_down.png")}
+                  style={{
+                    height: 18,
+                    width: 18,
+                    resizeMode: "contain",
+                    transform: [{ rotate: "90deg" }],
+                  }}
+                />
+              </TouchableOpacity>
+            ),
             ...data,
             ...transparentHeader,
           })}

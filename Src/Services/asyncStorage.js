@@ -11,6 +11,10 @@ export const getToken = async () => {
   return await AsyncStorage.getItem("TOKEN");
 };
 
+export const getLanguage = async () => {
+  return await AsyncStorage.getItem("Language");
+};
+
 export const setUser = async (token) => {
   try {
     await AsyncStorage.setItem("USER", token);
@@ -24,6 +28,7 @@ export const getUser = async () => {
 
 export const clearAsyncStorage = async () => {
   try {
-    await AsyncStorage.clear();
+    await AsyncStorage.removeItem("TOKEN");
+    await AsyncStorage.removeItem("USER");
   } catch (error) {}
 };
