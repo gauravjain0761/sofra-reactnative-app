@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  I18nManager,
 } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -21,6 +22,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AddOffer } from "../../Services/MerchantApi";
 import { offerUserData } from "../../Config/StaticDropdownData";
+import {strings} from '../../Config/I18n';
 
 export default function M_CreateOfferScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -49,37 +51,37 @@ export default function M_CreateOfferScreen({ navigation }) {
               })
             );
           } else {
-            dispatchErrorAction(dispatch, "Please select users");
+            dispatchErrorAction(dispatch, strings('validationString.please_select_users'));
           }
         }
       } else {
-        dispatchErrorAction(dispatch, "Please select user");
+        dispatchErrorAction(dispatch,strings('validationString.please_select_users'));
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter offer detail");
+      dispatchErrorAction(dispatch, strings('validationString.please_enter_offer_detail'));
     }
   };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView>
-        <Text style={ApplicationStyles.welcomeText}>Create Offer</Text>
-        <Text style={styles.inputName}>Offer Detail*</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings('offerSummary.offer_detail')}</Text>
+        <Text style={styles.inputName}>{`${strings('offerSummary.offer_detail')}*`}</Text>
         <TextInput
           value={Detail}
           onChangeText={(text) => setDetail(text)}
           multiline={true}
           style={styles.textInput}
-          placeholder={"Enter Detail"}
+          placeholder={strings('offerSummary.Enter_Detail')}
           placeholderTextColor={Colors.darkGrey}
           textAlignVertical={"top"}
         />
         <Text style={styles.bottomText}>
-          Please enter the offer detail here.
+         {strings('offerSummary.please_enter_offer_detail')}
         </Text>
         <Text
           style={[styles.inputName, { marginTop: hp(3), marginBottom: hp(2) }]}
         >
-          User*
+          {`${strings('offerSummary.user')}*`}
         </Text>
 
         <RegistrationDropdown
@@ -88,13 +90,13 @@ export default function M_CreateOfferScreen({ navigation }) {
           setData={(text) => {
             setuserType(text);
           }}
-          placeholder={"Type"}
+          placeholder={strings('offerSummary.lateralEntry.type')}
           valueField={"name"}
           labelField={"label"}
           style={styles.dropdownRow}
           placeholderTextColor={Colors.black}
         />
-        <Text style={styles.bottomText}>Please select here.</Text>
+        <Text style={styles.bottomText}>{strings('offerSummary.lateralEntry.please_select_here')}</Text>
         {userType == "SPECIFIC" && (
           <View>
             <Text
@@ -103,7 +105,7 @@ export default function M_CreateOfferScreen({ navigation }) {
                 { marginTop: hp(3), marginBottom: hp(2) },
               ]}
             >
-              Select User*
+             {`${strings('offerSummary.select_user')}*`}
             </Text>
             <RegistrationDropdown
               data={USERS}
@@ -121,7 +123,7 @@ export default function M_CreateOfferScreen({ navigation }) {
             />
 
             <Text style={styles.bottomText}>
-              Please select users from list.
+              {strings('offerSummary.lateralEntry.please_select_user_from_list')}
             </Text>
           </View>
         )}
@@ -130,7 +132,7 @@ export default function M_CreateOfferScreen({ navigation }) {
           onPress={() => onCreateOffer()}
           style={styles.dbuttonStyle}
           text={"small"}
-          name={"Create Offer"}
+          name={strings('offerSummary.create_offer')}
         />
       </ScrollView>
     </View>
@@ -151,6 +153,7 @@ const styles = StyleSheet.create({
     padding: hp(2),
     borderRadius: 5,
     marginVertical: hp(2),
+    textAlign: I18nManager.isRTL?'right': 'left'
   },
   bottomText: {
     ...commonFontStyle(400, 14, Colors.darkGrey),

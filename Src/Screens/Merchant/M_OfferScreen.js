@@ -19,6 +19,7 @@ import { DeleteOffer, getOffers } from "../../Services/MerchantApi";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { strings } from "../../Config/I18n";
 
 export default function M_OfferScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -27,21 +28,21 @@ export default function M_OfferScreen({ navigation }) {
   const renderItem = ({ item, index }) => (
     <View key={index} style={styles.itemList}>
       <View style={styles.row}>
-        <Text style={styles.leftText}>Offer Detail</Text>
+        <Text style={styles.leftText}>{strings('offerSummary.offer_detail')}</Text>
         <Text style={styles.rightText}>{item.title}</Text>
       </View>
       <View style={styles.middleRow}>
-        <Text style={styles.leftText}>User</Text>
+        <Text style={styles.leftText}>{strings('offerSummary.user')}</Text>
         <Text style={styles.rightText}>{item.user.name}</Text>
       </View>
       <View style={styles.middleRow2}>
-        <Text style={styles.leftText}>Created</Text>
+        <Text style={styles.leftText}>{strings('offerSummary.created')}</Text>
         <Text style={styles.rightText}>
           {moment(item.created).format("MM/DD/YY, hh:mm A")}
         </Text>
       </View>
       <View style={styles.lastRow}>
-        <Text style={styles.leftText}>Action</Text>
+        <Text style={styles.leftText}>{strings('offerSummary.action')}</Text>
         <TouchableOpacity
           onPress={() => onDeleteOffer(item.id)}
           style={styles.deleteButton}
@@ -84,7 +85,7 @@ export default function M_OfferScreen({ navigation }) {
         }}
         style={styles.dbuttonStyle}
         text={"small"}
-        name={"Create New Offer"}
+        name={strings('offerSummary.lateralEntry.create_new_offer')}
       />
       {!PRELOADER && (
         <FlatList
@@ -93,7 +94,7 @@ export default function M_OfferScreen({ navigation }) {
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={
-            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+            <Text style={ApplicationStyles.nodataStyle}>{strings('orders.lateralEntry.no_data_found')}</Text>
           }
         />
       )}

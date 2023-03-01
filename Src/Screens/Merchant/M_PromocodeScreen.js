@@ -41,7 +41,7 @@ import ImagePicker from "react-native-image-crop-picker";
 import moment from "moment";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePickerView from "../../Components/DateTimePickerView";
-
+import { strings } from "../../Config/I18n";
 const citydata = [
   {
     id: 1,
@@ -206,7 +206,7 @@ export default function M_PromocodeScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Promo Codes</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings('promo_code.promo_codes')}</Text>
         {PROMO_CODES.length !== 0 && (
           <FlatList
             horizontal={true}
@@ -217,26 +217,26 @@ export default function M_PromocodeScreen({ navigation }) {
           />
         )}
         <View>
-          <Text style={styles.title2}>Promo code details here:</Text>
+          <Text style={styles.title2}>{strings('promo_code.promo_code_details_here')}</Text>
           <View>
             <View style={styles.row}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationTextInput
-                  placeholder={"Title"}
+                  placeholder={strings('promo_code.title')}
                   value={title}
                   onChangeText={(text) => settitle(text)}
                 />
               </View>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationTextInput
-                  placeholder={"Title in arabic"}
+                  placeholder={strings('promo_code.title_in_arabic')}
                   value={arabicTitle}
                   onChangeText={(text) => setarabicTitle(text)}
                 />
               </View>
             </View>
             <RegistrationTextInput
-              placeholder={"Discount code"}
+              placeholder={strings('promo_code.discount_code')}
               value={discountCode}
               onChangeText={(text) => setdiscountCode(text)}
             />
@@ -246,7 +246,7 @@ export default function M_PromocodeScreen({ navigation }) {
                 onChangeText={(text) => setdes(text)}
                 multiline={true}
                 style={styles.textInput}
-                placeholder={"Description"}
+                placeholder={strings('promo_code.description')}
                 placeholderTextColor={Colors.placeholderColor}
                 textAlignVertical={"top"}
               />
@@ -255,7 +255,7 @@ export default function M_PromocodeScreen({ navigation }) {
                 onChangeText={(text) => setArabicdes(text)}
                 multiline={true}
                 style={styles.textInput}
-                placeholder={"Description in arabic"}
+                placeholder={strings('promo_code.descripition_in_arabic')}
                 placeholderTextColor={Colors.placeholderColor}
                 textAlignVertical={"top"}
               />
@@ -263,7 +263,7 @@ export default function M_PromocodeScreen({ navigation }) {
           </View>
         </View>
         <View>
-          <Text style={styles.title22}>Discount Type</Text>
+          <Text style={styles.title22}>{strings('promo_code.discount_type')}</Text>
           <View>
             <RegistrationDropdown
               data={discountType}
@@ -271,39 +271,39 @@ export default function M_PromocodeScreen({ navigation }) {
               setData={(text) => {
                 setprice(text);
               }}
-              placeholder={price !== "" ? price : "Discount Type"}
+              placeholder={price !== "" ? price : strings('promo_code.discount_type')}
               valueField={"name"}
               placeholderTextColor={Colors.black}
             />
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={"Discount Value"}
+              placeholder={strings('promo_code.discount_value')}
               value={discountValue}
               onChangeText={(text) => setdiscountValue(text)}
             />
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={"Maximum Discount Amount"}
+              placeholder={strings('promo_code.maximum_discount_amount')}
               value={maxDiscount}
               onChangeText={(text) => setmaxDiscount(text)}
             />
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={"Minimum Order Value"}
+              placeholder={strings('promo_code.maximum_discount_value')}
               value={minOrderValue}
               onChangeText={(text) => setminOrderValue(text)}
             />
           </View>
         </View>
         <View>
-          <Text style={styles.title22}>Validity Type*</Text>
+          <Text style={styles.title22}>{`${strings('promo_code.validity_type')}*`}</Text>
           <RegistrationDropdown
             data={VendorsValidityData}
             value={validityType}
             setData={(text) => {
               setvalidityType(text);
             }}
-            placeholder={validityType !== "" ? validityType : "Type"}
+            placeholder={validityType !== "" ? validityType :strings('promo_code.type')}
             valueField={"name"}
             labelField={"label"}
             placeholderTextColor={Colors.black}
@@ -326,14 +326,14 @@ export default function M_PromocodeScreen({ navigation }) {
           )}
         </View>
         <View>
-          <Text style={styles.title22}>Expiry Type*</Text>
+          <Text style={styles.title22}>{`${strings('promo_code.expiry_type')}*`}</Text>
           <RegistrationDropdown
             data={ExpiryTypeData}
             value={expiryType}
             setData={(text) => {
               setexpiryType(text);
             }}
-            placeholder={"Type"}
+            placeholder={strings('promo_code.type')}
             valueField={"name"}
             labelField={"label"}
             placeholderTextColor={Colors.black}
@@ -344,7 +344,7 @@ export default function M_PromocodeScreen({ navigation }) {
                 <DateTimePickerView
                   value={StartDate}
                   format={"MM/DD/YYYY"}
-                  placeHolder={"Start date"}
+                  placeHolder={strings('promo_code.lateralEntry.start_date')}
                   onPressPicker={() => {
                     setDatePickerVisibility(true), setdateType("start");
                   }}
@@ -355,7 +355,7 @@ export default function M_PromocodeScreen({ navigation }) {
                 <DateTimePickerView
                   value={EndDate}
                   format={"MM/DD/YYYY"}
-                  placeHolder={"End date"}
+                  placeHolder={strings('promo_code.lateralEntry.end_date')}
                   onPressPicker={() => {
                     setDatePickerVisibility(true), setdateType("end");
                   }}
@@ -367,14 +367,14 @@ export default function M_PromocodeScreen({ navigation }) {
           {expiryType == "COUNT" && (
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={"Enter the discount code expire count"}
+              placeholder={strings('promo_code.lateralEntry.enter_discount_code_expire_count')}
               value={count}
               onChangeText={(text) => setcount(text)}
             />
           )}
         </View>
         <View>
-          <Text style={styles.title22}>Image</Text>
+          <Text style={styles.title22}>{strings('promo_code.image')}</Text>
           <TouchableOpacity
             onPress={() => openPicker()}
             style={styles.imageView}
@@ -385,7 +385,7 @@ export default function M_PromocodeScreen({ navigation }) {
                   source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
                   style={styles.imageVector}
                 />
-                <Text style={styles.attachText}>Attach Image</Text>
+                <Text style={styles.attachText}>{strings('profile.attach_image')}</Text>
               </View>
             ) : (
               <View>
@@ -408,7 +408,7 @@ export default function M_PromocodeScreen({ navigation }) {
                   validation();
                 }}
                 text={"small"}
-                name={"Save"}
+                name={strings('promo_code.save')}
               />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
@@ -416,7 +416,7 @@ export default function M_PromocodeScreen({ navigation }) {
                 onPress={() => {}}
                 style={styles.dbuttonStyle}
                 text={"small"}
-                name={"Cancel"}
+                name={strings('promo_code.cancel')}
               />
             </View>
           </View>

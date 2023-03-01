@@ -27,6 +27,7 @@ import {
   getMenuCategories,
 } from "../../Services/MerchantApi";
 import DeleteModal from "../../Components/DeleteModal";
+import { strings } from "../../Config/I18n";
 export default function M_MenuScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -56,10 +57,10 @@ export default function M_MenuScreen({ navigation }) {
           })
         );
       } else {
-        dispatchErrorAction(dispatch, "Please enter name in arabic");
+        dispatchErrorAction(dispatch, strings('validationString.please_enter_name_in_arabic'));
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter category name");
+      dispatchErrorAction(dispatch, strings('validationString.please_enter_category_name'));
     }
   };
   const onDeleteCategory = (id) => {
@@ -90,7 +91,7 @@ export default function M_MenuScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Menu Categories</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings('menu_screen.menu_categories')}</Text>
         <FlatList
           horizontal={true}
           data={ALL_CATEGORIES}
@@ -98,20 +99,20 @@ export default function M_MenuScreen({ navigation }) {
           keyExtractor={(item) => item.id}
         />
         <View style={styles.rowView}>
-          <Text style={styles.title}>Add Menu Categories</Text>
-          <Text style={styles.title2}>Menu Categories Details</Text>
+          <Text style={styles.title}>{strings('menu_screen.add_menu_categories')}</Text>
+          <Text style={styles.title2}>{strings('menu_screen.menu_categories_details')}</Text>
           <View>
-            <Text style={styles.titleInput}>Name</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.name')}</Text>
             <RegistrationTextInput
-              placeholder={"Enter name"}
+              placeholder={strings('menu_screen.enter_name')}
               value={name}
               onChangeText={(text) => setname(text)}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>Name in Arabic</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.name_in_arabic')}</Text>
             <RegistrationTextInput
-              placeholder={"Enter name in Arabic"}
+              placeholder={strings('menu_screen.enter_name_in_arabic')}
               value={nameArabic}
               onChangeText={(text) => setnameArabic(text)}
             />
@@ -121,7 +122,7 @@ export default function M_MenuScreen({ navigation }) {
             text={"small"}
             onPress={() => onAddCategory()}
             style={styles.dbuttonStyle}
-            name={"Add Categories"}
+            name={strings('menu_screen.add_categories')}
           />
         </View>
       </ScrollView>

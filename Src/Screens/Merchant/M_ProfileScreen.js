@@ -33,7 +33,7 @@ import {
   getFromDataJson,
 } from "../../Services/CommonFunctions";
 import LocationGoogleInput from "../../Components/LocationGoogleInput";
-
+import { strings } from "../../Config/I18n";
 export default function M_ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const [firstname, setfirstname] = useState("");
@@ -256,20 +256,20 @@ export default function M_ProfileScreen({ navigation }) {
           </View>
 
           <View>
-            <Text style={styles.title}>Profile</Text>
-            <Text style={styles.title2}>Personal Info</Text>
+            <Text style={styles.title}>{strings('profile.profile')}</Text>
+            <Text style={styles.title2}>{strings('profile.personal_info')}</Text>
             <View>
               <View style={styles.row}>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                   <RegistrationTextInput
-                    placeholder={"Enter Firstname"}
+                    placeholder={strings('profile.enter_firstname')}
                     value={firstname}
                     onChangeText={(text) => setfirstname(text)}
                   />
                 </View>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                   <RegistrationTextInput
-                    placeholder={"Enter Lastname"}
+                    placeholder={strings('profile.enter_lastname')}
                     value={lastname}
                     onChangeText={(text) => setlastname(text)}
                   />
@@ -279,7 +279,7 @@ export default function M_ProfileScreen({ navigation }) {
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                   <RegistrationTextInput
                     keyboardType={"numeric"}
-                    placeholder={"Phone Number"}
+                    placeholder={strings('profile.phone_num')}
                     value={phoneNumber}
                     onChangeText={(text) => setphoneNumber(text)}
                     placeholderTextColor={Colors.black}
@@ -287,7 +287,7 @@ export default function M_ProfileScreen({ navigation }) {
                 </View>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                   <RegistrationTextInput
-                    placeholder={"Business Name"}
+                    placeholder={strings('profile.business_name')}
                     value={businessName}
                     onChangeText={(text) => setbusinessName(text)}
                     placeholderTextColor={Colors.black}
@@ -295,14 +295,14 @@ export default function M_ProfileScreen({ navigation }) {
                 </View>
               </View>
               <RegistrationTextInput
-                placeholder={"Business name in Arabic"}
+                placeholder={strings('profile.business_name_in_arabic')}
                 value={arabicBName}
                 onChangeText={(text) => setarabicBName(text)}
                 placeholderTextColor={Colors.black}
               />
             </View>
 
-            <Text style={styles.title}>Business Info</Text>
+            <Text style={styles.title}>{strings('profile.business_info')}</Text>
             <View>
               <RegistrationDropdown
                 data={CATEGORIES}
@@ -311,7 +311,7 @@ export default function M_ProfileScreen({ navigation }) {
                   setb_category(text);
                 }}
                 multiSelect={true}
-                placeholder={"Business Categories"}
+                placeholder={strings('profile.business_categories')}
                 valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
@@ -324,7 +324,7 @@ export default function M_ProfileScreen({ navigation }) {
                     setData={(text) => {
                       setVATtype(text);
                     }}
-                    placeholder={VATtype !== "" ? VATtype : "VAT Type"}
+                    placeholder={VATtype !== "" ? VATtype : strings('profile.vat_type')}
                     valueField={"name"}
                     style={styles.dropdownRow}
                     placeholderTextColor={Colors.black}
@@ -337,7 +337,7 @@ export default function M_ProfileScreen({ navigation }) {
                     setData={(text) => {
                       setdeliveryTime(text);
                     }}
-                    placeholder={"Delivery Time"}
+                    placeholder={strings('profile.delivery_time')}
                     valueField={"name"}
                     labelField={"label"}
                     style={styles.dropdownRow}
@@ -353,7 +353,7 @@ export default function M_ProfileScreen({ navigation }) {
                     setData={(text) => {
                       setcity(text);
                     }}
-                    placeholder={"City"}
+                    placeholder={strings('profile.city')}
                     valueField={"name"}
                     style={styles.dropdownRow}
                     placeholderTextColor={Colors.black}
@@ -366,7 +366,7 @@ export default function M_ProfileScreen({ navigation }) {
                     setData={(text) => {
                       setcuisine(text);
                     }}
-                    placeholder={"Cuisine"}
+                    placeholder={strings('profile.cuisine')}
                     valueField={"name"}
                     multiSelect={true}
                     style={styles.dropdownRow}
@@ -385,7 +385,7 @@ export default function M_ProfileScreen({ navigation }) {
                       source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
                       style={styles.imageVector}
                     />
-                    <Text style={styles.attachText}>Attach Image</Text>
+                    <Text style={styles.attachText}>{strings('profile.attach_image')}</Text>
                   </View>
                 ) : (
                   <View>
@@ -402,32 +402,32 @@ export default function M_ProfileScreen({ navigation }) {
               </TouchableOpacity>
 
               <View>
-                <Text style={styles.titleInput}>Description</Text>
+                <Text style={styles.titleInput}>{strings('profile.description')}</Text>
                 <TextInput
                   value={des}
                   onChangeText={(text) => setdes(text)}
                   multiline={true}
                   style={styles.textInput}
-                  placeholder={"Description"}
+                  placeholder={strings('profile.description')}
                   placeholderTextColor={Colors.black}
                   textAlignVertical={"top"}
                 />
               </View>
               <View>
-                <Text style={styles.titleInput}>Description in Arabic</Text>
+                <Text style={styles.titleInput}>{strings('profile.descripition_in_arabic')}</Text>
                 <TextInput
                   value={arabicDes}
                   onChangeText={(text) => setarabicDes(text)}
                   multiline={true}
                   style={styles.textInput}
-                  placeholder={"Description"}
+                  placeholder={strings('profile.description')}
                   placeholderTextColor={Colors.black}
                   textAlignVertical={"top"}
                 />
               </View>
 
               <LocationGoogleInput
-                placeholder={"Locations"}
+                placeholder={strings('profile.locations')}
                 value={location}
                 screen={"company"}
                 setText={(location) => setlocation(location)}
@@ -445,10 +445,10 @@ export default function M_ProfileScreen({ navigation }) {
                 placeholderTextColor={Colors.black}
               /> */}
             </View>
-            <Text style={styles.title}>Notifications</Text>
+            <Text style={styles.title}>{strings('profile.Notifications')}</Text>
             <View>
               <View style={styles.row}>
-                <Text style={[styles.title2, { marginBottom: 0 }]}>Orders</Text>
+                <Text style={[styles.title2, { marginBottom: 0 }]}>{strings('profile.orders')}</Text>
                 <Switch
                   ios_backgroundColor={"#cccccc"}
                   trackColor={{
@@ -480,7 +480,7 @@ export default function M_ProfileScreen({ navigation }) {
                     }}
                     style={styles.dbuttonStyle}
                     text={"small"}
-                    name={"Save"}
+                    name={strings('profile.save')}
                   />
                 </View>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
@@ -488,7 +488,7 @@ export default function M_ProfileScreen({ navigation }) {
                     onPress={() => {}}
                     style={styles.dbuttonStyle}
                     text={"small"}
-                    name={"Cancel"}
+                    name={strings('profile.cancel')}
                   />
                 </View>
               </View>

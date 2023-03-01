@@ -26,7 +26,7 @@ import {strings} from '../../Config/I18n'
 export default function MerchantLoginScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [email, setEmail] = useState("amzix.paroo@gmail.com");
+  const [email, setEmail] = useState("amirmcs05@gmail.com");
   const [password, setPassword] = useState("123456");
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 
@@ -76,7 +76,10 @@ export default function MerchantLoginScreen() {
             style={styles.textinputStyle}
           />
           <PinkButton
-            onPress={() => onLogin()}
+            onPress={() => 
+              // navigation.navigate("MerchantDrawerHome")
+              onLogin()
+            }
             style={styles.dbuttonStyle}
             name={strings('login.login_button')}
           />

@@ -19,18 +19,19 @@ console.log(currentLocale, 'currentLocale');
 export const isRTL =
   currentLocale.indexOf('he') === 0 || currentLocale.indexOf('ar') === 0;
 
-// I18nManager.allowRTL(isRTL);
+I18nManager.forceRTL(isRTL);
 
 export const strings = (name, params = {}) => {
-  I18n.locale = 'ar';
-  I18nManager.allowRTL(true)
-  // AsyncStorage.getItem('Language').then((res) => {
-  //   if (res) {
-  //     I18n.locale = res;
-  //   } else {
-  //     I18n.locale = 'ar';
-  //   }
-  // });
+  // I18n.locale = 'er';
+  // I18nManager.forceRTL(false)
+  AsyncStorage.getItem('Language').then((res) => {
+    console.log('language sselect ==>',res)
+    if (res) {
+      I18n.locale = res;
+    } else {
+      I18n.locale = 'en';
+    }
+  });
   return I18n.t(name, params);
 };
 

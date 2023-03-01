@@ -79,7 +79,17 @@
     "please_select_item_type":"الرجاء تحديد نوع العنصر",
     "please_select_menu_categories":"الرجاء تحديد فئات القائمة",
     "please_select_users":"الرجاء تحديد المستخدمين",
-    "please_enter_offer_detail":"الرجاء إدخال تفاصيل العرض"
+    "please_enter_offer_detail":"الرجاء إدخال تفاصيل العرض",
+    "lateralEntry":{
+      "please_select_document":"Please select document",
+      "documents_download_successfull":"Documents download successfull",
+      "something_went_wrong":"Something went wrong! Please try again later",
+      "please_select_end_date":"Please select end date",
+      "please_select_start_date":"Please select start date",
+      "confirm_pass_match_new_and_pass":"Confirm password doesn't match with new password",
+      "please_select_closing_time":"Please select closing time",
+      "please_select_opening_time":"Please select opening time"
+    }
   },
   "dashboard":{
    "home":"الصفحة الرئيسية",
@@ -93,7 +103,13 @@
    "total":"المجموع",
    "earning":"الكسب",
    "completed":"مكتمل",
-   "orders":"الطلبات"
+   "orders":"الطلبات",
+   "lateralEntry":{
+    "menu_items":"Menu Items",
+    "active":"Active",
+    "gross_volume":"Gross Volume",
+    "net_earnings":"Net Earnings"
+   }
   },
   "menu_screen":{
       "edit":"تعديل",
@@ -123,7 +139,10 @@
       "menu_description":"وصف القائمة",
       "Submit":"موافق",
       "update_menu_item":"تحديث عنصر القائمة",
-      "edit_menu_items":"تحرير عناصر القائمة"
+      "edit_menu_items":"تحرير عناصر القائمة",
+      "lateralEntry":{
+        "attach_image":"Attach Image"
+      }
   },
   "editCategories":{
     "edit_manu_categories":"تحرير فئات القائمة",
@@ -134,8 +153,10 @@
     "documents":"المستندات",
     "upload_files_here":"تحميل الملفات هنا",
     "choose_file_here":"اختر ملفًا هنا ..",
-    "upload":"تحميل"
-
+    "upload":"تحميل",
+    "lateralEntry":{
+      "no_data_found":"No Data Found"
+    }
   },
   "orders":{
     "pending":"معلق",
@@ -145,7 +166,14 @@
     "delivered":"تم التوصيل",
     "picked":"تم التسليم",
     "canceled":"مُلغى",
-    "Rejected":"مرفوض"
+    "Rejected":"مرفوض",
+    "lateralEntry":{
+      "preparing":"Preparing",
+      "all":"All",
+      "canceled_by_user":"Canceled by User",
+      "export_to_CSV":"Export to CSV",
+      "no_data_found":"No Data Found"
+    }
   },
   "order_detail":{
       "order_detail":"تفاصيل الطلب",
@@ -171,6 +199,7 @@
   "notification":{
    "notification":"الإشعارات"
   },
+
   "profile":{
     "profile":"الملف الشخصي",
     "personal_info":"معلومات شخصية",
@@ -196,6 +225,7 @@
     "locations":"المواقع",
     "city":"مدينة"
   },
+
   "promo_code":{
     "promo_codes":"الرموز الترويجية",
     "promo_code_details_here":"تفاصيل الرمز الترويجي هنا:",
@@ -214,8 +244,19 @@
     "validity_type":"نوع الصلاحية",
     "type":"النوع",
     "expiry_type":"نوع انتهاء الصلاحية",
-    "image":"الصورة"
+    "image":"الصورة",
+    "save":"حفظ",
+    "cancel":"إلغاء",
+    "attach_image":"أرفق صورة",
+    "lateralEntry":{
+      "select_user":"Select Users",
+      "start_date":"Start Date",
+      "end_date":"End Date",
+      "enter_discount_code_expire_count":"Enter the discount code expire count",
+      "edit_promo_code":"Edit Promo Code"
+    }
   },
+
   "report_screen":{
       "order_details":"تفاصيل الطلبs",
       "total_cash_orders":"إجمالي الطلبات النقدية (مكتملة)",
@@ -232,7 +273,15 @@
       "report":"التقرير",
       "report_settled":"تقارير التسوية",
      "apply_date_filters":"تطبيق مرشحات التاريخ",
-     "search_by_date_range":"البحث حسب النطاق الزمني"
+     "search_by_date_range":"البحث حسب النطاق الزمني",
+     "lateralEntry":{
+      "start_date":"Start Date",
+      "end_date":"End Date",
+      "export_to_csv":"Export to CSV",
+      "settled_report":"Settled Report",
+      "unSettled_report":"Un-Settled Report"
+     }
+
   },
   "slotScreen":{
       "january":"كانون الثاني",
@@ -241,6 +290,7 @@
       "april":"نيسان",
       "may":"أيار",
       "june":"حزيران",
+      "july":"يوليو",
       "august":"آب",
       "september":"أيلول",
       "october":"تشرين الأول",
@@ -272,7 +322,15 @@
     "Amount_exe_vat":"المبلغ) شامل ضريبة القيمة المضافة)",
     "AED":"درهم إماراتي",
     "vat":"ضريبة القيمة المضافة",
-    "N/A":"غير متاح"
+    "N/A":"غير متاح",
+    "lateralEntry":{
+      "credit_card_payments":"Credit Card payments",
+      "discounts_values":"Discounts Values",
+      "sofra_commission_amount":"Sofra commission Amount",
+      "sofra_vat":"Sofra Vat",
+      "sofra_convenience_fee":"Sofra Convenience Fee",
+      "partners_total_net_profit":"Partners Total Net Profit"
+    }
   },
   "updateAvailability":{
     "monday":"الاثنين",
@@ -288,7 +346,12 @@
     "days":"الأيام",
     "open":"فتح",
     "close":"إغلاق",
-    "hhmm":"hh:mm"
+    "hhmm":"hh:mm",
+    "lateralEntry":{
+      "select_opening_time":"Select Opening Time",
+      "select_closing_time":"Select Closing Time"
+      
+    }
   },
   "updatePassword":{
     "update_password_here":"تحديث كلمة المرور هنا:",
@@ -310,17 +373,41 @@
     "please_enter_offer_detail":"الرجاء إدخال تفاصيل العرض هنا.",
     "nothing_selected":"لا شيء محدد",
     "please_select_users_here":"الرجاء تحديد المستخدمين هنا",
-    "Enter_Detail":"أدخل التفاصيل"
+    "Enter_Detail":"أدخل التفاصيل",
+    "lateralEntry":{
+      "type":"Type",
+      "please_select_here":"Please select here",
+      "select_user":"Select user*",
+      "please_select_user_from_list":"Please select users from list",
+      "create_new_offer":"Create New Offer"
+      
+    }
   },
   "appSetting":{
     "update_app_settings":"قم بتحديث إعدادات التطبيق هنا",
     "taking_orders":"استلام الطلبات",
     "update_settings":"إعدادات التحديث",
     "yes":"نعم",
-    "No":"لا"
+    "No":"لا",
+    "lateralEntry":{
+      "select_language":"Select Language"
+    }
   },
 
   "user_profile": {
     "title": "ملفك الشخصي"
+  },
+  "lateral_entry":{
+    "your_request_has_been_submitted":"Your request has been submitted. We will get back to you soon.",
+    "days":{
+       "today":"Today",
+       "yesterday":"Yesterday",
+       "last7days":"Last 7 Days",
+       "last30days":"Last 30 Days",
+       "this_month":"This Month",
+       "last_month":"This Month"
+    }
+    
   }
+
 }

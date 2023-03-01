@@ -28,7 +28,7 @@ import {
   getFromDataJson,
 } from "../../Services/CommonFunctions";
 import DateTimePickerView from "../../Components/DateTimePickerView";
-
+import { strings } from "../../Config/I18n";
 export default function M_UpdateAvailability({ navigation }) {
   const [everydayEnable, seteverydayEnable] = useState(false);
   const [sameTimingEnable, setsameTimingEnable] = useState(false);
@@ -81,10 +81,10 @@ export default function M_UpdateAvailability({ navigation }) {
         setavailability(data);
         applysameTime();
       } else {
-        dispatchErrorAction(dispatch, "Please select closing time");
+        dispatchErrorAction(dispatch, strings('validationString.please_select_closing_time'));
       }
     } else {
-      dispatchErrorAction(dispatch, "Please select opening time");
+      dispatchErrorAction(dispatch, strings('validationString.please_select_opening_time'));
     }
   };
   const onPressEveryDay = () => {
@@ -143,8 +143,8 @@ export default function M_UpdateAvailability({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Update Availabilites</Text>
-        <Text style={styles.title}>Update Availabilites Here</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings('updateAvailability.update_availabilities')}</Text>
+        <Text style={styles.title}>{strings('updateAvailability.update_avail_here')}</Text>
 
         <View style={styles.row1}>
           <TouchableOpacity
@@ -159,7 +159,7 @@ export default function M_UpdateAvailability({ navigation }) {
                   : require("../../Images/Merchant/xxxhdpi/ic_uncheck.png")
               }
             />
-            <Text style={styles.nameText}>Everday</Text>
+            <Text style={styles.nameText}>{strings('updateAvailability.everyday')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => applysameTime()}
@@ -173,17 +173,17 @@ export default function M_UpdateAvailability({ navigation }) {
                   : require("../../Images/Merchant/xxxhdpi/ic_uncheck.png")
               }
             />
-            <Text style={styles.nameText}>Apply Same Timings</Text>
+            <Text style={styles.nameText}>{strings('updateAvailability.apply_same_timing')}</Text>
           </TouchableOpacity>
         </View>
 
         {sameTimingEnable == true && (
           <View style={styles.sameView}>
-            <Text style={styles.detailText}>Apply Same Timings Everyday</Text>
+            <Text style={styles.detailText}>{`${strings('updateAvailability.apply_same_timing')} ${strings('updateAvailability.everyday')}` }</Text>
             <DateTimePickerView
               value={openTime}
               format={"HH:mm:ss"}
-              placeHolder={"Select Opening Time"}
+              placeHolder={strings('updateAvailability.lateralEntry.select_opening_time')}
               onPressPicker={() => {
                 settimepickerSameTime(true), setTimeType("open");
               }}
@@ -192,7 +192,7 @@ export default function M_UpdateAvailability({ navigation }) {
             <DateTimePickerView
               value={closeTime}
               format={"HH:mm:ss"}
-              placeHolder={"Select Closing Time"}
+              placeHolder={strings('updateAvailability.lateralEntry.select_closing_time')}
               onPressPicker={() => {
                 settimepickerSameTime(true), setTimeType("close");
               }}
@@ -204,7 +204,7 @@ export default function M_UpdateAvailability({ navigation }) {
                 <PinkButton
                   onPress={() => onPressSave()}
                   text={"small"}
-                  name={"Save"}
+                  name={strings('promo_code.save')}
                 />
               </View>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
@@ -212,7 +212,7 @@ export default function M_UpdateAvailability({ navigation }) {
                   onPress={() => onPressCancel()}
                   style={{ backgroundColor: Colors.grayButtonBackground }}
                   text={"small"}
-                  name={"Cancel"}
+                  name={strings('promo_code.cancel')}
                 />
               </View>
             </View>
@@ -222,13 +222,13 @@ export default function M_UpdateAvailability({ navigation }) {
         <View style={styles.mainTable}>
           <View style={styles.row1}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.tableTitlea}>Days</Text>
+              <Text style={styles.tableTitlea}>{strings('updateAvailability.days')}</Text>
             </View>
             <View style={styles.timeBox}>
-              <Text style={styles.tableTitlea}>Open</Text>
+              <Text style={styles.tableTitlea}>{strings('updateAvailability.open')}</Text>
             </View>
             <View style={styles.timeBox}>
-              <Text style={styles.tableTitlea}>Close</Text>
+              <Text style={styles.tableTitlea}>{strings('updateAvailability.close')}</Text>
             </View>
           </View>
           {availability.map((item, index) => {
@@ -281,7 +281,7 @@ export default function M_UpdateAvailability({ navigation }) {
           onPress={() => onUpdateAvailability()}
           style={styles.dbuttonStyle}
           text={"small"}
-          name={"Update Availability"}
+          name={strings('updateAvailability.update_availabilities')}
         />
       </ScrollView>
       <DateTimePickerModal

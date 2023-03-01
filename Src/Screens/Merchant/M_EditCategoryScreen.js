@@ -21,6 +21,7 @@ import {
 } from "../../Services/CommonFunctions";
 import { useDispatch } from "react-redux";
 import { EditMenuCategory } from "../../Services/MerchantApi";
+import {strings} from '../../Config/I18n';
 
 export default function M_EditCategoryScreen({ navigation, route }) {
   const category = route?.params;

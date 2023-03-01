@@ -80,7 +80,19 @@
       "please_select_item_type":"Please select item type",
       "please_select_menu_categories":"Please select menu categories",
       "please_select_users":"Please select users",
-      "please_enter_offer_detail":"Please enter offer detail"
+      "please_enter_offer_detail":"Please enter offer detail",
+      "lateralEntry":{
+
+        "please_select_document":"Please select document",
+        "documents_download_successfull":"Documents download successfull",
+        "something_went_wrong":"Something went wrong! Please try again later",
+        "please_select_end_date":"Please select end date",
+      "please_select_start_date":"Please select start date",
+      "confirm_pass_match_new_and_pass":"Confirm password doesn't match with new password",
+      "please_select_closing_time":"Please select closing time",
+      "please_select_opening_time":"Please select opening time"
+      }
+
     },
     "dashboard":{
      "home":"Home",
@@ -94,7 +106,13 @@
      "total":"Total",
      "earning":"Earning",
      "completed":"Completed",
-     "orders":"Orders"
+     "orders":"Orders",
+     "lateralEntry":{
+      "menu_items":"Menu Items",
+      "active":"Active",
+      "gross_volume":"Gross Volume",
+      "net_earnings":"Net Earnings"
+     }
     },
     "menu_screen":{
         "edit":"Edit",
@@ -124,7 +142,10 @@
         "menu_description":"Menu Description",
         "Submit":"Submit",
         "update_menu_item":"Update Menu item",
-        "edit_menu_items":"Edit Menu Items"
+        "edit_menu_items":"Edit Menu Items",
+        "lateralEntry":{
+          "attach_image":"Attach Image"
+        }
     },
     "editCategories":{
       "edit_manu_categories":"Edit Manu Categories",
@@ -135,8 +156,10 @@
       "documents":"Documents",
       "upload_files_here":"upload files Here",
       "choose_file_here":"Choose File Here..",
-      "upload":"Upload"
-
+      "upload":"Upload",
+      "lateralEntry":{
+        "no_data_found":"No Data Found"
+      }
     },
     "orders":{
       "pending":"Pending",
@@ -146,8 +169,16 @@
       "delivered":"Delivered",
       "picked":"picked",
       "canceled":"Canceled",
-      "Rejected":"rejected"
+      "Rejected":"rejected",
+      "lateralEntry":{
+        "preparing":"Preparing",
+        "all":"All",
+        "canceled_by_user":"Canceled by User",
+        "export_to_CSV":"Export to CSV",
+        "no_data_found":"No Data Found"
+      }
     },
+    
     "order_detail":{
         "order_detail":"Order Details",
        "order_id":"Order Id:",
@@ -169,6 +200,7 @@
        "cash":"CASH",
        "unpaid":"Unpaid"
     },
+
     "notification":{
      "notification":"Notifications"
     },
@@ -194,7 +226,8 @@
       "Notifications":"Notifications",
       "save":"Save",
       "cancel":"Cancel",
-      "locations":"Locations"
+      "locations":"Locations",
+      "city":"مدينة"
     },
     "promo_code":{
       "promo_codes":"Promo Codes",
@@ -214,7 +247,17 @@
       "validity_type":"Validity Type",
       "type":"Type",
       "expiry_type":"Expiry Type",
-      "image":"Image"
+      "image":"Image",
+      "save":"Save",
+      "cancel":"Cancel",
+      "attach_image":"Attach Image",
+      "lateralEntry":{
+        "select_user":"Select Users",
+        "start_date":"Start Date",
+        "end_date":"End Date",
+        "enter_discount_code_expire_count":"Enter the discount code expire count",
+        "edit_promo_code":"Edit Promo Code"
+      }
     },
     "report_screen":{
         "order_details":"Order Details",
@@ -232,7 +275,14 @@
         "report":"Report",
         "report_settled":"Reports-Settled",
        "apply_date_filters":"Apply Date Filters",
-       "search_by_date_range":"Search By Date Range"
+       "search_by_date_range":"Search By Date Range",
+       "lateralEntry":{
+        "start_date":"Start Date",
+        "end_date":"End Date",
+        "export_to_csv":"Export to CSV",
+        "settled_report":"Settled Report",
+        "unSettled_report":"Un-Settled Report"
+       }
     },
     "slotScreen":{
         "january":"january",
@@ -241,6 +291,7 @@
         "april":"April",
         "may":"May",
         "june":"June",
+        "july":"July",
         "august":"August",
         "september":"September",
         "october":"October",
@@ -253,7 +304,12 @@
         "sr":"SR",
         "off_slot_date":"Off Slot Date",
         "created":"Created",
-        "action":"Action"
+        "action":"Action",
+        "lateralEntry":{
+          "no_data_found":"No Data Found"
+
+        }
+       
     },
     "statisticsScreen":{
       "order":"Order",
@@ -272,7 +328,15 @@
       "Amount_exe_vat":"Amount (EXE VAT)",
       "AED":"AED",
       "vat":"VAT",
-      "N/A":"N/A"
+      "N/A":"N/A",
+      "lateralEntry":{
+        "credit_card_payments":"Credit Card payments",
+        "discounts_values":"Discounts Values",
+        "sofra_commission_amount":"Sofra commission Amount",
+        "sofra_vat":"Sofra Vat",
+        "sofra_convenience_fee":"Sofra Convenience Fee",
+        "partners_total_net_profit":"Partners Total Net Profit"
+      }
     },
     "updateAvailability":{
       "monday":"Monday",
@@ -288,7 +352,12 @@
       "days":"Days",
       "open":"Open",
       "close":"Close",
-      "hhmm":"hh:mm"
+      "hhmm":"hh:mm",
+      "lateralEntry":{
+        "select_opening_time":"Select Opening Time",
+        "select_closing_time":"Select Closing Time"
+        
+      }
     },
     "updatePassword":{
       "update_password_here":"Update Password Here:",
@@ -310,17 +379,40 @@
       "please_enter_offer_detail":"Please enter the offer detail here.",
       "nothing_selected":"nothing Selected",
       "please_select_users_here":"Please select users here",
-      "Enter_Detail":"Enter Detail"
+      "Enter_Detail":"Enter Detail",
+      "lateralEntry":{
+        "type":"Type",
+        "please_select_here":"Please select here",
+        "select_user":"Select user*",
+      "please_select_user_from_list":"Please select users from list",
+      "create_new_offer":"Create New Offer"
+      }
     },
+
     "appSetting":{
       "update_app_settings":"Update App Settingss Here",
       "taking_orders":"Taking Orders",
       "update_settings":"update Settings",
       "yes":"Yes",
-      "No":"No"
+      "No":"No",
+      "lateralEntry":{
+        "select_language":"Select Language"
+      }
     },
   
     "user_profile": {
       "title": "Your Profile"
+    },
+    "lateral_entry":{
+      "your_request_has_been_submitted":"Your request has been submitted. We will get back to you soon.",
+      "days":{
+        "today":"Today",
+        "yesterday":"Yesterday",
+        "last7days":"Last 7 Days",
+        "last30days":"Last 30 Days",
+        "this_month":"This Month",
+        "last_month":"This Month"
+     }
     }
+  
 }

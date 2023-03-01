@@ -28,21 +28,23 @@ import {
   getOffSlots,
 } from "../../Services/MerchantApi";
 import moment from "moment";
+import { strings } from "../../Config/I18n";
 export default function M_SlotScreen({ navigation }) {
   LocaleConfig.locales["fr"] = {
     monthNames: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      strings('slotScreen.january'),
+      strings('slotScreen.february'),
+      strings('slotScreen.march'),
+      strings('slotScreen.april'),
+      strings('slotScreen.may'),
+      strings('slotScreen.june'),
+      strings('slotScreen.july'),
+      strings('slotScreen.august'),
+      strings('slotScreen.september'),
+      strings('slotScreen.october'),
+      strings('slotScreen.november'),
+      strings('slotScreen.december'),
+    
     ],
     monthNamesShort: [
       "Jan",
@@ -145,17 +147,17 @@ export default function M_SlotScreen({ navigation }) {
         <Text style={styles.rightText}>{index + 1}</Text>
       </View>
       <View style={styles.middleRow}>
-        <Text style={styles.leftText}>Off Slot Date</Text>
+        <Text style={styles.leftText}>{strings('slotScreen.off_slot_date')}</Text>
         <Text style={styles.rightText}>{moment(item.date).format("LL")}</Text>
       </View>
       <View style={styles.middleRow2}>
-        <Text style={styles.leftText}>Created</Text>
+        <Text style={styles.leftText}>{strings('slotScreen.created')}</Text>
         <Text style={styles.rightText}>
           {moment(item.created).format("MM/DD/YY, hh:mm A")}
         </Text>
       </View>
       <View style={styles.lastRow}>
-        <Text style={styles.leftText}>Action</Text>
+        <Text style={styles.leftText}>{strings('slotScreen.action')}</Text>
         <TouchableOpacity
           onPress={() => onDeleteSlot(item.id)}
           style={styles.deleteButton}
@@ -171,7 +173,7 @@ export default function M_SlotScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Off Slots</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings('slotScreen.off_slotes')}</Text>
         <View style={styles.whiteView}>
           <Calendar
             onDayPress={(day) => {
@@ -210,11 +212,11 @@ export default function M_SlotScreen({ navigation }) {
         </View>
         <PinkButton
           style={styles.btn}
-          name={"Submit"}
+          name={strings('SignUp.submit')}
           text={"small"}
           onPress={() => {}}
         />
-        <Text style={styles.mainTitle}>All Off Slots</Text>
+        <Text style={styles.mainTitle}>{strings('slotScreen.all_off_slots')}</Text>
 
         {!PRELOADER && (
           <FlatList
@@ -222,7 +224,7 @@ export default function M_SlotScreen({ navigation }) {
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             ListEmptyComponent={
-              <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+              <Text style={ApplicationStyles.nodataStyle}>{strings('slotScreen.lateralEntry.no_data_found')}</Text>
             }
           />
         )}

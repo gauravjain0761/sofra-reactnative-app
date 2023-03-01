@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { simplifyDateTime } from "../../Services/CommonFunctions";
 import { media_url } from "../../Config/AppConfig";
+import { strings } from "../../Config/I18n";
 
 export default function M_NotificationScreen() {
   const dispatch = useDispatch();
@@ -42,12 +43,12 @@ export default function M_NotificationScreen() {
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Notifications</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings('notification.notification')}</Text>
         {!PRELOADER && (
           <FlatList
             data={NOTIFICATIONS}
             ListEmptyComponent={
-              <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+              <Text style={ApplicationStyles.nodataStyle}>{strings('orders.lateralEntry.no_data_found')}</Text>
             }
             renderItem={({ item, index }) => (
               <View style={styles.row}>

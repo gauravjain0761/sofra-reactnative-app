@@ -29,6 +29,8 @@ import { ItemTypeData } from "../../Config/StaticDropdownData";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { EditMenuItem } from "../../Services/MerchantApi";
 import moment from "moment";
+import { strict } from "yargs";
+import { strings } from "../../Config/I18n";
 
 const citydata = [
   {
@@ -212,22 +214,22 @@ export default function M_EditMenuItemScreen(props) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Edit Menu Items</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings('menu_screen.edit_menu_items')}</Text>
 
         <View style={styles.rowView}>
           <View>
-            <Text style={styles.titleInput}>Name</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.name')}</Text>
             <RegistrationTextInput
-              placeholder={"Enter name"}
+              placeholder={strings('menu_screen.enter_name')}
               value={Name}
               onChangeText={(text) => setName(text)}
               placeholderTextColor={Colors.black}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>Name in Arabic</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.name_in_arabic')}</Text>
             <RegistrationTextInput
-              placeholder={"Enter name in Arabic"}
+              placeholder={strings('menu_screen.enter_name_in_arabic')}
               value={ArabicName}
               onChangeText={(text) => setArabicName(text)}
               placeholderTextColor={Colors.black}
@@ -235,7 +237,7 @@ export default function M_EditMenuItemScreen(props) {
           </View>
           <View style={styles.row}>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>Menu Categories</Text>
+              <Text style={styles.titleInput}>{strings('menu_screen.menu_categories')}</Text>
               <RegistrationDropdown
                 data={ALL_CATEGORIES}
                 value={MenuCategory[0]}
@@ -243,21 +245,21 @@ export default function M_EditMenuItemScreen(props) {
                   setMenuCategory([text]);
                 }}
                 // multiSelect={true}
-                placeholder={"Categories"}
+                placeholder={strings('manu_screen.categories')}
                 valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>Item Type</Text>
+              <Text style={styles.titleInput}>{strings('menu_screen.item_type')}</Text>
               <RegistrationDropdown
                 data={ItemTypeData}
                 value={ItemType}
                 setData={(text) => {
                   setItemType(text);
                 }}
-                placeholder={"Type"}
+                placeholder={strings('menu_screen.type')}
                 valueField={"name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
@@ -266,20 +268,20 @@ export default function M_EditMenuItemScreen(props) {
           </View>
           <View style={styles.row}>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>Price in AED</Text>
+              <Text style={styles.titleInput}>{strings('menu_screen.price_in_AED')}</Text>
               <RegistrationTextInput
                 keyboardType={"numeric"}
-                placeholder={"Enter Price"}
+                placeholder={strings('menu_screen.enter_price')}
                 value={Price}
                 onChangeText={(text) => setPrice(text)}
                 placeholderTextColor={Colors.black}
               />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <Text style={styles.titleInput}>Discount</Text>
+              <Text style={styles.titleInput}>{strings('menu_screen.discount')}</Text>
               <RegistrationTextInput
                 keyboardType={"numeric"}
-                placeholder={"Discount"}
+                placeholder={strings('menu_screen.discount')}
                 value={Discount}
                 onChangeText={(text) => setDiscount(text)}
                 placeholderTextColor={Colors.black}
@@ -287,17 +289,17 @@ export default function M_EditMenuItemScreen(props) {
             </View>
           </View>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-            <Text style={styles.titleInput}>Max Limit</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.max_Limit')}</Text>
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={"Enter Price"}
+              placeholder={strings('menu_screen.enter_price')}
               value={MaxLimit}
               onChangeText={(text) => setMaxLimit(text)}
               placeholderTextColor={Colors.black}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>Images</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.image')}</Text>
             <TouchableOpacity
               onPress={() => openPicker()}
               style={styles.imageView}
@@ -308,7 +310,7 @@ export default function M_EditMenuItemScreen(props) {
                     source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
                     style={styles.imageVector}
                   />
-                  <Text style={styles.attachText}>Attach Image</Text>
+                  <Text style={styles.attachText}>{strings('menu_screen.lateralEntry.attach_image')}</Text>
                 </View>
               ) : (
                 <View>
@@ -326,38 +328,38 @@ export default function M_EditMenuItemScreen(props) {
           </View>
 
           <View>
-            <Text style={styles.titleInput}>Description</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.description')}</Text>
             <TextInput
               value={Description}
               onChangeText={(text) => setDescription(text)}
               multiline={true}
               style={styles.textInput}
-              placeholder={"Description"}
+              placeholder={strings('menu_screen.description')}
               placeholderTextColor={Colors.black}
               textAlignVertical={"top"}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>Description in Arabic</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.descripition_in_arabic')}</Text>
             <TextInput
               value={ArabicDes}
               onChangeText={(text) => setArabicDes(text)}
               multiline={true}
               style={styles.textInput}
-              placeholder={"Description"}
+              placeholder={strings('menu_screen.descripition_in_arabic')}
               placeholderTextColor={Colors.black}
               textAlignVertical={"top"}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>Menu Descriptors</Text>
+            <Text style={styles.titleInput}>{strings('menu_screen.menu_description')}</Text>
             <RegistrationDropdown
               data={DESCRIPTOR}
               value={MenuDes}
               setData={(text) => {
                 setMenuDes(text);
               }}
-              placeholder={"Menu Descriptors"}
+              placeholder={strings('menu_screen.menu_description')}
               valueField={"name"}
               style={styles.dropdownRow}
               multiSelect={true}
@@ -369,7 +371,7 @@ export default function M_EditMenuItemScreen(props) {
             text={"small"}
             onPress={() => validation()}
             style={styles.dbuttonStyle}
-            name={"Update Menu Item"}
+            name={strings('menu_screen.update_menu_item')}
           />
         </View>
       </ScrollView>

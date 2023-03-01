@@ -5,7 +5,7 @@ import Colors from "../Themes/Colors";
 import { commonFontStyle } from "../Themes/Fonts";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { dateFilterData } from "../Config/StaticDropdownData";
-
+import {strings} from '../Config/I18n';
 export default function SearchDropdown({
   setData,
   data,
@@ -54,7 +54,7 @@ export default function SearchDropdown({
         }}
       />
       <TouchableOpacity onPress={() => onSearch()} style={styles.pinkBUtton}>
-        <Text style={styles.searchText}>Search</Text>
+        <Text style={styles.searchText}>{strings('statisticsScreen.search')}</Text>
       </TouchableOpacity>
     </View>
   );

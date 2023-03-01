@@ -1,5 +1,5 @@
 import moment from "moment";
-
+import { strings } from "./I18n";
 export const ItemTypeData = [
   { id: 1, name: "Normal" },
   { id: 2, name: "Cold" },
@@ -22,8 +22,8 @@ export const VendorsValidityData = [
 ];
 
 export const reportDropdownData = [
-  { id: 1, name: "Settled Report" },
-  { id: 2, name: "Un-Settled Report" },
+  { id: 1, name: strings('report_screen.lateralEntry.settled_report') },
+  { id: 2, name: strings('report_screen.lateralEntry.unSettled_report')},
 ];
 
 export const driverTypeData = [
@@ -46,6 +46,10 @@ export const discountType = [
   { id: 2, name: "Percentage" },
 ];
 
+export const  language=[
+  { id: 1, name: "English" },
+  { id: 2, name: "عربي" },
+]
 export const deliveryTimeData = () => {
   let time = [];
   for (let i = 5; i <= 2880; i = i + 5) {
@@ -95,7 +99,7 @@ export const dateFilterData = [
     endDate: moment().format("YYYY-MM-DD"),
     id: 0,
     name: moment().format("MM/DD/YYYY") + " - " + moment().format("MM/DD/YYYY"),
-    label: "Today",
+    label: strings('lateral_entry.days.today'),
   },
   {
     startDate: moment().subtract(1, "day").format("YYYY-MM-DD"),
@@ -105,7 +109,7 @@ export const dateFilterData = [
       moment().subtract(1, "day").format("MM/DD/YYYY") +
       " - " +
       moment().subtract(1, "day").format("MM/DD/YYYY"),
-    label: "Yesterday",
+    label: strings('lateral_entry.days.yesterday'),
   },
   {
     startDate: moment().subtract(6, "days").format("YYYY-MM-DD"),
@@ -115,7 +119,7 @@ export const dateFilterData = [
       moment().subtract(6, "days").format("MM/DD/YYYY") +
       " - " +
       moment().format("MM/DD/YYYY"),
-    label: "Last 7 Days",
+    label:strings('lateral_entry.days.last7days'),
   },
   {
     startDate: moment().subtract(29, "days").format("YYYY-MM-DD"),
@@ -125,7 +129,7 @@ export const dateFilterData = [
       moment().subtract(29, "day").format("MM/DD/YYYY") +
       " - " +
       moment().format("MM/DD/YYYY"),
-    label: "Last 30 Days",
+    label: strings('lateral_entry.days.last30days'),
   },
   {
     startDate: moment().startOf("month").format("YYYY-MM-DD"),
@@ -135,7 +139,7 @@ export const dateFilterData = [
       moment().startOf("month").format("MM/DD/YYYY") +
       " - " +
       moment().endOf("month").format("MM/DD/YYYY"),
-    label: "This Month",
+    label: strings('lateral_entry.days.this_month'),
   },
   {
     startDate: moment()
@@ -148,7 +152,7 @@ export const dateFilterData = [
       moment().subtract(1, "month").startOf("month").format("MM/DD/YYYY") +
       " - " +
       moment().subtract(1, "month").endOf("month").format("MM/DD/YYYY"),
-    label: "Last Month",
+    label:strings('lateral_entry.days.last_month'),
   },
   { startDate: "", endDate: "", id: 0, name: "CUSTOM", label: "Custom Range" },
 ];
