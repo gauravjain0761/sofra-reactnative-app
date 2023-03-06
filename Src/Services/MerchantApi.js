@@ -69,6 +69,7 @@ export const getUsers = () => async (dispatch) => {
 
 export const getOrders = (page, status, search) => async (dispatch) => {
   let token = await getToken();
+  let language = await getLanguage();
   let url = "";
   if (page) {
     if (status == "ALL") {
@@ -112,7 +113,7 @@ export const getOrders = (page, status, search) => async (dispatch) => {
   }
 
   try {
-    const data = await GET(dispatch, url);
+    const data = await GET(dispatch, url + "&language=" + language);
     if (data.status == true) {
       dispatchAction(dispatch, "SET_ORDERS", data);
     } else {
@@ -153,13 +154,16 @@ export const getStatitics = (postObj) => async (dispatch) => {
 
 export const getSettledReports = (postObj) => async (dispatch) => {
   let token = await getToken();
+  let lan = await getLanguage();
   let url = "";
   if (postObj) {
     url =
       merchant_url +
       "/getSettledReports?auth_token=" +
       token +
-      "&language=en&startDate=" +
+      "&language=" +
+      lan +
+      "&startDate=" +
       postObj.startDate +
       "&endDate=" +
       postObj.endDate;
@@ -185,13 +189,16 @@ export const getUnSettledReports = (postObj) => async (dispatch) => {
   dispatch({ type: "PRE_LOADER", payload: true });
 
   let token = await getToken();
+  let lan = await getLanguage();
   let url = "";
   if (postObj) {
     url =
       merchant_url +
       "/getUnSettledReports?auth_token=" +
       token +
-      "&language=en&startDate=" +
+      "&language=" +
+      lan +
+      "&startDate=" +
       postObj.startDate +
       "&endDate=" +
       postObj.endDate;
@@ -281,7 +288,9 @@ export const updateAvailbility = (postObj) => async (dispatch) => {
 
 export const getOffers = () => async (dispatch) => {
   let token = await getToken();
-  const url = merchant_url + "/getOffers?auth_token=" + token;
+  let language = await getLanguage();
+  const url =
+    merchant_url + "/getOffers?auth_token=" + token + "&language=" + language;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -623,7 +632,13 @@ export const addOffSlot = (postObj) => async (dispatch) => {
 
 export const getRestaurnatDetails = () => async (dispatch) => {
   let token = await getToken();
-  const url = merchant_url + "/getRestaurnatDetails?auth_token=" + token;
+  let lan = await getLanguage();
+  const url =
+    merchant_url +
+    "/getRestaurnatDetails?auth_token=" +
+    token +
+    "&language=" +
+    lan;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -783,8 +798,15 @@ export const dashboardSearch = (query) => async (dispatch) => {
 
 export const getOrderDetail = (query, onSuccess) => async (dispatch) => {
   let token = await getToken();
+  let language = await getLanguage();
   const url =
-    merchant_url + "/getOrderDetails?auth_token=" + token + "&orderId=" + query;
+    merchant_url +
+    "/getOrderDetails?auth_token=" +
+    token +
+    "&orderId=" +
+    query +
+    "&language=" +
+    language;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {

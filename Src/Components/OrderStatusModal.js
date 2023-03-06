@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import ReactNativeModal from "react-native-modal";
 import ApplicationStyles from "../Themes/ApplicationStyles";
 import PinkButton from "./PinkButton";
+import { strings } from "../Config/I18n";
 
 export default function OrderStatusModal({
   modalVisible,
@@ -30,18 +31,18 @@ export default function OrderStatusModal({
           source={require("../Images/Merchant/xxxhdpi/correct.png")}
           style={styles.icon}
         />
-        <Text style={styles.title}>Are you sure?</Text>
+        <Text style={styles.title}>{strings("pop_up.Are_you_sure")}</Text>
         <Text style={styles.titleBottom}>
-          You want to change the order status to{" "}
-          <Text style={styles.titleBottomBold}>{nextStatus.title}</Text>. But it
-          will not revert back
+          {strings("pop_up.text1")}{" "}
+          <Text style={styles.titleBottomBold}>{nextStatus.title}</Text>.{" "}
+          {strings("pop_up.text2")}
         </Text>
         <View style={styles.buttonRow}>
           <View style={{ width: "58%" }}>
             <PinkButton
               onPress={() => onStatusUpdate()}
               text={"small"}
-              name={"Yes, do it!"}
+              name={strings("pop_up.doit")}
             />
           </View>
           <View style={{ width: "38%" }}>
@@ -49,7 +50,7 @@ export default function OrderStatusModal({
               onPress={() => onClose()}
               style={{ backgroundColor: Colors.grayButtonBackground }}
               text={"small"}
-              name={"Cancel"}
+              name={strings("pop_up.cancel")}
             />
           </View>
         </View>

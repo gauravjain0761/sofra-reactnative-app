@@ -233,7 +233,8 @@ export default function M_RegistrationScreen({ navigation }) {
             setCurrentlyDeliver(text);
           }}
           placeholder={`${strings("SignUp.do_you_currently_deliver")}*`}
-          valueField={Language == "en" ? "name" : "name_ar"}
+          valueField={"name"}
+          labelField={Language == "en" ? "label" : "name_ar"}
         />
         <RegistrationTextInput
           placeholder={strings("SignUp.web_insta_face_account")}

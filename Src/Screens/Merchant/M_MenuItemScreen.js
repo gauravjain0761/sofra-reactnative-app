@@ -33,7 +33,7 @@ import {
   getMenuDescriptors,
   getMenuItems,
 } from "../../Services/MerchantApi";
-import { ItemTypeData } from "../../Config/StaticDropdownData";
+import { ItemTypeData, language } from "../../Config/StaticDropdownData";
 import moment from "moment";
 import { strings } from "../../Config/I18n";
 import { getLanguage } from "../../Services/asyncStorage";
@@ -54,6 +54,11 @@ export default function M_MenuItemScreen({ navigation }) {
   const MENU_ITEMS = useSelector((e) => e.merchant.menuItems);
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
   const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
+  const [Language, setLanguage] = useState("en");
+  useEffect(async () => {
+    let lang = await getLanguage();
+    setLanguage(lang);
+  }, []);
   useEffect(() => {
     // dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
@@ -74,21 +79,39 @@ export default function M_MenuItemScreen({ navigation }) {
     });
   };
   const onAddMenuItem = async () => {
-    let menuCatJson = getFromDataJson(
-      ALL_CATEGORIES,
-      MenuCategory,
-      "menuCategoryIds"
-    );
-    let menuDescriptorJson = getFromDataJson(
-      DESCRIPTOR,
-      MenuDes,
-      "menuDescriptorsIds"
-    );
-    let lang = await getLanguage();
+    let menuCatJson;
+    let menuDescriptorJson;
+
+    if (Language == "en") {
+      menuCatJson = getFromDataJson(
+        ALL_CATEGORIES,
+        MenuCategory,
+        "menuCategoryIds"
+      );
+      menuDescriptorJson = getFromDataJson(
+        DESCRIPTOR,
+        MenuDes,
+        "menuDescriptorsIds"
+      );
+    } else {
+      menuCatJson = getFromDataJson(
+        ALL_CATEGORIES,
+        MenuCategory,
+        "menuCategoryIds",
+        Language
+      );
+      menuDescriptorJson = getFromDataJson(
+        DESCRIPTOR,
+        MenuDes,
+        "menuDescriptorsIds",
+        Language
+      );
+    }
+
     let data = {
       name: Name,
       name_ar: ArabicName,
-      language: lang,
+      language: Language,
       description: Description,
       description_ar: ArabicDes,
       item_type: ItemType,
@@ -109,21 +132,22 @@ export default function M_MenuItemScreen({ navigation }) {
           }
         : undefined,
     };
-    dispatch(
-      AddMenuItem(data, () => {
-        setName("");
-        setArabicName("");
-        setMenuCategory("");
-        setItemType("");
-        setPrice("");
-        setDiscount("");
-        setMaxLimit("");
-        setImageItem("");
-        setDescription("");
-        setArabicDes("");
-        setMenuDes("");
-      })
-    );
+    console.log(data);
+    // dispatch(
+    //   AddMenuItem(data, () => {
+    //     setName("");
+    //     setArabicName("");
+    //     setMenuCategory("");
+    //     setItemType("");
+    //     setPrice("");
+    //     setDiscount("");
+    //     setMaxLimit("");
+    //     setImageItem("");
+    //     setDescription("");
+    //     setArabicDes("");
+    //     setMenuDes("");
+    //   })
+    // );
   };
   const validation = () => {
     if (Name.trim() !== "") {
@@ -263,7 +287,7 @@ export default function M_MenuItemScreen({ navigation }) {
                 }}
                 // multiSelect={true}
                 placeholder={strings("menu_screen.categories")}
-                valueField={"name"}
+                valueField={Language == "en" ? "name" : "name_ar"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
@@ -280,6 +304,7 @@ export default function M_MenuItemScreen({ navigation }) {
                 }}
                 placeholder={strings("menu_screen.type")}
                 valueField={"name"}
+                labelField={Language == "en" ? "label" : "name_ar"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
@@ -393,7 +418,7 @@ export default function M_MenuItemScreen({ navigation }) {
               }}
               multiSelect={true}
               placeholder={strings("menu_screen.menu_description")}
-              valueField={"name"}
+              valueField={Language == "en" ? "name" : "name_ar"}
               style={styles.dropdownRow}
               placeholderTextColor={Colors.black}
             />

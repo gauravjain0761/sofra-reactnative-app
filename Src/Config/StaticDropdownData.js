@@ -1,24 +1,34 @@
 import moment from "moment";
 import { strings } from "./I18n";
 export const ItemTypeData = [
-  { id: 1, name: "Normal" },
-  { id: 2, name: "Cold" },
+  { id: 1, name: "Normal", label: "Normal", name_ar: "طبيعي" },
+  { id: 2, name: "Cold", label: "Cold", name_ar: "بارد" },
 ];
 
 export const CurrentDeliverData = [
-  { id: 1, name: "Yes", name_ar: "نعم" },
-  { id: 2, name: "No", name_ar: "لا" },
+  { id: 1, name: "Yes", name: "Yes", name_ar: "نعم" },
+  { id: 2, name: "No", name: "No", name_ar: "لا" },
 ];
 
 export const ExpiryTypeData = [
-  { id: 0, name: "NO", label: "No Limit" },
-  { id: 1, name: "DATE", label: "For Specific Dates" },
-  { id: 2, name: "COUNT", label: "For Specific Count" },
+  { id: 0, name: "NO", label: "No Limit", name_ar: "لا حدود" },
+  {
+    id: 1,
+    name: "DATE",
+    label: "For Specific Dates",
+    name_ar: "لتواريخ محددة",
+  },
+  { id: 2, name: "COUNT", label: "For Specific Count", name_ar: "لعدد محدد" },
 ];
 
 export const VendorsValidityData = [
-  { id: 1, name: "ALL", label: "For All Users" },
-  { id: 2, name: "USERS", label: "For Specific Users" },
+  { id: 1, name: "ALL", label: "For All Users", name_ar: "لكل المستخدمين" },
+  {
+    id: 2,
+    name: "USERS",
+    label: "For Specific Users",
+    name_ar: "لمستخدمين محددين",
+  },
 ];
 
 export const reportDropdownData = [
@@ -32,18 +42,23 @@ export const driverTypeData = [
 ];
 
 export const vatType = [
-  { id: 1, name: "EXCLUSIVE" },
-  { id: 2, name: "INCLUSIVE" },
+  { id: 1, name: "EXCLUSIVE", label: "EXCLUSIVE", name_ar: "حصري" },
+  { id: 2, name: "INCLUSIVE", label: "INCLUSIVE", name_ar: "شامل" },
 ];
 
 export const offerUserData = [
-  { id: 1, name: "ALL", label: "For All Users" },
-  { id: 2, name: "SPECIFIC", label: "For Specific Users" },
+  { id: 1, name: "ALL", label: "For All Users", name_ar: "لكل المستخدمين" },
+  {
+    id: 2,
+    name: "SPECIFIC",
+    label: "For Specific Users",
+    name_ar: "لمستخدمين محددين",
+  },
 ];
 
 export const discountType = [
-  { id: 1, name: "Price" },
-  { id: 2, name: "Percentage" },
+  { id: 1, label: "Price", name: "Price", name_ar: "سعر" },
+  { id: 2, label: "Percentage", name: "Percentage", name_ar: "نسبة مئوية" },
 ];
 
 export const language = [

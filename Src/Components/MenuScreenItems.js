@@ -9,6 +9,7 @@ import PlaceHolderImage from "./PlaceHolderImage";
 import { useEffect } from "react";
 import { getLanguage } from "../Services/asyncStorage";
 import { useState } from "react";
+import { strings } from "../Config/I18n";
 
 export default function MenuScreenItems({
   item,
@@ -58,7 +59,7 @@ export default function MenuScreenItems({
               style={styles.menuIconButton}
               source={require("../Images/Merchant/xxxhdpi/edit.png")}
             />
-            <Text style={styles.addButton}>Edit</Text>
+            <Text style={styles.addButton}>{strings("menu_screen.edit")}</Text>
           </TouchableOpacity>
         )}
         {activeVisible == true && (
@@ -76,7 +77,9 @@ export default function MenuScreenItems({
               source={require("../Images/Merchant/xxxhdpi/ic_tick.png")}
             />
             <Text style={styles.addButton}>
-              {status == 1 ? "Active" : "In-Active"}
+              {status == 1
+                ? strings("menu_screen.active")
+                : strings("menu_screen.inAcitive")}
             </Text>
           </TouchableOpacity>
         )}
@@ -94,7 +97,9 @@ export default function MenuScreenItems({
               style={styles.menuIconButton}
               source={require("../Images/Merchant/xxxhdpi/delete.png")}
             />
-            <Text style={styles.addButton}>Delete</Text>
+            <Text style={styles.addButton}>
+              {strings("menu_screen.deleta")}
+            </Text>
           </TouchableOpacity>
         )}
         {(!activeVisible || screen == "promocode") && (
@@ -111,7 +116,9 @@ export default function MenuScreenItems({
                 style={styles.menuIconButton}
                 source={require("../Images/Merchant/xxxhdpi/ic_tick.png")}
               />
-              <Text style={styles.addButton}>Active</Text>
+              <Text style={styles.addButton}>
+                {strings("menu_screen.active")}
+              </Text>
             </TouchableOpacity>
           </View>
         )}

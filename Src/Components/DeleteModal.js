@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
 import PinkButton from "./PinkButton";
+import { strings } from "../Config/I18n";
 
 export default function DeleteModal({ onDelete, onClose, isVisible }) {
   return (
@@ -25,16 +26,14 @@ export default function DeleteModal({ onDelete, onClose, isVisible }) {
           source={require("../Images/Merchant/xxxhdpi/danger.png")}
           style={styles.icon}
         />
-        <Text style={styles.title}>Are you sure?</Text>
-        <Text style={styles.titleBottom}>
-          You won't be able to revert this!
-        </Text>
+        <Text style={styles.title}>{strings("pop_up.Are_you_sure")}</Text>
+        <Text style={styles.titleBottom}>{strings("pop_up.popup_text1")}</Text>
         <View style={styles.buttonRow}>
           <View style={{ width: "58%" }}>
             <PinkButton
               onPress={() => onDelete()}
               text={"small"}
-              name={"Yes, delete it!"}
+              name={strings("pop_up.delete_it")}
             />
           </View>
           <View style={{ width: "38%" }}>
@@ -42,7 +41,7 @@ export default function DeleteModal({ onDelete, onClose, isVisible }) {
               onPress={() => onClose()}
               style={{ backgroundColor: Colors.grayButtonBackground }}
               text={"small"}
-              name={"Cancel"}
+              name={strings("pop_up.cancel")}
             />
           </View>
         </View>

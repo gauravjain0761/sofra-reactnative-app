@@ -22,14 +22,20 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AddOffer } from "../../Services/MerchantApi";
 import { offerUserData } from "../../Config/StaticDropdownData";
-import {strings} from '../../Config/I18n';
+import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
+import { useEffect } from "react";
 
 export default function M_CreateOfferScreen({ navigation }) {
   const dispatch = useDispatch();
   const [Detail, setDetail] = useState("");
   const [Users, setUsers] = useState([]);
   const [userType, setuserType] = useState("");
-
+  const [lan, setlan] = useState("en");
+  useEffect(async () => {
+    let lang = await getLanguage();
+    setlan(lang);
+  }, []);
   const USERS = useSelector((e) => e.merchant.users);
   const onCreateOffer = () => {
     if (Detail.trim() !== "") {
@@ -51,37 +57,50 @@ export default function M_CreateOfferScreen({ navigation }) {
               })
             );
           } else {
-            dispatchErrorAction(dispatch, strings('validationString.please_select_users'));
+            dispatchErrorAction(
+              dispatch,
+              strings("validationString.please_select_users")
+            );
           }
         }
       } else {
-        dispatchErrorAction(dispatch,strings('validationString.please_select_users'));
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_select_users")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, strings('validationString.please_enter_offer_detail'));
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_offer_detail")
+      );
     }
   };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView>
-        <Text style={ApplicationStyles.welcomeText}>{strings('offerSummary.offer_detail')}</Text>
-        <Text style={styles.inputName}>{`${strings('offerSummary.offer_detail')}*`}</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("offerSummary.offer_detail")}
+        </Text>
+        <Text style={styles.inputName}>{`${strings(
+          "offerSummary.offer_detail"
+        )}*`}</Text>
         <TextInput
           value={Detail}
           onChangeText={(text) => setDetail(text)}
           multiline={true}
           style={styles.textInput}
-          placeholder={strings('offerSummary.Enter_Detail')}
+          placeholder={strings("offerSummary.Enter_Detail")}
           placeholderTextColor={Colors.darkGrey}
           textAlignVertical={"top"}
         />
         <Text style={styles.bottomText}>
-         {strings('offerSummary.please_enter_offer_detail')}
+          {strings("offerSummary.please_enter_offer_detail")}
         </Text>
         <Text
           style={[styles.inputName, { marginTop: hp(3), marginBottom: hp(2) }]}
         >
-          {`${strings('offerSummary.user')}*`}
+          {`${strings("offerSummary.user")}*`}
         </Text>
 
         <RegistrationDropdown
@@ -90,13 +109,15 @@ export default function M_CreateOfferScreen({ navigation }) {
           setData={(text) => {
             setuserType(text);
           }}
-          placeholder={strings('offerSummary.lateralEntry.type')}
+          placeholder={strings("offerSummary.lateralEntry.type")}
           valueField={"name"}
-          labelField={"label"}
+          labelField={lan == "en" ? "label" : "name_ar"}
           style={styles.dropdownRow}
           placeholderTextColor={Colors.black}
         />
-        <Text style={styles.bottomText}>{strings('offerSummary.lateralEntry.please_select_here')}</Text>
+        <Text style={styles.bottomText}>
+          {strings("offerSummary.lateralEntry.please_select_here")}
+        </Text>
         {userType == "SPECIFIC" && (
           <View>
             <Text
@@ -105,7 +126,7 @@ export default function M_CreateOfferScreen({ navigation }) {
                 { marginTop: hp(3), marginBottom: hp(2) },
               ]}
             >
-             {`${strings('offerSummary.select_user')}*`}
+              {`${strings("offerSummary.lateralEntry.select_user")}*`}
             </Text>
             <RegistrationDropdown
               data={USERS}
@@ -115,7 +136,9 @@ export default function M_CreateOfferScreen({ navigation }) {
               }}
               multiSelect={true}
               placeholder={
-                Users.length !== 0 ? Users.toString() : "Nothing Selected"
+                Users.length !== 0
+                  ? Users.toString()
+                  : strings("offerSummary.nothing_selected")
               }
               valueField={"name"}
               style={styles.dropdownRow}
@@ -123,7 +146,9 @@ export default function M_CreateOfferScreen({ navigation }) {
             />
 
             <Text style={styles.bottomText}>
-              {strings('offerSummary.lateralEntry.please_select_user_from_list')}
+              {strings(
+                "offerSummary.lateralEntry.please_select_user_from_list"
+              )}
             </Text>
           </View>
         )}
@@ -132,7 +157,7 @@ export default function M_CreateOfferScreen({ navigation }) {
           onPress={() => onCreateOffer()}
           style={styles.dbuttonStyle}
           text={"small"}
-          name={strings('offerSummary.create_offer')}
+          name={strings("offerSummary.create_offer")}
         />
       </ScrollView>
     </View>
@@ -153,7 +178,7 @@ const styles = StyleSheet.create({
     padding: hp(2),
     borderRadius: 5,
     marginVertical: hp(2),
-    textAlign: I18nManager.isRTL?'right': 'left'
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   bottomText: {
     ...commonFontStyle(400, 14, Colors.darkGrey),

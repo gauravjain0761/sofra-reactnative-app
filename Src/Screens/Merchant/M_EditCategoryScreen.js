@@ -21,7 +21,7 @@ import {
 } from "../../Services/CommonFunctions";
 import { useDispatch } from "react-redux";
 import { EditMenuCategory } from "../../Services/MerchantApi";
-import {strings} from '../../Config/I18n';
+import { strings } from "../../Config/I18n";
 
 export default function M_EditCategoryScreen({ navigation, route }) {
   const category = route?.params;
@@ -45,32 +45,42 @@ export default function M_EditCategoryScreen({ navigation, route }) {
       if (nameArabic.trim() !== "") {
         onEditCategory();
       } else {
-        dispatchErrorAction(dispatch, "Please enter name in arabic");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_name_in_arabic")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter category name");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_category_name")
+      );
     }
   };
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Edit Menu Categories</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("editCategories.edit_manu_categories")}
+        </Text>
 
         <View style={styles.rowView}>
           {/* <Text style={styles.title}>Add Menu Categories</Text>
           <Text style={styles.title2}>Menu Categories Details</Text> */}
           <View>
-            <Text style={styles.titleInput}>Name</Text>
+            <Text style={styles.titleInput}>{strings("menu_screen.name")}</Text>
             <RegistrationTextInput
-              placeholder={"Enter name"}
+              placeholder={strings("menu_screen.enter_name")}
               value={name}
               onChangeText={(text) => setname(text)}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>Name in Arabic</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.name_in_arabic")}
+            </Text>
             <RegistrationTextInput
-              placeholder={"Enter name in Arabic"}
+              placeholder={strings("menu_screen.enter_name_in_arabic")}
               value={nameArabic}
               onChangeText={(text) => setnameArabic(text)}
             />
@@ -80,7 +90,7 @@ export default function M_EditCategoryScreen({ navigation, route }) {
             text={"small"}
             onPress={() => validation()}
             style={styles.dbuttonStyle}
-            name={"Update Categories"}
+            name={strings("editCategories.update_categories")}
           />
         </View>
       </ScrollView>

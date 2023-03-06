@@ -38,7 +38,7 @@ import M_SlotScreen from "../Screens/Merchant/M_SlotScreen";
 import M_UpdatePassword from "../Screens/Merchant/M_UpdatePassword";
 import M_EditCategoryScreen from "../Screens/Merchant/M_EditCategoryScreen";
 import M_EditMenuItemScreen from "../Screens/Merchant/M_EditMenuItemScreen";
-import { clearAsyncStorage } from "../Services/asyncStorage";
+import { clearAsyncStorage, getLanguage } from "../Services/asyncStorage";
 import { useDispatch, useSelector } from "react-redux";
 import { getLogout } from "../Services/AuthApi";
 import M_CreateOfferScreen from "../Screens/Merchant/M_CreateOfferScreen";
@@ -46,6 +46,8 @@ import HeaderLeftIcon from "../Components/NavigationComponent";
 import M_EditPromocodeScreen from "../Screens/Merchant/M_EditPromocodeScreen";
 import { getRestaurnatDetails } from "../Services/MerchantApi";
 import { media_url } from "../Config/AppConfig";
+import { useState } from "react";
+import M_InstructionScreen from "../Screens/Merchant/M_InstructionScreen";
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
@@ -69,72 +71,86 @@ const transparentHeader = {
 
 let DrawerItemArray = [
   {
+    label_ar: "لوحة القيادة",
     label: "Dashboard",
     image: require("../Images/Merchant/xxxhdpi/ic_home.png"),
     screen: "M_DashboardScreen",
   },
   {
+    label_ar: "فئات القائمة",
     label: "Menu Categories",
     image: require("../Images/Merchant/xxxhdpi/ic_side_menu.png"),
     screen: "M_MenuStack1",
   },
   {
+    label_ar: "عناصر القائمة",
     label: "Menu Items",
     image: require("../Images/Merchant/xxxhdpi/ic_menu_items.png"),
     screen: "M_MenuItemScreen",
   },
   {
+    label_ar: "طلبات",
     label: "Orders",
     image: require("../Images/Merchant/xxxhdpi/ic_orders.png"),
     screen: "M_OrderScreen",
   },
   {
+    label_ar: "حساب تعريفي",
     label: "Profile",
     image: require("../Images/Merchant/xxxhdpi/ic_profile.png"),
     screen: "M_ProfileScreen",
   },
   {
+    label_ar: "الرموز الترويجية",
     label: "Promo Codes",
     image: require("../Images/Merchant/xxxhdpi/ic_promo.png"),
     screen: "M_PromocodeScreen",
   },
   {
+    label_ar: "عروض",
     label: "Offers",
     image: require("../Images/Merchant/xxxhdpi/ic_offer.png"),
     screen: "M_OfferScreen",
   },
 
   {
+    label_ar: "وثائق",
     label: "Documents",
     image: require("../Images/Merchant/xxxhdpi/ic_document.png"),
     screen: "M_DocumentScreen",
   },
   {
+    label_ar: "التوفر المحدث",
     label: "Updated Availabilities",
     image: require("../Images/Merchant/xxxhdpi/ic_update.png"),
     screen: "M_UpdateAvailability",
   },
   {
+    label_ar: "فتحة البائع",
     label: "Vendor Slot",
     image: require("../Images/Merchant/xxxhdpi/ic_slot.png"),
     screen: "M_SlotScreen",
   },
   {
+    label_ar: "إعدادات التطبيقات",
     label: "App Settings",
     image: require("../Images/Merchant/xxxhdpi/ic_seting.png"),
     screen: "M_AppSetting",
   },
   {
+    label_ar: "تطوير كلمة السر",
     label: "Update Password",
     image: require("../Images/Merchant/xxxhdpi/ic_pass.png"),
     screen: "M_UpdatePassword",
   },
   {
+    label_ar: "إحصائيات",
     label: "Statistics",
     image: require("../Images/Merchant/xxxhdpi/ic_statistic.png"),
     screen: "M_StatisticsScreen",
   },
   {
+    label_ar: "التقارير",
     label: "Reports",
     image: require("../Images/Merchant/xxxhdpi/ic_reports.png"),
     screen: "M_ReportScreen",
@@ -179,6 +195,11 @@ function M_MenuStack() {
 
 const BottomTab = createBottomTabNavigator();
 function M_MyBottomTabs() {
+  const [language, setlanguage] = useState("en");
+  useEffect(async () => {
+    let lang = await getLanguage();
+    setlanguage(lang);
+  }, []);
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -206,7 +227,7 @@ function M_MyBottomTabs() {
               }
             />
           ),
-          tabBarLabel: "Home",
+          tabBarLabel: language == "en" ? "Home" : "بيت",
           ...transparentHeader,
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
@@ -226,7 +247,7 @@ function M_MyBottomTabs() {
               }
             />
           ),
-          tabBarLabel: "Orders",
+          tabBarLabel: language == "en" ? "Orders" : "طلبات",
           headerStyle: {
             backgroundColor: Colors.registrationBackground,
             elevation: 0,
@@ -266,7 +287,7 @@ function M_MyBottomTabs() {
               }
             />
           ),
-          tabBarLabel: "Menu",
+          tabBarLabel: language == "en" ? "Menu" : "قائمة طعام",
           ...transparentHeader,
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
@@ -296,7 +317,7 @@ function M_MyBottomTabs() {
               }
             />
           ),
-          tabBarLabel: "Notifications",
+          tabBarLabel: language == "en" ? "Notifications" : "إشعارات",
           ...transparentHeader,
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
@@ -316,7 +337,7 @@ function M_MyBottomTabs() {
               }
             />
           ),
-          tabBarLabel: "Profile",
+          tabBarLabel: language == "en" ? "Profile" : "حساب تعريفي",
           ...transparentHeader,
           headerTitle: "",
           headerTransparent: true,
@@ -337,6 +358,11 @@ function CustomDrawerContent(props) {
   const _TOAST = useSelector((e) => e.merchant.toast);
   const dispatch = useDispatch();
   const RESTAURANT = useSelector((e) => e.merchant.restaurant);
+  const [language, setlanguage] = useState("en");
+  useEffect(async () => {
+    let lang = await getLanguage();
+    setlanguage(lang);
+  }, []);
 
   useEffect(() => {
     if (_TOAST.message == "Auth Token is invalid") {
@@ -379,7 +405,13 @@ function CustomDrawerContent(props) {
               : require("../Images/Delivery/xxxhdpi/profile_placeholder.png")
           }
         />
-        <Text style={styles.name}>{RESTAURANT.name}</Text>
+        <Text style={styles.name}>
+          {RESTAURANT !== {}
+            ? language == "en"
+              ? RESTAURANT.name
+              : RESTAURANT.name_ar
+            : ""}
+        </Text>
         {DrawerItemArray.map((item, index) => {
           return (
             <DrawerItem
@@ -391,7 +423,7 @@ function CustomDrawerContent(props) {
                     { width: widthPercentageToDP(50) },
                   ]}
                 >
-                  {item.label}
+                  {language == "en" ? item.label : item.label_ar}
                 </Text>
               )}
               icon={({ focused, color, size }) => (
@@ -417,7 +449,9 @@ function CustomDrawerContent(props) {
               onLogout();
             }}
           >
-            <Text style={styles.logoutButton}>Logout</Text>
+            <Text style={styles.logoutButton}>
+              {language == "en" ? "Logout" : "تسجيل خروج"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -576,6 +610,16 @@ export function MerchantDrawer({ navigation }) {
         })}
         name="M_SlotScreen"
         component={M_SlotScreen}
+      />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
+        name="M_InstructionScreen"
+        component={M_InstructionScreen}
       />
       <Drawer.Screen
         options={({ navigation }) => ({

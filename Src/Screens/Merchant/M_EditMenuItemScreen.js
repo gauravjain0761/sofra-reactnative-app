@@ -31,6 +31,7 @@ import { EditMenuItem } from "../../Services/MerchantApi";
 import moment from "moment";
 import { strict } from "yargs";
 import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 
 const citydata = [
   {
@@ -60,7 +61,11 @@ export default function M_EditMenuItemScreen(props) {
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
   const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
   const isFocused = useIsFocused();
-
+  const [Language, setLanguage] = useState("en");
+  useEffect(async () => {
+    let lang = await getLanguage();
+    setLanguage(lang);
+  }, []);
   const getArray = (mainArray, filed) => {
     let temp = [];
     mainArray.length !== 0 &&
@@ -102,24 +107,41 @@ export default function M_EditMenuItemScreen(props) {
     });
   };
   const onEditMenuItem = async () => {
-    let menuCatJson = getFromDataJson(
-      ALL_CATEGORIES,
-      MenuCategory,
-      "menuCategoryIds"
-    );
-    let menuDescriptorJson = getFromDataJson(
-      DESCRIPTOR,
-      MenuDes,
-      "menuDescriptorsIds"
-    );
-    let lang = await getLanguage();
+    let menuCatJson;
+    let menuDescriptorJson;
+
+    if (Language == "en") {
+      menuCatJson = getFromDataJson(
+        ALL_CATEGORIES,
+        MenuCategory,
+        "menuCategoryIds"
+      );
+      menuDescriptorJson = getFromDataJson(
+        DESCRIPTOR,
+        MenuDes,
+        "menuDescriptorsIds"
+      );
+    } else {
+      menuCatJson = getFromDataJson(
+        ALL_CATEGORIES,
+        MenuCategory,
+        "menuCategoryIds",
+        Language
+      );
+      menuDescriptorJson = getFromDataJson(
+        DESCRIPTOR,
+        MenuDes,
+        "menuDescriptorsIds",
+        Language
+      );
+    }
     let data = {};
     if (ImageItem.sourceURL) {
       data = {
         menuId: MenuIdEdit,
         name: Name,
         name_ar: ArabicName,
-        language: lang,
+        language: Language,
         description: Description,
         description_ar: ArabicDes,
         item_type: ItemType,
@@ -253,7 +275,7 @@ export default function M_EditMenuItemScreen(props) {
                 }}
                 // multiSelect={true}
                 placeholder={strings("manu_screen.categories")}
-                valueField={"name"}
+                valueField={Language == "en" ? "name" : "name_ar"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
@@ -269,7 +291,9 @@ export default function M_EditMenuItemScreen(props) {
                   setItemType(text);
                 }}
                 placeholder={strings("menu_screen.type")}
+                name
                 valueField={"name"}
+                labelField={Language == "en" ? "label" : "name_ar"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
               />
@@ -385,7 +409,7 @@ export default function M_EditMenuItemScreen(props) {
                 setMenuDes(text);
               }}
               placeholder={strings("menu_screen.menu_description")}
-              valueField={"name"}
+              valueField={Language == "en" ? "name" : "name_ar"}
               style={styles.dropdownRow}
               multiSelect={true}
               placeholderTextColor={Colors.black}

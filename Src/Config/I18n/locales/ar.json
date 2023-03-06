@@ -99,6 +99,8 @@
    "add_your_restaurant_menu":"أضف قائمة مطعمك",
    "add_menu":"أضف القائمة",
    "add_your_category":"أضف فئتك",
+   "see_Instruction":"انظر التعليمات",
+     "inctruction":"تعليمات",
    "add_categories":"أضف الفئات",
    "total":"المجموع",
    "earning":"الكسب",
@@ -115,6 +117,7 @@
       "edit":"تعديل",
       "active":"تفعيل",
       "deleta":"حذف",
+      "inAcitive":"غير نشط",
       "menu_item":"عناصر القائمة",
       "add_menu_items":"أضف عناصر القائمة",
       "menu_items_details":"تفاصيل عناصر القائمة",
@@ -194,7 +197,24 @@
      "AED":"درهم إماراتي",
      "na":"غير متاح",
      "cash":"نقدي",
-     "unpaid":"غير مدفوع"
+     "unpaid":"غير مدفوع",
+     "details":"تفاصيل",
+     "order_items":"طلب بضاعة",
+     "user_detail":"بيانات المستخدم",
+     "order_tracking_history":"سجل تتبع الطلب",
+     "title":"عنوان:",
+     "area":"منطقة:",
+     "building":"مبنى:",
+     "appartment":"شقة:",
+     "address":"عنوان:",
+     "quantity":"كمية:",
+     "total_price":"السعر الإجمالي: درهم",
+     "Name":"اسم:",
+     "Gender":"جنس:",
+     "Phone":"هاتف:",
+     "City":"مدينة:",
+     "delivery_address":"عنوان التسليم"
+
   },
   "notification":{
    "notification":"الإشعارات"
@@ -408,6 +428,17 @@
        "last_month":"الشهر الماضي"
     }
     
+  },
+  "pop_up":{
+    "Are_you_sure":"هل أنت متأكد؟",
+    "popup_text1":"لن تتمكن من التراجع عن هذا!",
+    "cancel":"يلغي",
+    "delete_it":"نعم ، احذفها!",
+    "text1":"تريد تغيير حالة الطلب إلى",
+    "text2":"لكنها لن تعود",
+    "doit":"نعم افعلها!",
+    "instruction":"تعليمات",
+    "category":"فئة",
+    "menu":"قائمة طعام"
   }
-
 }

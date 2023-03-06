@@ -8,6 +8,7 @@ import {
   ScrollView,
   FlatList,
   Linking,
+  I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -28,6 +29,7 @@ import { orderStatusData } from "../../Constant/Constant";
 import OrderDetailModal from "../../Components/OrderDetailModal";
 import { strings } from "../../Config/I18n";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getLanguage } from "../../Services/asyncStorage";
 
 export default function M_DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -63,20 +65,22 @@ export default function M_DashboardScreen({ navigation }) {
       dispatch({ type: "SET_DASHBOARD_SEARCH_DATA", payload: {} });
     }
   };
-  const onDeleteMenuItems = (id) => {
+  const onDeleteMenuItems = async (id) => {
+    let lang = await getLanguage();
     dispatch({
       type: "DELETE_MODAL",
       payload: {
         isVisible: true,
         onDelete: () => {
-          let data = { menuId: id, language: "en" };
+          let data = { menuId: id, language: lang };
           dispatch(DeleteMenuItem(data));
         },
       },
     });
   };
-  const onChangeStatus = (id, status) => {
-    let data = { menuId: id, status: status == 1 ? 0 : 1, language: "en" };
+  const onChangeStatus = async (id, status) => {
+    let lang = await getLanguage();
+    let data = { menuId: id, status: status == 1 ? 0 : 1, language: lang };
     dispatch(enableDisableMenues(data));
   };
   return (
@@ -164,36 +168,42 @@ export default function M_DashboardScreen({ navigation }) {
           contentContainerStyle={styles.paddingView}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
+          style={{ flexDirection: I18nManager.isRTL ? "row-reverse" : "row" }}
         >
-          <View style={styles.cardView}>
-            <Text style={styles.cardTitle}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("M_MenuItemScreen")}
+            style={styles.cardView}
+          >
+            {/* <Text style={styles.cardTitle}>
               {strings("dashboard.how_it_works")}
-            </Text>
+            </Text> */}
             <Image
               style={styles.menuImage}
               source={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
             />
-            <Text style={styles.addText}>
-              {strings("dashboard.add_your_restaurant_menu")}
-            </Text>
-            <TouchableOpacity
+            <Text style={styles.addText}>{strings("pop_up.menu")}</Text>
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate("M_MenuItemScreen")}
               style={styles.addMenuButton}
             >
               <Text style={styles.addButton}>
                 {strings("dashboard.add_menu")}
               </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.cardView}>
-            <Text style={styles.cardTitle}>
+            </TouchableOpacity> */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("M_MenuStack1")}
+            style={styles.cardView}
+          >
+            {/* <Text style={styles.cardTitle}>
               {strings("dashboard.how_it_works")}
-            </Text>
+            </Text> */}
             <Image
               style={styles.menuImage}
               source={require("../../Images/Merchant/xxxhdpi/img_category.png")}
             />
-            <Text style={styles.addText}>
+            <Text style={styles.addText}>{strings("pop_up.category")}</Text>
+            {/* <Text style={styles.addText}>
               {strings("dashboard.add_your_category")}
             </Text>
             <TouchableOpacity
@@ -203,18 +213,25 @@ export default function M_DashboardScreen({ navigation }) {
               <Text style={styles.addButton}>
                 {strings("dashboard.add_categories")}
               </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.cardView}>
-            <Text style={styles.cardTitle}>
+            </TouchableOpacity> */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={
+              () => navigation.navigate("M_InstructionScreen")
+              // Linking.openURL("")
+            }
+            style={styles.cardView}
+          >
+            {/* <Text style={styles.cardTitle}>
               {strings("dashboard.how_it_works")}
-            </Text>
+            </Text> */}
             <Image
               style={styles.menuImage}
               source={require("../../Images/Merchant/xxxhdpi/ic_instructions.png")}
             />
-            <Text style={styles.addText}>
-              {strings("dashboard.add_your_restaurant_menu")}
+            <Text style={styles.addText}>{strings("pop_up.instruction")}</Text>
+            {/* <Text style={styles.addText}>
+              {strings("dashboard.see_Instruction")}
             </Text>
             <TouchableOpacity
               onPress={() =>
@@ -223,10 +240,10 @@ export default function M_DashboardScreen({ navigation }) {
               style={styles.addMenuButton}
             >
               <Text style={styles.addButton}>
-                {strings("dashboard.add_menu")}
+                {strings("dashboard.inctruction")}
               </Text>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> */}
+          </TouchableOpacity>
         </ScrollView>
         <View style={styles.rowView}>
           <View style={styles.halfView}>
@@ -382,7 +399,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: hp(3),
   },
   addText: {
-    ...commonFontStyle(400, 13, Colors.black),
+    ...commonFontStyle(400, 26, Colors.pink),
   },
   addButton: {
     ...commonFontStyle("M_700", 14, Colors.white),
@@ -396,9 +413,10 @@ const styles = StyleSheet.create({
   },
   menuImage: {
     marginVertical: hp(3),
-    height: hp(12),
-    width: hp(20),
+    height: hp(8),
+    width: hp(15),
     resizeMode: "contain",
+    // backgroundColor: "red",
   },
   rowView: {
     flex: 2,

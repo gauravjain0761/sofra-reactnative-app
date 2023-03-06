@@ -101,6 +101,8 @@
      "how_it_works":"How it Works",
      "add_your_restaurant_menu":"Add your restaurant menu",
      "add_menu":"Add Menu",
+     "see_Instruction":"See Instruction",
+     "inctruction":"Instruction",
      "add_your_category":"Add your category",
      "add_categories":"Add Categories",
      "total":"Total",
@@ -117,6 +119,7 @@
     "menu_screen":{
         "edit":"Edit",
         "active":"Active",
+        "inAcitive":"In-Active",
         "deleta":"delete",
         "menu_item":"Menu Items",
         "add_menu_items":"Add Menu Items",
@@ -198,7 +201,23 @@
        "AED":"AED",
        "na":"N/A",
        "cash":"CASH",
-       "unpaid":"Unpaid"
+       "unpaid":"Unpaid",
+       "details":"Details",
+       "order_items":"Order Items",
+       "user_detail":"User Details",
+       "order_tracking_history":"Order Tracking History",
+       "title":"Title:",
+       "area":"Area:",
+       "building":"Building:",
+       "appartment":"Apartment:",
+       "address":"Address:",
+       "quantity":"Quantity:",
+       "total_price":"Total Price: AED",
+       "Name":"Name:",
+       "Gender":"Gender:",
+       "Phone":"Phone:",
+       "City":"City:",
+"delivery_address":"Delivery Address"
     },
 
     "notification":{
@@ -319,7 +338,7 @@
       "apply_date_filters":"Apply Date Filters",
       "search_by_date_range":"Search by Date Range",
       "search":"Search",
-      "item":"ITEM",
+  "item":"ITEM",
       "quantity":"QUANTITY",
       "total_cash_orders":"Total Cash Orders (Completed)",
       "total_online_orders":"Total online Orders (Competed)",
@@ -413,6 +432,17 @@
         "this_month":"This Month",
         "last_month":"This Month"
      }
-    }
-  
+    },
+  "pop_up":{
+    "Are_you_sure":"Are you sure?",
+    "popup_text1":"You won't be able to revert this!",
+    "cancel":"Cancel",
+    "delete_it":"Yes, delete it!",
+    "text1":"You want to change the order status to",
+    "text2":"But it will not revert back",
+    "doit":"Yes, do it!",
+    "instruction":"Instructions",
+    "category":"Category",
+    "menu":"Menu"
+  }
 }

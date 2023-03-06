@@ -23,6 +23,7 @@ import { orderStatusData } from "../Constant/Constant";
 import moment from "moment";
 import { getOrderDetailDelivery } from "../Services/DeliveryApi";
 import { merchant_url, media_url } from "../Config/AppConfig";
+import { strings } from "../Config/I18n";
 
 export default function OrderDetailModal({
   visible,
@@ -32,12 +33,20 @@ export default function OrderDetailModal({
 }) {
   const [tab, seTtab] = useState(0);
   const [orderDetail, setOrderDetail] = useState(selectedOrder);
-  let tabs = [
-    "Details",
-    "Order Items",
-    "User Details",
-    type == "merchant" ? "Order Tracking History" : "Merchant Details",
-  ];
+  let tabs =
+    type == "merchant"
+      ? [
+          strings("order_detail.details"),
+          strings("order_detail.order_items"),
+          strings("order_detail.user_detail"),
+          strings("order_detail.order_tracking_history"),
+        ]
+      : [
+          "Details",
+          "Order Items",
+          "User Details",
+          type == "merchant" ? "Order Tracking History" : "Merchant Details",
+        ];
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -64,51 +73,72 @@ export default function OrderDetailModal({
   const RenderTab0 = () => {
     return (
       <View>
-        <RenderRow title={"Order Id:"} value={orderDetail.bookingCode} />
-        <RenderRow title={"Total Amount:"} value={orderDetail.totalPrice} />
         <RenderRow
-          title={"Items Amount:"}
-          value={"AED " + orderDetail.itemsPrice}
-        />
-        <RenderRow title={"VAT (TAX):"} value={"AED " + orderDetail.vat} />
-        <RenderRow
-          title={"Promo Code:"}
-          value={orderDetail.promoCode == "" ? "N/A" : orderDetail.promoCode}
+          title={strings("order_detail.order_id")}
+          value={orderDetail.bookingCode}
         />
         <RenderRow
-          title={"Discount Amount:"}
+          title={strings("order_detail.total_amount")}
+          value={orderDetail.totalPrice}
+        />
+        <RenderRow
+          title={strings("order_detail.items_amount")}
+          value={strings("order_detail.AED") + " " + orderDetail.itemsPrice}
+        />
+        <RenderRow
+          title={strings("order_detail.vat")}
+          value={strings("order_detail.AED") + " " + orderDetail.vat}
+        />
+        <RenderRow
+          title={strings("order_detail.promo_code")}
           value={
-            "AED " + orderDetail.discount == null ? 0 : orderDetail.discount
+            orderDetail.promoCode == ""
+              ? strings("order_detail.na")
+              : orderDetail.promoCode
           }
         />
         <RenderRow
-          title={"Delivery Charges:"}
-          value={"AED " + orderDetail.serviceCharges}
+          title={strings("order_detail.discount_amount")}
+          value={
+            strings("order_detail.AED") + " " + orderDetail.discount == null
+              ? 0
+              : orderDetail.discount
+          }
         />
         <RenderRow
-          title={"Order Date:"}
+          title={strings("order_detail.delivery_charges")}
+          value={strings("order_detail.AED") + " " + orderDetail.serviceCharges}
+        />
+        <RenderRow
+          title={strings("order_detail.order_date")}
           value={moment(orderDetail.bookingDate).format("MMM DD YYYY")}
         />
         <RenderRow
-          title={"Delivery Date:"}
+          title={strings("order_detail.delivery_date")}
           value={moment(orderDetail.bookingDate).format("MMM DD YYYY")}
         />
-        <RenderRow title={"Recipient:"} value={orderDetail.user.name} />
         <RenderRow
-          title={"Cooking Instruction:"}
+          title={strings("order_detail.recipient")}
+          value={orderDetail.user.name}
+        />
+        <RenderRow
+          title={strings("order_detail.cooking_instruction")}
           value={
             orderDetail.cookingInstructions !== ""
               ? orderDetail.cookingInstructions
-              : "N/A"
+              : strings("order_detail.na")
           }
         />
-        <RenderRow title={"Payment Method:"} value={orderDetail.paymentType} />
         <RenderRow
-          title={"Payment Status:"}
+          title={strings("order_detail.payment_method")}
+          value={orderDetail.paymentType}
+        />
+        <RenderRow
+          title={strings("order_detail.payment_status")}
           value={orderDetail.paymentStatus}
         />
         <RenderRow
-          title={"Created At:"}
+          title={strings("order_detail.created_at")}
           value={moment(orderDetail.created).format("YYYY MM DD, hh:mm A")}
         />
 
@@ -120,27 +150,27 @@ export default function OrderDetailModal({
             marginLeft: hp(1.5),
           }}
         >
-          Delivery Address
+          {strings("order_detail.delivery_address")}
         </Text>
         <RenderRow
-          title={"Title:"}
+          title={strings("order_detail.title")}
           value={JSON.parse(orderDetail.deliveryAddress).title}
         />
         <RenderRow
-          title={"Area:"}
+          title={strings("order_detail.area")}
           value={JSON.parse(orderDetail.deliveryAddress).area}
         />
         <RenderRow
-          title={"Building:"}
+          title={strings("order_detail.building")}
           value={JSON.parse(orderDetail.deliveryAddress).buildingName}
         />
         <RenderRow
-          title={"Apartment:"}
+          title={strings("order_detail.appartment")}
           value={JSON.parse(orderDetail.deliveryAddress).apartment}
         />
         <RenderRow
           style={{ width: "75%", textAlign: "right" }}
-          title={"Address:"}
+          title={strings("order_detail.address")}
           value={JSON.parse(orderDetail.deliveryAddress).address}
         />
       </View>
@@ -175,7 +205,8 @@ export default function OrderDetailModal({
                 </View>
                 <View style={{ marginLeft: hp(1), flex: 1 }}>
                   <Text style={styles.rightText}>
-                    {element.itemName} (AED {element.price})
+                    {element.itemName} ({strings("order_detail.AED")}{" "}
+                    {element.price})
                   </Text>
                   <Text
                     style={{
@@ -183,7 +214,7 @@ export default function OrderDetailModal({
                       ...commonFontStyle(500, 13, Colors.darkGrey),
                     }}
                   >
-                    {"Quantity: " + element.qty}
+                    {strings("order_detail.quantity") + element.qty}
                   </Text>
                   <Text
                     style={{
@@ -191,7 +222,7 @@ export default function OrderDetailModal({
                       ...commonFontStyle(500, 13, Colors.darkGrey),
                     }}
                   >
-                    {"Total Price: AED " + element.totalPrice}
+                    {strings("order_detail.total_price") + element.totalPrice}
                   </Text>
                 </View>
               </View>
@@ -203,10 +234,22 @@ export default function OrderDetailModal({
   const RenderTab2 = () => {
     return (
       <View>
-        <RenderRow title={"Name:"} value={orderDetail.user.name} />
-        <RenderRow title={"Gender:"} value={orderDetail.user.gender} />
-        <RenderRow title={"Phone:"} value={orderDetail.user.phone} />
-        <RenderRow title={"City:"} value={orderDetail.user.cityName} />
+        <RenderRow
+          title={strings("order_detail.Name")}
+          value={orderDetail.user.name}
+        />
+        <RenderRow
+          title={strings("order_detail.Gender")}
+          value={orderDetail.user.gender}
+        />
+        <RenderRow
+          title={strings("order_detail.Phone")}
+          value={orderDetail.user.phone}
+        />
+        <RenderRow
+          title={strings("order_detail.City")}
+          value={orderDetail.user.cityName}
+        />
       </View>
     );
   };
@@ -293,7 +336,9 @@ export default function OrderDetailModal({
       >
         <View style={ApplicationStyles.modalViewStyle1}>
           <View style={styles.titleView}>
-            <Text style={styles.detailText}>Order Details</Text>
+            <Text style={styles.detailText}>
+              {strings("order_detail.order_detail")}
+            </Text>
             <TouchableOpacity
               onPress={() => onClose()}
               style={styles.closeButton}

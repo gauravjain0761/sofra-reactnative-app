@@ -22,6 +22,7 @@ import { changeStatus } from "../Services/MerchantApi";
 import OrderSuccessStatusModal from "./OrderSuccessStatusModal";
 import OrderStatusModal from "./OrderStatusModal";
 import { media_url } from "../Config/AppConfig";
+import { getLanguage } from "../Services/asyncStorage";
 
 export default function OrderItems({
   item,
@@ -63,8 +64,9 @@ export default function OrderItems({
     }
   }, [item]);
 
-  const onStatusUpdate = () => {
-    let data = { orderId: item.id, status: nextStatus.type, language: "en" };
+  const onStatusUpdate = async () => {
+    let lang = await getLanguage();
+    let data = { orderId: item.id, status: nextStatus.type, language: lang };
     dispatch(
       changeStatus(data, selectedStatus, (message) => {
         setmessage(message);

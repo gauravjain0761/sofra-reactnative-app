@@ -23,7 +23,7 @@ import DateTimePickerView from "../../Components/DateTimePickerView";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { dispatchErrorAction } from "../../Services/CommonFunctions";
-import {strings} from '../../Config/I18n';
+import { strings } from "../../Config/I18n";
 
 export default function M_StatisticsScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -57,15 +57,19 @@ export default function M_StatisticsScreen({ navigation }) {
     return (
       <View style={styles.itemList}>
         <View style={styles.row}>
-          <Text style={styles.leftText}>Item</Text>
+          <Text style={styles.leftText}>
+            {strings("statisticsScreen.item")}
+          </Text>
           <Text style={styles.rightText}>{name}</Text>
         </View>
         <View style={styles.middleRow}>
-          <Text style={styles.leftText}>Amount(EXE VAT)</Text>
+          <Text style={styles.leftText}>
+            {strings("statisticsScreen.Amount_exe_vat")}
+          </Text>
           <Text style={styles.rightText}>{amount}</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.leftText}>VAT</Text>
+          <Text style={styles.leftText}>{strings("statisticsScreen.vat")}</Text>
           <Text style={styles.rightText}>{vat}</Text>
         </View>
       </View>
@@ -79,8 +83,16 @@ export default function M_StatisticsScreen({ navigation }) {
             moment(StartDate).format("YYYY-MM-DD"),
             moment(EndDate).format("YYYY-MM-DD")
           );
-        } else dispatchErrorAction(dispatch, strings('validationString.please_select_end_date'));
-      } else dispatchErrorAction(dispatch, strings('validationString.please_select_start_date'));
+        } else
+          dispatchErrorAction(
+            dispatch,
+            strings("validationString.please_select_end_date")
+          );
+      } else
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_select_start_date")
+        );
     } else {
       if (search !== "") {
         const selectedDate = dateFilterData.filter((obj) => obj.name == search);
@@ -94,7 +106,9 @@ export default function M_StatisticsScreen({ navigation }) {
   };
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={ApplicationStyles.welcomeText}>{strings('statisticsScreen.statistics')}</Text>
+      <Text style={ApplicationStyles.welcomeText}>
+        {strings("statisticsScreen.statistics")}
+      </Text>
       <View style={styles.tabView}>
         <TouchableOpacity
           onPress={() => setTab("order")}
@@ -103,7 +117,7 @@ export default function M_StatisticsScreen({ navigation }) {
           <Text
             style={tab == "order" ? styles.selectedTabText : styles.tabText}
           >
-           {strings('statisticsScreen.orders_statistics')}
+            {strings("statisticsScreen.orders_statistics")}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -113,18 +127,20 @@ export default function M_StatisticsScreen({ navigation }) {
           <Text
             style={tab == "earning" ? styles.selectedTabText : styles.tabText}
           >
-            {strings('statisticsScreen.earnings_statistics')}
+            {strings("statisticsScreen.earnings_statistics")}
           </Text>
         </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.filterTitle}>{strings('statisticsScreen.apply_date_filters')}</Text>
+        <Text style={styles.filterTitle}>
+          {strings("statisticsScreen.apply_date_filters")}
+        </Text>
         <SearchDropdown
           value={search}
           setData={(text) => {
             setSearch(text);
           }}
-          placeholder={strings('statisticsScreen.search_by_date_range')}
+          placeholder={strings("statisticsScreen.search_by_date_range")}
           valueField={"name"}
           labelField={"label"}
           style={styles.dropdownRow}
@@ -160,13 +176,17 @@ export default function M_StatisticsScreen({ navigation }) {
         {tab == "order" ? (
           <View>
             <View style={styles.titles}>
-              <Text style={styles.nameTitle}>{strings('statisticsScreen.item')}</Text>
-              <Text style={styles.nameTitle}>{strings('statisticsScreen.quantity')}</Text>
+              <Text style={styles.nameTitle}>
+                {strings("statisticsScreen.item")}
+              </Text>
+              <Text style={styles.nameTitle}>
+                {strings("statisticsScreen.quantity")}
+              </Text>
             </View>
             <View style={styles.itemList}>
               <View style={styles.row}>
                 <Text style={styles.rightText}>
-                 {strings('statisticsScreen.total_cash_orders')}
+                  {strings("statisticsScreen.total_cash_orders")}
                 </Text>
                 <Text style={styles.rightText}>
                   {STATISTICS.cashOrdersCount}
@@ -174,14 +194,16 @@ export default function M_StatisticsScreen({ navigation }) {
               </View>
               <View style={styles.middleRow}>
                 <Text style={styles.rightText}>
-                {strings('statisticsScreen.total_online_orders')}
+                  {strings("statisticsScreen.total_online_orders")}
                 </Text>
                 <Text style={styles.rightText}>
                   {STATISTICS.onlineOrdersCount}
                 </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.rightText}>{strings('statisticsScreen.total_orders')}</Text>
+                <Text style={styles.rightText}>
+                  {strings("statisticsScreen.total_orders")}
+                </Text>
                 <Text style={styles.rightText}>
                   {STATISTICS.cashOrdersCount + STATISTICS.onlineOrdersCount}
                 </Text>
@@ -193,37 +215,47 @@ export default function M_StatisticsScreen({ navigation }) {
             {STATISTICS && (
               <View>
                 <CommonEarningItems
-                  name={strings('statisticsScreen.cash_payments')}
+                  name={strings("statisticsScreen.cash_payments")}
                   amount={STATISTICS.totalCASHEarnings}
                   vat={STATISTICS.cashBookingVat}
                 />
                 <CommonEarningItems
-                  name={strings('statisticsScreen.lateralEntry.credit_card_payments')}
+                  name={strings(
+                    "statisticsScreen.lateralEntry.credit_card_payments"
+                  )}
                   amount={STATISTICS.totalCARDEarnings}
                   vat={STATISTICS.CARDBookingVat}
                 />
                 <CommonEarningItems
-                  name={strings('statisticsScreen.lateralEntry.discounts_values')}
+                  name={strings(
+                    "statisticsScreen.lateralEntry.discounts_values"
+                  )}
                   amount={STATISTICS.discountCodeValue}
                   vat={"N/A"}
                 />
                 <CommonEarningItems
-                  name={strings('statisticsScreen.lateralEntry.sofra_commission_amount')}
+                  name={strings(
+                    "statisticsScreen.lateralEntry.sofra_commission_amount"
+                  )}
                   amount={STATISTICS.sofraFixedComission}
                   vat={"N/A"}
                 />
                 <CommonEarningItems
-                  name={strings('statisticsScreen.lateralEntry.sofra_vat')}
+                  name={strings("statisticsScreen.lateralEntry.sofra_vat")}
                   amount={STATISTICS.sofraVatTotal}
                   vat={"N/A"}
                 />
                 <CommonEarningItems
-                  name={strings('statisticsScreen.lateralEntry.sofra_convenience_fee')}
+                  name={strings(
+                    "statisticsScreen.lateralEntry.sofra_convenience_fee"
+                  )}
                   amount={STATISTICS.sofraConvenience}
                   vat={"N/A"}
                 />
                 <CommonEarningItems
-                  name={strings('statisticsScreen.lateralEntry.partners_total_net_profit')}
+                  name={strings(
+                    "statisticsScreen.lateralEntry.partners_total_net_profit"
+                  )}
                   amount={STATISTICS.partnerProfit}
                   vat={"N/A"}
                 />
