@@ -8,6 +8,7 @@ import {
   ScrollView,
   FlatList,
   Platform,
+  I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -241,6 +242,7 @@ export default function M_MenuItemScreen({ navigation }) {
         <Text style={ApplicationStyles.welcomeText}>Menu Items</Text>
         {MENU_ITEMS.length !== 0 && (
           <FlatList
+            style={{ flexDirection: I18nManager.isRTL ? "row-reverse" : "row" }}
             horizontal={true}
             data={MENU_ITEMS}
             renderItem={renderItem}

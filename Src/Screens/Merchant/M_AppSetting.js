@@ -53,12 +53,12 @@ export default function M_AppSetting() {
       isTakingOrders: switchEmable == true ? "YES" : "NO",
     };
     dispatch(UpdateAppSetting(data));
-    onLanguageSelect();
+    onLanguageSelect(langSelect);
   };
-  const onLanguageSelect = async () => {
-    console.log("onLanguage select call", langSelect);
+  const onLanguageSelect = async (languageSelected) => {
+    console.log("onLanguage select call", languageSelected);
     try {
-      const lang = langSelect == "English" ? "en" : "ar";
+      const lang = languageSelected == "English" ? "en" : "ar";
       await AsyncStorage.setItem("Language", lang);
       AsyncStorage.getItem("Language").then((res) => {
         if (res === "ar") {
@@ -105,6 +105,7 @@ export default function M_AppSetting() {
             value={langSelect}
             setData={(text) => {
               setlangSelect(text);
+              onLanguageSelect(text);
             }}
             placeholder={langSelect}
             valueField={"name"}

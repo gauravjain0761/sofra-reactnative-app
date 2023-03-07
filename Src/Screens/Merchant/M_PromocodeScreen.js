@@ -8,6 +8,7 @@ import {
   Image,
   FlatList,
   Platform,
+  I18nManager,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -217,6 +218,7 @@ export default function M_PromocodeScreen({ navigation }) {
         </Text>
         {PROMO_CODES.length !== 0 && (
           <FlatList
+            style={{ flexDirection: I18nManager.isRTL ? "row-reverse" : "row" }}
             horizontal={true}
             data={PROMO_CODES}
             renderItem={renderItem}

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -57,10 +58,16 @@ export default function M_MenuScreen({ navigation }) {
           })
         );
       } else {
-        dispatchErrorAction(dispatch, strings('validationString.please_enter_name_in_arabic'));
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_name_in_arabic")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, strings('validationString.please_enter_category_name'));
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_category_name")
+      );
     }
   };
   const onDeleteCategory = (id) => {
@@ -91,28 +98,37 @@ export default function M_MenuScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>{strings('menu_screen.menu_categories')}</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("menu_screen.menu_categories")}
+        </Text>
         <FlatList
+          style={{ flexDirection: I18nManager.isRTL ? "row-reverse" : "row" }}
           horizontal={true}
           data={ALL_CATEGORIES}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
         <View style={styles.rowView}>
-          <Text style={styles.title}>{strings('menu_screen.add_menu_categories')}</Text>
-          <Text style={styles.title2}>{strings('menu_screen.menu_categories_details')}</Text>
+          <Text style={styles.title}>
+            {strings("menu_screen.add_menu_categories")}
+          </Text>
+          <Text style={styles.title2}>
+            {strings("menu_screen.menu_categories_details")}
+          </Text>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.name')}</Text>
+            <Text style={styles.titleInput}>{strings("menu_screen.name")}</Text>
             <RegistrationTextInput
-              placeholder={strings('menu_screen.enter_name')}
+              placeholder={strings("menu_screen.enter_name")}
               value={name}
               onChangeText={(text) => setname(text)}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>{strings('menu_screen.name_in_arabic')}</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.name_in_arabic")}
+            </Text>
             <RegistrationTextInput
-              placeholder={strings('menu_screen.enter_name_in_arabic')}
+              placeholder={strings("menu_screen.enter_name_in_arabic")}
               value={nameArabic}
               onChangeText={(text) => setnameArabic(text)}
             />
@@ -122,7 +138,7 @@ export default function M_MenuScreen({ navigation }) {
             text={"small"}
             onPress={() => onAddCategory()}
             style={styles.dbuttonStyle}
-            name={strings('menu_screen.add_categories')}
+            name={strings("menu_screen.add_categories")}
           />
         </View>
       </ScrollView>

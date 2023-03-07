@@ -12,7 +12,10 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
@@ -83,6 +86,27 @@ export default function M_DashboardScreen({ navigation }) {
     let data = { menuId: id, status: status == 1 ? 0 : 1, language: lang };
     dispatch(enableDisableMenues(data));
   };
+
+  const CommonCard = ({ onClick, title, des, buttonText, image }) => {
+    return (
+      <TouchableOpacity onPress={() => onClick()} style={styles.cardView}>
+        {/* <Text style={styles.cardTitle}>
+              {strings("dashboard.how_it_works")}
+            </Text> */}
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Image style={styles.menuImage} source={image} />
+          <Text style={styles.addText}>{title}</Text>
+        </View>
+        <Text style={styles.addText2}>{des}</Text>
+        <TouchableOpacity
+          onPress={() => onClick()}
+          style={styles.addMenuButton}
+        >
+          <Text style={styles.addButton}>{buttonText}</Text>
+        </TouchableOpacity>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -108,6 +132,9 @@ export default function M_DashboardScreen({ navigation }) {
               <View style={styles.paddingView}>
                 <FlatList
                   horizontal={true}
+                  style={{
+                    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+                  }}
                   data={dashboardSearchData.menuItems}
                   renderItem={({ item, index }) => {
                     return (
@@ -168,82 +195,31 @@ export default function M_DashboardScreen({ navigation }) {
           contentContainerStyle={styles.paddingView}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
-          style={{ flexDirection: I18nManager.isRTL ? "row-reverse" : "row" }}
+          style={{
+            flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+          }}
         >
-          <TouchableOpacity
-            onPress={() => navigation.navigate("M_MenuItemScreen")}
-            style={styles.cardView}
-          >
-            {/* <Text style={styles.cardTitle}>
-              {strings("dashboard.how_it_works")}
-            </Text> */}
-            <Image
-              style={styles.menuImage}
-              source={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
-            />
-            <Text style={styles.addText}>{strings("pop_up.menu")}</Text>
-            {/* <TouchableOpacity
-              onPress={() => navigation.navigate("M_MenuItemScreen")}
-              style={styles.addMenuButton}
-            >
-              <Text style={styles.addButton}>
-                {strings("dashboard.add_menu")}
-              </Text>
-            </TouchableOpacity> */}
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("M_MenuStack1")}
-            style={styles.cardView}
-          >
-            {/* <Text style={styles.cardTitle}>
-              {strings("dashboard.how_it_works")}
-            </Text> */}
-            <Image
-              style={styles.menuImage}
-              source={require("../../Images/Merchant/xxxhdpi/img_category.png")}
-            />
-            <Text style={styles.addText}>{strings("pop_up.category")}</Text>
-            {/* <Text style={styles.addText}>
-              {strings("dashboard.add_your_category")}
-            </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("M_MenuStack1")}
-              style={styles.addMenuButton}
-            >
-              <Text style={styles.addButton}>
-                {strings("dashboard.add_categories")}
-              </Text>
-            </TouchableOpacity> */}
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={
-              () => navigation.navigate("M_InstructionScreen")
-              // Linking.openURL("")
-            }
-            style={styles.cardView}
-          >
-            {/* <Text style={styles.cardTitle}>
-              {strings("dashboard.how_it_works")}
-            </Text> */}
-            <Image
-              style={styles.menuImage}
-              source={require("../../Images/Merchant/xxxhdpi/ic_instructions.png")}
-            />
-            <Text style={styles.addText}>{strings("pop_up.instruction")}</Text>
-            {/* <Text style={styles.addText}>
-              {strings("dashboard.see_Instruction")}
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                Linking.openURL("https://www.mysofra.com/merchant-tutorial")
-              }
-              style={styles.addMenuButton}
-            >
-              <Text style={styles.addButton}>
-                {strings("dashboard.inctruction")}
-              </Text>
-            </TouchableOpacity> */}
-          </TouchableOpacity>
+          <CommonCard
+            onClick={() => navigation.navigate("M_MenuItemScreen")}
+            title={strings("pop_up.menu")}
+            des={strings("dashboard.add_your_restaurant_menu")}
+            buttonText={strings("dashboard.add_menu")}
+            image={require("../../Images/Merchant/xxxhdpi/menu_vector.png")}
+          />
+          <CommonCard
+            onClick={() => navigation.navigate("M_MenuStack1")}
+            title={strings("pop_up.category")}
+            des={strings("dashboard.add_your_category")}
+            buttonText={strings("dashboard.add_categories")}
+            image={require("../../Images/Merchant/xxxhdpi/img_category.png")}
+          />
+          <CommonCard
+            onClick={() => navigation.navigate("M_InstructionScreen")}
+            title={strings("pop_up.instruction")}
+            des={strings("dashboard.see_Instruction")}
+            buttonText={strings("dashboard.inctruction")}
+            image={require("../../Images/Merchant/xxxhdpi/ic_instructions.png")}
+          />
         </ScrollView>
         <View style={styles.rowView}>
           <View style={styles.halfView}>
@@ -389,10 +365,14 @@ const styles = StyleSheet.create({
   cardView: {
     borderRadius: 8,
     backgroundColor: Colors.white,
-    padding: hp(3),
+    paddingVertical: hp(3),
     alignItems: "center",
     marginRight: hp(2),
     marginBottom: hp(2),
+    // display: "flex",
+    // flex: 1,
+    justifyContent: "center",
+    width: widthPercentageToDP(72),
   },
   cardTitle: {
     ...commonFontStyle("extraBold", 24, Colors.black),
@@ -401,6 +381,7 @@ const styles = StyleSheet.create({
   addText: {
     ...commonFontStyle(400, 26, Colors.pink),
   },
+  addText2: { ...commonFontStyle(400, 13, Colors.black) },
   addButton: {
     ...commonFontStyle("M_700", 14, Colors.white),
   },
@@ -413,8 +394,8 @@ const styles = StyleSheet.create({
   },
   menuImage: {
     marginVertical: hp(3),
-    height: hp(8),
-    width: hp(15),
+    height: hp(7),
+    width: hp(9),
     resizeMode: "contain",
     // backgroundColor: "red",
   },
