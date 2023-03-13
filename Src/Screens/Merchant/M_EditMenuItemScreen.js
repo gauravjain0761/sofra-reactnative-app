@@ -75,12 +75,17 @@ export default function M_EditMenuItemScreen(props) {
 
   useEffect(() => {
     let menuItem = props?.route?.params;
+    console.log(menuItem);
     if (menuItem) {
       setName(menuItem.name);
       setArabicName(menuItem.name_ar);
       setItemType(menuItem.item_type);
       setPrice(String(menuItem.price ? menuItem.price : ""));
-      setMenuCategory([menuItem.menuCategory.name]);
+      setMenuCategory(
+        Language == "en"
+          ? [menuItem.menuCategory.name]
+          : [menuItem.menuCategory.name_ar]
+      );
       setDiscount(String(menuItem.discount ? menuItem.discount : ""));
       setMaxLimit(String(menuItem.maxLimit ? menuItem.maxLimit : ""));
       setImageItem(menuItem.image ? menuItem.image : "");
@@ -88,12 +93,15 @@ export default function M_EditMenuItemScreen(props) {
       setArabicDes(menuItem.description_ar);
       setMenuDes(
         menuItem.menuDescriptors
-          ? getArray(menuItem.menuDescriptors, "name")
+          ? getArray(
+              menuItem.menuDescriptors,
+              Language == "en" ? "name" : "name_ar"
+            )
           : ""
       );
       setMenuIdEdit(menuItem.id);
     }
-  }, [props, isFocused]);
+  }, [props, isFocused, Language]);
 
   const openPicker = () => {
     ImagePicker.openPicker({
@@ -167,7 +175,7 @@ export default function M_EditMenuItemScreen(props) {
         menuId: MenuIdEdit,
         name: Name,
         name_ar: ArabicName,
-        language: lang,
+        language: Language,
         description: Description,
         description_ar: ArabicDes,
         item_type: ItemType,
@@ -196,41 +204,72 @@ export default function M_EditMenuItemScreen(props) {
                         } else {
                           dispatchErrorAction(
                             dispatch,
-                            "Please select menu descriptors"
+                            strings(
+                              "validationString.please_select_menu_descriptors"
+                            )
                           );
                         }
                       } else {
                         dispatchErrorAction(
                           dispatch,
-                          "Please enter Description in arabic"
+                          strings(
+                            "validationString.please_enter_description_in_arabic"
+                          )
                         );
                       }
                     } else {
-                      dispatchErrorAction(dispatch, "Please enter Description");
+                      dispatchErrorAction(
+                        dispatch,
+                        strings("validationString.please enter_description")
+                      );
                     }
                   } else {
-                    dispatchErrorAction(dispatch, "Please select item image");
+                    dispatchErrorAction(
+                      dispatch,
+                      strings("validationString.please_select_item_image")
+                    );
                   }
                 } else {
-                  dispatchErrorAction(dispatch, "Please enter max limit");
+                  dispatchErrorAction(
+                    dispatch,
+                    strings("validationString.please_enter_max_limis")
+                  );
                 }
               } else {
-                dispatchErrorAction(dispatch, "Please enter Discount");
+                dispatchErrorAction(
+                  dispatch,
+                  strings("validationString.please_enter_discount_value")
+                );
               }
             } else {
-              dispatchErrorAction(dispatch, "Please enter price");
+              dispatchErrorAction(
+                dispatch,
+                strings("validationString.please_enter_price")
+              );
             }
           } else {
-            dispatchErrorAction(dispatch, "Please select item type");
+            dispatchErrorAction(
+              dispatch,
+              strings("validationString.please_select_item_type")
+            );
           }
         } else {
-          dispatchErrorAction(dispatch, "Please select menu categories");
+          dispatchErrorAction(
+            dispatch,
+            strings("validationString.please_select_menu_categories")
+          );
         }
       } else {
-        dispatchErrorAction(dispatch, "Please enter name in arabic");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_name_in_arabic")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter name");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_name")
+      );
     }
   };
 
@@ -274,7 +313,7 @@ export default function M_EditMenuItemScreen(props) {
                   setMenuCategory([text]);
                 }}
                 // multiSelect={true}
-                placeholder={strings("manu_screen.categories")}
+                placeholder={strings("menu_screen.categories")}
                 valueField={Language == "en" ? "name" : "name_ar"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}

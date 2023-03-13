@@ -141,13 +141,19 @@ export default function M_PromocodeScreen({ navigation }) {
       if (StartDate !== "" && EndDate !== "") {
         addPromoCode();
       } else {
-        dispatchErrorAction(dispatch, "Please select start and end date");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.Please_select_start_and_end_date")
+        );
       }
     } else if (expiryType == "COUNT") {
       if (count !== "") {
         addPromoCode();
       } else {
-        dispatchErrorAction(dispatch, "Please enter count");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.Please_enter_count")
+        );
       }
     } else {
       addPromoCode();
@@ -162,22 +168,37 @@ export default function M_PromocodeScreen({ navigation }) {
               if (Users.length !== 0) {
                 checkExpiryTypeValidation();
               } else {
-                dispatchErrorAction(dispatch, "Please select users");
+                dispatchErrorAction(
+                  dispatch,
+                  strings("validationString.Please_select_users")
+                );
               }
             } else {
               checkExpiryTypeValidation();
             }
           } else {
-            dispatchErrorAction(dispatch, "Please enter description in arabic");
+            dispatchErrorAction(
+              dispatch,
+              strings("validationString.please_enter_description_in_arabic")
+            );
           }
         } else {
-          dispatchErrorAction(dispatch, "Please enter description");
+          dispatchErrorAction(
+            dispatch,
+            strings("validationString.please enter_description")
+          );
         }
       } else {
-        dispatchErrorAction(dispatch, "Please enter title in arabic");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_title_in_arabic")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter title");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_title")
+      );
     }
   };
   const handleConfirm = (date) => {

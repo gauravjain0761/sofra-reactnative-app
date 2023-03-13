@@ -286,7 +286,6 @@ export default function D_ProfileScreen({ navigation }) {
             {lat !== "" && long !== "" && (
               <View>
                 <Text style={styles.title2}>Set map location</Text>
-                {console.log(lat, long)}
                 <MapView
                   provider={PROVIDER_GOOGLE}
                   region={{

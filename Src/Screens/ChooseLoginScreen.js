@@ -19,50 +19,49 @@ export default function ChooseLoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const preLoader = useSelector((e) => e.merchant.preLoader);
   useEffect(async () => {
-   async function getDeviceToken(){
-    messaging()
-      .getToken()
-      .then((fcmToken) => {
-        if (fcmToken) {
-          dispatch({ type: "SET_FCMTOKEN", payload: fcmToken });
-        } else {
-          console.log("[FCMService] User does not have a device token");
-        }
-      })
-      .catch((error) => {
-        let err = `FCm token get error${error}`;
-        console.log("FCm token get error", err);
-      });
+    async function getDeviceToken() {
+      messaging()
+        .getToken()
+        .then((fcmToken) => {
+          if (fcmToken) {
+            dispatch({ type: "SET_FCMTOKEN", payload: fcmToken });
+          } else {
+            console.log("[FCMService] User does not have a device token");
+          }
+        })
+        .catch((error) => {
+          let err = `FCm token get error${error}`;
+          console.log("FCm token get error", err);
+        });
 
-    dispatch({ type: "PRE_LOADER", payload: true });
-    let token = await getToken();
-    console.log("token--", token);
-    let user = await getUser();
-    if (token && user) {
-      if (user == "delivery") {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 1,
-            routes: [{ name: "DeliveryDrawerHome" }],
-          })
-        );
+      dispatch({ type: "PRE_LOADER", payload: true });
+      let token = await getToken();
+      let user = await getUser();
+      if (token && user) {
+        if (user == "delivery") {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: "DeliveryDrawerHome" }],
+            })
+          );
+        } else {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: "MerchantDrawerHome" }],
+            })
+          );
+        }
       } else {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 1,
-            routes: [{ name: "MerchantDrawerHome" }],
-          })
-        );
+        dispatch({ type: "PRE_LOADER", payload: false });
       }
-    } else {
-      dispatch({ type: "PRE_LOADER", payload: false });
+      dispatch(getCities());
+      dispatch(getUsers());
+      dispatch(getCuisines());
+      dispatch(getCategories());
     }
-    dispatch(getCities());
-    dispatch(getUsers());
-    dispatch(getCuisines());
-    dispatch(getCategories());
-  }
-  getDeviceToken();
+    getDeviceToken();
   }, []);
 
   if (preLoader == false) {

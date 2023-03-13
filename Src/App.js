@@ -10,6 +10,7 @@ import {
   Dimensions,
   ActivityIndicator,
   StatusBar,
+  I18nManager,
 } from "react-native";
 import ApplicationStyles from "./Themes/ApplicationStyles";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
@@ -31,8 +32,10 @@ function App() {
   useEffect(() => {
     AsyncStorage.getItem("Language").then((res) => {
       if (res == null) {
-        console.log("null here");
         AsyncStorage.setItem("Language", "en");
+      }
+      if (res == "ar") {
+        I18nManager.forceRTL(true);
       }
     });
     dispatch({ type: "TOAST", payload: "initial" });

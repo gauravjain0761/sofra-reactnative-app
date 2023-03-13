@@ -35,7 +35,6 @@ export default function MerchantLoginScreen() {
     if (validateEmail(email)) {
       if (password !== "") {
         AsyncStorage.getItem("Language").then((res) => {
-          console.log("language-----", res);
           let data = {
             email: email,
             password: password,

@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import RNFetchBlob from "rn-fetch-blob";
+import { strings } from "../Config/I18n";
 
 export const validateEmail = (email) => {
   let re =
@@ -239,7 +240,9 @@ export const exportToCsv = (REPORT, reportType, dispatch, user) => {
       .then(() => {
         dispatchSuccessAction(
           dispatch,
-          "Report downloaded Successfully, Please check your downloads."
+          strings(
+            "validationString.Report_downloaded_Successfully_Please_check_your_downloads"
+          )
         );
       })
       .catch((error) => alert(error));
@@ -378,7 +381,9 @@ export const exportToCsvOrder = (order, type, dispatch, name) => {
       .then(() => {
         dispatchSuccessAction(
           dispatch,
-          "Orders file downloaded Successfully, Please check your downloads."
+          strings(
+            "validationString.Orders_file_downloaded_Successfully_Please_check_your_downloads"
+          )
         );
       })
       .catch((error) => alert(error));

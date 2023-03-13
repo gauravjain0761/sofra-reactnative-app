@@ -339,8 +339,6 @@ export const AddOffer = (postObj, onSuccess) => async (dispatch) => {
 };
 
 export const getDashboardReports = () => async (dispatch) => {
-  // dispatch({ type: "PRE_LOADER", payload: true });
-
   let token = await getToken();
   let lang = await getLanguage();
   const url =

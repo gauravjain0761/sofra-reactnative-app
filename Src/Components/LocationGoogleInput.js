@@ -19,7 +19,6 @@ export default function LocationGoogleInput({
         placeholder={placeholder}
         fetchDetails={screen == "company" ? true : false}
         onPress={(data, details = null) => {
-          console.log("here");
           let data1 = { data: data, details: details };
           screen == "company"
             ? setLocation(data1)

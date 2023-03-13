@@ -27,7 +27,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNRestart from "react-native-restart";
 
 export default function M_AppSetting() {
-  console.log("i18Manager ==>", I18nManager.isRTL);
   const dispatch = useDispatch();
   const isTakingOrders = useSelector((e) => e.merchant.isTakingOrders);
   const [switchEmable, setswitchEmable] = useState(false);
@@ -38,7 +37,6 @@ export default function M_AppSetting() {
     navigation.addListener("focus", () => {
       dispatch(getAppSetting());
       AsyncStorage.getItem("Language").then((res) => {
-        console.log("res", res);
         res == "en"
           ? setlangSelect(language[0].name)
           : setlangSelect(language[1].name);
@@ -56,7 +54,6 @@ export default function M_AppSetting() {
     onLanguageSelect(langSelect);
   };
   const onLanguageSelect = async (languageSelected) => {
-    console.log("onLanguage select call", languageSelected);
     try {
       const lang = languageSelected == "English" ? "en" : "ar";
       await AsyncStorage.setItem("Language", lang);

@@ -72,13 +72,13 @@ const transparentHeader = {
 
 let DrawerItemArray = [
   {
-    label_ar: "لوحة القيادة",
+    label_ar: "لوحة التحكم",
     label: "Dashboard",
     image: require("../Images/Merchant/xxxhdpi/ic_home.png"),
     screen: "M_DashboardScreen",
   },
   {
-    label_ar: "فئات القائمة",
+    label_ar: "قائمة الطعام",
     label: "Menu Categories",
     image: require("../Images/Merchant/xxxhdpi/img_category.png"),
     screen: "M_MenuStack1",
@@ -90,19 +90,19 @@ let DrawerItemArray = [
     screen: "M_MenuItemScreen",
   },
   {
-    label_ar: "طلبات",
+    label_ar: "الطلبات",
     label: "Orders",
     image: require("../Images/Merchant/xxxhdpi/ic_orders.png"),
     screen: "M_OrderScreen",
   },
   {
-    label_ar: "حساب تعريفي",
+    label_ar: "الملف التعريفي",
     label: "Profile",
     image: require("../Images/Merchant/xxxhdpi/ic_profile.png"),
     screen: "M_ProfileScreen",
   },
   {
-    label_ar: "الرموز الترويجية",
+    label_ar: "رموز ترويجية",
     label: "Promo Codes",
     image: require("../Images/Merchant/xxxhdpi/ic_promo.png"),
     screen: "M_PromocodeScreen",
@@ -121,25 +121,25 @@ let DrawerItemArray = [
     screen: "M_DocumentScreen",
   },
   {
-    label_ar: "التوفر المحدث",
+    label_ar: "أوقات المتجر",
     label: "Updated Availabilities",
     image: require("../Images/Merchant/xxxhdpi/ic_update.png"),
     screen: "M_UpdateAvailability",
   },
   {
-    label_ar: "فتحة البائع",
+    label_ar: "حجز مسبق",
     label: "Vendor Slot",
     image: require("../Images/Merchant/xxxhdpi/ic_slot.png"),
     screen: "M_SlotScreen",
   },
   {
-    label_ar: "إعدادات التطبيقات",
+    label_ar: "إعدادات التطبيق",
     label: "App Settings",
     image: require("../Images/Merchant/xxxhdpi/ic_seting.png"),
     screen: "M_AppSetting",
   },
   {
-    label_ar: "تطوير كلمة السر",
+    label_ar: "تحديث كلمة السر",
     label: "Update Password",
     image: require("../Images/Merchant/xxxhdpi/ic_pass.png"),
     screen: "M_UpdatePassword",
@@ -151,7 +151,7 @@ let DrawerItemArray = [
     screen: "M_StatisticsScreen",
   },
   {
-    label_ar: "التقارير",
+    label_ar: "تقرير",
     label: "Reports",
     image: require("../Images/Merchant/xxxhdpi/ic_reports.png"),
     screen: "M_ReportScreen",
@@ -198,7 +198,7 @@ const BottomTab = createBottomTabNavigator();
 function M_MyBottomTabs() {
   const [language, setlanguage] = useState("en");
   useEffect(() => {
-    async function setLang(){
+    async function setLang() {
       let lang = await getLanguage();
       setlanguage(lang);
     }
@@ -251,7 +251,7 @@ function M_MyBottomTabs() {
               }
             />
           ),
-          tabBarLabel: language == "en" ? "Orders" : "طلبات",
+          tabBarLabel: language == "en" ? "Orders" : "الطلبات",
           headerStyle: {
             backgroundColor: Colors.registrationBackground,
             elevation: 0,
@@ -341,7 +341,7 @@ function M_MyBottomTabs() {
               }
             />
           ),
-          tabBarLabel: language == "en" ? "Profile" : "حساب تعريفي",
+          tabBarLabel: language == "en" ? "Profile" : "الملف التعريفي",
           ...transparentHeader,
           headerTitle: "",
           headerTransparent: true,
@@ -364,12 +364,11 @@ function CustomDrawerContent(props) {
   const RESTAURANT = useSelector((e) => e.merchant.restaurant);
   const [language, setlanguage] = useState("en");
   useEffect(() => {
-    async function setLang(){
+    async function setLang() {
       let lang = await getLanguage();
       setlanguage(lang);
     }
     setLang();
-    
   }, []);
 
   useEffect(() => {
@@ -423,23 +422,31 @@ function CustomDrawerContent(props) {
         {DrawerItemArray.map((item, index) => {
           return (
             <TouchableOpacity
-               onPress={() => {
+              onPress={() => {
                 props.navigation.navigate(item.screen);
-             }}
-             style={{
-              flexDirection: language =='en'? 'row-reverse' :'row',
-              justifyContent:'flex-end',
-              marginVertical:12,
-            }}>
-              <Text  style={[
-                    styles.labelStyle,
-                     { width: widthPercentageToDP(50) },
-                  ]}>
-              {language == "en" ? item.label : item.label_ar}
-              </Text>
+              }}
+              style={{
+                flexDirection: language == "en" ? "row" : "row",
+                justifyContent: "space-between",
+                marginVertical: 12,
+                alignItems: "center",
+              }}
+            >
               <ImageContainer image={item.image} />
+              <Text
+                style={[
+                  styles.labelStyle,
+                  {
+                    width: widthPercentageToDP(50),
+                    // backgroundColor: "red",
+                    // flex: 1,
+                  },
+                ]}
+              >
+                {language == "en" ? item.label : item.label_ar}
+              </Text>
             </TouchableOpacity>
-            
+
             // <DrawerItem
             //   key={index}
             //   label={({ focused, color, size }) => (
@@ -488,6 +495,14 @@ function CustomDrawerContent(props) {
 const Drawer = createDrawerNavigator();
 
 export function MerchantDrawer({ navigation }) {
+  const [language, setlanguage] = useState("en");
+  useEffect(() => {
+    async function setLang() {
+      let lang = await getLanguage();
+      setlanguage(lang);
+    }
+    setLang();
+  }, []);
   return (
     <Drawer.Navigator
       screenOptions={({ navigation }) => ({
@@ -495,7 +510,12 @@ export function MerchantDrawer({ navigation }) {
           borderRadius: 0,
           marginLeft: 0,
         },
-        drawerStyle: { width: widthPercentageToDP(75) },
+        drawerStyle: {
+          width:
+            language == "en"
+              ? widthPercentageToDP(75)
+              : widthPercentageToDP(60),
+        },
       })}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
@@ -519,7 +539,9 @@ export function MerchantDrawer({ navigation }) {
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
           headerTitle: () => (
-            <Text style={styles.headerTitle}>{strings("offerSummary.lateralEntry.offer_listing")}</Text>
+            <Text style={styles.headerTitle}>
+              {strings("offerSummary.lateralEntry.offer_listing")}
+            </Text>
           ),
           ...transparentHeader,
         })}
@@ -621,7 +643,9 @@ export function MerchantDrawer({ navigation }) {
           headerTitleAlign: "center",
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           headerTitle: () => (
-            <Text style={styles.headerPinkTitle}>{strings("appSetting.lateralEntry.app_settings")}</Text>
+            <Text style={styles.headerPinkTitle}>
+              {strings("appSetting.lateralEntry.app_settings")}
+            </Text>
           ),
           ...transparentHeader,
         })}
@@ -654,7 +678,9 @@ export function MerchantDrawer({ navigation }) {
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...transparentHeader,
           headerTitle: () => (
-            <Text style={styles.headerTitle}>{strings("updatePassword.update_password")}</Text>
+            <Text style={styles.headerTitle}>
+              {strings("updatePassword.update_password")}
+            </Text>
           ),
         })}
         name="M_UpdatePassword"
@@ -695,7 +721,7 @@ const styles = StyleSheet.create({
   },
   labelStyle: {
     ...commonFontStyle(400, widthPercentageToDP(4), Colors.black),
-    marginLeft:25
+    marginLeft: 25,
   },
   drawerItemIcon: {
     resizeMode: "contain",

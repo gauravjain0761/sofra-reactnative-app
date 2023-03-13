@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../../Themes/Fonts";
@@ -22,6 +22,7 @@ import {
 import { useDispatch } from "react-redux";
 import { EditMenuCategory } from "../../Services/MerchantApi";
 import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 
 export default function M_EditCategoryScreen({ navigation, route }) {
   const category = route?.params;
@@ -31,11 +32,20 @@ export default function M_EditCategoryScreen({ navigation, route }) {
   const [nameArabic, setnameArabic] = useState(
     category ? category.name_ar : ""
   );
+  const [Language, setLanguage] = useState("en");
+  useEffect(() => {
+    async function setLang() {
+      let lang = await getLanguage();
+      setLanguage(lang);
+    }
+    setLang();
+  }, []);
   const onEditCategory = () => {
     let data = {
       name: name,
       name_ar: nameArabic,
       categoryId: category.id,
+      language: Language,
     };
     dispatch(EditMenuCategory(data, navigation));
   };

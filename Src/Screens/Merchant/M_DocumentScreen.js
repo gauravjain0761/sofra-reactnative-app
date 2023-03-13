@@ -35,7 +35,7 @@ import {
 import moment from "moment";
 import { media_url } from "../../Config/AppConfig";
 import RNFetchBlob from "rn-fetch-blob";
-import {strings} from '../../Config/I18n';
+import { strings } from "../../Config/I18n";
 
 export default function M_DocumentScreen({ navigation }) {
   const [document, setdocument] = useState("");
@@ -75,7 +75,10 @@ export default function M_DocumentScreen({ navigation }) {
         })
       );
     } else {
-      dispatchErrorAction(dispatch, strings('validationString.lateralEntry.please_select_document'));
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.lateralEntry.please_select_document")
+      );
     }
   };
 
@@ -135,13 +138,18 @@ export default function M_DocumentScreen({ navigation }) {
         .fetch("GET", FILE_URL)
         .then((res) => {
           dispatch({ type: "PRE_LOADER", payload: false });
-          dispatchSuccessAction(dispatch, strings('validationString.lateralEntry.documents_download_successfull'));
+          dispatchSuccessAction(
+            dispatch,
+            strings(
+              "validationString.lateralEntry.documents_download_successfull"
+            )
+          );
         })
         .catch((err) => {
           dispatch({ type: "PRE_LOADER", payload: false });
           dispatchErrorAction(
             dispatch,
-            strings('validationString.lateralEntry.something_went_wrong')
+            strings("validationString.lateralEntry.something_went_wrong")
           );
         });
     } else {
@@ -183,7 +191,9 @@ export default function M_DocumentScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>{strings("documentScreen.documents")}</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("documentScreen.documents")}
+        </Text>
         <View>
           <View>
             <TouchableOpacity
@@ -192,12 +202,16 @@ export default function M_DocumentScreen({ navigation }) {
             >
               {document == "" ? (
                 <View style={{ alignItems: "center" }}>
-                  <Text style={styles.uploadText}>{strings('documentScreen.upload_files_here')}</Text>
+                  <Text style={styles.uploadText}>
+                    {strings("documentScreen.upload_files_here")}
+                  </Text>
                   <Image
                     source={require("../../Images/Merchant/xxxhdpi/ic_doc.png")}
                     style={styles.imageVector}
                   />
-                  <Text style={styles.attachText}>{strings('documentScreen.choose_file_here')}</Text>
+                  <Text style={styles.attachText}>
+                    {strings("documentScreen.choose_file_here")}
+                  </Text>
                 </View>
               ) : (
                 <View>
@@ -213,7 +227,9 @@ export default function M_DocumentScreen({ navigation }) {
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               ListEmptyComponent={
-                <Text style={ApplicationStyles.nodataStyle}>{strings('documentScreen.lateralEntry.no_data_found')}</Text>
+                <Text style={ApplicationStyles.nodataStyle}>
+                  {strings("documentScreen.lateralEntry.no_data_found")}
+                </Text>
               }
             />
           )}
@@ -223,7 +239,7 @@ export default function M_DocumentScreen({ navigation }) {
         onPress={() => onAddDocuments()}
         style={styles.dbuttonStyle}
         text={"small"}
-        name={strings('documentScreen.upload')}
+        name={strings("documentScreen.upload")}
       />
     </View>
   );

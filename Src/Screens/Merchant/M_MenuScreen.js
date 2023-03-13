@@ -29,6 +29,7 @@ import {
 } from "../../Services/MerchantApi";
 import DeleteModal from "../../Components/DeleteModal";
 import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 export default function M_MenuScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -37,7 +38,14 @@ export default function M_MenuScreen({ navigation }) {
   const [deleteModalVisible, setdeleteModalVisible] = useState(false);
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
   const PRELOADER = useSelector((e) => e.merchant.preLoader);
-
+  const [Language, setLanguage] = useState("en");
+  useEffect(() => {
+    async function setLang() {
+      let lang = await getLanguage();
+      setLanguage(lang);
+    }
+    setLang();
+  }, []);
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
@@ -51,6 +59,7 @@ export default function M_MenuScreen({ navigation }) {
         let data = {
           name: name,
           name_ar: nameArabic,
+          language: Language,
         };
         dispatch(
           AddMenuCategory(data, () => {
@@ -76,7 +85,7 @@ export default function M_MenuScreen({ navigation }) {
       payload: {
         isVisible: true,
         onDelete: () => {
-          let data = { categoryId: id };
+          let data = { categoryId: id, language: Language };
           dispatch(DeleteMenuCategory(data));
         },
       },

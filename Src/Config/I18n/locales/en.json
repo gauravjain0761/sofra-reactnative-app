@@ -10,7 +10,6 @@
       "enter_your_email_address":"Enter Your email address",
       "enter_your_password":"Enter Your Password",
       "email":"Email"
-
     },
     "SignUp" :{
       "Supertrend":"SUPERTREND",
@@ -81,6 +80,15 @@
       "please_select_menu_categories":"Please select menu categories",
       "please_select_users":"Please select users",
       "please_enter_offer_detail":"Please enter offer detail",
+      "please_enter_location":"Please enter location",
+      "please_select_city":"Please select City",
+      "please_select_delivery_time":"Please select Delivery time",
+      "please_select_vat":"Please select VAT type",
+    "Please_select_start_and_end_date":"Please select start and end date",
+    "Please_enter_count":"Please enter count",
+    "Please_select_users":"Please select users",
+    "Report_downloaded_Successfully_Please_check_your_downloads":"Report downloaded Successfully, Please check your download.",
+    "Orders_file_downloaded_Successfully_Please_check_your_downloads":"Orders file downloaded Successfully, Please check your download.",
       "lateralEntry":{
 
         "please_select_document":"Please select document",

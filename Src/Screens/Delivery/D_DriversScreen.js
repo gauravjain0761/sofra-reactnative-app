@@ -65,7 +65,6 @@ export default function D_DriversScreen() {
     });
   };
   const onAddDriver = () => {
-    console.log(image);
     let data = {
       name: firstname,
       email: email,

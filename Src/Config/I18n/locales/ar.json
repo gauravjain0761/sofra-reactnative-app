@@ -80,6 +80,15 @@
     "please_select_menu_categories":"الرجاء تحديد فئات القائمة",
     "please_select_users":"الرجاء تحديد المستخدمين",
     "please_enter_offer_detail":"الرجاء إدخال تفاصيل العرض",
+    "please_enter_location":"الرجاء إدخال الموقع",
+      "please_select_city":"الرجاء تحديد المدينة",
+      "please_select_delivery_time":"الرجاء تحديد وقت التسليم",
+      "please_select_vat":"الرجاء تحديد نوع ضريبة القيمة المضافة",
+    "Please_select_start_and_end_date":"الرجاء تحديد تاريخ البدء والانتهاء",
+    "Please_enter_count":"الرجاء إدخال العدد",
+    "Please_select_users":"الرجاء تحديد المستخدمين",
+    "Report_downloaded_Successfully_Please_check_your_downloads":"تم تنزيل التقرير بنجاح ، يرجى التحقق من التنزيل.",
+    "Orders_file_downloaded_Successfully_Please_check_your_downloads":"تم تنزيل ملف الطلبات بنجاح ، يرجى التحقق من التنزيل.",
     "lateralEntry":{
       "please_select_document":"الرجاء تحديد الوثيقة",
       "documents_download_successfull":"تم تنزيل المستندات بنجاح",
@@ -128,7 +137,7 @@
       "enter_name":"أدخل الاسم",
       "name_in_arabic":"الاسم بالعربية",
       "enter_name_in_arabic":"أدخل الاسم بالعربية",
-      "menu_categories":"فئات القائمة",
+      "menu_categories":"قائمة الطعام",
       "categories":"الفئات",
       "item_type":"نوع العنصر",
       "type":"النوع",
@@ -221,7 +230,7 @@
   },
 
   "profile":{
-    "profile":"الملف الشخصي",
+    "profile":"الملف التعريفي",
     "personal_info":"معلومات شخصية",
     "enter_firstname":"أدخل الاسم الأول",
     "enter_lastname":"أدخل الاسم الأخير",
@@ -247,7 +256,7 @@
   },
 
   "promo_code":{
-    "promo_codes":"الرموز الترويجية",
+    "promo_codes":"رموز ترويجية",
     "promo_code_details_here":"تفاصيل الرمز الترويجي هنا:",
     "title":"العنوان",
     "title_in_arabic":"العنوان بالعربية",
@@ -327,7 +336,7 @@
   },
   "statisticsScreen":{
     "order":"الطلب",
-    "statistics":"الإحصائيات",
+    "statistics":"إحصائيات",
     "orders_statistics":"إحصائيات الطلبات",
     "earnings_statistics":"إحصائيات الأرباح",
     "apply_date_filters":"تطبيق مرشحات التاريخ",
@@ -359,7 +368,7 @@
     "thursday":"الخميس",
     "friday":"الجمعة",
     "saturday":"السبت",
-    "update_availabilities":"توفر التحديث",
+    "update_availabilities":"أوقات المتجر",
     "update_avail_here":"توفر التحديثات هنا",
     "everyday":"كل يوم",
     "apply_same_timing":"تطبيق المواعيد ذاتها",
@@ -381,7 +390,7 @@
     "confirm_pass":"تأكيد كلمة المرور",
     "please_enter_new_pass_here":"الرجاء إدخال كلمة المرور الجديدة هنا:",
     "please_enter_new_password_again_here":"الرجاء إدخال كلمة المرور الجديدة مرة أخرى هنا",
-    "update_password":"تحديث كلمة المرور",
+    "update_password":"تحديث كلمة السر",
     "small":"صغير"
   },
   "offerSummary":{

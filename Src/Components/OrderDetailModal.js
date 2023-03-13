@@ -24,7 +24,6 @@ import moment from "moment";
 import { getOrderDetailDelivery } from "../Services/DeliveryApi";
 import { merchant_url, media_url } from "../Config/AppConfig";
 import { strings } from "../Config/I18n";
-
 export default function OrderDetailModal({
   visible,
   onClose,

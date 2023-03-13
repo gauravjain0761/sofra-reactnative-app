@@ -179,7 +179,6 @@ export default function M_ProfileScreen({ navigation }) {
       deviceToken: fcmToken,
       language: language,
     };
-    console.log(data);
     dispatch(updateProfile(data));
   };
 
@@ -202,59 +201,92 @@ export default function M_ProfileScreen({ navigation }) {
                               } else {
                                 dispatchErrorAction(
                                   dispatch,
-                                  "Please enter location"
+                                  strings(
+                                    "validationString.please_enter_location"
+                                  )
                                 );
                               }
                             } else {
                               dispatchErrorAction(
                                 dispatch,
-                                "Please enter Description in arabic"
+                                strings(
+                                  "validationString.please_enter_description_in_arabic"
+                                )
                               );
                             }
                           } else {
                             dispatchErrorAction(
                               dispatch,
-                              "Please enter Description"
+                              strings(
+                                "validationString.please enter_description"
+                              )
                             );
                           }
                         } else {
-                          dispatchErrorAction(dispatch, "Please select Image");
+                          dispatchErrorAction(
+                            dispatch,
+                            strings("validationString.please_select_image")
+                          );
                         }
                       } else {
-                        dispatchErrorAction(dispatch, "Please select Cuisine");
+                        dispatchErrorAction(
+                          dispatch,
+                          strings("validationString.please_select_cuisine")
+                        );
                       }
                     } else {
-                      dispatchErrorAction(dispatch, "Please select City");
+                      dispatchErrorAction(
+                        dispatch,
+                        strings("validationString.please_select_city")
+                      );
                     }
                   } else {
                     dispatchErrorAction(
                       dispatch,
-                      "Please select Delivery time"
+                      strings("validationString.please_select_delivery_time")
                     );
                   }
                 } else {
-                  dispatchErrorAction(dispatch, "Please select VAT type");
+                  dispatchErrorAction(
+                    dispatch,
+                    strings("validationString.please_select_vat")
+                  );
                 }
               } else {
-                dispatchErrorAction(dispatch, "Please select category");
+                dispatchErrorAction(
+                  dispatch,
+                  strings("validationString.please_select_category")
+                );
               }
             } else {
               dispatchErrorAction(
                 dispatch,
-                "Please enter Business name in arabic"
+                strings("validationString.please_enter_business_in_arabic")
               );
             }
           } else {
-            dispatchErrorAction(dispatch, "Please enter Business name");
+            dispatchErrorAction(
+              dispatch,
+              strings("validationString.please_enter_busi_name")
+            );
           }
         } else {
-          dispatchErrorAction(dispatch, "Please enter Phone number");
+          dispatchErrorAction(
+            dispatch,
+            strings("validationString.please_enter_mobile_number")
+          );
         }
       } else {
-        dispatchErrorAction(dispatch, "Please enter Lastname");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_lastname")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter Firstname");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_firstname")
+      );
     }
   };
 

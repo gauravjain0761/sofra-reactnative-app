@@ -19,6 +19,8 @@ import {
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
+import "moment/locale/ar";
+
 import {
   dashboardSearch,
   DeleteMenuItem,
@@ -93,10 +95,21 @@ export default function M_DashboardScreen({ navigation }) {
         {/* <Text style={styles.cardTitle}>
               {strings("dashboard.how_it_works")}
             </Text> */}
-        <View style={{ 
-          flexDirection: I18nManager.isRTL? "row-reverse" : "row", 
-          alignItems: "center" }}>
-          <Image style={styles.menuImage} source={image} />
+        <View
+          style={{
+            flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+            alignItems: "center",
+          }}
+        >
+          {title == strings("pop_up.instruction") && I18nManager.isRTL ? (
+            <Image
+              style={[styles.menuImage, { transform: [{ rotateY: "180deg" }] }]}
+              source={image}
+            />
+          ) : (
+            <Image style={[styles.menuImage]} source={image} />
+          )}
+
           <Text style={styles.addText}>{title}</Text>
         </View>
         <Text style={styles.addText2}>{des}</Text>
@@ -135,9 +148,10 @@ export default function M_DashboardScreen({ navigation }) {
               <View style={styles.paddingView}>
                 <FlatList
                   horizontal={true}
+                  showsHorizontalScrollIndicator={false}
                   style={{
-                    // backgroundColor:'yellow'
-                    // flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+                    // backgroundColor: "yellow",
+                    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
                     // flexDirection:'row'
                   }}
                   data={dashboardSearchData.menuItems}
@@ -424,14 +438,14 @@ const styles = StyleSheet.create({
     marginBottom: hp(1),
   },
   bottomcardRow: {
-    flexDirection: I18nManager.isRTL? "row-reverse" :"row",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     alignItems: "center",
     width: "100%",
   },
   rightText: {
     ...commonFontStyle("M_600", 13, Colors.black),
     marginLeft: hp(1.5),
-    marginRight:hp(1.5)
+    marginRight: hp(1.5),
   },
   bottomcardRowImage: {
     height: hp(4.5),

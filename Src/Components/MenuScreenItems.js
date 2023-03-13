@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  I18nManager,
+} from "react-native";
 import React from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../Themes/Fonts";
@@ -49,11 +56,21 @@ export default function MenuScreenItems({
           ? item.name
           : item.name_ar}
       </Text>
-      <View style={styles.cardBotomBtn}>
+      <View
+        style={[
+          styles.cardBotomBtn,
+          // { flexDirection: lan == "en" ? "row" : "row-reverse" },
+        ]}
+      >
         {screen !== "promocode" && (
           <TouchableOpacity
             onPress={() => onEdit()}
-            style={styles.addMenuButton}
+            style={[
+              styles.addMenuButton,
+              {
+                flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              },
+            ]}
           >
             <Image
               style={styles.menuIconButton}
@@ -68,6 +85,8 @@ export default function MenuScreenItems({
             style={[
               styles.addMenuButton,
               {
+                flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+
                 backgroundColor: status == 1 ? Colors.green : Colors.red,
               },
             ]}
@@ -88,6 +107,8 @@ export default function MenuScreenItems({
             style={[
               styles.addMenuButton,
               {
+                flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+
                 backgroundColor: Colors.grayButtonBackground,
               },
             ]}
@@ -108,6 +129,8 @@ export default function MenuScreenItems({
               style={[
                 styles.addMenuButton,
                 {
+                  flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+
                   backgroundColor: Colors.green,
                 },
               ]}

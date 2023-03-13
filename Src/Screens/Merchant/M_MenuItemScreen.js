@@ -57,11 +57,11 @@ export default function M_MenuItemScreen({ navigation }) {
   const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
   const [Language, setLanguage] = useState("en");
   useEffect(() => {
-    async function setLang(){
+    async function setLang() {
       let lang = await getLanguage();
       setLanguage(lang);
     }
-   setLang()
+    setLang();
   }, []);
   useEffect(() => {
     // dispatch({ type: "PRE_LOADER", payload: true });
@@ -136,22 +136,21 @@ export default function M_MenuItemScreen({ navigation }) {
           }
         : undefined,
     };
-    console.log(data);
-    // dispatch(
-    //   AddMenuItem(data, () => {
-    //     setName("");
-    //     setArabicName("");
-    //     setMenuCategory("");
-    //     setItemType("");
-    //     setPrice("");
-    //     setDiscount("");
-    //     setMaxLimit("");
-    //     setImageItem("");
-    //     setDescription("");
-    //     setArabicDes("");
-    //     setMenuDes("");
-    //   })
-    // );
+    dispatch(
+      AddMenuItem(data, () => {
+        setName("");
+        setArabicName("");
+        setMenuCategory("");
+        setItemType("");
+        setPrice("");
+        setDiscount("");
+        setMaxLimit("");
+        setImageItem("");
+        setDescription("");
+        setArabicDes("");
+        setMenuDes("");
+      })
+    );
   };
   const validation = () => {
     if (Name.trim() !== "") {
@@ -169,41 +168,72 @@ export default function M_MenuItemScreen({ navigation }) {
                         } else {
                           dispatchErrorAction(
                             dispatch,
-                            "Please select menu descriptors"
+                            strings(
+                              "validationString.please_select_menu_descriptors"
+                            )
                           );
                         }
                       } else {
                         dispatchErrorAction(
                           dispatch,
-                          "Please enter Description in arabic"
+                          strings(
+                            "validationString.please_enter_description_in_arabic"
+                          )
                         );
                       }
                     } else {
-                      dispatchErrorAction(dispatch, "Please enter Description");
+                      dispatchErrorAction(
+                        dispatch,
+                        strings("validationString.please enter_description")
+                      );
                     }
                   } else {
-                    dispatchErrorAction(dispatch, "Please select item image");
+                    dispatchErrorAction(
+                      dispatch,
+                      strings("validationString.please_select_item_image")
+                    );
                   }
                 } else {
-                  dispatchErrorAction(dispatch, "Please enter max limit");
+                  dispatchErrorAction(
+                    dispatch,
+                    strings("validationString.please_enter_max_limis")
+                  );
                 }
               } else {
-                dispatchErrorAction(dispatch, "Please enter Discount");
+                dispatchErrorAction(
+                  dispatch,
+                  strings("validationString.please_enter_discount_value")
+                );
               }
             } else {
-              dispatchErrorAction(dispatch, "Please enter price");
+              dispatchErrorAction(
+                dispatch,
+                strings("validationString.please_enter_price")
+              );
             }
           } else {
-            dispatchErrorAction(dispatch, "Please select item type");
+            dispatchErrorAction(
+              dispatch,
+              strings("validationString.please_select_item_type")
+            );
           }
         } else {
-          dispatchErrorAction(dispatch, "Please select menu categories");
+          dispatchErrorAction(
+            dispatch,
+            strings("validationString.please_select_menu_categories")
+          );
         }
       } else {
-        dispatchErrorAction(dispatch, "Please enter name in arabic");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_name_in_arabic")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter name");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_name")
+      );
     }
   };
   const onDeleteMenuItems = async (id) => {
@@ -242,7 +272,9 @@ export default function M_MenuItemScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>{strings("menu_screen.menu_item")}</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("menu_screen.menu_item")}
+        </Text>
         {MENU_ITEMS.length !== 0 && (
           <FlatList
             style={{ flexDirection: I18nManager.isRTL ? "row-reverse" : "row" }}

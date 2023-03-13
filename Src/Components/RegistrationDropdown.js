@@ -89,7 +89,6 @@ export default function RegistrationDropdown({
           placeholder={placeholder}
           value={value}
           onChange={(item) => {
-            console.log("item ==>", item);
             setData(item[valueField]);
           }}
           renderItem={(item) => {

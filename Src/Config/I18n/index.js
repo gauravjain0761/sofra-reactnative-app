@@ -14,7 +14,7 @@ I18n.translations = {
 };
 
 export const currentLocale = I18n.currentLocale();
-console.log(currentLocale, "currentLocale");
+// console.log(currentLocale, "currentLocale");
 
 export const isRTL =
   currentLocale.indexOf("he") === 0 || currentLocale.indexOf("ar") === 0;
@@ -23,7 +23,7 @@ I18nManager.forceRTL(isRTL);
 
 export const strings = (name, params = {}) => {
   AsyncStorage.getItem("Language").then((res) => {
-    console.log("language sselect ==>", res);
+    // console.log("language sselect ==>", res);
     if (res) {
       I18n.locale = res;
     } else {
