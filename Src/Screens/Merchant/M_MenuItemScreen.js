@@ -56,9 +56,12 @@ export default function M_MenuItemScreen({ navigation }) {
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
   const DESCRIPTOR = useSelector((e) => e.merchant.descriptor);
   const [Language, setLanguage] = useState("en");
-  useEffect(async () => {
-    let lang = await getLanguage();
-    setLanguage(lang);
+  useEffect(() => {
+    async function setLang(){
+      let lang = await getLanguage();
+      setLanguage(lang);
+    }
+   setLang()
   }, []);
   useEffect(() => {
     // dispatch({ type: "PRE_LOADER", payload: true });
@@ -239,7 +242,7 @@ export default function M_MenuItemScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Menu Items</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings("menu_screen.menu_item")}</Text>
         {MENU_ITEMS.length !== 0 && (
           <FlatList
             style={{ flexDirection: I18nManager.isRTL ? "row-reverse" : "row" }}

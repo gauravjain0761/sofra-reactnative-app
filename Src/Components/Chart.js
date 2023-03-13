@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, StyleSheet } from "react-native";
+import { View, Text, Dimensions, StyleSheet, I18nManager } from "react-native";
 import React from "react";
 import {
   VictoryChart,
@@ -33,7 +33,9 @@ export default function Chart({ name, x, totalData, value }) {
         {name == "Orders Delivered" ? (
           <Text style={styles.totalText}>{totalData}</Text>
         ) : (
-          <Text style={styles.totalText}>AED {totalData}</Text>
+          <Text style={styles.totalText}>
+            {I18nManager.isRTL? `${totalData} AED` :`AED ${totalData}`}
+            </Text>
         )}
       </View>
       <LineChart

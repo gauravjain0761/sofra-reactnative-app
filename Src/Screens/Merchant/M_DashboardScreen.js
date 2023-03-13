@@ -93,7 +93,9 @@ export default function M_DashboardScreen({ navigation }) {
         {/* <Text style={styles.cardTitle}>
               {strings("dashboard.how_it_works")}
             </Text> */}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ 
+          flexDirection: I18nManager.isRTL? "row-reverse" : "row", 
+          alignItems: "center" }}>
           <Image style={styles.menuImage} source={image} />
           <Text style={styles.addText}>{title}</Text>
         </View>
@@ -120,6 +122,7 @@ export default function M_DashboardScreen({ navigation }) {
           />
           <TextInput
             placeholder={strings("dashboard.search_for_specific")}
+            // placeholder={'fff'}
             style={styles.searchInput}
             value={search}
             onChangeText={(text) => handleSearch(text)}
@@ -133,7 +136,9 @@ export default function M_DashboardScreen({ navigation }) {
                 <FlatList
                   horizontal={true}
                   style={{
-                    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+                    // backgroundColor:'yellow'
+                    // flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+                    // flexDirection:'row'
                   }}
                   data={dashboardSearchData.menuItems}
                   renderItem={({ item, index }) => {
@@ -419,13 +424,14 @@ const styles = StyleSheet.create({
     marginBottom: hp(1),
   },
   bottomcardRow: {
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL? "row-reverse" :"row",
     alignItems: "center",
     width: "100%",
   },
   rightText: {
     ...commonFontStyle("M_600", 13, Colors.black),
     marginLeft: hp(1.5),
+    marginRight:hp(1.5)
   },
   bottomcardRowImage: {
     height: hp(4.5),

@@ -48,6 +48,7 @@ import { getRestaurnatDetails } from "../Services/MerchantApi";
 import { media_url } from "../Config/AppConfig";
 import { useState } from "react";
 import M_InstructionScreen from "../Screens/Merchant/M_InstructionScreen";
+import { strings } from "../Config/I18n";
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
@@ -79,13 +80,13 @@ let DrawerItemArray = [
   {
     label_ar: "فئات القائمة",
     label: "Menu Categories",
-    image: require("../Images/Merchant/xxxhdpi/ic_side_menu.png"),
+    image: require("../Images/Merchant/xxxhdpi/img_category.png"),
     screen: "M_MenuStack1",
   },
   {
     label_ar: "عناصر القائمة",
     label: "Menu Items",
-    image: require("../Images/Merchant/xxxhdpi/ic_menu_items.png"),
+    image: require("../Images/Merchant/xxxhdpi/menu_vector.png"),
     screen: "M_MenuItemScreen",
   },
   {
@@ -196,9 +197,12 @@ function M_MenuStack() {
 const BottomTab = createBottomTabNavigator();
 function M_MyBottomTabs() {
   const [language, setlanguage] = useState("en");
-  useEffect(async () => {
-    let lang = await getLanguage();
-    setlanguage(lang);
+  useEffect(() => {
+    async function setLang(){
+      let lang = await getLanguage();
+      setlanguage(lang);
+    }
+    setLang();
   }, []);
   return (
     <BottomTab.Navigator
@@ -359,9 +363,13 @@ function CustomDrawerContent(props) {
   const dispatch = useDispatch();
   const RESTAURANT = useSelector((e) => e.merchant.restaurant);
   const [language, setlanguage] = useState("en");
-  useEffect(async () => {
-    let lang = await getLanguage();
-    setlanguage(lang);
+  useEffect(() => {
+    async function setLang(){
+      let lang = await getLanguage();
+      setlanguage(lang);
+    }
+    setLang();
+    
   }, []);
 
   useEffect(() => {
@@ -414,33 +422,52 @@ function CustomDrawerContent(props) {
         </Text>
         {DrawerItemArray.map((item, index) => {
           return (
-            <DrawerItem
-              key={index}
-              label={({ focused, color, size }) => (
-                <Text
-                  style={[
-                    styles.labelStyle,
-                    { width: widthPercentageToDP(50) },
-                  ]}
-                >
-                  {language == "en" ? item.label : item.label_ar}
-                </Text>
-              )}
-              icon={({ focused, color, size }) => (
-                <ImageContainer image={item.image} />
-              )}
-              onPress={() => {
+            <TouchableOpacity
+               onPress={() => {
                 props.navigation.navigate(item.screen);
-              }}
-              style={{
-                marginLeft: 0,
-                marginRight: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                marginTop: 0,
-                marginBottom: 0,
-              }}
-            />
+             }}
+             style={{
+              flexDirection: language =='en'? 'row-reverse' :'row',
+              justifyContent:'flex-end',
+              marginVertical:12,
+            }}>
+              <Text  style={[
+                    styles.labelStyle,
+                     { width: widthPercentageToDP(50) },
+                  ]}>
+              {language == "en" ? item.label : item.label_ar}
+              </Text>
+              <ImageContainer image={item.image} />
+            </TouchableOpacity>
+            
+            // <DrawerItem
+            //   key={index}
+            //   label={({ focused, color, size }) => (
+            //     <Text
+            //       style={[
+            //         styles.labelStyle,
+            //         { width: widthPercentageToDP(50) },
+            //       ]}
+            //     >
+            //       {language == "en" ? item.label : item.label_ar}
+            //     </Text>
+            //   )}
+            //   icon={({ focused, color, size }) => (
+            //     <ImageContainer image={item.image} />
+            //   )}
+            //   onPress={() => {
+            //     props.navigation.navigate(item.screen);
+            //   }}
+            //   style={{
+            //     marginLeft: 0,
+            //     marginRight: 0,
+            //     paddingLeft: 0,
+            //     paddingRight: 0,
+            //     marginTop: 0,
+            //     marginBottom: 0,
+            //     flexDirection:'row'
+            //   }}
+            // />
           );
         })}
         <View>
@@ -492,7 +519,7 @@ export function MerchantDrawer({ navigation }) {
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
           headerTitle: () => (
-            <Text style={styles.headerTitle}>Offers Listing</Text>
+            <Text style={styles.headerTitle}>{strings("offerSummary.lateralEntry.offer_listing")}</Text>
           ),
           ...transparentHeader,
         })}
@@ -594,7 +621,7 @@ export function MerchantDrawer({ navigation }) {
           headerTitleAlign: "center",
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           headerTitle: () => (
-            <Text style={styles.headerPinkTitle}>Update App Settings</Text>
+            <Text style={styles.headerPinkTitle}>{strings("appSetting.lateralEntry.app_settings")}</Text>
           ),
           ...transparentHeader,
         })}
@@ -627,7 +654,7 @@ export function MerchantDrawer({ navigation }) {
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...transparentHeader,
           headerTitle: () => (
-            <Text style={styles.headerTitle}>Update Password</Text>
+            <Text style={styles.headerTitle}>{strings("updatePassword.update_password")}</Text>
           ),
         })}
         name="M_UpdatePassword"
@@ -668,6 +695,7 @@ const styles = StyleSheet.create({
   },
   labelStyle: {
     ...commonFontStyle(400, widthPercentageToDP(4), Colors.black),
+    marginLeft:25
   },
   drawerItemIcon: {
     resizeMode: "contain",

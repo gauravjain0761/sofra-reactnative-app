@@ -404,7 +404,8 @@
         "please_select_here":"Please select here",
         "select_user":"Select user*",
       "please_select_user_from_list":"Please select users from list",
-      "create_new_offer":"Create New Offer"
+      "create_new_offer":"Create New Offer",
+      "offer_listing":"Offers Listing"
       }
     },
 
@@ -415,7 +416,8 @@
       "yes":"Yes",
       "No":"No",
       "lateralEntry":{
-        "select_language":"Select Language"
+        "select_language":"Select Language",
+        "app_settings":"Update App Settings"
       }
     },
   

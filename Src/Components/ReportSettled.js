@@ -28,6 +28,8 @@ import {
   dispatchSuccessAction,
   exportToCsv,
 } from "../Services/CommonFunctions";
+import { string } from "i/lib/util";
+import { strings } from "../Config/I18n";
 export default function ReportSettled({ reportType }) {
   const setteled_report = useSelector((e) => e.merchant.setteled_report);
   const unsetteled_report = useSelector((e) => e.merchant.unsetteled_report);
@@ -49,7 +51,7 @@ export default function ReportSettled({ reportType }) {
   return (
     <View>
       <PinkButton
-        name={"Export to CSV"}
+        name={strings("orders.lateralEntry.export_to_CSV")}
         onPress={() => {
           exportToCsv(REPORT, reportType, dispatch, "merchant");
         }}
@@ -112,7 +114,7 @@ export default function ReportSettled({ reportType }) {
           })
         ) : (
           <View>
-            <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
+            <Text style={ApplicationStyles.nodataStyle}>{strings("orders.lateralEntry.no_data_found")}</Text>
           </View>
         )}
       </View>

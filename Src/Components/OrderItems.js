@@ -135,10 +135,30 @@ export default function OrderItems({
               {"Date " + moment(item.bookingDate).format("YYYY-MM-DD")}
             </Text>
             <Text style={styles.name}>AED {item.totalPrice}</Text>
+            <View style={{
+              flexDirection:'row',
+              alignItems:'center'
+            }}>
+
+            
             <Image
               style={styles.truckLogo}
               source={require("../Images/Merchant/xxxhdpi/ic_car.png")}
             />
+
+            {
+              item.item_type == "Normal" ?
+              <Image
+              style={styles.itemTypeLogo}
+              source={require("../Images/Merchant/xxxhdpi/hot.png")}
+            />
+            :
+            <Image
+            style={styles.itemTypeLogo}
+            source={require("../Images/Merchant/xxxhdpi/cold.png")}
+          />
+            }
+            </View>
           </View>
           <View>
             {status.type == "PENDING" ||
@@ -222,6 +242,13 @@ const styles = StyleSheet.create({
     height: hp(4),
     resizeMode: "contain",
     marginVertical: 5,
+  },
+  itemTypeLogo: {
+    width: hp(2.5),
+    height: hp(2.5),
+    resizeMode: "contain",
+    marginVertical: 5,
+    marginHorizontal:20
   },
   tagText: {
     paddingVertical: 8,

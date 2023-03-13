@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { I18nManager, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { WebView } from "react-native-webview";
 import {
@@ -21,7 +21,7 @@ export default function M_InstructionScreen() {
           height: heightPercentageToDP(100),
           width: widthPercentageToDP(100),
         }}
-        source={{ uri: "https://www.mysofra.com/merchant-tutorial" }}
+        source={{ uri: I18nManager.isRTL ? "https://www.mysofra.com/merchant-tutorial-ar"  : "https://www.mysofra.com/merchant-tutorial" }}
       />
     </View>
   );

@@ -99,8 +99,8 @@
    "add_your_restaurant_menu":"أضف قائمة مطعمك",
    "add_menu":"أضف القائمة",
    "add_your_category":"أضف فئة المطعم الخاص بك",
-   "see_Instruction":"كيف يعمل التاجر",
-     "inctruction":"منظر",
+   "see_Instruction":"تعليمات إستخدام التطبيق",
+     "inctruction":"إبدأ",
    "add_categories":"إضافة فئة",
    "total":"المجموع",
    "earning":"الكسب",
@@ -399,8 +399,8 @@
       "please_select_here":"الرجاء التحديد هنا",
       "select_user":"اختر المستخدم*",
       "please_select_user_from_list":"الرجاء تحديد المستخدمين من القائمة",
-      "create_new_offer":"إنشاء عرض جديد"
-      
+      "create_new_offer":"إنشاء عرض جديد",
+      "offer_listing":"قائمة العروض"
     }
   },
   "appSetting":{
@@ -410,7 +410,8 @@
     "yes":"نعم",
     "No":"لا",
     "lateralEntry":{
-      "select_language":"اختار اللغة"
+      "select_language":"اختار اللغة",
+      "app_settings":"تحديث إعدادات التطبيق"
     }
   },
 

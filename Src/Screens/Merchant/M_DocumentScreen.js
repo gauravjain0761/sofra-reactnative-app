@@ -183,7 +183,7 @@ export default function M_DocumentScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Documents</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings("documentScreen.documents")}</Text>
         <View>
           <View>
             <TouchableOpacity
