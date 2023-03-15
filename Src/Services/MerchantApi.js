@@ -256,7 +256,9 @@ export const UpdateAppSetting = (postObj) => async (dispatch) => {
 
 export const getAvailbility = () => async (dispatch) => {
   let token = await getToken();
-  const url = merchant_url + "/getAvailbility?auth_token=" + token;
+  let lan = await getLanguage();
+  const url =
+    merchant_url + "/getAvailbility?auth_token=" + token + "&language=" + lan;
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
@@ -561,7 +563,7 @@ export const getPromoCodes = () => async (dispatch) => {
   }
 };
 
-export const AddPromoCode = (postObj) => async (dispatch) => {
+export const AddPromoCode = (postObj, onSuccess) => async (dispatch) => {
   dispatch({ type: "PRE_LOADER", payload: true });
 
   const url = merchant_url + "/AddPromoCode";
@@ -570,6 +572,7 @@ export const AddPromoCode = (postObj) => async (dispatch) => {
     if (data.status == true) {
       dispatchSuccessAction(dispatch, data.message);
       dispatch(getPromoCodes());
+      onSuccess();
       // dispatchAction(dispatch, "ADD_OFF_SLOT", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);

@@ -11,6 +11,12 @@
       "enter_your_password":"Enter Your Password",
       "email":"Email"
     },
+    "Forgot_Pass":{
+"Forgot_Password":"Forgot Password",
+"text":"Enter your email to receive an email to reset your password",
+"already_account":"Already have an account?",
+"Sign_In":"Sign In"
+    },
     "SignUp" :{
       "Supertrend":"SUPERTREND",
       "become_sofra_parter":"Become a Sofra Partner",
@@ -39,8 +45,8 @@
      "DEMATADE":"DEMATADE"
     },
     "validationString":{
-      "please_enter_valid_email":"Please enter valid email",
-      "please_enter_password":"Please enter Password",
+      "please_enter_valid_email":"Please enter valid email address",
+      "please_enter_password":"Please enter correct password",
       "please_select_image":"Please select Image",
       "please_select_expiry_type":"Please select expiry type",
       "please_select_validity_type":"Please select validity type",
@@ -440,7 +446,8 @@
         "last7days":"Last 7 Days",
         "last30days":"Last 30 Days",
         "this_month":"This Month",
-        "last_month":"This Month"
+        "last_month":"This Month",
+        "Custom_Range":"Custom Range"
      }
     },
   "pop_up":{

@@ -58,7 +58,7 @@ export default function ReportSettled({ reportType }) {
         text={"small"}
       />
       <View>
-        <Text style={styles.tabTitle}>{reportType + "s"}</Text>
+        <Text style={styles.tabTitle}>{reportType}</Text>
         {REPORT?.items && REPORT?.items?.length !== 0 ? (
           REPORT.items.map((element, index) => {
             return (
@@ -114,7 +114,9 @@ export default function ReportSettled({ reportType }) {
           })
         ) : (
           <View>
-            <Text style={ApplicationStyles.nodataStyle}>{strings("orders.lateralEntry.no_data_found")}</Text>
+            <Text style={ApplicationStyles.nodataStyle}>
+              {strings("orders.lateralEntry.no_data_found")}
+            </Text>
           </View>
         )}
       </View>

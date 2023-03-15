@@ -11,6 +11,12 @@
     "enter_your_password":"أدخل كلمة المرور الخاصة بك",
     "email":"البريد الإلكتروني"
   },
+  "Forgot_Pass":{
+    "Forgot_Password":"هل نسيت كلمة السر",
+    "text":"أدخل بريدك الإلكتروني لتلقي بريد إلكتروني لإعادة تعيين كلمة المرور الخاصة بك",
+    "already_account":"هل لديك حساب؟",
+    "Sign_In":"تسجيل الدخول"
+        },
   "SignUp" :{
     "Supertrend":"الاتجاه الفائق",
     "become_sofra_parter":"كن شريك سفرة",
@@ -39,8 +45,8 @@
    "DEMATADE":"DEMATADE"
   },
   "validationString":{
-    "please_enter_valid_email":"الرجاء إدخال بريد إلكتروني صحيح",
-    "please_enter_password":"الرجاء إدخال كلمة المرور",
+    "please_enter_valid_email":"الرجاء إدخال عنوان بريد إلكتروني صالح",
+    "please_enter_password":" الرجاء إدخال كلمة المرور الصحيحة",
     "please_select_image":"الرجاء تحديد صورة",
     "please_select_expiry_type":"الرجاء تحديد نوع انتهاء الصلاحية",
     "please_select_validity_type":"الرجاء تحديد نوع الصلاحية",
@@ -287,7 +293,7 @@
   },
 
   "report_screen":{
-      "order_details":"تفاصيل الطلبs",
+      "order_details":"تفاصيل الطلب",
       "total_cash_orders":"إجمالي الطلبات النقدية (مكتملة)",
       "quantity":"الكمية",
       "total_online_orders(completed)":" إجمالي الطلبات عبر الإنترنت (مكتملة)",
@@ -435,7 +441,8 @@
        "last7days":"اخر 7 ايام",
        "last30days":"آخر 30 يومًا",
        "this_month":"هذا الشهر",
-       "last_month":"الشهر الماضي"
+       "last_month":"الشهر الماضي",
+       "Custom_Range":"نطاق مخصص"
     }
     
   },

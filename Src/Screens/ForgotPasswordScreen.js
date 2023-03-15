@@ -21,6 +21,7 @@ import {
 } from "../Services/CommonFunctions";
 import { forgotPassword, getLogin } from "../Services/AuthApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { strings } from "../Config/I18n";
 
 export default function ForgotPasswordScreen({ route }) {
   const dispatch = useDispatch();
@@ -39,21 +40,24 @@ export default function ForgotPasswordScreen({ route }) {
         );
       });
     } else {
-      dispatchErrorAction(dispatch, "Please enter valid email");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_valid_email")
+      );
     }
     // navigation.navigate("MerchantDrawerHome");
   };
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={ApplicationStyles.welcomeText}>Forgot Password</Text>
+      <Text style={ApplicationStyles.welcomeText}>
+        {strings("Forgot_Pass.Forgot_Password")}
+      </Text>
       <View style={styles.mainView}>
         <View>
-          <Text style={styles.forgot22}>
-            Enter your email to receive an email to reset your password
-          </Text>
+          <Text style={styles.forgot22}>{strings("Forgot_Pass.text")}</Text>
           <LoginTextInput
-            name={"Email"}
-            placeholder={"Enter your email address"}
+            name={strings("login.email")}
+            placeholder={strings("login.enter_your_email_address")}
             value={email}
             onChangeText={(text) => setEmail(text)}
           />
@@ -61,16 +65,16 @@ export default function ForgotPasswordScreen({ route }) {
           <PinkButton
             onPress={() => onSendMail()}
             style={styles.dbuttonStyle}
-            name={"Submit"}
+            name={strings("SignUp.submit")}
           />
 
           <Text style={styles.forgot2}>
-            Already have an account?{" "}
+            {strings("Forgot_Pass.already_account")}{" "}
             <Text
               style={{ color: Colors.pink }}
               onPress={() => navigation.goBack()}
             >
-              Sign In
+              {strings("Forgot_Pass.Sign_In")}
             </Text>
           </Text>
         </View>

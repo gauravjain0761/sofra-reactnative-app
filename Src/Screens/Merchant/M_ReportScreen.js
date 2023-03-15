@@ -56,24 +56,34 @@ export default function M_ReportScreen({ navigation }) {
   const OrderComponent = () => {
     return (
       <View>
-        <Text style={styles.tabTitle2}>{strings("report_screen.order_details")}</Text>
+        <Text style={styles.tabTitle2}>
+          {strings("report_screen.order_details")}
+        </Text>
         <View style={styles.titles}>
-          <Text style={styles.nameTitle}>{strings('report_screen.total_cash_orders')}</Text>
-          <Text style={styles.nameTitle}>{strings('report_screen.quantity')}</Text>
+          <Text style={styles.nameTitle}>
+            {strings("report_screen.total_cash_orders")}
+          </Text>
+          <Text style={styles.nameTitle}>
+            {strings("report_screen.quantity")}
+          </Text>
         </View>
         <View style={styles.itemList}>
           <View style={styles.row}>
-            <Text style={styles.rightText}>{strings('report_screen.total_cash_orders')}</Text>
+            <Text style={styles.rightText}>
+              {strings("report_screen.total_cash_orders")}
+            </Text>
             <Text style={styles.rightText}>{REPORT.cashOrders}</Text>
           </View>
           <View style={styles.middleRow}>
             <Text style={styles.rightText}>
-              {strings('report_screen.total_online_orders(completed)')}
+              {strings("report_screen.total_online_orders(completed)")}
             </Text>
             <Text style={styles.rightText}>{REPORT.onlineOrders}</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.rightText}>{strings('report_screen.total_order_completed')}</Text>
+            <Text style={styles.rightText}>
+              {strings("report_screen.total_order_completed")}
+            </Text>
             <Text style={styles.rightText}>
               {REPORT.cashOrders + REPORT.onlineOrders}
             </Text>
@@ -88,26 +98,34 @@ export default function M_ReportScreen({ navigation }) {
       <View>
         {/* <Text style={styles.tabTitle2}>Order Details</Text> */}
         <View style={styles.titles}>
-          <Text style={styles.nameTitle}>{strings('report_screen.summary')}</Text>
-          <Text style={styles.nameTitle}>{strings('report_screen.summary')}</Text>
+          <Text style={styles.nameTitle}>
+            {strings("report_screen.summary")}
+          </Text>
+          <Text style={styles.nameTitle}>
+            {strings("report_screen.summary")}
+          </Text>
         </View>
         <View style={styles.itemList}>
           <View style={styles.row2}>
-            <Text style={styles.rightText}>{strings('report_screen.total_restaurant_sale')}</Text>
+            <Text style={styles.rightText}>
+              {strings("report_screen.total_restaurant_sale")}
+            </Text>
             <Text style={styles.rightText}>
               AED {REPORT.totalResturantSale}
             </Text>
           </View>
           <View style={styles.row2}>
             <Text style={styles.rightText}>
-              {strings('report_screen.total_sofra_charges')}
+              {strings("report_screen.total_sofra_charges")}
             </Text>
             <Text style={styles.rightText}>
               -AED {REPORT.totalSofraCharges}
             </Text>
           </View>
           <View style={styles.row2}>
-            <Text style={styles.rightText}>{strings('report_screen.net_settlement_amount')}</Text>
+            <Text style={styles.rightText}>
+              {strings("report_screen.net_settlement_amount")}
+            </Text>
             <Text style={styles.rightText}>
               AED {REPORT.netSettlementAmount}
             </Text>
@@ -115,7 +133,9 @@ export default function M_ReportScreen({ navigation }) {
           {reportType == reportDropdownData[0].name && (
             <View>
               <View style={styles.row2}>
-                <Text style={styles.rightText}>{strings('report_screen.settlement_period')}</Text>
+                <Text style={styles.rightText}>
+                  {strings("report_screen.settlement_period")}
+                </Text>
                 <Text style={styles.rightText}>
                   {moment(
                     REPORT.settlementPeriodStart
@@ -131,7 +151,9 @@ export default function M_ReportScreen({ navigation }) {
                 </Text>
               </View>
               <View style={styles.row2}>
-                <Text style={styles.rightText}>{strings('report_screen.settlement_date')}</Text>
+                <Text style={styles.rightText}>
+                  {strings("report_screen.settlement_date")}
+                </Text>
                 <Text style={styles.rightText}>
                   {REPORT.settlementPeriodStart
                     ? moment(REPORT.settlementPeriodStart).format("DD MMM YYYY")
@@ -139,7 +161,9 @@ export default function M_ReportScreen({ navigation }) {
                 </Text>
               </View>
               <View style={styles.row2}>
-                <Text style={styles.rightText}>{strings('report_screen.settlement_reference')}</Text>
+                <Text style={styles.rightText}>
+                  {strings("report_screen.settlement_reference")}
+                </Text>
                 <Text style={styles.rightText}>
                   {REPORT.settlementReference}
                 </Text>
@@ -227,7 +251,7 @@ export default function M_ReportScreen({ navigation }) {
           <Text
             style={tab == "order" ? styles.selectedTabText : styles.tabText}
           >
-            {strings('report_screen.order_details')}
+            {strings("report_screen.order_details")}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -237,19 +261,21 @@ export default function M_ReportScreen({ navigation }) {
           <Text
             style={tab == "summary" ? styles.selectedTabText : styles.tabText}
           >
-            {strings('report_screen.summary')}
+            {strings("report_screen.summary")}
           </Text>
         </TouchableOpacity>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.filterTitle}>{strings('report_screen.apply_date_filters')}</Text>
+        <Text style={styles.filterTitle}>
+          {strings("report_screen.apply_date_filters")}
+        </Text>
         <SearchDropdown
           value={search}
           setData={(text) => {
             setSearch(text);
           }}
-          placeholder={strings('report_screen.search_by_date_range')}
+          placeholder={strings("report_screen.search_by_date_range")}
           valueField={"name"}
           labelField={"label"}
           style={styles.dropdownRow}
@@ -262,7 +288,7 @@ export default function M_ReportScreen({ navigation }) {
               <DateTimePickerView
                 value={StartDate}
                 format={"MM/DD/YYYY"}
-                placeHolder={strings('report_screen.lateralEntry.start_date')}
+                placeHolder={strings("report_screen.lateralEntry.start_date")}
                 onPressPicker={() => {
                   setDatePickerVisibility(true), setdateType("start");
                 }}
@@ -273,7 +299,7 @@ export default function M_ReportScreen({ navigation }) {
               <DateTimePickerView
                 value={EndDate}
                 format={"MM/DD/YYYY"}
-                placeHolder={strings('report_screen.lateralEntry.end_date')}
+                placeHolder={strings("report_screen.lateralEntry.end_date")}
                 onPressPicker={() => {
                   setDatePickerVisibility(true), setdateType("end");
                 }}

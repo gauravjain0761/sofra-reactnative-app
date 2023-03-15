@@ -36,6 +36,7 @@ import moment from "moment";
 import { media_url } from "../../Config/AppConfig";
 import RNFetchBlob from "rn-fetch-blob";
 import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 
 export default function M_DocumentScreen({ navigation }) {
   const [document, setdocument] = useState("");
@@ -60,9 +61,11 @@ export default function M_DocumentScreen({ navigation }) {
     }
   };
 
-  const onAddDocuments = () => {
+  const onAddDocuments = async () => {
+    let lang = await getLanguage();
     if (document !== "") {
       let data = {
+        language: lang,
         "files[0]": {
           uri: document.uri,
           type: document.type, // or photo.type image/jpg
@@ -82,13 +85,15 @@ export default function M_DocumentScreen({ navigation }) {
     }
   };
 
-  const onDeleteDocument = (id) => {
+  const onDeleteDocument = async (id) => {
+    let lang = await getLanguage();
+
     dispatch({
       type: "DELETE_MODAL",
       payload: {
         isVisible: true,
         onDelete: () => {
-          let data = { docId: id, language: "en" };
+          let data = { docId: id, language: lang };
           dispatch(deleteDocument(data));
         },
       },

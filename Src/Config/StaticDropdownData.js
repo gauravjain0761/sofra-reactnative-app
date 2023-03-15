@@ -6,8 +6,8 @@ export const ItemTypeData = [
 ];
 
 export const CurrentDeliverData = [
-  { id: 1, name: "Yes", name: "Yes", name_ar: "نعم" },
-  { id: 2, name: "No", name: "No", name_ar: "لا" },
+  { id: 1, name: "Yes", label: "Yes", name_ar: "نعم" },
+  { id: 2, name: "No", label: "No", name_ar: "لا" },
 ];
 
 export const ExpiryTypeData = [
@@ -169,5 +169,11 @@ export const dateFilterData = [
       moment().subtract(1, "month").endOf("month").format("MM/DD/YYYY"),
     label: strings("lateral_entry.days.last_month"),
   },
-  { startDate: "", endDate: "", id: 0, name: "CUSTOM", label: "Custom Range" },
+  {
+    startDate: "",
+    endDate: "",
+    id: 0,
+    name: "CUSTOM",
+    label: strings("lateral_entry.days.Custom_Range"),
+  },
 ];

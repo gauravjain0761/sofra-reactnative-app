@@ -49,10 +49,16 @@ export default function MerchantLoginScreen() {
           );
         });
       } else {
-        dispatchErrorAction(dispatch, strings("login.please_enter_password"));
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_password")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, strings("login.please_enter_valid_email"));
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_valid_email")
+      );
     }
     // navigation.navigate("MerchantDrawerHome");
   };

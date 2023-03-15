@@ -1,4 +1,5 @@
 import { company_url, delivery_url, merchant_url } from "../Config/AppConfig";
+import { getLanguage } from "./asyncStorage";
 import {
   dispatchAction,
   dispatchErrorAction,
@@ -55,6 +56,7 @@ export const register = (postObj, onSuccess) => async (dispatch) => {
 
 export const getLogout = (onSuccess) => async (dispatch) => {
   dispatchAction(dispatch, "PRE_LOADER", true);
+  let lang = await getLanguage();
   const url = merchant_url + "/logout";
   try {
     const data = await POST(dispatch, url);

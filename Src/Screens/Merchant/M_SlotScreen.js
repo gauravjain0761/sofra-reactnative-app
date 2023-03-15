@@ -29,61 +29,100 @@ import {
 } from "../../Services/MerchantApi";
 import moment from "moment";
 import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 export default function M_SlotScreen({ navigation }) {
-  LocaleConfig.locales["fr"] = {
-    monthNames: [
-      strings('slotScreen.january'),
-      strings('slotScreen.february'),
-      strings('slotScreen.march'),
-      strings('slotScreen.april'),
-      strings('slotScreen.may'),
-      strings('slotScreen.june'),
-      strings('slotScreen.july'),
-      strings('slotScreen.august'),
-      strings('slotScreen.september'),
-      strings('slotScreen.october'),
-      strings('slotScreen.november'),
-      strings('slotScreen.december'),
-    
-    ],
-    monthNamesShort: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    dayNames: [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ],
-    dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    today: "Aujourd'hui",
-  };
-  LocaleConfig.defaultLocale = "fr";
+  // LocaleConfig.locales.ar = {
+  //   monthNames: [
+  //     "كَانُون ٱلثَّانِي",
+  //     "شُبَاط",
+  //     "آذَار",
+  //     "نَيْسَان",
+  //     "أَيَّار",
+  //     "حَزِيرَان",
+  //     "تَمُّوز",
+  //     "آب",
+  //     "أَيْلُول",
+  //     "تِشْرِين ٱلْأَوَّل",
+  //     "تِشْرِين ٱلثَّانِي",
+  //     "كَانُون ٱلْأَوَّل",
+  //   ],
+  //   monthNamesShort: [
+  //     "يناير",
+  //     "فبراير",
+  //     "مارس",
+  //     "أبريل",
+  //     "يمكن",
+  //     "يونيو",
+  //     "يوليو",
+  //     "أغسطس",
+  //     "سبتمبر",
+  //     "أكتوبر",
+  //     "نوفمبر",
+  //     "ديسمبر",
+  //   ],
+  //   dayNames: [
+  //     "السبت",
+  //     "الجمعة",
+  //     "الخميس",
+  //     "الأربعاء",
+  //     "الثلاثاء",
+  //     "الأثنين",
+  //     "الأحد",
+  //   ],
+  //   dayNamesShort: [
+  //     "السبت",
+  //     "الجمعة",
+  //     "الخميس",
+  //     "الأربعاء",
+  //     "الثلاثاء",
+  //     "الأثنين",
+  //     "الأحد",
+  //   ],
+  //   today: "اليوم",
+  // };
+  // LocaleConfig.locales.en = {
+  //   monthNames:
+  //     "January_February_March_April_May_June_July_August_September_October_November_December".split(
+  //       "_"
+  //     ),
+  //   monthNamesShort: "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split(
+  //     "_"
+  //   ),
+  //   dayNames: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split(
+  //     "_"
+  //   ),
+  //   dayNamesShort: "Sun_Mon_Tue_Wed_Thu_Fri_Sat".split("_"),
+  //   today: "Today",
+  // };
+  // LocaleConfig.defaultLocale = "en";
   const dispatch = useDispatch();
   const SLOTS = useSelector((e) => e.merchant.offSlots);
   const PRELOADER = useSelector((e) => e.merchant.preLoader);
   const [MarkedDate, setMarkedDate] = useState({});
-  const [current, setcurrent] = useState(moment().format("YYYY-MM-DD"));
+  const [current, setcurrent] = useState(moment().toISOString());
   const calendarRef = React.useRef();
+  const [Language, setLanguage] = useState("en");
+  useEffect(() => {
+    async function setLang() {
+      let lang = await getLanguage();
+      setLanguage(lang);
+      LocaleConfig.defaultLocale = lang;
+      ["en", "ar"].forEach((locale) => {
+        LocaleConfig.locales[locale] = {
+          monthNames: moment.localeData(locale).months(),
+          monthNamesShort: moment.localeData(locale).monthsShort(),
+          dayNames: moment.localeData(locale).weekdays(),
+          dayNamesShort: moment.localeData(locale).weekdaysMin(),
+        };
+      });
+    }
+    setLang();
+  }, []);
   useEffect(() => {
     dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOffSlots());
-      setcurrent(moment().format("YYYY-MM-DD"));
+      setcurrent(moment().toISOString());
       // calendarRef.current.se;
     });
   }, []);
@@ -104,7 +143,8 @@ export default function M_SlotScreen({ navigation }) {
     setMarkedDate(data);
   }, [SLOTS]);
 
-  const onDeleteSlot = (id) => {
+  const onDeleteSlot = async (id) => {
+    let lang = await getLanguage();
     dispatch({
       type: "DELETE_MODAL",
       payload: {
@@ -112,7 +152,7 @@ export default function M_SlotScreen({ navigation }) {
         onDelete: () => {
           let data = {
             slotId: id,
-            language: "en",
+            language: lang,
           };
           dispatch(deleteOffSlot(data));
         },
@@ -147,17 +187,19 @@ export default function M_SlotScreen({ navigation }) {
         <Text style={styles.rightText}>{index + 1}</Text>
       </View>
       <View style={styles.middleRow}>
-        <Text style={styles.leftText}>{strings('slotScreen.off_slot_date')}</Text>
+        <Text style={styles.leftText}>
+          {strings("slotScreen.off_slot_date")}
+        </Text>
         <Text style={styles.rightText}>{moment(item.date).format("LL")}</Text>
       </View>
       <View style={styles.middleRow2}>
-        <Text style={styles.leftText}>{strings('slotScreen.created')}</Text>
+        <Text style={styles.leftText}>{strings("slotScreen.created")}</Text>
         <Text style={styles.rightText}>
           {moment(item.created).format("MM/DD/YY, hh:mm A")}
         </Text>
       </View>
       <View style={styles.lastRow}>
-        <Text style={styles.leftText}>{strings('slotScreen.action')}</Text>
+        <Text style={styles.leftText}>{strings("slotScreen.action")}</Text>
         <TouchableOpacity
           onPress={() => onDeleteSlot(item.id)}
           style={styles.deleteButton}
@@ -173,7 +215,9 @@ export default function M_SlotScreen({ navigation }) {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>{strings('slotScreen.off_slotes')}</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("slotScreen.off_slotes")}
+        </Text>
         <View style={styles.whiteView}>
           <Calendar
             onDayPress={(day) => {
@@ -212,11 +256,13 @@ export default function M_SlotScreen({ navigation }) {
         </View>
         <PinkButton
           style={styles.btn}
-          name={strings('SignUp.submit')}
+          name={strings("SignUp.submit")}
           text={"small"}
           onPress={() => {}}
         />
-        <Text style={styles.mainTitle}>{strings('slotScreen.all_off_slots')}</Text>
+        <Text style={styles.mainTitle}>
+          {strings("slotScreen.all_off_slots")}
+        </Text>
 
         {!PRELOADER && (
           <FlatList
@@ -224,7 +270,9 @@ export default function M_SlotScreen({ navigation }) {
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             ListEmptyComponent={
-              <Text style={ApplicationStyles.nodataStyle}>{strings('slotScreen.lateralEntry.no_data_found')}</Text>
+              <Text style={ApplicationStyles.nodataStyle}>
+                {strings("slotScreen.lateralEntry.no_data_found")}
+              </Text>
             }
           />
         )}

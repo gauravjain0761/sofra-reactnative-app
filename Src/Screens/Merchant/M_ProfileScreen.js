@@ -35,6 +35,7 @@ import {
 import LocationGoogleInput from "../../Components/LocationGoogleInput";
 import { strings } from "../../Config/I18n";
 import { getLanguage } from "../../Services/asyncStorage";
+import moment from "moment";
 export default function M_ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const [firstname, setfirstname] = useState("");
@@ -310,7 +311,9 @@ export default function M_ProfileScreen({ navigation }) {
               {RESTAURANT !== {}
                 ? language == "en"
                   ? RESTAURANT.name
-                  : RESTAURANT.name_ar
+                  : RESTAURANT.name_ar && RESTAURANT.name_ar !== ""
+                  ? RESTAURANT.name_ar
+                  : RESTAURANT.name
                 : ""}
             </Text>
           </View>

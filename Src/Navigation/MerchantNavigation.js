@@ -416,7 +416,9 @@ function CustomDrawerContent(props) {
           {RESTAURANT !== {}
             ? language == "en"
               ? RESTAURANT.name
-              : RESTAURANT.name_ar
+              : RESTAURANT.name_ar && RESTAURANT.name_ar !== ""
+              ? RESTAURANT.name_ar
+              : RESTAURANT.name
             : ""}
         </Text>
         {DrawerItemArray.map((item, index) => {
@@ -437,8 +439,12 @@ function CustomDrawerContent(props) {
                 style={[
                   styles.labelStyle,
                   {
-                    width: widthPercentageToDP(50),
-                    // backgroundColor: "red",
+                    width:
+                      language == "en"
+                        ? widthPercentageToDP(50)
+                        : Platform.OS == "android"
+                        ? widthPercentageToDP(50)
+                        : widthPercentageToDP(40),
                     // flex: 1,
                   },
                 ]}

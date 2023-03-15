@@ -59,7 +59,6 @@ export default function M_PromocodeScreen({ navigation }) {
   const [title, settitle] = useState("");
   const [arabicTitle, setarabicTitle] = useState("");
   const [discountCode, setdiscountCode] = useState("");
-  const [businessArabic, setbusinessArabic] = useState("");
   const [des, setdes] = useState("");
   const [Arabicdes, setArabicdes] = useState("");
   const [price, setprice] = useState(strings("promo_code.price"));
@@ -133,7 +132,25 @@ export default function M_PromocodeScreen({ navigation }) {
       count: count !== "" ? Number(count) : undefined,
       ...userIdJson,
     };
-    dispatch(AddPromoCode(data));
+    dispatch(
+      AddPromoCode(data, () => {
+        settitle("");
+        setarabicTitle("");
+        setdiscountCode("");
+        setdes("");
+        setArabicdes("");
+        setprice(strings("promo_code.price"));
+        setdiscountValue("");
+        setmaxDiscount("");
+        setminOrderValue("");
+        setvalidityType("ALL");
+        setexpiryType("NO");
+        setimage("");
+        setStartDate("");
+        setEndDate("");
+        setcount("");
+      })
+    );
   };
 
   const checkExpiryTypeValidation = () => {

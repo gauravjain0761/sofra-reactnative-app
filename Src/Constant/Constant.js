@@ -1,7 +1,11 @@
 import Colors from "../Themes/Colors";
 import { strings } from "../Config/I18n";
 export const orderStatusData = [
-  { title: "All", color: Colors.green, type: "ALL" },
+  {
+    title: strings("orders.lateralEntry.all"),
+    color: Colors.green,
+    type: "ALL",
+  },
   { title: strings("orders.pending"), color: "#f3b902", type: "PENDING" },
   { title: strings("orders.accepted"), color: Colors.green, type: "ACCEPTED" },
   {

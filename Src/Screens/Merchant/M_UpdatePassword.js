@@ -27,6 +27,7 @@ import { updatePassword } from "../../Services/AuthApi";
 import { useNavigation } from "@react-navigation/native";
 import { merchant_url } from "../../Config/AppConfig";
 import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 export default function M_UpdatePassword() {
   const dispatch = useDispatch();
   const [oldPwd, setoldPwd] = useState("");
@@ -40,11 +41,13 @@ export default function M_UpdatePassword() {
       setconfirmPwd("");
     });
   }, []);
-  const onUpdatePassword = () => {
+  const onUpdatePassword = async () => {
+    let lan = await getLanguage();
     let data = {
       old_password: oldPwd,
       new_password: newPwd,
       confirm_password: confirmPwd,
+      language: lan,
     };
     let url = merchant_url;
     dispatch(
@@ -65,17 +68,28 @@ export default function M_UpdatePassword() {
           } else {
             dispatchErrorAction(
               dispatch,
-              strings('validationString.lateralEntry.confirm_pass_match_new_and_pass')
+              strings(
+                "validationString.lateralEntry.confirm_pass_match_new_and_pass"
+              )
             );
           }
         } else {
-          dispatchErrorAction(dispatch, strings('validationString.please_enter_new_password_again'));
+          dispatchErrorAction(
+            dispatch,
+            strings("validationString.please_enter_new_password_again")
+          );
         }
       } else {
-        dispatchErrorAction(dispatch,strings('validationString.please_enter_new_password') );
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_new_password")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch,strings('validationString.please_enter_old_password') );
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_old_password")
+      );
     }
   };
 
@@ -90,32 +104,34 @@ export default function M_UpdatePassword() {
         }}
       >
         <View>
-          <Text style={styles.title}>{strings('updatePassword.update_password_here')}</Text>
+          <Text style={styles.title}>
+            {strings("updatePassword.update_password_here")}
+          </Text>
           <View>
             <RegistrationTextInput
-              placeholder={`${strings('updatePassword.old_pass')}*`}
+              placeholder={`${strings("updatePassword.old_pass")}*`}
               value={oldPwd}
               onChangeText={(text) => setoldPwd(text)}
             />
             <Text style={styles.bottomText}>
-              {strings('updatePassword.please_enter_old_pass_here')}
+              {strings("updatePassword.please_enter_old_pass_here")}
             </Text>
 
             <RegistrationTextInput
-              placeholder={`${strings('updatePassword.new_pass')}*`}
+              placeholder={`${strings("updatePassword.new_pass")}*`}
               value={newPwd}
               onChangeText={(text) => setnewPwd(text)}
             />
             <Text style={styles.bottomText}>
-              {strings('updatePassword.please_enter_new_pass_here')}
+              {strings("updatePassword.please_enter_new_pass_here")}
             </Text>
             <RegistrationTextInput
-              placeholder={`${strings('updatePassword.confirm_pass')}*`}
+              placeholder={`${strings("updatePassword.confirm_pass")}*`}
               value={confirmPwd}
               onChangeText={(text) => setconfirmPwd(text)}
             />
             <Text style={styles.bottomText}>
-              {strings('updatePassword.please_enter_new_password_again_here')}
+              {strings("updatePassword.please_enter_new_password_again_here")}
             </Text>
           </View>
         </View>
@@ -124,7 +140,7 @@ export default function M_UpdatePassword() {
             onPress={() => validation()}
             style={styles.dbuttonStyle}
             text={"small"}
-            name={strings('updatePassword.update_password')}
+            name={strings("updatePassword.update_password")}
           />
         </View>
       </View>

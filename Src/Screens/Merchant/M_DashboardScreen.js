@@ -19,8 +19,8 @@ import {
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
-import "moment/locale/ar";
-
+import moment from "moment";
+import "moment/min/locales";
 import {
   dashboardSearch,
   DeleteMenuItem,
@@ -44,6 +44,13 @@ export default function M_DashboardScreen({ navigation }) {
   const [categoryDetail, setcategoryDetail] = useState(false);
   const [selectedOrder, setselectedOrder] = useState({});
 
+  useEffect(() => {
+    async function setLang() {
+      let lang = await getLanguage();
+      moment.locale(lang);
+    }
+    setLang();
+  }, []);
   useEffect(() => {
     dispatch({ type: "PRE_LOADER_DELIVERY", payload: false });
     dispatch({ type: "PRE_LOADER", payload: false });

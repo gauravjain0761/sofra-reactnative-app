@@ -1,4 +1,4 @@
-import { getToken } from "./asyncStorage";
+import { getLanguage, getToken } from "./asyncStorage";
 import { merchant_url } from "../Config/AppConfig";
 
 export const GET = async (dispatch, url, data) => {
@@ -23,6 +23,7 @@ export const GET = async (dispatch, url, data) => {
 };
 export async function POST(dispatch, url, data) {
   const token = await getToken();
+  const lan = await getLanguage();
   let formData = new FormData();
   if (data) {
     Object.keys(data).map((element) => {
@@ -30,6 +31,9 @@ export async function POST(dispatch, url, data) {
         formData.append(element, data[element]);
       }
     });
+  }
+  if (data?.language == undefined) {
+    formData.append("language", lan);
   }
   if (token) {
     formData.append("auth_token", token);
