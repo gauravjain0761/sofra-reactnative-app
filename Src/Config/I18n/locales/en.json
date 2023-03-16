@@ -2,7 +2,7 @@
     "login": {
       "welcome": "Welcome Merchant",
       "login_button": "Login",
-      "signup_button": "Sign Up",
+      "signup_button": "Create an account",
       "user_name": "Email",
       "password": "Password",
       "forgot_password": "Forgot Password?",
