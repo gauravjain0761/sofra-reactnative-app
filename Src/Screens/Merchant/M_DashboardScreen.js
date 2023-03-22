@@ -135,7 +135,14 @@ export default function M_DashboardScreen({ navigation }) {
         <Text style={ApplicationStyles.welcomeText}>
           {strings("dashboard.business_portal")}
         </Text>
-        <View style={styles.searchBar}>
+        <View
+          style={[
+            styles.searchBar,
+            {
+              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+            },
+          ]}
+        >
           <Image
             source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
             style={styles.searchIcon}
@@ -143,7 +150,10 @@ export default function M_DashboardScreen({ navigation }) {
           <TextInput
             placeholder={strings("dashboard.search_for_specific")}
             // placeholder={'fff'}
-            style={styles.searchInput}
+            style={[
+              styles.searchInput,
+              { marginRight: I18nManager.isRTL ? hp(2) : 0 },
+            ]}
             value={search}
             onChangeText={(text) => handleSearch(text)}
             placeholderTextColor={Colors.placeholderColor}
