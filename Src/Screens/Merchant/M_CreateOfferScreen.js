@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  ScrollView,
+  I18nManager,
+} from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
@@ -13,93 +21,145 @@ import {
 } from "../../Services/CommonFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { AddOffer } from "../../Services/MerchantApi";
+import { offerUserData } from "../../Config/StaticDropdownData";
+import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
+import { useEffect } from "react";
 
-const citydata = [
-  {
-    id: 1,
-    strategicName: "SUPERTREND",
-  },
-  { id: 2, strategicName: "VWAP" },
-  { id: 3, strategicName: "RSIMA" },
-  { id: 6, strategicName: "TESTING" },
-  { id: 10, strategicName: "DEMATADE" },
-];
-export default function M_CreateOfferScreen() {
+export default function M_CreateOfferScreen({ navigation }) {
   const dispatch = useDispatch();
   const [Detail, setDetail] = useState("");
   const [Users, setUsers] = useState([]);
+  const [userType, setuserType] = useState("");
+  const [lan, setlan] = useState("en");
+  useEffect(async () => {
+    let lang = await getLanguage();
+    setlan(lang);
+  }, []);
   const USERS = useSelector((e) => e.merchant.users);
   const onCreateOffer = () => {
     if (Detail.trim() !== "") {
-      if (Users.length !== 0) {
-        let userIdJson = getFromDataJson(USERS, Users, "userIds");
-        console.log("userIdJson", userIdJson);
-        let data = { title: Detail, type: "", ...userIdJson };
-        dispatch(AddOffer(data));
+      if (userType !== "") {
+        if (userType == "ALL") {
+          let data = { title: Detail, type: "ALL" };
+          dispatch(
+            AddOffer(data, () => {
+              navigation.navigate("M_OfferScreen");
+            })
+          );
+        } else {
+          if (Users.length !== 0) {
+            let userIdJson = getFromDataJson(USERS, Users, "userIds");
+            let data = { title: Detail, type: "SPECIFIC", ...userIdJson };
+            dispatch(
+              AddOffer(data, () => {
+                navigation.navigate("M_OfferScreen");
+              })
+            );
+          } else {
+            dispatchErrorAction(
+              dispatch,
+              strings("validationString.please_select_users")
+            );
+          }
+        }
       } else {
-        dispatchErrorAction(dispatch, "Please select users");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_select_users")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter offer detail");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_offer_detail")
+      );
     }
   };
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={ApplicationStyles.welcomeText}>Create Offer</Text>
-      <Text style={styles.inputName}>Offer Detail*</Text>
-      <TextInput
-        value={Detail}
-        onChangeText={(text) => setDetail(text)}
-        multiline={true}
-        style={styles.textInput}
-        placeholder={"Enter Detail"}
-        placeholderTextColor={Colors.darkGrey}
-        textAlignVertical={"top"}
-      />
-      <Text style={styles.bottomText}>Please enter the offer detail here.</Text>
-      <Text style={[styles.inputName, { marginTop: hp(3) }]}>Users*</Text>
-      <MultiSelect
-        style={[styles.tradetypeviewStyle]}
-        placeholderStyle={
-          Users.length !== 0
-            ? styles.placeholderSelectedStyle
-            : styles.placeholderStyle
-        }
-        data={USERS}
-        selectedTextStyle={[styles.TitleTextStyle]}
-        iconColor={Colors.black}
-        labelField={"name"}
-        valueField={"name"}
-        maxHeight={300}
-        placeholder={Users.length !== 0 ? Users.toString() : "Nothing Selected"}
-        value={Users}
-        onChange={(item) => {
-          setUsers(item);
-        }}
-        renderItem={(item, selected) => {
-          return (
-            <View style={styles.selectedItemsDropdown}>
-              <Text style={styles.textItem}>{item["name"]}</Text>
-              {selected && (
-                <Image
-                  source={require("../../Images/Merchant/xxxhdpi/tick.png")}
-                  style={styles.tickIcon}
-                />
+      <ScrollView>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("offerSummary.offer_detail")}
+        </Text>
+        <Text style={styles.inputName}>{`${strings(
+          "offerSummary.offer_detail"
+        )}*`}</Text>
+        <TextInput
+          value={Detail}
+          onChangeText={(text) => setDetail(text)}
+          multiline={true}
+          style={styles.textInput}
+          placeholder={strings("offerSummary.Enter_Detail")}
+          placeholderTextColor={Colors.darkGrey}
+          textAlignVertical={"top"}
+        />
+        <Text style={styles.bottomText}>
+          {strings("offerSummary.please_enter_offer_detail")}
+        </Text>
+        <Text
+          style={[styles.inputName, { marginTop: hp(3), marginBottom: hp(2) }]}
+        >
+          {`${strings("offerSummary.user")}*`}
+        </Text>
+
+        <RegistrationDropdown
+          data={offerUserData}
+          value={userType}
+          setData={(text) => {
+            setuserType(text);
+          }}
+          placeholder={strings("offerSummary.lateralEntry.type")}
+          valueField={"name"}
+          labelField={lan == "en" ? "label" : "name_ar"}
+          style={styles.dropdownRow}
+          placeholderTextColor={Colors.black}
+        />
+        <Text style={styles.bottomText}>
+          {strings("offerSummary.lateralEntry.please_select_here")}
+        </Text>
+        {userType == "SPECIFIC" && (
+          <View>
+            <Text
+              style={[
+                styles.inputName,
+                { marginTop: hp(3), marginBottom: hp(2) },
+              ]}
+            >
+              {`${strings("offerSummary.lateralEntry.select_user")}*`}
+            </Text>
+            <RegistrationDropdown
+              data={USERS}
+              value={Users}
+              setData={(text) => {
+                setUsers(text);
+              }}
+              multiSelect={true}
+              placeholder={
+                Users.length !== 0
+                  ? Users.toString()
+                  : strings("offerSummary.nothing_selected")
+              }
+              valueField={"name"}
+              style={styles.dropdownRow}
+              placeholderTextColor={Colors.black}
+            />
+
+            <Text style={styles.bottomText}>
+              {strings(
+                "offerSummary.lateralEntry.please_select_user_from_list"
               )}
-            </View>
-          );
-        }}
-        renderSelectedItem={(item) => {
-          return <></>;
-        }}
-      />
-      <Text style={styles.bottomText}>Please select users here.</Text>
-      <PinkButton
-        onPress={() => onCreateOffer()}
-        style={styles.dbuttonStyle}
-        text={"small"}
-        name={"Create Offer"}
-      />
+            </Text>
+          </View>
+        )}
+
+        <PinkButton
+          onPress={() => onCreateOffer()}
+          style={styles.dbuttonStyle}
+          text={"small"}
+          name={strings("offerSummary.create_offer")}
+        />
+      </ScrollView>
     </View>
   );
 }
@@ -118,6 +178,7 @@ const styles = StyleSheet.create({
     padding: hp(2),
     borderRadius: 5,
     marginVertical: hp(2),
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   bottomText: {
     ...commonFontStyle(400, 14, Colors.darkGrey),

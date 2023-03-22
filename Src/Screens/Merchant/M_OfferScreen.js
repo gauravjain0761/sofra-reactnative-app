@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
@@ -11,33 +19,67 @@ import { DeleteOffer, getOffers } from "../../Services/MerchantApi";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 
-const citydata = [
-  {
-    id: 1,
-    strategicName: "SUPERTREND",
-  },
-  { id: 2, strategicName: "VWAP" },
-  { id: 3, strategicName: "RSIMA" },
-  { id: 6, strategicName: "TESTING" },
-  { id: 10, strategicName: "DEMATADE" },
-];
 export default function M_OfferScreen({ navigation }) {
   const dispatch = useDispatch();
   const OFFERS = useSelector((e) => e.merchant.offers);
-
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
+  const renderItem = ({ item, index }) => (
+    <View key={index} style={styles.itemList}>
+      <View style={styles.row}>
+        <Text style={styles.leftText}>
+          {strings("offerSummary.offer_detail")}
+        </Text>
+        <Text style={styles.rightText}>{item.title}</Text>
+      </View>
+      <View style={styles.middleRow}>
+        <Text style={styles.leftText}>{strings("offerSummary.user")}</Text>
+        <Text style={styles.rightText}>{item.user.name}</Text>
+      </View>
+      <View style={styles.middleRow2}>
+        <Text style={styles.leftText}>{strings("offerSummary.created")}</Text>
+        <Text style={styles.rightText}>
+          {moment(item.created).format("MM/DD/YY, hh:mm A")}
+        </Text>
+      </View>
+      <View style={styles.lastRow}>
+        <Text style={styles.leftText}>{strings("offerSummary.action")}</Text>
+        <TouchableOpacity
+          onPress={() => onDeleteOffer(item.id)}
+          style={styles.deleteButton}
+        >
+          <Image
+            source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
+            style={styles.searchIcon}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOffers());
     });
   }, []);
 
-  const onDeleteOffer = (id) => {
-    let data = {
-      offerId: id,
-      language: "en",
-    };
-    dispatch(DeleteOffer(data));
+  const onDeleteOffer = async (id) => {
+    let lang = await getLanguage();
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = {
+            offerId: id,
+            language: lang,
+          };
+          dispatch(DeleteOffer(data));
+        },
+      },
+    });
   };
   return (
     <View style={ApplicationStyles.mainView}>
@@ -47,41 +89,21 @@ export default function M_OfferScreen({ navigation }) {
         }}
         style={styles.dbuttonStyle}
         text={"small"}
-        name={"Create Offer"}
+        name={strings("offerSummary.lateralEntry.create_new_offer")}
       />
-      {OFFERS.length !== 0 &&
-        OFFERS.map((item, index) => {
-          return (
-            <View key={index} style={styles.itemList}>
-              <View style={styles.row}>
-                <Text style={styles.leftText}>Offer Detail</Text>
-                <Text style={styles.rightText}>{item.title}</Text>
-              </View>
-              <View style={styles.middleRow}>
-                <Text style={styles.leftText}>User</Text>
-                <Text style={styles.rightText}>{item.user.name}</Text>
-              </View>
-              <View style={styles.middleRow2}>
-                <Text style={styles.leftText}>Created</Text>
-                <Text style={styles.rightText}>
-                  {moment(item.created).format("MM/DD/YY, hh:mm A")}
-                </Text>
-              </View>
-              <View style={styles.lastRow}>
-                <Text style={styles.leftText}>Action</Text>
-                <TouchableOpacity
-                  onPress={() => onDeleteOffer(item.id)}
-                  style={styles.deleteButton}
-                >
-                  <Image
-                    source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
-                    style={styles.searchIcon}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          );
-        })}
+      {!PRELOADER && (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={OFFERS}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          ListEmptyComponent={
+            <Text style={ApplicationStyles.nodataStyle}>
+              {strings("orders.lateralEntry.no_data_found")}
+            </Text>
+          }
+        />
+      )}
     </View>
   );
 }

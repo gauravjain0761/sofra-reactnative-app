@@ -6,6 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  FlatList,
+  I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -25,74 +27,117 @@ import {
   DeleteMenuCategory,
   getMenuCategories,
 } from "../../Services/MerchantApi";
+import DeleteModal from "../../Components/DeleteModal";
+import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 export default function M_MenuScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [name, setname] = useState("");
   const [nameArabic, setnameArabic] = useState("");
+  const [deleteModalVisible, setdeleteModalVisible] = useState(false);
   const ALL_CATEGORIES = useSelector((e) => e.merchant.menuCategories);
-
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
+  const [Language, setLanguage] = useState("en");
   useEffect(() => {
-    dispatch(getMenuCategories());
+    async function setLang() {
+      let lang = await getLanguage();
+      setLanguage(lang);
+    }
+    setLang();
+  }, []);
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
+    navigation.addListener("focus", () => {
+      dispatch(getMenuCategories());
+    });
   }, []);
 
   const onAddCategory = () => {
     if (name.trim() !== "") {
-      if (hasArabicCharacters(nameArabic)) {
+      if (nameArabic.trim() !== "") {
         let data = {
           name: name,
           name_ar: nameArabic,
+          language: Language,
         };
-        dispatch(AddMenuCategory(data));
+        dispatch(
+          AddMenuCategory(data, () => {
+            setname(""), setnameArabic("");
+          })
+        );
       } else {
-        dispatchErrorAction(dispatch, "Please enter name in arabic");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_name_in_arabic")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter category name");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_category_name")
+      );
     }
   };
   const onDeleteCategory = (id) => {
-    let data = { categoryId: id };
-    dispatch(DeleteMenuCategory(data));
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = { categoryId: id, language: Language };
+          dispatch(DeleteMenuCategory(data));
+        },
+      },
+    });
   };
+  const renderItem = ({ item, index }) => (
+    <View key={index}>
+      <MenuScreenItems
+        onEdit={() => navigation.navigate("M_EditCategoryScreen", item)}
+        onDelete={() => {
+          onDeleteCategory(item.id);
+        }}
+        item={item}
+        activeVisible={false}
+        screen={"category"}
+      />
+    </View>
+  );
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Menu Categories</Text>
-        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-          {ALL_CATEGORIES.length !== 0 &&
-            ALL_CATEGORIES.map((element, index) => {
-              return (
-                <View key={index}>
-                  <MenuScreenItems
-                    onEdit={() =>
-                      navigation.navigate("M_EditCategoryScreen", element)
-                    }
-                    onDelete={() => {
-                      onDeleteCategory(element.id);
-                    }}
-                    item={element}
-                    activeVisible={false}
-                  />
-                </View>
-              );
-            })}
-        </ScrollView>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("menu_screen.menu_categories")}
+        </Text>
+        <FlatList
+          style={{ flexDirection: I18nManager.isRTL ? "row-reverse" : "row" }}
+          horizontal={true}
+          data={ALL_CATEGORIES}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
         <View style={styles.rowView}>
-          <Text style={styles.title}>Add Menu Categories</Text>
-          <Text style={styles.title2}>Menu Categories Details</Text>
+          <Text style={styles.title}>
+            {strings("menu_screen.add_menu_categories")}
+          </Text>
+          <Text style={styles.title2}>
+            {strings("menu_screen.menu_categories_details")}
+          </Text>
           <View>
-            <Text style={styles.titleInput}>Name</Text>
+            <Text style={styles.titleInput}>{strings("menu_screen.name")}</Text>
             <RegistrationTextInput
-              placeholder={"Enter name"}
+              placeholder={strings("menu_screen.enter_name")}
               value={name}
               onChangeText={(text) => setname(text)}
             />
           </View>
           <View>
-            <Text style={styles.titleInput}>Name in Arabic</Text>
+            <Text style={styles.titleInput}>
+              {strings("menu_screen.name_in_arabic")}
+            </Text>
             <RegistrationTextInput
-              placeholder={"Enter name in Arabic"}
+              placeholder={strings("menu_screen.enter_name_in_arabic")}
               value={nameArabic}
               onChangeText={(text) => setnameArabic(text)}
             />
@@ -102,7 +147,7 @@ export default function M_MenuScreen({ navigation }) {
             text={"small"}
             onPress={() => onAddCategory()}
             style={styles.dbuttonStyle}
-            name={"Add Categories"}
+            name={strings("menu_screen.add_categories")}
           />
         </View>
       </ScrollView>

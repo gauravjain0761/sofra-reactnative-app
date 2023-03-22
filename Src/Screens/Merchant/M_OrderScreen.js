@@ -7,6 +7,7 @@ import {
   Image,
   Platform,
   ScrollView,
+  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Colors from "../../Themes/Colors";
@@ -18,67 +19,146 @@ import Modal from "react-native-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../Services/MerchantApi";
 import { orderStatusData } from "../../Constant/Constant";
+import moment from "moment";
+import OrderDetailModal from "../../Components/OrderDetailModal";
+import PinkButton from "../../Components/PinkButton";
+import { exportToCsvOrder } from "../../Services/CommonFunctions";
+import { strings } from "../../Config/I18n";
 
 export default function M_OrderScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [categoryDetail, setcategoryDetail] = useState(false);
   const [selectedOrder, setselectedOrder] = useState({});
-
+  const [selectedStatus, setselectedStatus] = useState("ALL");
   const dispatch = useDispatch();
-  const ORDERS = useSelector((e) => e.merchant.orders);
+  const ORDERS = useSelector((e) => e.merchant.filterOrders);
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
+  const PAGINATIONDATA = useSelector((e) => e.merchant.orderPaging);
+  const [filterOrders, setfilterOrders] = useState(ORDERS);
 
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOrders());
     });
   }, []);
+  useEffect(() => {
+    setfilterOrders(ORDERS);
+  }, [ORDERS]);
+
+  const onSearch = () => {
+    if (search !== "") {
+      setSearch("");
+      setfilterOrders(ORDERS);
+      onPressFilterStatus(selectedStatus);
+    }
+  };
+  const onChangeSearch = (text) => {
+    setSearch(text);
+    dispatch(getOrders(1, selectedStatus, text));
+  };
 
   navigation.setOptions({
     headerTitle: () => (
       <View style={{ flex: 1, width: "100%" }}>
         <View style={styles.searchBar}>
-          <Image
-            source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
-            style={styles.searchIcon}
-          />
+          <TouchableOpacity onPress={() => onSearch()}>
+            <Image
+              source={
+                search == ""
+                  ? require("../../Images/Merchant/xxxhdpi/ic_search.png")
+                  : require("../../Images/Merchant/xxxhdpi/close.png")
+              }
+              style={styles.searchIcon}
+            />
+          </TouchableOpacity>
           <TextInput
-            placeholder="Search for specific"
+            placeholder={strings("dashboard.search_for_specific")}
             style={styles.searchInput}
             value={search}
-            onChangeText={(text) => setSearch(text)}
+            onChangeText={(text) => onChangeSearch(text)}
             placeholderTextColor={Colors.placeholderColor}
           />
         </View>
       </View>
     ),
   });
+
+  const onPressFilterStatus = (type) => {
+    dispatch({
+      type: "SUCCESS_MODAL",
+      payload: { modal: false, message: "" },
+    });
+
+    setselectedStatus(type);
+    setSearch("");
+    dispatch(getOrders(1, type));
+  };
+
+  const fetchMoreData = () => {
+    if (PAGINATIONDATA.currentPage + 1 <= PAGINATIONDATA.totalPages) {
+      dispatch(getOrders(PAGINATIONDATA.currentPage + 1, selectedStatus));
+    }
+  };
+
   return (
     <View style={ApplicationStyles.mainViewWithoutPadding}>
-      <ScrollView>
-        <View style={styles.tagView}>
-          {orderStatusData.map((item, index) => {
-            return (
-              <TouchableOpacity
-                style={{
-                  borderRadius: 3,
-                  marginRight: hp(2),
-                  overflow: "hidden",
-                  marginBottom: hp(1.5),
+      <View style={styles.tagView}>
+        {orderStatusData.map((item, index) => {
+          return (
+            <TouchableOpacity
+              key={index}
+              style={{
+                borderRadius: 5,
+                marginRight: hp(1),
+                overflow: "hidden",
+                marginBottom: hp(1.2),
+                borderWidth: 2,
+                borderColor:
+                  selectedStatus == item.type
+                    ? Colors.black
+                    : Colors.registrationBackground,
+              }}
+              onPress={() => onPressFilterStatus(item.type)}
+            >
+              <Text style={[styles.tagText, { backgroundColor: item.color }]}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+      {!PRELOADER && (
+        <FlatList
+          // contentContainerStyle={{ flex: 1 }}
+          ListHeaderComponent={
+            <View style={{ marginBottom: hp(2), marginHorizontal: hp(2) }}>
+              <PinkButton
+                name={strings("orders.lateralEntry.export_to_CSV")}
+                onPress={() => {
+                  exportToCsvOrder(
+                    filterOrders,
+                    "merchant",
+                    dispatch,
+                    "orders_"
+                  );
                 }}
-              >
-                <Text style={[styles.tagText, { backgroundColor: item.color }]}>
-                  {item.title}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-
-        {ORDERS.length !== 0 &&
-          ORDERS.map((item, index) => {
+                text={"small"}
+              />
+            </View>
+          }
+          data={filterOrders}
+          ListEmptyComponent={
+            <Text style={ApplicationStyles.nodataStyle}>
+              {strings("orders.lateralEntry.no_data_found")}
+            </Text>
+          }
+          style={{ flex: 1 }}
+          renderItem={({ item, index }) => {
             let status = orderStatusData.filter(
               (obj) => obj.type == item.status
             );
+
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -86,132 +166,27 @@ export default function M_OrderScreen({ navigation }) {
                 }}
               >
                 <OrderItems
+                  selectedStatus={selectedStatus}
                   item={item}
                   navigation={navigation}
                   status={status[0]}
                 />
               </TouchableOpacity>
             );
-          })}
-      </ScrollView>
-      <Modal
-        isVisible={categoryDetail}
-        // deviceWidth={SCREEN_WIDTH}
-        style={{
-          margin: 0,
-          justifyContent: "flex-end",
-          borderTopStartRadius: 50,
-          borderTopEndRadius: 50,
-        }}
-        onBackButtonPress={() => {
-          setcategoryDetail(!categoryDetail), setselectedOrder({});
-        }}
-        onBackdropPress={() => {
-          setcategoryDetail(!categoryDetail), setselectedOrder({});
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: Colors.white,
-            borderTopStartRadius: 20,
-            borderTopEndRadius: 20,
-            // paddingBottom: hp(3),
-            maxHeight: hp(85),
           }}
-        >
-          <View style={styles.titleView}>
-            <Text style={styles.detailText}>Order Details</Text>
-            <TouchableOpacity
-              onPress={() => {
-                setcategoryDetail(!categoryDetail), setselectedOrder({});
-              }}
-              style={styles.closeButton}
-            >
-              <Image
-                style={styles.menuIconButton}
-                source={require("../../Images/Merchant/xxxhdpi/close.png")}
-              />
-            </TouchableOpacity>
-          </View>
-          <ScrollView>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Order Id:</Text>
-              <Text style={styles.rightText}>{selectedOrder.id}</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Total Amount:</Text>
-              <Text style={styles.rightText}>
-                AED {selectedOrder.totalPrice}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Items Amount:</Text>
-              <Text style={styles.rightText}>
-                AED {selectedOrder.itemsPrice}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>VAT (TAX):</Text>
-              <Text style={styles.rightText}>AED {selectedOrder.vat}</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Promo Code:</Text>
-              <Text style={styles.rightText}>
-                {selectedOrder.promoCode == ""
-                  ? "N/A"
-                  : selectedOrder.promoCode}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Discount Amount:</Text>
-              <Text style={styles.rightText}>
-                AED{" "}
-                {selectedOrder.discount == null ? 0 : selectedOrder.discount}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Delivery Charges:</Text>
-              <Text style={styles.rightText}>
-                AED {selectedOrder.serviceCharges}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Order Date:</Text>
-              <Text style={styles.rightText}>Nov 02 2022</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Delivery Date:</Text>
-              <Text style={styles.rightText}>AED 0</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Recipient:</Text>
-              <Text style={styles.rightText}>AED 0</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Cooking Instruction:</Text>
-              <Text style={styles.rightText}>
-                {selectedOrder.cookingInstructions !== ""
-                  ? selectedOrder.cookingInstructions
-                  : "N/A"}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Payment Methiod:</Text>
-              <Text style={styles.rightText}>{selectedOrder.paymentType}</Text>
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.leftText}>Payment Status:</Text>
-              <Text style={styles.rightText}>
-                {selectedOrder.paymentStatus}
-              </Text>
-            </View>
-            <View style={[styles.row, { marginBottom: hp(3) }]}>
-              <Text style={styles.leftText}>Created At:</Text>
-              <Text style={styles.rightText}>N/A</Text>
-            </View>
-          </ScrollView>
-        </View>
-      </Modal>
+          keyExtractor={(item) => item.id}
+          onEndReachedThreshold={0.2}
+          onEndReached={fetchMoreData}
+        />
+      )}
+      <OrderDetailModal
+        visible={categoryDetail}
+        onClose={() => {
+          setcategoryDetail(!categoryDetail), setselectedOrder({});
+        }}
+        selectedOrder={selectedOrder}
+        type="merchant"
+      />
     </View>
   );
 }

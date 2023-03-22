@@ -10,6 +10,7 @@ import {
   Dimensions,
   ActivityIndicator,
   StatusBar,
+  I18nManager,
 } from "react-native";
 import ApplicationStyles from "./Themes/ApplicationStyles";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
@@ -17,13 +18,26 @@ import { useDispatch, useSelector } from "react-redux";
 import Colors from "./Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "./Themes/Fonts";
+import DeleteModal from "./Components/DeleteModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function App() {
   const _TOAST = useSelector((e) => e.merchant.toast);
   const preLoader = useSelector((e) => e.merchant.preLoader);
+  const DpreLoader = useSelector((e) => e.delivery.preLoader);
+  const isVisible = useSelector((e) => e.merchant.isVisible);
+  const onDelete = useSelector((e) => e.merchant.onDelete);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    AsyncStorage.getItem("Language").then((res) => {
+      if (res == null) {
+        AsyncStorage.setItem("Language", "en");
+      }
+      if (res == "ar") {
+        I18nManager.forceRTL(true);
+      }
+    });
     dispatch({ type: "TOAST", payload: "initial" });
     LogBox.ignoreAllLogs(true);
     Text.defaultProps = Text.defaultProps || {};
@@ -77,6 +91,21 @@ function App() {
           <ActivityIndicator size={"large"} color={Colors.black} />
         </View>
       )}
+      {DpreLoader && (
+        <View style={styles.loaderView}>
+          <ActivityIndicator size={"large"} color={Colors.black} />
+        </View>
+      )}
+      <DeleteModal
+        isVisible={isVisible}
+        onDelete={() => {
+          onDelete(),
+            dispatch({ type: "DELETE_MODAL", payload: { isVisible: false } });
+        }}
+        onClose={() =>
+          dispatch({ type: "DELETE_MODAL", payload: { isVisible: false } })
+        }
+      />
     </View>
   );
 }

@@ -14,5 +14,6 @@ const Colors = {
   purple: "#a455be",
   red: "#e02c2c",
   rejected: "#e0581e",
+  placeholde: "#E6E5E5",
 };
 export default Colors;

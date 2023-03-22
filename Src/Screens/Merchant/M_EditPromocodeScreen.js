@@ -10,16 +10,17 @@ import PinkButton from "../../Components/PinkButton";
 import MenuScreenItems from "../../Components/MenuScreenItems";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import GrayButton from "../../Components/GrayButton";
+import { strings } from "../../Config/I18n";
 
 const citydata = [
   {
     id: 1,
-    strategicName: "SUPERTREND",
+    strategicName: strings('cityData.Supertrend'),
   },
-  { id: 2, strategicName: "VWAP" },
-  { id: 3, strategicName: "RSIMA" },
-  { id: 6, strategicName: "TESTING" },
-  { id: 10, strategicName: "DEMATADE" },
+  { id: 2, strategicName:strings('cityData.VWAP') },
+  { id: 3, strategicName: strings('cityData.RSIMA') },
+  { id: 6, strategicName: strings('cityData.TESTING')},
+  { id: 10, strategicName: strings('cityData.DEMATADE')},
 ];
 export default function M_EditPromocodeScreen() {
   const [title, settitle] = useState("");
@@ -39,22 +40,22 @@ export default function M_EditPromocodeScreen() {
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Edit Promo Code</Text>
+        <Text style={ApplicationStyles.welcomeText}>{strings('promo_code.lateralEntry.edit_promo_code')}</Text>
 
         <View>
-          <Text style={styles.title2}>Promo code details here:</Text>
+          <Text style={styles.title2}>{strings('promo_code.promo_code_details_here')}</Text>
           <View>
             <View style={styles.row}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationTextInput
-                  placeholder={"Title"}
+                  placeholder={strings('promo_code.title')}
                   value={title}
                   onChangeText={(text) => settitle(text)}
                 />
               </View>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationTextInput
-                  placeholder={"Title in arabic"}
+                  placeholder={strings('promo_code.title_in_arabic')}
                   value={arabicTitle}
                   onChangeText={(text) => setarabicTitle(text)}
                 />
@@ -63,14 +64,14 @@ export default function M_EditPromocodeScreen() {
             <View style={styles.row}>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationTextInput
-                  placeholder={"Discount code"}
+                  placeholder={strings('promo_code.discount_code')}
                   value={discountCode}
                   onChangeText={(text) => setdiscountCode(text)}
                 />
               </View>
               <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                 <RegistrationTextInput
-                  placeholder={"Business in arabic"}
+                  placeholder={strings('promo_code.business_in_arabic')}
                   value={businessArabic}
                   onChangeText={(text) => setbusinessArabic(text)}
                 />
@@ -82,7 +83,7 @@ export default function M_EditPromocodeScreen() {
                 onChangeText={(text) => setdes(text)}
                 multiline={true}
                 style={styles.textInput}
-                placeholder={"Description"}
+                placeholder={strings('promo_code.description')}
                 placeholderTextColor={Colors.placeholderColor}
                 textAlignVertical={"top"}
               />
@@ -91,7 +92,7 @@ export default function M_EditPromocodeScreen() {
                 onChangeText={(text) => setArabicdes(text)}
                 multiline={true}
                 style={styles.textInput}
-                placeholder={"Description in arabic"}
+                placeholder={strings('promo_code.descripition_in_arabic')}
                 placeholderTextColor={Colors.placeholderColor}
                 textAlignVertical={"top"}
               />
@@ -99,7 +100,7 @@ export default function M_EditPromocodeScreen() {
           </View>
         </View>
         <View>
-          <Text style={styles.title22}>Discount Type</Text>
+          <Text style={styles.title22}>{strings('promo_coe.discount_type')}</Text>
           <View>
             <RegistrationDropdown
               data={citydata}
@@ -107,60 +108,60 @@ export default function M_EditPromocodeScreen() {
               setData={(text) => {
                 setprice(text);
               }}
-              placeholder={"Price"}
+              placeholder={strings('promo_code.price')}
               valueField={"strategicName"}
               placeholderTextColor={Colors.black}
             />
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={"Discount Value"}
+              placeholder={strings('promo_code.discount_value')}
               value={discountValue}
               onChangeText={(text) => setdiscountValue(text)}
             />
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={"Maximum Discount Amount"}
+              placeholder={strings('promo_code.maximum_discount_amount')}
               value={maxDiscount}
               onChangeText={(text) => setmaxDiscount(text)}
             />
             <RegistrationTextInput
               keyboardType={"numeric"}
-              placeholder={"Minimum Order Value"}
+              placeholder={strings('promo_code.maximum_discount_value')}
               value={minOrderValue}
               onChangeText={(text) => setminOrderValue(text)}
             />
           </View>
         </View>
         <View>
-          <Text style={styles.title22}>Validity Type*</Text>
+          <Text style={styles.title22}>{`${strings('promo_code.validity_type')}*`}</Text>
           <RegistrationDropdown
             data={citydata}
             value={validityType}
             setData={(text) => {
               setvalidityType(text);
             }}
-            placeholder={"Type"}
+            placeholder={strings('promo_code.tyep')}
             valueField={"strategicName"}
             placeholderTextColor={Colors.black}
           />
         </View>
         <View>
-          <Text style={styles.title22}>Expiry Type*</Text>
+          <Text style={styles.title22}>{`${strings('promo_code.expiry_type')}*`}</Text>
           <RegistrationDropdown
             data={citydata}
             value={expiryType}
             setData={(text) => {
               setexpiryType(text);
             }}
-            placeholder={"Type"}
+            placeholder={strings('promo_code.type')}
             valueField={"strategicName"}
             placeholderTextColor={Colors.black}
           />
         </View>
         <View>
-          <Text style={styles.title22}>Image</Text>
+          <Text style={styles.title22}>{strings('promo_code.image')}</Text>
           <RegistrationTextInput
-            placeholder={"Image"}
+            placeholder={strings('promo_code.image')}
             value={image}
             onChangeText={(text) => setimage(text)}
             placeholderTextColor={Colors.black}
@@ -170,14 +171,14 @@ export default function M_EditPromocodeScreen() {
         <View style={styles.buttonRow}>
           <View style={styles.row}>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-              <PinkButton onPress={() => {}} text={"small"} name={"Save"} />
+              <PinkButton onPress={() => {}} text={"small"} name={strings('promo_code.save')} />
             </View>
             <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
               <GrayButton
                 onPress={() => {}}
                 style={styles.dbuttonStyle}
                 text={"small"}
-                name={"Cancel"}
+                name={strings('promo_code.cancel')}
               />
             </View>
           </View>

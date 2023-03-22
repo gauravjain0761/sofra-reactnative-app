@@ -8,7 +8,7 @@ import {
   ScrollView,
   Switch,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -21,25 +21,63 @@ import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import CheckBox from "@react-native-community/checkbox";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { updatePassword } from "../../Services/AuthApi";
+import { delivery_url } from "../../Config/AppConfig";
 
-const daysData = [
-  {
-    checkbox: false,
-    open: "12:00",
-    close: "10:55",
-    day: "Sunday",
-  },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Monday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Tuesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Wednesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Thursday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Friday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Saturday" },
-];
-export default function D_UpdatePassword() {
+export default function D_UpdatePassword({}) {
+  const dispatch = useDispatch();
   const [oldPwd, setoldPwd] = useState("");
   const [newPwd, setnewPwd] = useState("");
   const [confirmPwd, setconfirmPwd] = useState("");
+  const navigation = useNavigation();
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      setoldPwd("");
+      setnewPwd("");
+      setconfirmPwd("");
+    });
+  }, []);
+
+  const onUpdatePassword = () => {
+    let data = {
+      old_password: oldPwd,
+      new_password: newPwd,
+      confirm_password: confirmPwd,
+    };
+    let url = delivery_url;
+    dispatch(
+      updatePassword(data, url, () => {
+        setoldPwd("");
+        setnewPwd("");
+        setconfirmPwd("");
+        navigation.goBack();
+      })
+    );
+  };
+  const validation = () => {
+    if (oldPwd.trim() !== "") {
+      if (newPwd.trim() !== "") {
+        if (confirmPwd.trim() !== "") {
+          if (newPwd == confirmPwd) {
+            onUpdatePassword();
+          } else {
+            dispatchErrorAction(
+              dispatch,
+              "Confirm password doesn't match with new password"
+            );
+          }
+        } else {
+          dispatchErrorAction(dispatch, "Please enter new password again");
+        }
+      } else {
+        dispatchErrorAction(dispatch, "Please enter new password");
+      }
+    } else {
+      dispatchErrorAction(dispatch, "Please enter old password");
+    }
+  };
   return (
     <View style={ApplicationStyles.mainView}>
       <View
@@ -82,7 +120,7 @@ export default function D_UpdatePassword() {
         </View>
         <View style={styles.button}>
           <PinkButton
-            onPress={() => {}}
+            onPress={() => validation()}
             style={styles.dbuttonStyle}
             text={"small"}
             name={"Update Password"}

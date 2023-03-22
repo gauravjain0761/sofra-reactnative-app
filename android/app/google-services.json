@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "57508220220",
-    "project_id": "sofra-app-a8b31",
-    "storage_bucket": "sofra-app-a8b31.appspot.com"
+    "project_number": "345135419214",
+    "project_id": "sofraapp-e5b1f",
+    "storage_bucket": "sofraapp-e5b1f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:57508220220:android:4a755f890ee99497062239",
+        "mobilesdk_app_id": "1:345135419214:android:36a69be32be0cf01da581f",
         "android_client_info": {
           "package_name": "com.sofraapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "57508220220-3uugl0cqi9nnf323ca9mlfgmu55o0m97.apps.googleusercontent.com",
+          "client_id": "345135419214-fnr0vj5t9lpuv6mbkvvbnsjintb5aotk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA1Fr9SqXkLdoyl7xlRPD3MHPPt69UAPMg"
+          "current_key": "AIzaSyAd1RNwZ3gZf_1Rhmr7EqXu3ZPy2TIE_sE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "57508220220-3uugl0cqi9nnf323ca9mlfgmu55o0m97.apps.googleusercontent.com",
+              "client_id": "345135419214-fnr0vj5t9lpuv6mbkvvbnsjintb5aotk.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "57508220220-4k18ur4o2gb0srll9pljpdbnnif149rc.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.sofraapp"
-              }
             }
           ]
         }

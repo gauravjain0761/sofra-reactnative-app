@@ -5,7 +5,7 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import PinkButton from "../Components/PinkButton";
 import Colors from "../Themes/Colors";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../Services/asyncStorage";
+import { getToken, getUser } from "../Services/asyncStorage";
 import { CommonActions } from "@react-navigation/native";
 import {
   getCities,
@@ -19,38 +19,49 @@ export default function ChooseLoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const preLoader = useSelector((e) => e.merchant.preLoader);
   useEffect(async () => {
-    dispatch(getCities());
-    dispatch(getUsers());
-    dispatch(getCuisines());
-    dispatch(getCategories());
-
-    messaging()
-      .getToken()
-      .then((fcmToken) => {
-        if (fcmToken) {
-          dispatch({ type: "SET_FCMTOKEN", payload: fcmToken });
-        } else {
-          console.log("[FCMService] User does not have a device token");
-          // console.log("[FCMService] User does not have a device token")
-        }
-      })
-      .catch((error) => {
-        let err = `FCm token get error${error}`;
-        console.log("FCm token get error", err);
-      });
-
-    dispatch({ type: "PRE_LOADER", payload: true });
-    let token = await getToken();
-    if (token) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{ name: "MerchantDrawerHome" }],
+    async function getDeviceToken() {
+      messaging()
+        .getToken()
+        .then((fcmToken) => {
+          if (fcmToken) {
+            dispatch({ type: "SET_FCMTOKEN", payload: fcmToken });
+          } else {
+            console.log("[FCMService] User does not have a device token");
+          }
         })
-      );
-    } else {
-      dispatch({ type: "PRE_LOADER", payload: false });
+        .catch((error) => {
+          let err = `FCm token get error${error}`;
+          console.log("FCm token get error", err);
+        });
+
+      dispatch({ type: "PRE_LOADER", payload: true });
+      let token = await getToken();
+      let user = await getUser();
+      if (token && user) {
+        if (user == "delivery") {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: "DeliveryDrawerHome" }],
+            })
+          );
+        } else {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: "MerchantDrawerHome" }],
+            })
+          );
+        }
+      } else {
+        dispatch({ type: "PRE_LOADER", payload: false });
+      }
+      dispatch(getCities());
+      dispatch(getUsers());
+      dispatch(getCuisines());
+      dispatch(getCategories());
     }
+    getDeviceToken();
   }, []);
 
   if (preLoader == false) {

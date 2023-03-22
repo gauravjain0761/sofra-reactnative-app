@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Switch,
+  Alert,
+  FlatList,
 } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -20,61 +22,107 @@ import CheckBox from "@react-native-community/checkbox";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOffSlot, getOffSlots } from "../../Services/MerchantApi";
+import {
+  addOffSlot,
+  deleteOffSlot,
+  getOffSlots,
+} from "../../Services/MerchantApi";
 import moment from "moment";
+import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 export default function M_SlotScreen({ navigation }) {
-  LocaleConfig.locales["fr"] = {
-    monthNames: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
-    monthNamesShort: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    dayNames: [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ],
-    dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    today: "Aujourd'hui",
-  };
-  LocaleConfig.defaultLocale = "fr";
+  // LocaleConfig.locales.ar = {
+  //   monthNames: [
+  //     "كَانُون ٱلثَّانِي",
+  //     "شُبَاط",
+  //     "آذَار",
+  //     "نَيْسَان",
+  //     "أَيَّار",
+  //     "حَزِيرَان",
+  //     "تَمُّوز",
+  //     "آب",
+  //     "أَيْلُول",
+  //     "تِشْرِين ٱلْأَوَّل",
+  //     "تِشْرِين ٱلثَّانِي",
+  //     "كَانُون ٱلْأَوَّل",
+  //   ],
+  //   monthNamesShort: [
+  //     "يناير",
+  //     "فبراير",
+  //     "مارس",
+  //     "أبريل",
+  //     "يمكن",
+  //     "يونيو",
+  //     "يوليو",
+  //     "أغسطس",
+  //     "سبتمبر",
+  //     "أكتوبر",
+  //     "نوفمبر",
+  //     "ديسمبر",
+  //   ],
+  //   dayNames: [
+  //     "السبت",
+  //     "الجمعة",
+  //     "الخميس",
+  //     "الأربعاء",
+  //     "الثلاثاء",
+  //     "الأثنين",
+  //     "الأحد",
+  //   ],
+  //   dayNamesShort: [
+  //     "السبت",
+  //     "الجمعة",
+  //     "الخميس",
+  //     "الأربعاء",
+  //     "الثلاثاء",
+  //     "الأثنين",
+  //     "الأحد",
+  //   ],
+  //   today: "اليوم",
+  // };
+  // LocaleConfig.locales.en = {
+  //   monthNames:
+  //     "January_February_March_April_May_June_July_August_September_October_November_December".split(
+  //       "_"
+  //     ),
+  //   monthNamesShort: "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split(
+  //     "_"
+  //   ),
+  //   dayNames: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split(
+  //     "_"
+  //   ),
+  //   dayNamesShort: "Sun_Mon_Tue_Wed_Thu_Fri_Sat".split("_"),
+  //   today: "Today",
+  // };
+  // LocaleConfig.defaultLocale = "en";
   const dispatch = useDispatch();
   const SLOTS = useSelector((e) => e.merchant.offSlots);
-
+  const PRELOADER = useSelector((e) => e.merchant.preLoader);
   const [MarkedDate, setMarkedDate] = useState({});
-  const [current, setcurrent] = useState(moment().format("YYYY-MM-DD"));
+  const [current, setcurrent] = useState(moment().toISOString());
   const calendarRef = React.useRef();
+  const [Language, setLanguage] = useState("en");
   useEffect(() => {
+    async function setLang() {
+      let lang = await getLanguage();
+      setLanguage(lang);
+      LocaleConfig.defaultLocale = lang;
+      ["en", "ar"].forEach((locale) => {
+        LocaleConfig.locales[locale] = {
+          monthNames: moment.localeData(locale).months(),
+          monthNamesShort: moment.localeData(locale).monthsShort(),
+          dayNames: moment.localeData(locale).weekdays(),
+          dayNamesShort: moment.localeData(locale).weekdaysMin(),
+        };
+      });
+    }
+    setLang();
+  }, []);
+  useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getOffSlots());
-      setcurrent(moment().format("YYYY-MM-DD"));
+      setcurrent(moment().toISOString());
       // calendarRef.current.se;
     });
   }, []);
@@ -95,22 +143,85 @@ export default function M_SlotScreen({ navigation }) {
     setMarkedDate(data);
   }, [SLOTS]);
 
-  const onDeleteSlot = (id) => {
-    let data = {
-      slotId: id,
-      language: "en",
-    };
-    dispatch(deleteOffSlot(data));
+  const onDeleteSlot = async (id) => {
+    let lang = await getLanguage();
+    dispatch({
+      type: "DELETE_MODAL",
+      payload: {
+        isVisible: true,
+        onDelete: () => {
+          let data = {
+            slotId: id,
+            language: lang,
+          };
+          dispatch(deleteOffSlot(data));
+        },
+      },
+    });
   };
 
+  const addOffslot = (date) => {
+    Alert.alert(
+      "Are you sure?",
+      "You want to add off slot for " + date.dateString,
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            let data = { date: date.dateString };
+            dispatch(addOffSlot(data));
+          },
+        },
+      ]
+    );
+  };
+  const renderItem = ({ item, index }) => (
+    <View style={styles.itemList}>
+      <View style={styles.row}>
+        <Text style={styles.leftText}>SR</Text>
+        <Text style={styles.rightText}>{index + 1}</Text>
+      </View>
+      <View style={styles.middleRow}>
+        <Text style={styles.leftText}>
+          {strings("slotScreen.off_slot_date")}
+        </Text>
+        <Text style={styles.rightText}>{moment(item.date).format("LL")}</Text>
+      </View>
+      <View style={styles.middleRow2}>
+        <Text style={styles.leftText}>{strings("slotScreen.created")}</Text>
+        <Text style={styles.rightText}>
+          {moment(item.created).format("MM/DD/YY, hh:mm A")}
+        </Text>
+      </View>
+      <View style={styles.lastRow}>
+        <Text style={styles.leftText}>{strings("slotScreen.action")}</Text>
+        <TouchableOpacity
+          onPress={() => onDeleteSlot(item.id)}
+          style={styles.deleteButton}
+        >
+          <Image
+            source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
+            style={styles.searchIcon}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
   return (
     <View style={ApplicationStyles.mainView}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={ApplicationStyles.welcomeText}>Off Slots</Text>
+        <Text style={ApplicationStyles.welcomeText}>
+          {strings("slotScreen.off_slotes")}
+        </Text>
         <View style={styles.whiteView}>
           <Calendar
             onDayPress={(day) => {
-              console.log("selected day", day);
+              addOffslot(day);
             }}
             ref={calendarRef}
             markingType={"custom"}
@@ -122,7 +233,7 @@ export default function M_SlotScreen({ navigation }) {
             initialDate={current}
             disableMonthChange={true}
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               var today = new Date();
               // var selectedDate = new Date(current);
@@ -141,50 +252,30 @@ export default function M_SlotScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.button}>Clear</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <PinkButton
           style={styles.btn}
-          name={"Submit"}
+          name={strings("SignUp.submit")}
           text={"small"}
           onPress={() => {}}
         />
-        <Text style={styles.mainTitle}>All Off Slots</Text>
-        {SLOTS.length !== 0 &&
-          SLOTS.map((item, index) => {
-            return (
-              <View style={styles.itemList}>
-                <View style={styles.row}>
-                  <Text style={styles.leftText}>SR</Text>
-                  <Text style={styles.rightText}>1</Text>
-                </View>
-                <View style={styles.middleRow}>
-                  <Text style={styles.leftText}>Off Slot Date</Text>
-                  <Text style={styles.rightText}>
-                    {moment(item.date).format("LL")}
-                  </Text>
-                </View>
-                <View style={styles.middleRow2}>
-                  <Text style={styles.leftText}>Created</Text>
-                  <Text style={styles.rightText}>
-                    {moment(item.created).format("MM/DD/YY, hh:mm A")}
-                  </Text>
-                </View>
-                <View style={styles.lastRow}>
-                  <Text style={styles.leftText}>Action</Text>
-                  <TouchableOpacity
-                    onPress={() => onDeleteSlot(item.id)}
-                    style={styles.deleteButton}
-                  >
-                    <Image
-                      source={require("../../Images/Merchant/xxxhdpi/ic_del.png")}
-                      style={styles.searchIcon}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            );
-          })}
+        <Text style={styles.mainTitle}>
+          {strings("slotScreen.all_off_slots")}
+        </Text>
+
+        {!PRELOADER && (
+          <FlatList
+            data={SLOTS}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={
+              <Text style={ApplicationStyles.nodataStyle}>
+                {strings("slotScreen.lateralEntry.no_data_found")}
+              </Text>
+            }
+          />
+        )}
       </ScrollView>
     </View>
   );

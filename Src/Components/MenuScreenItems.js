@@ -1,10 +1,22 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  I18nManager,
+} from "react-native";
 import React from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { media_url } from "../Config/AppConfig";
+import PlaceHolderImage from "./PlaceHolderImage";
+import { useEffect } from "react";
+import { getLanguage } from "../Services/asyncStorage";
+import { useState } from "react";
+import { strings } from "../Config/I18n";
 
 export default function MenuScreenItems({
   item,
@@ -14,44 +26,68 @@ export default function MenuScreenItems({
   onDelete,
   status,
   onChangeStatus,
+  index,
 }) {
+  const [lan, setlan] = useState("en");
+  useEffect(async () => {
+    let lang = await getLanguage();
+    setlan(lang);
+  }, []);
   const navigation = useNavigation();
   return (
-    <View style={styles.cardView}>
+    <View key={index} style={styles.cardView}>
       {screen == "promocode" ? (
-        <View style={styles.promoView}>
-          <Image
-            style={styles.menuImagePromoCode}
-            source={require("../Images/Merchant/xxxhdpi/ic_persentage.png")}
-          />
-        </View>
-      ) : (
+        <PlaceHolderImage image={item.image} style={styles.menuImage} />
+      ) : screen == "category" ? (
         <Image
-          style={styles.menuImage}
-          source={
-            item.image
-              ? { uri: media_url + item.image }
-              : require("../Images/Merchant/xxxhdpi/foodDish.jpeg")
-          }
+          style={[styles.menuImage, { marginBottom: hp(1.5) }]}
+          source={require("../Images/Merchant/xxxhdpi/foodDish.jpeg")}
         />
+      ) : (
+        <PlaceHolderImage image={item.image} style={styles.menuImage} />
       )}
 
-      <Text style={styles.addText}>{item.name}</Text>
-      <View style={styles.cardBotomBtn}>
-        <TouchableOpacity onPress={() => onEdit()} style={styles.addMenuButton}>
-          <Image
-            style={styles.menuIconButton}
-            source={require("../Images/Merchant/xxxhdpi/edit.png")}
-          />
-          <Text style={styles.addButton}>Edit</Text>
-        </TouchableOpacity>
+      <Text style={styles.addText}>
+        {screen == "promocode"
+          ? lan == "en"
+            ? item.title
+            : item.title_ar + "(" + item.code + ")"
+          : lan == "en"
+          ? item.name
+          : item.name_ar}
+      </Text>
+      <View
+        style={[
+          styles.cardBotomBtn,
+          // { flexDirection: lan == "en" ? "row" : "row-reverse" },
+        ]}
+      >
+        {screen !== "promocode" && (
+          <TouchableOpacity
+            onPress={() => onEdit()}
+            style={[
+              styles.addMenuButton,
+              {
+                flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              },
+            ]}
+          >
+            <Image
+              style={styles.menuIconButton}
+              source={require("../Images/Merchant/xxxhdpi/edit.png")}
+            />
+            <Text style={styles.addButton}>{strings("menu_screen.edit")}</Text>
+          </TouchableOpacity>
+        )}
         {activeVisible == true && (
           <TouchableOpacity
             onPress={() => onChangeStatus()}
             style={[
               styles.addMenuButton,
               {
-                backgroundColor: status == 1 ? Colors.green : Colors.purple,
+                flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+
+                backgroundColor: status == 1 ? Colors.green : Colors.red,
               },
             ]}
           >
@@ -59,30 +95,42 @@ export default function MenuScreenItems({
               style={styles.menuIconButton}
               source={require("../Images/Merchant/xxxhdpi/ic_tick.png")}
             />
-            <Text style={styles.addButton}>Active</Text>
+            <Text style={styles.addButton}>
+              {status == 1
+                ? strings("menu_screen.active")
+                : strings("menu_screen.inAcitive")}
+            </Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity
-          style={[
-            styles.addMenuButton,
-            {
-              backgroundColor: Colors.grayButtonBackground,
-            },
-          ]}
-          onPress={() => onDelete()}
-        >
-          <Image
-            style={styles.menuIconButton}
-            source={require("../Images/Merchant/xxxhdpi/delete.png")}
-          />
-          <Text style={styles.addButton}>Delete</Text>
-        </TouchableOpacity>
-        {!activeVisible && (
+        {screen !== "promocode" && (
+          <TouchableOpacity
+            style={[
+              styles.addMenuButton,
+              {
+                flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+
+                backgroundColor: Colors.grayButtonBackground,
+              },
+            ]}
+            onPress={() => onDelete()}
+          >
+            <Image
+              style={styles.menuIconButton}
+              source={require("../Images/Merchant/xxxhdpi/delete.png")}
+            />
+            <Text style={styles.addButton}>
+              {strings("menu_screen.deleta")}
+            </Text>
+          </TouchableOpacity>
+        )}
+        {(!activeVisible || screen == "promocode") && (
           <View style={{ opacity: 0 }}>
             <TouchableOpacity
               style={[
                 styles.addMenuButton,
                 {
+                  flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+
                   backgroundColor: Colors.green,
                 },
               ]}
@@ -91,7 +139,9 @@ export default function MenuScreenItems({
                 style={styles.menuIconButton}
                 source={require("../Images/Merchant/xxxhdpi/ic_tick.png")}
               />
-              <Text style={styles.addButton}>Active</Text>
+              <Text style={styles.addButton}>
+                {strings("menu_screen.active")}
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -135,9 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   menuImage: {
-    marginBottom: hp(1.5),
     height: hp(20),
-    width: hp(34),
     resizeMode: "cover",
   },
   menuImagePromoCode: {

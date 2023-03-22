@@ -20,10 +20,40 @@ export default StyleSheet.create({
     paddingHorizontal: hp(2),
     paddingVertical: hp(1),
   },
+  headerRightView1: {
+    paddingRight: hp(2),
+    paddingVertical: hp(1),
+    // paddingLeft: hp(1),
+  },
   welcomeText: {
     ...commonFontStyle("M_500", 18, Colors.pink),
     marginTop: 5,
     marginBottom: hp(3),
     textAlign: "center",
+  },
+  nodataStyle: {
+    ...commonFontStyle("M_500", 18, Colors.placeholderColor),
+    textAlign: "center",
+    paddingVertical: hp(3),
+  },
+  modalStyle: {
+    margin: 0,
+    justifyContent: "flex-end",
+    borderTopStartRadius: 50,
+    borderTopEndRadius: 50,
+  },
+  modalViewStyle: {
+    backgroundColor: Colors.white,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    // paddingBottom: hp(3),
+    // minHeight: hp(85),
+  },
+  modalViewStyle1: {
+    backgroundColor: Colors.white,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    // paddingBottom: hp(3),
+    minHeight: hp(85),
   },
 });

@@ -6,6 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
+  PermissionsAndroid,
 } from "react-native";
 import React, { useState } from "react";
 import ApplicationStyles from "../Themes/ApplicationStyles";
@@ -17,80 +19,106 @@ import { commonFontStyle } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
 import RegistrationTextInput from "../Components/RegistrationTextInput";
 import PinkButton from "../Components/PinkButton";
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import RNFetchBlob from "rn-fetch-blob";
+import XLSX from "xlsx";
+import { DownloadDirectoryPath, writeFile } from "react-native-fs";
+import {
+  dispatchSuccessAction,
+  exportToCsv,
+} from "../Services/CommonFunctions";
+import { string } from "i/lib/util";
+import { strings } from "../Config/I18n";
+export default function ReportSettled({ reportType }) {
+  const setteled_report = useSelector((e) => e.merchant.setteled_report);
+  const unsetteled_report = useSelector((e) => e.merchant.unsetteled_report);
+  const dispatch = useDispatch();
+  const REPORT =
+    Object.keys(setteled_report).length == 0
+      ? unsetteled_report
+      : setteled_report;
 
-let data = [
-  {
-    title: "Menu Categorysr#",
-    value: "#25465",
-  },
-  {
-    title: "Menu Categoryid",
-    value: "Organic Oils",
-  },
-  {
-    title: "Order date",
-    value: "2022-10-13",
-  },
-  {
-    title: "time",
-    value: "09:00",
-  },
-  {
-    title: "mode of payment",
-    value: "By Card",
-  },
-  {
-    title: "amount",
-    value: "AED 105.00",
-  },
-  {
-    title: "menu category sub total",
-    value: "AED 205.00",
-  },
-  {
-    title: "Discount",
-    value: "10%",
-  },
-  {
-    title: "net amount",
-    value: "AED 90.00",
-  },
-  {
-    title: "vat",
-    value: "5%",
-  },
-  {
-    title: "Gross amount",
-    value: "AED 50.00",
-  },
-  {
-    title: "sofra comissionable amount",
-    value: "AED 20.00",
-  },
-  {
-    title: "sofra comission",
-    value: "20%",
-  },
-];
-export default function ReportSettled() {
+  const ItemRender = ({ name, value }) => {
+    return (
+      <View style={styles.row}>
+        <Text style={styles.leftText}>{name}</Text>
+        <Text style={styles.rightText}>{value}</Text>
+      </View>
+    );
+  };
+
   return (
     <View>
-      <PinkButton name={"Export to CSV"} onPress={() => {}} text={"small"} />
-
+      <PinkButton
+        name={strings("orders.lateralEntry.export_to_CSV")}
+        onPress={() => {
+          exportToCsv(REPORT, reportType, dispatch, "merchant");
+        }}
+        text={"small"}
+      />
       <View>
-        <Text style={styles.tabTitle}>Reports - Setteled</Text>
-        <View style={styles.itemList}>
-          {data.map((element, index) => {
+        <Text style={styles.tabTitle}>{reportType}</Text>
+        {REPORT?.items && REPORT?.items?.length !== 0 ? (
+          REPORT.items.map((element, index) => {
             return (
-              <View style={styles.row}>
-                <Text style={styles.leftText}>
-                  {element.title.toUpperCase()}
-                </Text>
-                <Text style={styles.rightText}>{element.value}</Text>
+              <View style={styles.itemList}>
+                <ItemRender name={"Menu Categorysr#"} value={index + 1} />
+                <ItemRender
+                  name={"Menu Categoryid"}
+                  value={element.bookingCode}
+                />
+                <ItemRender
+                  name={"Order date"}
+                  value={moment(element.created).format("YYYY-MM-DD")}
+                />
+                <ItemRender
+                  name={"Time"}
+                  value={moment(element.created).format("hh:mm A")}
+                />
+                <ItemRender
+                  name={"Mode of payment"}
+                  value={element.paymentType}
+                />
+
+                <ItemRender
+                  name={"Sub total"}
+                  value={"AED " + element.itemsPrice}
+                />
+                <ItemRender
+                  name={"Discount"}
+                  value={"-AED " + element.discount}
+                />
+                <ItemRender
+                  name={"Net Amount"}
+                  value={"AED " + (element.itemsPrice - element.discount)}
+                />
+                <ItemRender name={"VAT"} value={"AED " + element.vat} />
+                <ItemRender
+                  name={"Gross Amount"}
+                  value={
+                    "AED " +
+                    (element.itemsPrice - element.discount + element.vat)
+                  }
+                />
+                <ItemRender
+                  name={"Sofra comissionable amount"}
+                  value={"AED " + element.itemsPrice}
+                />
+                <ItemRender
+                  name={"Sofra comission"}
+                  value={"% " + element.comissionPercentage}
+                />
               </View>
             );
-          })}
-        </View>
+          })
+        ) : (
+          <View>
+            <Text style={ApplicationStyles.nodataStyle}>
+              {strings("orders.lateralEntry.no_data_found")}
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );

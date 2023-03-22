@@ -8,7 +8,7 @@ import {
   ScrollView,
   Switch,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
@@ -23,40 +23,73 @@ import CheckBox from "@react-native-community/checkbox";
 import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import { useDispatch } from "react-redux";
 import { dispatchErrorAction } from "../../Services/CommonFunctions";
-
-const daysData = [
-  {
-    checkbox: false,
-    open: "12:00",
-    close: "10:55",
-    day: "Sunday",
-  },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Monday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Tuesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Wednesday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Thursday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Friday" },
-  { checkbox: false, open: "12:00", close: "10:55", day: "Saturday" },
-];
+import { updatePassword } from "../../Services/AuthApi";
+import { useNavigation } from "@react-navigation/native";
+import { merchant_url } from "../../Config/AppConfig";
+import { strings } from "../../Config/I18n";
+import { getLanguage } from "../../Services/asyncStorage";
 export default function M_UpdatePassword() {
   const dispatch = useDispatch();
   const [oldPwd, setoldPwd] = useState("");
   const [newPwd, setnewPwd] = useState("");
   const [confirmPwd, setconfirmPwd] = useState("");
-  const onUpdatePassword = () => {};
+  const navigation = useNavigation();
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      setoldPwd("");
+      setnewPwd("");
+      setconfirmPwd("");
+    });
+  }, []);
+  const onUpdatePassword = async () => {
+    let lan = await getLanguage();
+    let data = {
+      old_password: oldPwd,
+      new_password: newPwd,
+      confirm_password: confirmPwd,
+      language: lan,
+    };
+    let url = merchant_url;
+    dispatch(
+      updatePassword(data, url, () => {
+        setoldPwd("");
+        setnewPwd("");
+        setconfirmPwd("");
+        navigation.goBack();
+      })
+    );
+  };
   const validation = () => {
     if (oldPwd.trim() !== "") {
       if (newPwd.trim() !== "") {
         if (confirmPwd.trim() !== "") {
-          onUpdatePassword();
+          if (newPwd == confirmPwd) {
+            onUpdatePassword();
+          } else {
+            dispatchErrorAction(
+              dispatch,
+              strings(
+                "validationString.lateralEntry.confirm_pass_match_new_and_pass"
+              )
+            );
+          }
         } else {
-          dispatchErrorAction(dispatch, "Please enter new password again");
+          dispatchErrorAction(
+            dispatch,
+            strings("validationString.please_enter_new_password_again")
+          );
         }
       } else {
-        dispatchErrorAction(dispatch, "Please enter new password");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_new_password")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter old password");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_old_password")
+      );
     }
   };
 
@@ -71,32 +104,34 @@ export default function M_UpdatePassword() {
         }}
       >
         <View>
-          <Text style={styles.title}>Update Password Here:</Text>
+          <Text style={styles.title}>
+            {strings("updatePassword.update_password_here")}
+          </Text>
           <View>
             <RegistrationTextInput
-              placeholder={"Old Password*"}
+              placeholder={`${strings("updatePassword.old_pass")}*`}
               value={oldPwd}
               onChangeText={(text) => setoldPwd(text)}
             />
             <Text style={styles.bottomText}>
-              Please enter the old password here.
+              {strings("updatePassword.please_enter_old_pass_here")}
             </Text>
 
             <RegistrationTextInput
-              placeholder={"New Password*"}
+              placeholder={`${strings("updatePassword.new_pass")}*`}
               value={newPwd}
               onChangeText={(text) => setnewPwd(text)}
             />
             <Text style={styles.bottomText}>
-              Please enter the new password here.
+              {strings("updatePassword.please_enter_new_pass_here")}
             </Text>
             <RegistrationTextInput
-              placeholder={"Confirm Password*"}
+              placeholder={`${strings("updatePassword.confirm_pass")}*`}
               value={confirmPwd}
               onChangeText={(text) => setconfirmPwd(text)}
             />
             <Text style={styles.bottomText}>
-              Please enter the new password again here.
+              {strings("updatePassword.please_enter_new_password_again_here")}
             </Text>
           </View>
         </View>
@@ -105,7 +140,7 @@ export default function M_UpdatePassword() {
             onPress={() => validation()}
             style={styles.dbuttonStyle}
             text={"small"}
-            name={"Update Password"}
+            name={strings("updatePassword.update_password")}
           />
         </View>
       </View>

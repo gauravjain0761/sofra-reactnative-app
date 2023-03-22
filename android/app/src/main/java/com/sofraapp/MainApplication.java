@@ -12,6 +12,8 @@ import com.facebook.soloader.SoLoader;
 import com.sofraapp.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage; // <-- Add to ReactNativeI18n to the imports 
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -28,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          // new RNI18nPackage(), // <-- Add it to the packages list 
           return packages;
         }
 

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
-import { commonFontStyle } from "../../Themes/Fonts";
+import { commonFontStyle, SCREEN_WIDTH } from "../../Themes/Fonts";
 import Colors from "../../Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
@@ -17,41 +17,76 @@ import { Dropdown } from "react-native-element-dropdown";
 import PinkButton from "../../Components/PinkButton";
 import ReportSettled from "../../Components/ReportSettled";
 import { useDispatch, useSelector } from "react-redux";
-import { getSettledReports } from "../../Services/MerchantApi";
-
+import {
+  getSettledReports,
+  getUnSettledReports,
+} from "../../Services/MerchantApi";
+import { reportDropdownData } from "../../Config/StaticDropdownData";
+import SearchDropdown from "../../Components/SearchDropdown";
+import { dateFilterData } from "../../Config/StaticDropdownData";
+import DateTimePickerView from "../../Components/DateTimePickerView";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
+import { dispatchErrorAction } from "../../Services/CommonFunctions";
+import { strings } from "../../Config/I18n";
 export default function M_ReportScreen({ navigation }) {
   const [tab, setTab] = useState("report");
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
-  const SETTELED_REPORT = useSelector((e) => e.merchant.setteled_report);
-
+  const [reportType, setreportType] = useState(reportDropdownData[0].name);
+  const setteled_report = useSelector((e) => e.merchant.setteled_report);
+  const unsetteled_report = useSelector((e) => e.merchant.unsetteled_report);
+  const [StartDate, setStartDate] = useState("");
+  const [EndDate, setEndDate] = useState("");
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dateType, setdateType] = useState([]);
+  const REPORT =
+    Object.keys(setteled_report).length == 0
+      ? unsetteled_report
+      : setteled_report;
   useEffect(() => {
+    dispatch({ type: "PRE_LOADER", payload: true });
     navigation.addListener("focus", () => {
       dispatch(getSettledReports());
+      setSearch("");
+      setStartDate("");
+      setEndDate("");
     });
   }, []);
   const OrderComponent = () => {
     return (
       <View>
-        <Text style={styles.tabTitle2}>Order Details</Text>
+        <Text style={styles.tabTitle2}>
+          {strings("report_screen.order_details")}
+        </Text>
         <View style={styles.titles}>
-          <Text style={styles.nameTitle}>TOTAL CASH ORDERS(COMPLETED)</Text>
-          <Text style={styles.nameTitle}>QUANTITY</Text>
+          <Text style={styles.nameTitle}>
+            {strings("report_screen.total_cash_orders")}
+          </Text>
+          <Text style={styles.nameTitle}>
+            {strings("report_screen.quantity")}
+          </Text>
         </View>
         <View style={styles.itemList}>
           <View style={styles.row}>
-            <Text style={styles.rightText}>Total Cash Orders (Completed)</Text>
-            <Text style={styles.rightText}>0</Text>
+            <Text style={styles.rightText}>
+              {strings("report_screen.total_cash_orders")}
+            </Text>
+            <Text style={styles.rightText}>{REPORT.cashOrders}</Text>
           </View>
           <View style={styles.middleRow}>
             <Text style={styles.rightText}>
-              Total Online Orders (Completed)
+              {strings("report_screen.total_online_orders(completed)")}
             </Text>
-            <Text style={styles.rightText}>0</Text>
+            <Text style={styles.rightText}>{REPORT.onlineOrders}</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.rightText}>Total Orders (Completed</Text>
-            <Text style={styles.rightText}>0</Text>
+            <Text style={styles.rightText}>
+              {strings("report_screen.total_order_completed")}
+            </Text>
+            <Text style={styles.rightText}>
+              {REPORT.cashOrders + REPORT.onlineOrders}
+            </Text>
           </View>
         </View>
       </View>
@@ -63,49 +98,143 @@ export default function M_ReportScreen({ navigation }) {
       <View>
         {/* <Text style={styles.tabTitle2}>Order Details</Text> */}
         <View style={styles.titles}>
-          <Text style={styles.nameTitle}>SUMMARY</Text>
-          <Text style={styles.nameTitle}>SUMMARY</Text>
+          <Text style={styles.nameTitle}>
+            {strings("report_screen.summary")}
+          </Text>
+          <Text style={styles.nameTitle}>
+            {strings("report_screen.summary")}
+          </Text>
         </View>
         <View style={styles.itemList}>
           <View style={styles.row2}>
-            <Text style={styles.rightText}>Total Restaurant Sale(Vat Inc)</Text>
-            <Text style={styles.rightText}>AED 0.00</Text>
+            <Text style={styles.rightText}>
+              {strings("report_screen.total_restaurant_sale")}
+            </Text>
+            <Text style={styles.rightText}>
+              AED {REPORT.totalResturantSale}
+            </Text>
           </View>
           <View style={styles.row2}>
             <Text style={styles.rightText}>
-              Total Sofra Charges(VAT Inclusive)
+              {strings("report_screen.total_sofra_charges")}
             </Text>
-            <Text style={styles.rightText}>-AED 0.00</Text>
+            <Text style={styles.rightText}>
+              -AED {REPORT.totalSofraCharges}
+            </Text>
           </View>
           <View style={styles.row2}>
-            <Text style={styles.rightText}>Net settlement Amount</Text>
-            <Text style={styles.rightText}>AED 0.00</Text>
+            <Text style={styles.rightText}>
+              {strings("report_screen.net_settlement_amount")}
+            </Text>
+            <Text style={styles.rightText}>
+              AED {REPORT.netSettlementAmount}
+            </Text>
           </View>
-          <View style={styles.row2}>
-            <Text style={styles.rightText}>Net settlement Amount</Text>
-            <Text style={styles.rightText}>AED 0.00</Text>
-          </View>
-          <View style={styles.row2}>
-            <Text style={styles.rightText}>Settlement Period</Text>
-            <Text style={styles.rightText}>01 Jan 1970 to 01 Jan 1970</Text>
-          </View>
-          <View style={styles.row2}>
-            <Text style={styles.rightText}>Settlement Date</Text>
-            <Text style={styles.rightText}>01 Jan 1970</Text>
-          </View>
-          <View style={styles.row2}>
-            <Text style={styles.rightText}>Settlement Reference</Text>
-            <Text style={styles.rightText}></Text>
-          </View>
+          {reportType == reportDropdownData[0].name && (
+            <View>
+              <View style={styles.row2}>
+                <Text style={styles.rightText}>
+                  {strings("report_screen.settlement_period")}
+                </Text>
+                <Text style={styles.rightText}>
+                  {moment(
+                    REPORT.settlementPeriodStart
+                      ? REPORT.settlementPeriodStart
+                      : undefined
+                  ).format("DD MMM YYYY")}{" "}
+                  to{" "}
+                  {moment(
+                    REPORT.settlementPeriodEnd
+                      ? REPORT.settlementPeriodEnd
+                      : undefined
+                  ).format("DD MMM YYYY")}
+                </Text>
+              </View>
+              <View style={styles.row2}>
+                <Text style={styles.rightText}>
+                  {strings("report_screen.settlement_date")}
+                </Text>
+                <Text style={styles.rightText}>
+                  {REPORT.settlementPeriodStart
+                    ? moment(REPORT.settlementPeriodStart).format("DD MMM YYYY")
+                    : "N/A"}
+                </Text>
+              </View>
+              <View style={styles.row2}>
+                <Text style={styles.rightText}>
+                  {strings("report_screen.settlement_reference")}
+                </Text>
+                <Text style={styles.rightText}>
+                  {REPORT.settlementReference}
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       </View>
     );
   };
+
+  const getReportsData = (text, data) => {
+    setreportType(text);
+    setTab("report");
+    if (text == reportDropdownData[0].name) {
+      dispatch({ type: "PRE_LOADER", payload: true });
+      dispatch(getSettledReports(data));
+    } else {
+      dispatch({ type: "PRE_LOADER", payload: true });
+      dispatch(getUnSettledReports(data));
+    }
+  };
+
+  const handleConfirm = (date) => {
+    if (dateType == "start") {
+      setStartDate(date);
+    } else {
+      setEndDate(date);
+    }
+    setDatePickerVisibility(false);
+  };
+
+  const onSearchDateWise = () => {
+    if (search == "CUSTOM") {
+      if (StartDate !== "") {
+        if (EndDate !== "") {
+          getFilterData(
+            moment(StartDate).format("YYYY-MM-DD"),
+            moment(EndDate).format("YYYY-MM-DD")
+          );
+        } else dispatchErrorAction(dispatch, "Please select end date");
+      } else dispatchErrorAction(dispatch, "Please select start date");
+    } else {
+      if (search !== "") {
+        const selectedDate = dateFilterData.filter((obj) => obj.name == search);
+        getFilterData(selectedDate[0].startDate, selectedDate[0].endDate);
+      }
+    }
+  };
+  const getFilterData = (sDate, eDate) => {
+    let data = { startDate: sDate, endDate: eDate };
+    getReportsData(reportType, data);
+  };
   return (
     <View style={ApplicationStyles.mainView}>
-      <Text style={ApplicationStyles.welcomeText}>Reports</Text>
+      <Text style={ApplicationStyles.welcomeText}>{reportType}</Text>
+      <RegistrationDropdown
+        data={reportDropdownData}
+        value={reportType}
+        setData={(text) => {
+          {
+            getReportsData(text), setSearch("");
+          }
+        }}
+        placeholder={reportType}
+        valueField={"name"}
+        style={styles.dropdownRow}
+        placeholderTextColor={Colors.black}
+      />
       <View style={styles.tabView}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => setTab("report")}
           style={tab == "report" ? styles.selectedTab : styles.tab}
         >
@@ -114,7 +243,7 @@ export default function M_ReportScreen({ navigation }) {
           >
             Reports-Settled
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => setTab("order")}
           style={tab == "order" ? styles.selectedTab : styles.tab}
@@ -122,7 +251,7 @@ export default function M_ReportScreen({ navigation }) {
           <Text
             style={tab == "order" ? styles.selectedTabText : styles.tabText}
           >
-            Order Details
+            {strings("report_screen.order_details")}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -132,35 +261,65 @@ export default function M_ReportScreen({ navigation }) {
           <Text
             style={tab == "summary" ? styles.selectedTabText : styles.tabText}
           >
-            Summary
+            {strings("report_screen.summary")}
           </Text>
         </TouchableOpacity>
       </View>
 
-      <ScrollView>
-        <Text style={styles.filterTitle}>Apply Date Filters</Text>
-        <View style={styles.searchBar}>
-          <Image
-            source={require("../../Images/Merchant/xxxhdpi/ic_search.png")}
-            style={styles.searchIcon}
-          />
-          <TextInput
-            placeholder="Search by Date Range"
-            style={styles.searchInput}
-            value={search}
-            onChangeText={(text) => setSearch(text)}
-            placeholderTextColor={Colors.placeholderColor}
-          />
-          <Image
-            source={require("../../Images/Merchant/xxxhdpi/ic_filter.png")}
-            style={styles.searchIcon2}
-          />
-        </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.filterTitle}>
+          {strings("report_screen.apply_date_filters")}
+        </Text>
+        <SearchDropdown
+          value={search}
+          setData={(text) => {
+            setSearch(text);
+          }}
+          placeholder={strings("report_screen.search_by_date_range")}
+          valueField={"name"}
+          labelField={"label"}
+          style={styles.dropdownRow}
+          placeholderTextColor={Colors.placeholderColor}
+          onSearch={() => onSearchDateWise()}
+        />
+        {search == "CUSTOM" && (
+          <View style={styles.datesRow}>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+              <DateTimePickerView
+                value={StartDate}
+                format={"MM/DD/YYYY"}
+                placeHolder={strings("report_screen.lateralEntry.start_date")}
+                onPressPicker={() => {
+                  setDatePickerVisibility(true), setdateType("start");
+                }}
+                width={"100%"}
+              />
+            </View>
+            <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+              <DateTimePickerView
+                value={EndDate}
+                format={"MM/DD/YYYY"}
+                placeHolder={strings("report_screen.lateralEntry.end_date")}
+                onPressPicker={() => {
+                  setDatePickerVisibility(true), setdateType("end");
+                }}
+                width={"100%"}
+              />
+            </View>
+          </View>
+        )}
 
         {tab == "order" && <OrderComponent />}
-        {tab == "report" && <ReportSettled />}
+        {tab == "report" && <ReportSettled reportType={reportType} />}
         {tab == "summary" && <SummaryComponent />}
       </ScrollView>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={() => setDatePickerVisibility(false)}
+        minimumDate={dateType == "end" ? StartDate : null}
+      />
     </View>
   );
 }
@@ -265,5 +424,12 @@ const styles = StyleSheet.create({
   },
   rightText: {
     ...commonFontStyle(400, 13, Colors.grayButtonBackground),
+  },
+  datesRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    flex: 1,
+    justifyContent: "space-between",
   },
 });

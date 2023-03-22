@@ -31,10 +31,14 @@ import {
 import { commonFontStyle } from "../Themes/Fonts";
 import { clearAsyncStorage } from "../Services/asyncStorage";
 import { useDispatch, useSelector } from "react-redux";
-import { getLogout } from "../Services/AuthApi";
+import { getDeliveryLogout } from "../Services/AuthApi";
 import D_DashboardScreen from "../Screens/Delivery/D_DashboardScreen";
 import D_NotificationScreen from "../Screens/Delivery/D_NotificationScreen";
 import HeaderLeftIcon from "../Components/NavigationComponent";
+import D_PickUpOrderScreen from "../Screens/Delivery/D_PickUpOrderScreen";
+import { getCompanyProfile } from "../Services/DeliveryApi";
+import { media_url } from "../Config/AppConfig";
+import D_EditDriverScreen from "../Screens/Delivery/D_EditDriverScreen";
 
 const data = {
   headerBackVisible: false,
@@ -66,12 +70,12 @@ let DrawerItemArray = [
   {
     label: "Drivers",
     image: require("../Images/Delivery/xxxhdpi/ic_drivers.png"),
-    screen: "D_DriversScreen",
+    screen: "D_DriverStack1",
   },
   {
     label: "Orders For Pickup",
     image: require("../Images/Delivery/xxxhdpi/ic_pickup.png"),
-    screen: "D_OrderPickupScreen",
+    screen: "D_PickUpOrderScreen",
   },
   {
     label: "My Active Orders",
@@ -104,6 +108,31 @@ let DrawerItemArray = [
     screen: "D_UpdatePassword",
   },
 ];
+
+const DriverStack = createNativeStackNavigator();
+function D_DriverStack() {
+  return (
+    <DriverStack.Navigator initialRouteName="D_DriversScreen">
+      <DriverStack.Screen
+        options={{
+          headerShown: false,
+        }}
+        component={D_DriversScreen}
+        name={"D_DriversScreen"}
+      />
+      <DriverStack.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          // headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
+        component={D_EditDriverScreen}
+        name={"D_EditDriverScreen"}
+      />
+    </DriverStack.Navigator>
+  );
+}
 
 const BottomTab = createBottomTabNavigator();
 function D_MyBottomTabs() {
@@ -157,6 +186,9 @@ function D_MyBottomTabs() {
           tabBarLabel: "Orders",
           ...transparentHeader,
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>My Active Orders</Text>
+          ),
         })}
         name="D_ActiveOrderScreen"
         component={D_ActiveOrderScreen}
@@ -168,8 +200,8 @@ function D_MyBottomTabs() {
               style={styles.tabIcon}
               source={
                 color == Colors.pink
-                  ? require("../Images/Delivery/xxxhdpi/ic_driver_selected.png")
-                  : require("../Images/Delivery/xxxhdpi/ic_drivers.png")
+                  ? require("../Images/Delivery/xxxhdpi/ic_driver_selectedTab.png")
+                  : require("../Images/Delivery/xxxhdpi/ic_driver.png")
               }
             />
           ),
@@ -177,9 +209,11 @@ function D_MyBottomTabs() {
           ...transparentHeader,
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
+          headerTitle: "",
+          headerTransparent: true,
         })}
-        name="D_DriversScreen"
-        component={D_DriversScreen}
+        name="D_DriverStack1"
+        component={D_DriverStack}
       />
       <BottomTab.Screen
         options={({ navigation }) => ({
@@ -229,9 +263,11 @@ const ImageContainer = ({ image }) => {
 };
 function CustomDrawerContent(props) {
   const _TOAST = useSelector((e) => e.merchant.toast);
-
+  const companyProfile = useSelector((e) => e.delivery.companyProfile);
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    dispatch(getCompanyProfile());
+  }, []);
   useEffect(() => {
     if (_TOAST.message == "Auth Token is invalid") {
       onLogout();
@@ -239,9 +275,8 @@ function CustomDrawerContent(props) {
   }, [_TOAST]);
 
   const onLogout = async () => {
-    // props.navigation.navigate(item.screen);
     dispatch(
-      getLogout(() => {
+      getDeliveryLogout(() => {
         props.navigation.dispatch(
           CommonActions.reset({
             index: 1,
@@ -264,9 +299,13 @@ function CustomDrawerContent(props) {
       <View style={styles.drawerMain}>
         <Image
           style={styles.drawerImage}
-          source={require("../Images/Merchant/xxxhdpi/bg_profile.png")}
+          source={
+            companyProfile?.image
+              ? { uri: media_url + companyProfile?.image }
+              : require("../Images/Merchant/xxxhdpi/profile_placeholder.png")
+          }
         />
-        <Text style={styles.name}>Jasica Birnilvis</Text>
+        <Text style={styles.name}>{companyProfile?.name}</Text>
         {DrawerItemArray.map((item, index) => {
           return (
             <DrawerItem
@@ -330,7 +369,7 @@ export function DeliveryDrawer({ navigation }) {
         options={{
           headerShown: false,
         }}
-        name={"DDashboard"}
+        name={"D_Dashboard"}
         component={D_MyBottomTabs}
       />
       <Drawer.Screen
@@ -349,6 +388,9 @@ export function DeliveryDrawer({ navigation }) {
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
           ...transparentHeader,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>My Cancelled Orders</Text>
+          ),
         })}
         name="D_CancelledOrderScreen"
         component={D_CancelledOrderScreen}
@@ -359,9 +401,25 @@ export function DeliveryDrawer({ navigation }) {
           headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
           ...data,
           ...transparentHeader,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>My Delivered Orders</Text>
+          ),
         })}
         name="D_DeliveredOrderScreen"
         component={D_DeliveredOrderScreen}
+      />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>Orders For Pickup</Text>
+          ),
+        })}
+        name="D_PickUpOrderScreen"
+        component={D_PickUpOrderScreen}
       />
       <Drawer.Screen
         options={({ navigation }) => ({
@@ -373,6 +431,17 @@ export function DeliveryDrawer({ navigation }) {
         name="D_ReportScreen"
         component={D_ReportScreen}
       />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
+        name="D_EditDriverScreen"
+        component={D_EditDriverScreen}
+      />
+
       <Drawer.Screen
         options={({ navigation }) => ({
           headerTitleAlign: "center",
@@ -405,6 +474,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: hp(15),
     width: hp(15),
+    borderRadius: hp(15) / 2,
   },
   drawerMain: {
     paddingHorizontal: hp(2),
@@ -430,5 +500,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: hp(3),
     borderRadius: 5,
+  },
+  headerTitle: {
+    ...commonFontStyle("M_700", 16, Colors.black),
   },
 });

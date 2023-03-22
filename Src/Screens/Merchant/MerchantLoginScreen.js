@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, Image, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Platform,
+  TouchableOpacity,
+  I18nManager,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import Colors from "../../Themes/Colors";
@@ -13,34 +21,44 @@ import {
   validateEmail,
 } from "../../Services/CommonFunctions";
 import { getLogin } from "../../Services/AuthApi";
+import { strings } from "../../Config/I18n";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MerchantLoginScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [email, setEmail] = useState("amer_bakour@hotmail.com");
+  const [email, setEmail] = useState("amirmcs05@gmail.com");
   const [password, setPassword] = useState("123456");
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 
   const onLogin = () => {
     if (validateEmail(email)) {
       if (password !== "") {
-        let data = {
-          email: email,
-          password: password,
-          deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
-          deviceToken: fcmToken,
-          language: "en",
-        };
-        dispatch(
-          getLogin(data, () => {
-            navigation.navigate("MerchantDrawerHome");
-          })
-        );
+        AsyncStorage.getItem("Language").then((res) => {
+          let data = {
+            email: email,
+            password: password,
+            deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
+            deviceToken: fcmToken,
+            language: res,
+          };
+          dispatch(
+            getLogin(data, () => {
+              navigation.navigate("MerchantDrawerHome");
+            })
+          );
+        });
       } else {
-        dispatchErrorAction(dispatch, "Please enter password");
+        dispatchErrorAction(
+          dispatch,
+          strings("validationString.please_enter_password")
+        );
       }
     } else {
-      dispatchErrorAction(dispatch, "Please enter valid email");
+      dispatchErrorAction(
+        dispatch,
+        strings("validationString.please_enter_valid_email")
+      );
     }
     // navigation.navigate("MerchantDrawerHome");
   };
@@ -51,34 +69,46 @@ export default function MerchantLoginScreen() {
           source={require("../../Images/Delivery/xxxhdpi/top_logo.png")}
           style={styles.imageLogo}
         />
-        <Text style={styles.welcomeText}>Welcome Merchant</Text>
+        <Text style={styles.welcomeText}>{strings("login.welcome")}</Text>
         <View>
           <LoginTextInput
-            name={"Email"}
-            placeholder={"Enter your email address"}
+            name={strings("login.email")}
+            placeholder={strings("login.enter_your_email_address")}
             value={email}
             onChangeText={(text) => setEmail(text)}
           />
           <LoginTextInput
-            name={"Password"}
-            placeholder={"Enter your password"}
+            name={strings("login.password")}
+            placeholder={strings("login.enter_your_password")}
             value={password}
             onChangeText={(text) => setPassword(text)}
             style={styles.textinputStyle}
           />
           <PinkButton
-            onPress={() => onLogin()}
+            onPress={() =>
+              // navigation.navigate("MerchantDrawerHome")
+              onLogin()
+            }
             style={styles.dbuttonStyle}
-            name={"Login"}
+            name={strings("login.login_button")}
           />
-          <Text style={styles.forgot}>Forgot password?</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("ForgotPasswordScreen", { email: email })
+            }
+          >
+            <Text style={styles.forgot}>
+              {strings("login.forgot_password")}
+            </Text>
+          </TouchableOpacity>
+
           <Text style={styles.forgot2}>
-            Don't have an accout?{" "}
+            {strings("login.Do_not_have_your_account")}{" "}
             <Text
               style={{ color: Colors.pink }}
               onPress={() => navigation.navigate("M_RegistrationScreen")}
             >
-              Sign Up
+              {strings("login.signup_button")}
             </Text>
           </Text>
         </View>
