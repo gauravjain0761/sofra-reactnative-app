@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>345135419214-66nhuo923r55fs56vjgquokrch0t15a3.apps.googleusercontent.com</string>
+	<string>345135419214-j6blo82burp6b4gmpdp65j5a6bchru3n.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.345135419214-66nhuo923r55fs56vjgquokrch0t15a3</string>
+	<string>com.googleusercontent.apps.345135419214-j6blo82burp6b4gmpdp65j5a6bchru3n</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>345135419214-9paqttqc3vdj4funsnigoc7sa9mtnqqi.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBA8uRT9_fW1AgHsbA7PrrqbXioEIBqJvM</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.sofraapp</string>
+	<string>com.app.sofra.business</string>
 	<key>PROJECT_ID</key>
 	<string>sofraapp-e5b1f</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:345135419214:ios:eba5ee4f535a9b5fda581f</string>
+	<string>1:345135419214:ios:91a165723700c333da581f</string>
 </dict>
 </plist>
