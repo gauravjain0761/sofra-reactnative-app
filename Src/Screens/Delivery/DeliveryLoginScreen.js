@@ -17,6 +17,8 @@ export default function DeliveryLoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("amirmcs05@gmail.com");
   const [password, setPassword] = useState("123456");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 
   const onLogin = () => {

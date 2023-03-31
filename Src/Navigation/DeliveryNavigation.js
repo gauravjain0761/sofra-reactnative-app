@@ -31,7 +31,10 @@ import {
 import { commonFontStyle } from "../Themes/Fonts";
 import { clearAsyncStorage } from "../Services/asyncStorage";
 import { useDispatch, useSelector } from "react-redux";
-import { getDeliveryLogout } from "../Services/AuthApi";
+import {
+  getDeliveryLogout,
+  onDeleteAccountDelivery,
+} from "../Services/AuthApi";
 import D_DashboardScreen from "../Screens/Delivery/D_DashboardScreen";
 import D_NotificationScreen from "../Screens/Delivery/D_NotificationScreen";
 import HeaderLeftIcon from "../Components/NavigationComponent";
@@ -106,6 +109,12 @@ let DrawerItemArray = [
     label: "Update Password",
     image: require("../Images/Delivery/xxxhdpi/ic_pass.png"),
     screen: "D_UpdatePassword",
+  },
+  {
+    label_ar: "حذف الحساب",
+    label: "Delete Account",
+    image: require("../Images/Merchant/xxxhdpi/delete.png"),
+    screen: "M_ReportScreen",
   },
 ];
 
@@ -287,6 +296,21 @@ function CustomDrawerContent(props) {
     );
     await clearAsyncStorage();
   };
+
+  const onDelete = async () => {
+    dispatch(
+      onDeleteAccountDelivery(() => {
+        props.navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: "ChooseLoginScreen" }],
+          })
+        );
+      })
+    );
+    await clearAsyncStorage();
+  };
+
   return (
     <DrawerContentScrollView
       style={{
@@ -325,7 +349,20 @@ function CustomDrawerContent(props) {
                 <ImageContainer image={item.image} />
               )}
               onPress={() => {
-                props.navigation.navigate(item.screen);
+                if (item.label == "Delete Account") {
+                  dispatch({
+                    type: "DELETE_MODAL",
+                    payload: {
+                      isVisible: true,
+                      isDeleteAccount: true,
+                      onDelete: () => {
+                        onDelete();
+                      },
+                    },
+                  });
+                } else {
+                  props.navigation.navigate(item.screen);
+                }
               }}
               style={{
                 marginLeft: 0,

@@ -30,6 +30,7 @@ const initialState = {
   notifications: [],
   orderPaging: {},
   dashboardSearch: {},
+  isDeleteAccount: false,
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -263,6 +264,9 @@ export default function (state = initialState, action) {
         ...state,
         isVisible: action.payload.isVisible,
         onDelete: action.payload.onDelete,
+        isDeleteAccount: action.payload.isDeleteAccount
+          ? action.payload.isDeleteAccount
+          : false,
       };
     }
     case "SUCCESS_MODAL": {

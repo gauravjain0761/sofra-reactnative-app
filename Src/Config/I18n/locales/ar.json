@@ -448,6 +448,7 @@
   },
   "pop_up":{
     "Are_you_sure":"هل أنت متأكد؟",
+    "Are_you_sure_delete_account":"هل أنت متأكد أنك تريد حذف الحساب؟",
     "popup_text1":"لن تتمكن من التراجع عن هذا!",
     "cancel":"يلغي",
     "delete_it":"نعم ، احذفها!",

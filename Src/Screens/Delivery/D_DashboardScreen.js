@@ -67,37 +67,40 @@ export default function M_DashboardScreen({ navigation }) {
           />
         </View>
 
-        {dashboardSearchData.orders && dashboardSearchData.orders.length !== 0 && (
-          <View>
-            <FlatList
-              data={dashboardSearchData.orders}
-              ListEmptyComponent={
-                <Text style={ApplicationStyles.nodataStyle}>No Data Found</Text>
-              }
-              // style={{ flex: 1 }}
-              renderItem={({ item, index }) => {
-                let status = orderStatusData.filter(
-                  (obj) => obj.type == item.status
-                );
+        {dashboardSearchData.orders !== undefined &&
+          dashboardSearchData.orders.length !== 0 && (
+            <View>
+              <FlatList
+                data={dashboardSearchData.orders}
+                ListEmptyComponent={
+                  <Text style={ApplicationStyles.nodataStyle}>
+                    No Data Found
+                  </Text>
+                }
+                // style={{ flex: 1 }}
+                renderItem={({ item, index }) => {
+                  let status = orderStatusData.filter(
+                    (obj) => obj.type == item.status
+                  );
 
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setcategoryDetail(true), setselectedOrder(item);
-                    }}
-                  >
-                    <D_OrderItems
-                      item={item}
-                      navigation={navigation}
-                      status={status[0]}
-                    />
-                  </TouchableOpacity>
-                );
-              }}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
-        )}
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setcategoryDetail(true), setselectedOrder(item);
+                      }}
+                    >
+                      <D_OrderItems
+                        item={item}
+                        navigation={navigation}
+                        status={status[0]}
+                      />
+                    </TouchableOpacity>
+                  );
+                }}
+                keyExtractor={(item) => item.id}
+              />
+            </View>
+          )}
 
         <View style={styles.cardView}>
           <Text style={styles.cardTitle}>Add New Driver</Text>
@@ -130,7 +133,9 @@ export default function M_DashboardScreen({ navigation }) {
           </View>
           <View style={styles.halfView}>
             <Text style={styles.halfViewTitle}>
-              {DASHBOARD_DATA ? DASHBOARD_DATA.totalConvienceFee : 0}
+              {DASHBOARD_DATA.totalConvienceFee
+                ? DASHBOARD_DATA.totalConvienceFee
+                : 0}
             </Text>
             <View style={styles.bottomcardRow}>
               <Image
@@ -143,7 +148,7 @@ export default function M_DashboardScreen({ navigation }) {
         </View>
 
         <View style={styles.paddingView}>
-          {DASHBOARD_DATA?.bookingsCompleted && (
+          {DASHBOARD_DATA?.bookingsCompleted !== undefined && (
             <Chart
               name={"Orders Delivered"}
               x={DASHBOARD_DATA.grossAmountDates}
@@ -151,7 +156,7 @@ export default function M_DashboardScreen({ navigation }) {
               totalData={DASHBOARD_DATA.bookingsCompleted}
             />
           )}
-          {DASHBOARD_DATA?.totalEarnings && (
+          {DASHBOARD_DATA?.totalEarnings !== undefined && (
             <Chart
               name={"Total Earnings"}
               x={DASHBOARD_DATA.grossAmountDates}

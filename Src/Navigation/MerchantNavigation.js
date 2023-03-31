@@ -40,7 +40,7 @@ import M_EditCategoryScreen from "../Screens/Merchant/M_EditCategoryScreen";
 import M_EditMenuItemScreen from "../Screens/Merchant/M_EditMenuItemScreen";
 import { clearAsyncStorage, getLanguage } from "../Services/asyncStorage";
 import { useDispatch, useSelector } from "react-redux";
-import { getLogout } from "../Services/AuthApi";
+import { getLogout, onDeleteAccountMerchant } from "../Services/AuthApi";
 import M_CreateOfferScreen from "../Screens/Merchant/M_CreateOfferScreen";
 import HeaderLeftIcon from "../Components/NavigationComponent";
 import M_EditPromocodeScreen from "../Screens/Merchant/M_EditPromocodeScreen";
@@ -154,6 +154,12 @@ let DrawerItemArray = [
     label_ar: "تقرير",
     label: "Reports",
     image: require("../Images/Merchant/xxxhdpi/ic_reports.png"),
+    screen: "M_ReportScreen",
+  },
+  {
+    label_ar: "حذف الحساب",
+    label: "Delete Account",
+    image: require("../Images/Merchant/xxxhdpi/delete.png"),
     screen: "M_ReportScreen",
   },
 ];
@@ -389,6 +395,19 @@ function CustomDrawerContent(props) {
     );
     await clearAsyncStorage();
   };
+  const onDelete = async () => {
+    dispatch(
+      onDeleteAccountMerchant(() => {
+        props.navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: "ChooseLoginScreen" }],
+          })
+        );
+      })
+    );
+    await clearAsyncStorage();
+  };
 
   useEffect(() => {
     dispatch(getRestaurnatDetails());
@@ -425,7 +444,20 @@ function CustomDrawerContent(props) {
           return (
             <TouchableOpacity
               onPress={() => {
-                props.navigation.navigate(item.screen);
+                if (item.label == "Delete Account") {
+                  dispatch({
+                    type: "DELETE_MODAL",
+                    payload: {
+                      isVisible: true,
+                      isDeleteAccount: true,
+                      onDelete: () => {
+                        onDelete();
+                      },
+                    },
+                  });
+                } else {
+                  props.navigation.navigate(item.screen);
+                }
               }}
               style={{
                 flexDirection: language == "en" ? "row" : "row",

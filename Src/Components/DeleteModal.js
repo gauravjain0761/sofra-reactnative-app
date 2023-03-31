@@ -7,8 +7,11 @@ import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
 import PinkButton from "./PinkButton";
 import { strings } from "../Config/I18n";
+import { useSelector } from "react-redux";
 
 export default function DeleteModal({ onDelete, onClose, isVisible }) {
+  const isDeleteAccount = useSelector((e) => e.merchant.isDeleteAccount);
+  console.log("isDeleteAccount--", isDeleteAccount);
   return (
     <ReactNativeModal
       style={ApplicationStyles.modalStyle}
@@ -26,8 +29,24 @@ export default function DeleteModal({ onDelete, onClose, isVisible }) {
           source={require("../Images/Merchant/xxxhdpi/danger.png")}
           style={styles.icon}
         />
-        <Text style={styles.title}>{strings("pop_up.Are_you_sure")}</Text>
-        <Text style={styles.titleBottom}>{strings("pop_up.popup_text1")}</Text>
+        {isDeleteAccount == true ? (
+          <View>
+            <Text style={styles.title}>
+              {strings("pop_up.Are_you_sure_delete_account")}
+            </Text>
+            {/* <Text style={styles.titleBottom}>
+              {strings("pop_up.popup_text1")}
+            </Text> */}
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.title}>{strings("pop_up.Are_you_sure")}</Text>
+            <Text style={styles.titleBottom}>
+              {strings("pop_up.popup_text1")}
+            </Text>
+          </View>
+        )}
+
         <View style={styles.buttonRow}>
           <View style={{ width: "58%" }}>
             <PinkButton

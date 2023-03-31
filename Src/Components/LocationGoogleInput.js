@@ -58,6 +58,9 @@ export default function LocationGoogleInput({
           //   textInputContainer: {
           //     backgroundColor: "grey",
           //   },
+          description: {
+            ...commonFontStyle(400, 14, Colors.black),
+          },
         }}
       />
     </View>

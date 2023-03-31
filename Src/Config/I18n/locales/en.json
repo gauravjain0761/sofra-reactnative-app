@@ -452,6 +452,7 @@
     },
   "pop_up":{
     "Are_you_sure":"Are you sure?",
+    "Are_you_sure_delete_account":"Are you sure you want to delete the account?",
     "popup_text1":"You won't be able to revert this!",
     "cancel":"Cancel",
     "delete_it":"Yes, delete it!",
