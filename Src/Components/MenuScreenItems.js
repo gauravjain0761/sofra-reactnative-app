@@ -40,8 +40,16 @@ export default function MenuScreenItems({
         <PlaceHolderImage image={item.image} style={styles.menuImage} />
       ) : screen == "category" ? (
         <Image
-          style={[styles.menuImage, { marginBottom: hp(1.5) }]}
-          source={require("../Images/Merchant/xxxhdpi/foodDish.jpeg")}
+          style={[
+            styles.menuImage,
+            {
+              height: hp(20),
+              resizeMode: "contain",
+              width: hp(10),
+              alignSelf: "center",
+            },
+          ]}
+          source={require("../Images/Merchant/xxxhdpi/ic_fork.png")}
         />
       ) : (
         <PlaceHolderImage image={item.image} style={styles.menuImage} />
