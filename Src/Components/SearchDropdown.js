@@ -5,7 +5,7 @@ import Colors from "../Themes/Colors";
 import { commonFontStyle } from "../Themes/Fonts";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { dateFilterData } from "../Config/StaticDropdownData";
-import {strings} from '../Config/I18n';
+import { strings } from "../Config/I18n";
 export default function SearchDropdown({
   setData,
   data,
@@ -23,6 +23,7 @@ export default function SearchDropdown({
       <Dropdown
         style={[styles.tradetypeviewStyle, style]}
         placeholderStyle={{
+          textAlign: "left",
           ...commonFontStyle(
             400,
             14,
@@ -54,7 +55,9 @@ export default function SearchDropdown({
         }}
       />
       <TouchableOpacity onPress={() => onSearch()} style={styles.pinkBUtton}>
-        <Text style={styles.searchText}>{strings('statisticsScreen.search')}</Text>
+        <Text style={styles.searchText}>
+          {strings("statisticsScreen.search")}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -63,9 +66,11 @@ export default function SearchDropdown({
 const styles = StyleSheet.create({
   placeholderStyle: {
     ...commonFontStyle(400, 14, Colors.placeholderColor),
+    textAlign: "left",
   },
   TitleTextStyle: {
     ...commonFontStyle(400, 14, Colors.black),
+    textAlign: "left",
   },
   tradetypeviewStyle: {
     backgroundColor: Colors.white,
@@ -78,6 +83,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 14, Colors.black),
     paddingVertical: hp(1),
     paddingHorizontal: hp(3),
+    textAlign: "left",
   },
   textItem2: {
     ...commonFontStyle(400, 14, Colors.black),

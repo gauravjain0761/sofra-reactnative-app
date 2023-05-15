@@ -349,6 +349,7 @@ const styles = StyleSheet.create({
   },
   filterTitle: {
     ...commonFontStyle(500, 14, Colors.black),
+    textAlign: "left",
   },
   searchBar: {
     flexDirection: "row",

@@ -149,5 +149,6 @@ const styles = StyleSheet.create({
   tabTitle: {
     ...commonFontStyle(500, 16, Colors.black),
     marginVertical: hp(2.5),
+    textAlign: "left",
   },
 });

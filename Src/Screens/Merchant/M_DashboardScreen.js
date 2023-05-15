@@ -139,7 +139,7 @@ export default function M_DashboardScreen({ navigation }) {
           style={[
             styles.searchBar,
             {
-              flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+              flexDirection: "row",
             },
           ]}
         >
@@ -314,7 +314,7 @@ export default function M_DashboardScreen({ navigation }) {
                 source={require("../../Images/Merchant/xxxhdpi/ic_menu_dashboard.png")}
               />
               <Text style={styles.rightText}>
-                {strings("dashboard.total")}
+                {strings("dashboard.lateralEntry.total2")}
                 {"\n"}
                 {strings("dashboard.lateralEntry.menu_items")}
               </Text>
@@ -397,6 +397,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 16, Colors.black),
     paddingLeft: hp(2),
     width: "100%",
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   cardView: {
     borderRadius: 8,
@@ -458,11 +459,15 @@ const styles = StyleSheet.create({
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     alignItems: "center",
     width: "100%",
+    // justifyContent: "space-between",
   },
   rightText: {
     ...commonFontStyle("M_600", 13, Colors.black),
     marginLeft: hp(1.5),
-    marginRight: hp(1.5),
+    marginRight: I18nManager.isRTL ? hp(3) : hp(1.5),
+
+    // flex: 1,
+    // textAlign: "",
   },
   bottomcardRowImage: {
     height: hp(4.5),

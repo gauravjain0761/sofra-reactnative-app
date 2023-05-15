@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
   addText: {
     ...commonFontStyle(500, 14, Colors.black),
     marginHorizontal: hp(2),
+    textAlign: "left",
   },
   addButton: {
     ...commonFontStyle("M_600", 11, Colors.white),

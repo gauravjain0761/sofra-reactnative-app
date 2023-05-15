@@ -8,6 +8,7 @@ import {
   Platform,
   ScrollView,
   FlatList,
+  I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Colors from "../../Themes/Colors";
@@ -198,6 +199,7 @@ const styles = StyleSheet.create({
     paddingLeft: hp(2),
     width: SCREEN_WIDTH - 18 - hp(10),
     paddingVertical: 0,
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   searchBar: {
     flexDirection: "row",

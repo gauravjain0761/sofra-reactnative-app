@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   Switch,
+  I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -600,8 +601,13 @@ const styles = StyleSheet.create({
     ...commonFontStyle(700, 18, Colors.black),
     marginBottom: hp(1.5),
     marginTop: hp(3),
+    textAlign: "left",
   },
-  title2: { ...commonFontStyle(500, 16, Colors.pink), marginBottom: hp(3) },
+  title2: {
+    ...commonFontStyle(500, 16, Colors.pink),
+    marginBottom: hp(3),
+    textAlign: "left",
+  },
   row: {
     flexDirection: "row",
     alignItems: "center",
@@ -649,6 +655,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(500, 14, Colors.pink),
     marginBottom: 10,
     marginTop: 5,
+    textAlign: "left",
   },
   textInput: {
     ...commonFontStyle(400, 14, Colors.black),
@@ -658,6 +665,7 @@ const styles = StyleSheet.create({
     height: hp(12),
     padding: hp(2),
     borderRadius: 5,
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   buttonRow: {
     marginVertical: hp(3),

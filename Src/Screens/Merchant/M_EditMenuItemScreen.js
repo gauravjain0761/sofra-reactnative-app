@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
+  I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -469,14 +470,19 @@ export default function M_EditMenuItemScreen(props) {
 const styles = StyleSheet.create({
   title: {
     ...commonFontStyle(600, 18, Colors.black),
-
+    textAlign: "left",
     marginBottom: hp(1.5),
   },
-  title2: { ...commonFontStyle(500, 16, Colors.pink), marginBottom: hp(3) },
+  title2: {
+    ...commonFontStyle(500, 16, Colors.pink),
+    textAlign: "left",
+    marginBottom: hp(3),
+  },
   titleInput: {
     ...commonFontStyle(500, 14, Colors.pink),
     marginBottom: 10,
     marginTop: 5,
+    textAlign: "left",
   },
   dbuttonStyle: {
     marginVertical: hp(3),
@@ -497,6 +503,7 @@ const styles = StyleSheet.create({
     height: hp(12),
     padding: hp(2),
     borderRadius: 5,
+    textAlign: I18nManager.isRTL ? "right" : "left",
     // marginVertical: hp(2),
   },
   imageView: {

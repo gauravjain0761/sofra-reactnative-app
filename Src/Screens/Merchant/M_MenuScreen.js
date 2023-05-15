@@ -159,11 +159,17 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, 18, Colors.black),
 
     marginBottom: hp(1.5),
+    textAlign: "left",
   },
-  title2: { ...commonFontStyle(500, 16, Colors.pink), marginBottom: hp(3) },
+  title2: {
+    ...commonFontStyle(500, 16, Colors.pink),
+    marginBottom: hp(3),
+    textAlign: "left",
+  },
   titleInput: {
     ...commonFontStyle(500, 14, Colors.black),
     marginBottom: 10,
+    textAlign: "left",
   },
   dbuttonStyle: {
     marginVertical: hp(3),

@@ -295,7 +295,10 @@ export default function M_PromocodeScreen({ navigation }) {
                 value={des}
                 onChangeText={(text) => setdes(text)}
                 multiline={true}
-                style={styles.textInput}
+                style={[
+                  styles.textInput,
+                  { textAlign: I18nManager.isRTL ? "right" : "left" },
+                ]}
                 placeholder={strings("promo_code.description")}
                 placeholderTextColor={Colors.placeholderColor}
                 textAlignVertical={"top"}
@@ -304,7 +307,10 @@ export default function M_PromocodeScreen({ navigation }) {
                 value={Arabicdes}
                 onChangeText={(text) => setArabicdes(text)}
                 multiline={true}
-                style={styles.textInput}
+                style={[
+                  styles.textInput,
+                  { textAlign: I18nManager.isRTL ? "right" : "left" },
+                ]}
                 placeholder={strings("promo_code.descripition_in_arabic")}
                 placeholderTextColor={Colors.placeholderColor}
                 textAlignVertical={"top"}
@@ -502,11 +508,13 @@ const styles = StyleSheet.create({
   title2: {
     ...commonFontStyle(500, 16, Colors.pink),
     marginBottom: hp(2),
+    textAlign: "left",
   },
   title22: {
     ...commonFontStyle(400, 17, Colors.pink),
     marginBottom: hp(3),
     marginTop: hp(1),
+    textAlign: "left",
   },
   row: {
     flexDirection: "row",

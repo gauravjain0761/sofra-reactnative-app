@@ -110,13 +110,18 @@ export default function M_EditCategoryScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   title: {
     ...commonFontStyle(600, 18, Colors.black),
-
+    textAlign: "left",
     marginBottom: hp(1.5),
   },
-  title2: { ...commonFontStyle(500, 16, Colors.pink), marginBottom: hp(3) },
+  title2: {
+    ...commonFontStyle(500, 16, Colors.pink),
+    marginBottom: hp(3),
+    textAlign: "left",
+  },
   titleInput: {
     ...commonFontStyle(500, 14, Colors.black),
     marginBottom: 10,
+    textAlign: "left",
   },
   dbuttonStyle: {
     marginVertical: hp(3),

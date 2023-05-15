@@ -34,8 +34,8 @@ export default function Chart({ name, x, totalData, value }) {
           <Text style={styles.totalText}>{totalData}</Text>
         ) : (
           <Text style={styles.totalText}>
-            {I18nManager.isRTL? `${totalData} AED` :`AED ${totalData}`}
-            </Text>
+            {I18nManager.isRTL ? `${totalData} AED` : `AED ${totalData}`}
+          </Text>
         )}
       </View>
       <LineChart
@@ -89,8 +89,10 @@ const styles = StyleSheet.create({
   titleText: {
     ...commonFontStyle("M_500", 14, Colors.darkGrey),
     paddingBottom: 3,
+    textAlign: "left",
   },
   totalText: {
+    textAlign: "left",
     ...commonFontStyle("M_700", 15, Colors.pink),
   },
 });

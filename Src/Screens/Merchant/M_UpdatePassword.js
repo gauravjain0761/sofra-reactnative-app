@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, 18, Colors.black),
     marginBottom: hp(3),
     marginTop: hp(4),
+    textAlign: "left",
   },
   row: {
     flexDirection: "row",
@@ -165,11 +166,13 @@ const styles = StyleSheet.create({
   },
   title2: {
     ...commonFontStyle(400, 17, Colors.darkGrey),
+    textAlign: "left",
   },
   bottomText: {
     ...commonFontStyle(400, 12, Colors.darkGrey),
     marginTop: -hp(1),
     marginBottom: hp(3),
+    textAlign: "left",
   },
   button: {
     width: "60%",

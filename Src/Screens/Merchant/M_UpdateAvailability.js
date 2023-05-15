@@ -245,14 +245,24 @@ export default function M_UpdateAvailability({ navigation }) {
                 {strings("updateAvailability.days")}
               </Text>
             </View>
-            <View style={styles.timeBox}>
-              <Text style={styles.tableTitlea}>
+            <View style={[styles.timeBox]}>
+              <Text style={[styles.tableTitlea, { textAlign: "center" }]}>
                 {strings("updateAvailability.open")}
+              </Text>
+              <Text style={{ height: 0 }}>
+                {availability[0]?.openingTime
+                  ? availability[0].openingTime
+                  : ""}
               </Text>
             </View>
             <View style={styles.timeBox}>
-              <Text style={styles.tableTitlea}>
+              <Text style={[styles.tableTitlea, { textAlign: "center" }]}>
                 {strings("updateAvailability.close")}
+              </Text>
+              <Text style={{ height: 0 }}>
+                {availability[0]?.openingTime
+                  ? availability[0].openingTime
+                  : ""}
               </Text>
             </View>
           </View>
@@ -373,6 +383,7 @@ const styles = StyleSheet.create({
   },
   tableTitlea: {
     ...commonFontStyle(500, 15, Colors.black),
+    textAlign: "left",
   },
   mainTable: {
     marginVertical: hp(2),

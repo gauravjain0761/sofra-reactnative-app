@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
   inputName: {
     ...commonFontStyle(500, 16, Colors.pink),
     // marginTop: hp(4),
+    textAlign: "left",
   },
   textInput: {
     ...commonFontStyle(400, 14, Colors.black),
@@ -183,6 +184,7 @@ const styles = StyleSheet.create({
   bottomText: {
     ...commonFontStyle(400, 14, Colors.darkGrey),
     marginTop: -hp(1),
+    textAlign: "left",
   },
   placeholderStyle: {
     ...commonFontStyle(400, 14, Colors.darkGrey),

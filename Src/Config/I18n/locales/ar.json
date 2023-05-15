@@ -118,12 +118,13 @@
      "inctruction":"إبدأ",
    "add_categories":"إضافة فئة",
    "total":"المجموع",
-   "earning":"الكسب",
-   "completed":"مكتمل",
+   "earning":"المكتسب",
+   "completed":"المكتملة",
    "orders":"الطلبات",
    "lateralEntry":{
+    "total2":"مجموع",
     "menu_items":"عناصر القائمة",
-    "active":"نشيط",
+    "active":"النشطة",
     "gross_volume":"الحجم الإجمالي",
     "net_earnings":"صافي الأرباح"
    }
@@ -354,7 +355,7 @@
     "total_online_orders":"إجمالي الطلبات عبر الإنترنت (مكتملة)",
     "total_orders":"إجمالي الطلبات (المكتملة)",
     "cash_payments":"التسديد نقدًا",
-    "Amount_exe_vat":"المبلغ) شامل ضريبة القيمة المضافة)",
+    "Amount_exe_vat":"المبلغ (باستثناء ضريبة القيمة المضافة)",
     "AED":"درهم إماراتي",
     "vat":"ضريبة القيمة المضافة",
     "N/A":"غير متاح",
@@ -379,8 +380,8 @@
     "everyday":"كل يوم",
     "apply_same_timing":"تطبيق المواعيد ذاتها",
     "days":"الأيام",
-    "open":"فتح",
-    "close":"إغلاق",
+    "open":"يفتح",
+    "close":"يغلق",
     "hhmm":"hh:mm",
     "lateralEntry":{
       "select_opening_time":"حدد وقت الافتتاح",

@@ -124,6 +124,7 @@
      "completed":"Completed",
      "orders":"Orders",
      "lateralEntry":{
+      "total2":"Total",
       "menu_items":"Menu Items",
       "active":"Active",
       "gross_volume":"Gross Volume",

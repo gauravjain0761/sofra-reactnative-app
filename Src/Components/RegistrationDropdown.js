@@ -23,6 +23,7 @@ export default function RegistrationDropdown({
           // selectedStyle={{color:colors.gray3}}
           style={[styles.tradetypeviewStyle, style]}
           placeholderStyle={{
+            textAlign: "left",
             ...commonFontStyle(
               400,
               14,
@@ -77,9 +78,10 @@ export default function RegistrationDropdown({
                 ? placeholderTextColor
                 : Colors.placeholderColor
             ),
+            textAlign: "left",
           }}
           data={data}
-          selectedTextStyle={[styles.TitleTextStyle]}
+          selectedTextStyle={[styles.TitleTextStyle, { textAlign: "left" }]}
           iconColor={Colors.black}
           // activeColor={colors.Gray300}
           // disable ={runningTradeTypePositions[item.tradeType] && true}
@@ -126,6 +128,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 14, Colors.black),
     paddingVertical: hp(1),
     paddingHorizontal: hp(3),
+    textAlign: "left",
   },
   textItem2: {
     ...commonFontStyle(400, 14, Colors.black),
