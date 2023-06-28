@@ -11,16 +11,9 @@ import D_DeliveredOrderScreen from "../Screens/Delivery/D_DeliveredOrderScreen";
 import D_ReportScreen from "../Screens/Delivery/D_ReportScreen";
 import D_ProfileScreen from "../Screens/Delivery/D_ProfileScreen";
 import D_UpdatePassword from "../Screens/Delivery/D_UpdatePassword";
-import { CommonActions, NavigationContainer } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {
-  Image,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  Platform,
-} from "react-native";
+import { Image, View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Colors from "../Themes/Colors";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -42,6 +35,8 @@ import D_PickUpOrderScreen from "../Screens/Delivery/D_PickUpOrderScreen";
 import { getCompanyProfile } from "../Services/DeliveryApi";
 import { media_url } from "../Config/AppConfig";
 import D_EditDriverScreen from "../Screens/Delivery/D_EditDriverScreen";
+import D_CurrentPackageScreen from "../Screens/Delivery/D_CurrentPackageScreen";
+import { strings } from "../Config/I18n";
 
 const data = {
   headerBackVisible: false,
@@ -94,6 +89,12 @@ let DrawerItemArray = [
     label: "My Delivered Orders",
     image: require("../Images/Delivery/xxxhdpi/ic_delivered.png"),
     screen: "D_DeliveredOrderScreen",
+  },
+  {
+    label_ar: strings("current_package.my_subscription"),
+    label: strings("current_package.my_subscription"),
+    image: require("../Images/Merchant/xxxhdpi/ic_membership.png"),
+    screen: "D_CurrentPackageScreen",
   },
   {
     label: "Reports",
@@ -488,6 +489,17 @@ export function DeliveryDrawer({ navigation }) {
         })}
         name="D_UpdatePassword"
         component={D_UpdatePassword}
+      />
+
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
+        name="D_CurrentPackageScreen"
+        component={D_CurrentPackageScreen}
       />
     </Drawer.Navigator>
   );

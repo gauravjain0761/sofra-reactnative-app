@@ -22,6 +22,7 @@ import Chart from "../../Components/Chart";
 import { orderStatusData } from "../../Constant/Constant";
 import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 import OrderDetailModal from "../../Components/OrderDetailModal";
+import SubscriptionToast from "../../Components/SubscriptionToast";
 export default function M_DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -29,6 +30,7 @@ export default function M_DashboardScreen({ navigation }) {
   const dashboardSearchData = useSelector((e) => e.delivery.dashboardSearch);
   const [categoryDetail, setcategoryDetail] = useState(false);
   const [selectedOrder, setselectedOrder] = useState({});
+  const COMPANY = useSelector((e) => e.delivery.companyProfile);
 
   useEffect(() => {
     dispatch({ type: "PRE_LOADER_DELIVERY", payload: false });
@@ -174,6 +176,7 @@ export default function M_DashboardScreen({ navigation }) {
         selectedOrder={selectedOrder}
         type={"delivery"}
       />
+      <SubscriptionToast data={COMPANY} />
     </View>
   );
 }

@@ -1,17 +1,5 @@
 import { View, Text, Dimensions, StyleSheet, I18nManager } from "react-native";
 import React from "react";
-import {
-  VictoryChart,
-  VictoryLine,
-  VictoryScatter,
-  VictoryTheme,
-  Background,
-  VictoryArea,
-  VictoryGroup,
-  VictoryAxis,
-} from "victory-native";
-import { useState } from "react";
-import { useEffect } from "react";
 import Colors from "../Themes/Colors";
 import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -84,7 +72,6 @@ const styles = StyleSheet.create({
   titleView: {
     paddingHorizontal: hp(1.5),
     paddingTop: hp(1),
-    // marginBottom: -30,
   },
   titleText: {
     ...commonFontStyle("M_500", 14, Colors.darkGrey),

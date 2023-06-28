@@ -185,9 +185,9 @@
       "prepare":"Prepare",
       "ready_to_pick_up":"Ready to pick up",
       "delivered":"Delivered",
-      "picked":"picked",
+      "picked":"Picked",
       "canceled":"Canceled",
-      "Rejected":"rejected",
+      "Rejected":"Rejected",
       "lateralEntry":{
         "preparing":"Preparing",
         "all":"All",
@@ -463,5 +463,16 @@
     "instruction":"Instructions",
     "category":"Category",
     "menu":"Menu"
+  },
+  "current_package":{
+    "my_subscription":"My Subscription",
+    "your_current_package":"Your Current Package",
+    "package_expire":"Package expire",
+    "renew_btn":"Renew My Package",
+    "cancel_btn":"Cancel My Subscriptions",
+    "tost_msg":"Expire Subscription",
+    "subscribe":"Subscribe",
+    "canceltext":"You cancelled your subscription, please subscribe.",
+    "canceltoast":"Cancelled Subscription"
   }
 }

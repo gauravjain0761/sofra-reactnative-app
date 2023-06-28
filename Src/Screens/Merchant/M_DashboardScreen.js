@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  Linking,
   I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
@@ -33,8 +32,8 @@ import OrderItems from "../../Components/OrderItems";
 import { orderStatusData } from "../../Constant/Constant";
 import OrderDetailModal from "../../Components/OrderDetailModal";
 import { strings } from "../../Config/I18n";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getLanguage } from "../../Services/asyncStorage";
+import SubscriptionToast from "../../Components/SubscriptionToast";
 
 export default function M_DashboardScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -43,6 +42,7 @@ export default function M_DashboardScreen({ navigation }) {
   const dashboardSearchData = useSelector((e) => e.merchant.dashboardSearch);
   const [categoryDetail, setcategoryDetail] = useState(false);
   const [selectedOrder, setselectedOrder] = useState({});
+  const RESTAURANT = useSelector((e) => e.merchant.restaurant);
 
   useEffect(() => {
     async function setLang() {
@@ -371,6 +371,8 @@ export default function M_DashboardScreen({ navigation }) {
         selectedOrder={selectedOrder}
         type="merchant"
       />
+
+      {RESTAURANT && <SubscriptionToast data={RESTAURANT} />}
     </View>
   );
 }

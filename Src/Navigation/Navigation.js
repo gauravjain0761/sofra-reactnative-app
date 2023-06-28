@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
 import MerchantLoginScreen from "../Screens/Merchant/MerchantLoginScreen";
@@ -15,6 +15,8 @@ import ApplicationStyles from "../Themes/ApplicationStyles";
 import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen";
 import messaging from "@react-native-firebase/messaging";
 import notifee, { AndroidImportance } from "@notifee/react-native";
+import ChoosePackageScreen from "../Screens/ChoosePackageScreen";
+import D_ChoosePackageScreen from "../Screens/D_ChoosePackageScreen";
 
 const data = {
   headerBackVisible: false,
@@ -210,7 +212,6 @@ export default function Navigation() {
           name="MerchantLoginScreen"
           component={MerchantLoginScreen}
         />
-
         <Stack.Screen
           options={({ navigation }) => ({
             headerLeft: () => (
@@ -268,7 +269,6 @@ export default function Navigation() {
           name="DeliveryLoginScreen"
           component={DeliveryLoginScreen}
         />
-
         <Stack.Screen
           options={({ navigation }) => ({
             headerLeft: () => (
@@ -300,6 +300,54 @@ export default function Navigation() {
           }}
           name="DeliveryDrawerHome"
           component={DeliveryDrawer}
+        />
+        <Stack.Screen
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={ApplicationStyles.headerRightView1}
+              >
+                <Image
+                  source={require("../Images/Delivery/xxxhdpi/ic_drop_down.png")}
+                  style={{
+                    height: 18,
+                    width: 18,
+                    resizeMode: "contain",
+                    transform: [{ rotate: "90deg" }],
+                  }}
+                />
+              </TouchableOpacity>
+            ),
+            ...data,
+            ...transparentHeader,
+          })}
+          name="ChoosePackageScreen"
+          component={ChoosePackageScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={ApplicationStyles.headerRightView1}
+              >
+                <Image
+                  source={require("../Images/Delivery/xxxhdpi/ic_drop_down.png")}
+                  style={{
+                    height: 18,
+                    width: 18,
+                    resizeMode: "contain",
+                    transform: [{ rotate: "90deg" }],
+                  }}
+                />
+              </TouchableOpacity>
+            ),
+            ...data,
+            ...transparentHeader,
+          })}
+          name="D_ChoosePackageScreen"
+          component={D_ChoosePackageScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

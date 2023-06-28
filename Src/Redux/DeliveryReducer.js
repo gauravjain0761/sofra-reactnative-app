@@ -18,6 +18,7 @@ const initialState = {
   successModal: false,
   dashboardSearch: {},
   notifications: {},
+  companySubscription: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -192,6 +193,13 @@ export default function (state = initialState, action) {
     }
     case "SET_NOTIFICATIONS_COMPANY": {
       return { ...state, notifications: action.payload, preLoader: false };
+    }
+    case "SET_SUBSCRIPTION_COMPANY": {
+      return {
+        ...state,
+        companySubscription: action.payload,
+        preLoader: false,
+      };
     }
     default:
       return state;

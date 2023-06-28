@@ -1,5 +1,5 @@
 import { delivery_url } from "../Config/AppConfig";
-import { getToken } from "./asyncStorage";
+import { getLanguage, getToken } from "./asyncStorage";
 import {
   dispatchAction,
   dispatchErrorAction,
@@ -355,3 +355,44 @@ export const getOrderDetailDelivery =
       dispatchErrorAction(dispatch, error.message);
     }
   };
+
+export const getMySubscriptionCompany = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
+  let token = await getToken();
+  let language = await getLanguage();
+  console.log(token);
+  const url =
+    delivery_url +
+    "/getMySubscription?auth_token=" +
+    token +
+    "&language=" +
+    language;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_SUBSCRIPTION_COMPANY", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const cancelSubscriptionCompany = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER_DELIVERY", payload: true });
+
+  const url = delivery_url + "/cancelSubscription";
+  try {
+    const data = await POST(dispatch, url);
+    if (data.status == true) {
+      dispatch(getCompanyProfile());
+      dispatchSuccessAction(dispatch, data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+      dispatch(getCompanyProfile());
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};

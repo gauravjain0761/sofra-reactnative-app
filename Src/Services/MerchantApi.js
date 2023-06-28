@@ -812,9 +812,49 @@ export const getOrderDetail = (query, onSuccess) => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       onSuccess(data.result[0]);
-      // dispatchAction(dispatch, "SET_DASHBOARD_SEARCH_DATA", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const getMySubscription = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+  let token = await getToken();
+  let language = await getLanguage();
+  console.log(token);
+  const url =
+    merchant_url +
+    "/getMySubscription?auth_token=" +
+    token +
+    "&language=" +
+    language;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_SUBSCRIPTION", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const cancelSubscription = () => async (dispatch) => {
+  dispatch({ type: "PRE_LOADER", payload: true });
+
+  const url = merchant_url + "/cancelSubscription";
+  try {
+    const data = await POST(dispatch, url);
+    if (data.status == true) {
+      dispatch(getRestaurnatDetails());
+      dispatchSuccessAction(dispatch, data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+      dispatch(getRestaurnatDetails());
     }
   } catch (error) {
     dispatchErrorAction(dispatch, error.message);

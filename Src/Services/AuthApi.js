@@ -1,4 +1,4 @@
-import { company_url, delivery_url, merchant_url } from "../Config/AppConfig";
+import { delivery_url, merchant_url } from "../Config/AppConfig";
 import { getLanguage } from "./asyncStorage";
 import {
   dispatchAction,
@@ -45,7 +45,7 @@ export const register = (postObj, onSuccess) => async (dispatch) => {
   try {
     const data = await POST(dispatch, url, postObj);
     if (data.status == true) {
-      onSuccess();
+      onSuccess(data.data);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -132,7 +132,6 @@ export const updatePassword =
       if (data.status == true) {
         onSuccess();
         dispatchSuccessAction(dispatch, data.message);
-        // dispatchAction(dispatch, "LOGOUT", "");
       } else {
         dispatchErrorAction(dispatch, data.message);
       }
@@ -149,7 +148,6 @@ export const forgotPassword = (postObj, onSuccess) => async (dispatch) => {
     if (data.status == true) {
       onSuccess();
       dispatchSuccessAction(dispatch, data.message);
-      // dispatchAction(dispatch, "LOGOUT", "");
     } else {
       dispatchErrorAction(dispatch, data.message);
     }
@@ -164,7 +162,7 @@ export const deliveryRegistaer = (postObj, onSuccess) => async (dispatch) => {
   try {
     const data = await POST(dispatch, url, postObj);
     if (data.status == true) {
-      onSuccess();
+      onSuccess(data.data);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

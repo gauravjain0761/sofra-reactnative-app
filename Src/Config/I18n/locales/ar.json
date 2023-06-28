@@ -459,5 +459,12 @@
     "instruction":"تعليمات",
     "category":"فئة",
     "menu":"قائمة طعام"
+  },
+  "current_package":{
+    "my_subscription":"My Subscriptions",
+    "your_current_package":"Your Current Package",
+    "package_expire":"Package expire",
+    "renew_btn":"Renew My Package",
+    "cancel_btn":"Cancel My Subscriptions"
   }
 }

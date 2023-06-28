@@ -3,7 +3,7 @@ import React from "react";
 import ReactNativeModal from "react-native-modal";
 import ApplicationStyles from "../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { commonFontStyle, SCREEN_WIDTH } from "../Themes/Fonts";
+import { commonFontStyle } from "../Themes/Fonts";
 import Colors from "../Themes/Colors";
 import PinkButton from "./PinkButton";
 import { strings } from "../Config/I18n";
@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 
 export default function DeleteModal({ onDelete, onClose, isVisible }) {
   const isDeleteAccount = useSelector((e) => e.merchant.isDeleteAccount);
-  console.log("isDeleteAccount--", isDeleteAccount);
   return (
     <ReactNativeModal
       style={ApplicationStyles.modalStyle}
@@ -90,7 +89,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
-    // flex: 1,
     justifyContent: "space-between",
   },
 });

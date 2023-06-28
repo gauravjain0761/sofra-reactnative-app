@@ -1,5 +1,4 @@
 import { getLanguage, getToken } from "./asyncStorage";
-import { merchant_url } from "../Config/AppConfig";
 
 export const GET = async (dispatch, url, data) => {
   const token = await getToken();

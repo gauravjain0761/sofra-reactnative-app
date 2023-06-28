@@ -31,6 +31,7 @@ const initialState = {
   orderPaging: {},
   dashboardSearch: {},
   isDeleteAccount: false,
+  merchantSubscription: {},
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -282,6 +283,13 @@ export default function (state = initialState, action) {
     }
     case "SET_DASHBOARD_SEARCH_DATA": {
       return { ...state, dashboardSearch: action.payload };
+    }
+    case "SET_SUBSCRIPTION": {
+      return {
+        ...state,
+        merchantSubscription: action.payload,
+        preLoader: false,
+      };
     }
     default:
       return state;

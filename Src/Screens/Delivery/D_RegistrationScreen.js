@@ -16,10 +16,11 @@ import { useNavigation } from "@react-navigation/native";
 import { CurrentDeliverData } from "../../Config/StaticDropdownData";
 import { deliveryRegistaer } from "../../Services/AuthApi";
 import { ReactNativeModal } from "react-native-modal";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import LocationGoogleInput from "../../Components/LocationGoogleInput";
+import { useIsFocused } from "@react-navigation/native";
+import { useEffect } from "react";
 
-export default function D_RegistrationScreen() {
+export default function D_RegistrationScreen({ route }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [BName, setBName] = useState("");
@@ -35,6 +36,15 @@ export default function D_RegistrationScreen() {
   const CITIES = useSelector((e) => e.merchant.cities);
   const registerSuccess = useSelector((e) => e.auth.registerSuccess);
   const fcmToken = useSelector((e) => e.auth.fcmToken);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused == true) {
+      if (route?.params?.status == "done") {
+        dispatch({ type: "REGISTER_SUCCESS", payload: true });
+      }
+    }
+  }, [isFocused]);
 
   const onRegistration = () => {
     let cityName = CITIES.filter((obj) => obj.name == city);
@@ -55,8 +65,12 @@ export default function D_RegistrationScreen() {
       language: "en",
     };
     dispatch(
-      deliveryRegistaer(data, () => {
-        dispatch({ type: "REGISTER_SUCCESS", payload: true });
+      deliveryRegistaer(data, (res) => {
+        navigation.navigate("D_ChoosePackageScreen", {
+          staffId: res.id,
+          screen: "D_RegistrationScreen",
+        });
+        // dispatch({ type: "REGISTER_SUCCESS", payload: true });
       })
     );
   };

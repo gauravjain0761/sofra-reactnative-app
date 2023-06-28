@@ -5,9 +5,8 @@ import {
   Image,
   Platform,
   TouchableOpacity,
-  I18nManager,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import Colors from "../../Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -27,10 +26,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function MerchantLoginScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  // const [email, setEmail] = useState("amer_bakour@hotmail.com");
-  // const [password, setPassword] = useState("123456");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(__DEV__ ? "amer_bakour@hotmail.com" : "");
+  const [password, setPassword] = useState(__DEV__ ? "123456" : "");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
 
   const fcmToken = useSelector((e) => e.auth.fcmToken);
 

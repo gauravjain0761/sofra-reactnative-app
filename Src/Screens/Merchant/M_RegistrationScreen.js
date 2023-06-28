@@ -16,8 +16,8 @@ import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import PinkButton from "../../Components/PinkButton";
 import {
   dispatchErrorAction,
-  validateEmail,
   getFromDataJson,
+  validateEmail,
 } from "../../Services/CommonFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { CurrentDeliverData } from "../../Config/StaticDropdownData";
@@ -27,8 +27,9 @@ import LocationGoogleInput from "../../Components/LocationGoogleInput";
 import { strings } from "../../Config/I18n";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
-export default function M_RegistrationScreen({ navigation }) {
-  const dispatch = useDispatch();
+import { useIsFocused } from "@react-navigation/native";
+export default function M_RegistrationScreen({ navigation, route }) {
+  const dispatch = useDispatch({ route });
   const CITIES = useSelector((e) => e.merchant.cities);
   const CUISINES = useSelector((e) => e.merchant.cuisines);
   const CATEGORIES = useSelector((e) => e.merchant.categories);
@@ -48,12 +49,21 @@ export default function M_RegistrationScreen({ navigation }) {
   const [MobileNo, setMobileNo] = useState("");
   const registerSuccess = useSelector((e) => e.auth.registerSuccess);
   const [Language, setLanguage] = useState("en");
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     AsyncStorage.getItem("Language").then((res) => {
       setLanguage(res);
     });
   }, []);
+
+  useEffect(() => {
+    if (isFocused == true) {
+      if (route?.params?.status == "done") {
+        dispatch({ type: "REGISTER_SUCCESS", payload: true });
+      }
+    }
+  }, [isFocused]);
 
   const onRegistration = () => {
     AsyncStorage.getItem("Language").then((res) => {
@@ -94,13 +104,18 @@ export default function M_RegistrationScreen({ navigation }) {
         language: res,
       };
       dispatch(
-        register(data, () => {
-          dispatch({ type: "REGISTER_SUCCESS", payload: true });
+        register(data, (res) => {
+          navigation.navigate("ChoosePackageScreen", {
+            staffId: res.staffId,
+            screen: "M_RegistrationScreen",
+          });
+          // dispatch({ type: "REGISTER_SUCCESS", payload: true });
         })
       );
     });
   };
   const validation = () => {
+    // navigation.navigate("ChoosePackageScreen");
     if (BName.trim() !== "") {
       if (BAddress.trim() !== "") {
         if (city !== "") {
@@ -312,7 +327,6 @@ export default function M_RegistrationScreen({ navigation }) {
           value={MobileNo}
           onChangeText={(text) => setMobileNo(text)}
         />
-
         <PinkButton
           onPress={() => validation()}
           style={styles.dbuttonStyle}
@@ -376,7 +390,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
   },
-
   dbuttonStyle: {
     marginTop: hp(5),
   },

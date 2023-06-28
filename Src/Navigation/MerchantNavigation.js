@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CommonActions, NavigationContainer } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Image,
@@ -23,7 +23,6 @@ import M_ProfileScreen from "../Screens/Merchant/M_ProfileScreen";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItem,
 } from "@react-navigation/drawer";
 import M_MenuItemScreen from "../Screens/Merchant/M_MenuItemScreen";
 import { commonFontStyle } from "../Themes/Fonts";
@@ -49,6 +48,7 @@ import { media_url } from "../Config/AppConfig";
 import { useState } from "react";
 import M_InstructionScreen from "../Screens/Merchant/M_InstructionScreen";
 import { strings } from "../Config/I18n";
+import M_CurrentPackageScreen from "../Screens/Merchant/M_CurrentPackageScreen";
 const data = {
   headerBackVisible: false,
   headerTitle: () => (
@@ -106,6 +106,12 @@ let DrawerItemArray = [
     label: "Promo Codes",
     image: require("../Images/Merchant/xxxhdpi/ic_promo.png"),
     screen: "M_PromocodeScreen",
+  },
+  {
+    label_ar: strings("current_package.my_subscription"),
+    label: strings("current_package.my_subscription"),
+    image: require("../Images/Merchant/xxxhdpi/ic_membership.png"),
+    screen: "M_CurrentPackageScreen",
   },
   {
     label_ar: "عروض",
@@ -723,6 +729,16 @@ export function MerchantDrawer({ navigation }) {
         })}
         name="M_UpdatePassword"
         component={M_UpdatePassword}
+      />
+      <Drawer.Screen
+        options={({ navigation }) => ({
+          headerTitleAlign: "center",
+          headerLeft: () => <HeaderLeftIcon navigation={navigation} />,
+          ...data,
+          ...transparentHeader,
+        })}
+        name="M_CurrentPackageScreen"
+        component={M_CurrentPackageScreen}
       />
     </Drawer.Navigator>
   );

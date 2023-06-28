@@ -1,5 +1,5 @@
 import "./Config";
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect } from "react";
 import RootContainer from "./Navigation/RootContainer";
 import {
   View,
@@ -9,11 +9,10 @@ import {
   StyleSheet,
   Dimensions,
   ActivityIndicator,
-  StatusBar,
   I18nManager,
 } from "react-native";
 import ApplicationStyles from "./Themes/ApplicationStyles";
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
 import Colors from "./Themes/Colors";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -74,8 +73,6 @@ function App() {
           {/* <Text style={styles.textStyleToast}>{text2}</Text> */}
         </View>
       ),
-    // info: () => {},
-    // any_custom_type: () => {},
   };
 
   return (
