@@ -30,7 +30,6 @@ import { media_url } from "../../Config/AppConfig";
 import { deliveryTimeData, vatType } from "../../Config/StaticDropdownData";
 import {
   dispatchErrorAction,
-  getDataJsonAvailability,
   getFromDataJson,
 } from "../../Services/CommonFunctions";
 import LocationGoogleInput from "../../Components/LocationGoogleInput";
@@ -100,7 +99,7 @@ export default function M_ProfileScreen({ navigation }) {
       setarabicBName(RESTAURANT.name_ar);
       setb_category(getArray(RESTAURANT.categories, "name"));
       setVATtype(RESTAURANT.vatType);
-      setdeliveryTime(deliveryTime[0].name);
+      setdeliveryTime(deliveryTime.length !== 0 ? deliveryTime[0].name : "");
       setcity(language == "en" ? city[0].name : city[0].name_ar);
       setcuisine(getArray(RESTAURANT.cusinies, "name"));
       setimage(RESTAURANT.image);
@@ -303,7 +302,10 @@ export default function M_ProfileScreen({ navigation }) {
             <Image
               style={styles.drawerImage}
               source={
-                RESTAURANT !== {} && RESTAURANT.image && RESTAURANT.image !== ""
+                RESTAURANT !== {} &&
+                RESTAURANT.image &&
+                RESTAURANT.image !== "" &&
+                RESTAURANT.image !== null
                   ? { uri: media_url + image }
                   : require("../../Images/Delivery/xxxhdpi/profile_placeholder.png")
               }
@@ -448,7 +450,7 @@ export default function M_ProfileScreen({ navigation }) {
                 onPress={() => openPicker()}
                 style={styles.imageView}
               >
-                {image == "" ? (
+                {image == "" || image == null ? (
                   <View style={{ alignItems: "center" }}>
                     <Image
                       source={require("../../Images/Merchant/xxxhdpi/ic_attach.png")}
