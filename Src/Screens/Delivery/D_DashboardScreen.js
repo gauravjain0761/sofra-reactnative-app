@@ -176,7 +176,7 @@ export default function M_DashboardScreen({ navigation }) {
         selectedOrder={selectedOrder}
         type={"delivery"}
       />
-      <SubscriptionToast data={COMPANY} />
+      <SubscriptionToast data={COMPANY} type={"delivery"} />
     </View>
   );
 }

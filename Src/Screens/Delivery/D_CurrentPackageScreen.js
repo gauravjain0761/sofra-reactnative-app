@@ -75,6 +75,8 @@ export default function D_CurrentPackageScreen() {
                 source={
                   companySubscription.subscription.title == "Basic"
                     ? require("../../Images/Merchant/xxxhdpi/badsic.png")
+                    : companySubscription.subscription.title == "Premium"
+                    ? require("../../Images/Merchant/xxxhdpi/pro.png")
                     : require("../../Images/Merchant/xxxhdpi/standerd.png")
                 }
                 style={styles.imageCard}
@@ -134,10 +136,12 @@ const styles = StyleSheet.create({
     marginTop: hp(12),
   },
   imageCard: {
-    resizeMode: "contain",
-    height: 260,
+    resizeMode: "cover",
     width: Dimensions.get("window").width - hp(4),
+    height: null,
     overflow: "hidden",
     borderRadius: 10,
+    aspectRatio: 3 / 1.65,
+    marginVertical: hp(3),
   },
 });

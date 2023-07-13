@@ -35,7 +35,8 @@
       "mobile_number":"Mobile number (+971...)",
       "submit":"Submit",
       "by_clicking_submit":"By clicking 'Submit', I heareby acknowledge &  agree that I have read & understand Sofra ",
-      "terms_and_condition":"Terms and conditiaons"
+      "terms_and_condition":"Terms and conditiaons",
+      "sub_categories":"SubCategories"
     },
     "cityData":{
       "Supertrend":"SUPERTREND",
@@ -68,6 +69,7 @@
       "please_enter_firstname":"Please enter firstname",
       "please_select_cuisine":"Please select cuisine",
       "please_select_category":"Please select category",
+      "please_select_subcategory":"Please select subcategory",
       "please_enter_web_fb_insta_account":"Please enter your website, facebook, instagram account",
       "please_select_currently_deliver":"Please select currently deliver",
       "please_enter_trade_licence_number":"Please enter trade licence number",

@@ -17,7 +17,10 @@ export default function ChoosePackageScreen({ route }) {
   }, []);
 
   const checkUrlState = (url) => {
-    if (url.url.includes("my-subscription?success=1")) {
+    if (
+      url.url.includes("my-subscription?success=1") ||
+      url.url.includes("manage")
+    ) {
       // code to hide WebView
       console.log("here ay avyu", route?.params);
       if (route?.params?.screen == "M_CurrentPackageScreen") {

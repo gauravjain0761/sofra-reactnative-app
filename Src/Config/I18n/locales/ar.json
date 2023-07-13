@@ -35,7 +35,8 @@
     "mobile_number":"رقم الهاتف النقال (+971...)",
     "submit":"موافق",
     "by_clicking_submit":"بالنقر فوق 'موافق' ، أقر وأوافق على أنني قد قرأت وفهمت سفرة ",
-    "terms_and_condition":"الأحكام والشروط"
+    "terms_and_condition":"الأحكام والشروط",
+    "sub_categories":"الفئات الفرعية"
   },
   "cityData":{
     "Supertrend":"الاتجاه الفائق",
@@ -68,6 +69,7 @@
     "please_enter_firstname":"الرجاء إدخال الاسم الأول",
     "please_select_cuisine":"الرجاء تحديد الطبق",
     "please_select_category":"الرجاء تحديد الفئة",
+    "please_select_subcategory":"الرجاء تحديد فئة فرعية",
     "please_enter_web_fb_insta_account":"الرجاء إدخال موقعك الالكتروني وحسابك على الإنستاغرام والفيسبوك",
     "please_select_currently_deliver":"الرجاء تحديد التسليم حاليًا",
     "please_enter_trade_licence_number":"الرجاء إدخال رقم الرخصة التجارية",

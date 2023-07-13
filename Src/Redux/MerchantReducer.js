@@ -32,6 +32,8 @@ const initialState = {
   dashboardSearch: {},
   isDeleteAccount: false,
   merchantSubscription: {},
+  subCategories: [],
+  mainCategories: [],
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -141,6 +143,12 @@ export default function (state = initialState, action) {
     }
     case "SET_CATEGORIES": {
       return { ...state, categories: action.payload, preLoader: false };
+    }
+    case "SET_MAIN_CATEGORIES": {
+      return { ...state, mainCategories: action.payload, preLoader: false };
+    }
+    case "SET_SUB_CATEGORIES": {
+      return { ...state, subCategories: action.payload, preLoader: false };
     }
     case "SET_MENU_DESCRIPTORS": {
       return { ...state, descriptor: action.payload, preLoader: false };

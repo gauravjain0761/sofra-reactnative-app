@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, I18nManager } from "react-native";
+import { View, StyleSheet, TextInput, I18nManager } from "react-native";
 import React from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { commonFontStyle } from "../Themes/Fonts";
@@ -27,7 +27,7 @@ export default function RegistrationTextInput({
         placeholderTextColor={
           placeholderTextColor ? placeholderTextColor : Colors.placeholderColor
         }
-        editable={editable ? false : true}
+        editable={editable == undefined ? true : false}
         keyboardType={keyboardType ? keyboardType : "default"}
         onPressIn={() => (onFocus ? onFocus() : {})}
       />
@@ -44,6 +44,6 @@ const styles = StyleSheet.create({
     height: hp(6),
     paddingHorizontal: hp(2),
     borderRadius: 5,
-    textAlign: I18nManager.isRTL?'right':'left'
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
 });

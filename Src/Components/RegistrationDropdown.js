@@ -45,6 +45,7 @@ export default function RegistrationDropdown({
           placeholder={value.length !== 0 ? value.toString() : placeholder}
           value={value}
           onChange={(item) => {
+            console.log("--", item);
             setData(item);
           }}
           renderItem={(item, selected) => {

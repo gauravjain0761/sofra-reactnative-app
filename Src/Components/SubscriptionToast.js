@@ -1,15 +1,24 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import Colors from "../Themes/Colors";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { commonFontStyle } from "../Themes/Fonts";
-import { strings } from "../Config/I18n";
 import moment from "moment";
+import { useNavigation } from "@react-navigation/native";
 
-export default function SubscriptionToast({ data }) {
+export default function SubscriptionToast({ data, type }) {
+  const navigation = useNavigation();
   return (
     <View style={styles.absoluteView}>
-      <View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate(
+            type == "merchant"
+              ? "M_CurrentPackageScreen"
+              : "D_CurrentPackageScreen"
+          )
+        }
+      >
         {data?.subscription?.subscription_status == "invalid" ? (
           <View style={styles.row}>
             <View>
@@ -19,9 +28,7 @@ export default function SubscriptionToast({ data }) {
               />
             </View>
             <View>
-              <Text style={styles.title}>
-                {strings("current_package.tost_msg")}
-              </Text>
+              <Text style={styles.title}>{data?.subscription?.message}</Text>
             </View>
           </View>
         ) : data?.subscription?.subscription_status == "cancelled" ? (
@@ -33,9 +40,7 @@ export default function SubscriptionToast({ data }) {
               />
             </View>
             <View>
-              <Text style={styles.title}>
-                {strings("current_package.canceltoast")}
-              </Text>
+              <Text style={styles.title}>{data?.subscription?.message}</Text>
             </View>
           </View>
         ) : data?.subscription?.subscription_status == "active" ? null : (
@@ -47,16 +52,14 @@ export default function SubscriptionToast({ data }) {
               />
             </View>
             <View>
-              <Text style={styles.title}>
-                {strings("current_package.tost_msg")}
-              </Text>
+              <Text style={styles.title}>{data?.subscription?.message}</Text>
               <Text style={styles.date}>
                 {moment(data?.subscription?.expired_at).format("MMM DD - YYYY")}
               </Text>
             </View>
           </View>
         )}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }

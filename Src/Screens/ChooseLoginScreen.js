@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import React, { useEffect } from "react";
 import ApplicationStyles from "../Themes/ApplicationStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -12,8 +12,9 @@ import {
   getCuisines,
   getUsers,
   getCategories,
+  getMainCategories,
 } from "../Services/MerchantApi";
-import messaging, { firebase } from "@react-native-firebase/messaging";
+import messaging from "@react-native-firebase/messaging";
 
 export default function ChooseLoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -60,6 +61,7 @@ export default function ChooseLoginScreen({ navigation }) {
       dispatch(getUsers());
       dispatch(getCuisines());
       dispatch(getCategories());
+      dispatch(getMainCategories());
     }
     getDeviceToken();
   }, []);

@@ -1,4 +1,4 @@
-import { merchant_url } from "../Config/AppConfig";
+import { merchant_url, sofra_url } from "../Config/AppConfig";
 import { getLanguage, getToken } from "./asyncStorage";
 import {
   dispatchAction,
@@ -44,6 +44,37 @@ export const getCategories = () => async (dispatch) => {
     const data = await GET(dispatch, url);
     if (data.status == true) {
       dispatchAction(dispatch, "SET_CATEGORIES", data.result);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const getMainCategories = () => async (dispatch) => {
+  let lang = await getLanguage();
+  const url = sofra_url + "/getMainCategories?language=" + lang;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_MAIN_CATEGORIES", data.categories);
+    } else {
+      dispatchErrorAction(dispatch, data.message);
+    }
+  } catch (error) {
+    dispatchErrorAction(dispatch, error.message);
+  }
+};
+
+export const getSubCategories = (id) => async (dispatch) => {
+  let lang = await getLanguage();
+  const url =
+    sofra_url + "/getSubCategories?language=" + lang + "&category_id=" + id;
+  try {
+    const data = await GET(dispatch, url);
+    if (data.status == true) {
+      dispatchAction(dispatch, "SET_SUB_CATEGORIES", data.categories);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

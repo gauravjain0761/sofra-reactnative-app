@@ -15,9 +15,9 @@ import RegistrationTextInput from "../../Components/RegistrationTextInput";
 import RegistrationDropdown from "../../Components/RegistrationDropdown";
 import PinkButton from "../../Components/PinkButton";
 import {
-  dispatchErrorAction,
   getFromDataJson,
   validateEmail,
+  dispatchErrorAction,
 } from "../../Services/CommonFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { CurrentDeliverData } from "../../Config/StaticDropdownData";
@@ -28,11 +28,13 @@ import { strings } from "../../Config/I18n";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import { getSubCategories } from "../../Services/MerchantApi";
 export default function M_RegistrationScreen({ navigation, route }) {
   const dispatch = useDispatch({ route });
   const CITIES = useSelector((e) => e.merchant.cities);
   const CUISINES = useSelector((e) => e.merchant.cuisines);
-  const CATEGORIES = useSelector((e) => e.merchant.categories);
+  const CATEGORIES = useSelector((e) => e.merchant.mainCategories);
+  const SUBCATEGORIES = useSelector((e) => e.merchant.subCategories);
   const fcmToken = useSelector((e) => e.auth.fcmToken);
   const [BName, setBName] = useState("");
   const [BAddress, setBAddress] = useState("");
@@ -42,6 +44,8 @@ export default function M_RegistrationScreen({ navigation, route }) {
   const [socialLink, setSocialLink] = useState("");
   const [restaurant, setRestaurant] = useState("Restaurant");
   const [category, setCategory] = useState("");
+  const [categoryJSON, setCategoryJSON] = useState({});
+  const [subCategory, setSubCategory] = useState("");
   const [Cuisine, setCuisine] = useState("");
   const [Firstname, setFirstname] = useState("");
   const [Lastname, setLastname] = useState("");
@@ -68,24 +72,25 @@ export default function M_RegistrationScreen({ navigation, route }) {
   const onRegistration = () => {
     AsyncStorage.getItem("Language").then((res) => {
       let cityName;
-      let cusineJson;
-      let categoriesJson;
+      let cusineJson = undefined;
+      let subcategoriesJson = undefined;
 
       if (Language == "en") {
         cityName = CITIES.filter((obj) => obj.name == city);
-        cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds");
-        categoriesJson = getFromDataJson(CATEGORIES, category, "categoryIds");
+        if (Cuisine.length !== 0)
+          cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds");
       } else {
         cityName = CITIES.filter((obj) => obj.name_ar == city);
-        cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds", res);
-        categoriesJson = getFromDataJson(
-          CATEGORIES,
-          category,
-          "categoryIds",
-          res
+        if (Cuisine.length !== 0)
+          cusineJson = getFromDataJson(CUISINES, Cuisine, "cusineIds", res);
+      }
+      if (SUBCATEGORIES && SUBCATEGORIES.length !== 0) {
+        subcategoriesJson = getFromDataJson(
+          SUBCATEGORIES,
+          subCategory,
+          "categoryIds"
         );
       }
-
       let data = {
         name: BName,
         email: Email,
@@ -97,8 +102,9 @@ export default function M_RegistrationScreen({ navigation, route }) {
         location: BAddress,
         licenseNo: licenceNumber,
         social_account: socialLink,
+        category_id: categoryJSON.id,
         ...cusineJson,
-        ...categoriesJson,
+        ...subcategoriesJson,
         deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
         deviceToken: fcmToken,
         language: res,
@@ -122,44 +128,81 @@ export default function M_RegistrationScreen({ navigation, route }) {
           if (licenceNumber.trim() !== "") {
             if (currentlyDeliver !== "") {
               if (category.length !== 0) {
-                if (Cuisine.length !== 0) {
-                  if (Firstname.trim() !== "") {
-                    if (Lastname.trim() !== "") {
-                      if (validateEmail(Email)) {
-                        if (MobileNo.trim() !== "") {
-                          onRegistration();
+                // if (Cuisine.length !== 0) {
+                if (Firstname.trim() !== "") {
+                  if (Lastname.trim() !== "") {
+                    if (validateEmail(Email)) {
+                      if (MobileNo.trim() !== "") {
+                        if (SUBCATEGORIES && SUBCATEGORIES.length !== 0) {
+                          if (subCategory.length !== 0) {
+                            if (categoryJSON?.id == 351) {
+                              if (Cuisine.length !== 0) {
+                                onRegistration();
+                              } else {
+                                dispatchErrorAction(
+                                  dispatch,
+                                  strings(
+                                    "validationString.please_select_cuisine"
+                                  )
+                                );
+                              }
+                            } else {
+                              onRegistration();
+                            }
+                          } else {
+                            dispatchErrorAction(
+                              dispatch,
+                              strings(
+                                "validationString.please_select_subcategory"
+                              )
+                            );
+                          }
                         } else {
-                          dispatchErrorAction(
-                            dispatch,
-                            strings(
-                              "validationString.please_enter_mobile_number"
-                            )
-                          );
+                          if (categoryJSON?.id == 351) {
+                            if (Cuisine.length !== 0) {
+                              onRegistration();
+                            } else {
+                              dispatchErrorAction(
+                                dispatch,
+                                strings(
+                                  "validationString.please_select_cuisine"
+                                )
+                              );
+                            }
+                          } else {
+                            onRegistration();
+                          }
                         }
                       } else {
                         dispatchErrorAction(
                           dispatch,
-                          strings("validationString.please_enter_valid_email")
+                          strings("validationString.please_enter_mobile_number")
                         );
                       }
                     } else {
                       dispatchErrorAction(
                         dispatch,
-                        strings("validationString.please_enter_lastname")
+                        strings("validationString.please_enter_valid_email")
                       );
                     }
                   } else {
                     dispatchErrorAction(
                       dispatch,
-                      strings("validationString.please_enter_firstname")
+                      strings("validationString.please_enter_lastname")
                     );
                   }
                 } else {
                   dispatchErrorAction(
                     dispatch,
-                    strings("validationString.please_select_cuisine")
+                    strings("validationString.please_enter_firstname")
                   );
                 }
+                // } else {
+                //   dispatchErrorAction(
+                //     dispatch,
+                //     strings("validationString.please_select_cuisine")
+                //   );
+                // }
               } else {
                 dispatchErrorAction(
                   dispatch,
@@ -256,49 +299,61 @@ export default function M_RegistrationScreen({ navigation, route }) {
           value={socialLink}
           onChangeText={(text) => setSocialLink(text)}
         />
-        <View style={styles.row}>
-          <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
+        {/* <View style={styles.row}> */}
+        {/* <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationTextInput
               placeholder={strings("SignUp.restaurant")}
               value={"Restaurant"}
               onChangeText={(text) => setRestaurant(text)}
             />
-            {/* <RegistrationDropdown
-              data={citydata}
-              value={restaurant}
-              setData={(text) => {
-                setRestaurant(text);
-              }}
-              placeholder={"Restaurant"}
-              valueField={"strategicName"}
-              style={styles.dropdownRow}
-            /> */}
           </View>
-          <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-            <RegistrationDropdown
-              data={CATEGORIES}
-              value={category}
-              multiSelect={true}
-              setData={(text) => {
-                setCategory(text);
-              }}
-              placeholder={strings("SignUp.category")}
-              style={styles.dropdownRow}
-              valueField={Language == "en" ? "name" : "name_ar"}
-            />
-          </View>
-        </View>
+          <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}> */}
         <RegistrationDropdown
-          data={CUISINES}
-          value={Cuisine}
-          multiSelect={true}
+          data={CATEGORIES}
+          value={category}
+          // multiSelect={true}
           setData={(text) => {
-            setCuisine(text);
+            setCategory(text);
+            let index = [];
+            index = CATEGORIES.filter((obj) => obj.name == text);
+            setCategoryJSON(index[0]);
+            dispatch(getSubCategories(index[0].id));
+            setCuisine("");
+            setSubCategory("");
           }}
-          placeholder={strings("SignUp.type_of_cuisine")}
-          valueField={Language == "en" ? "name" : "name_ar"}
+          placeholder={strings("SignUp.category")}
           style={styles.dropdownRow}
+          valueField={Language == "en" ? "name" : "name"}
         />
+        {/* </View> */}
+        {/* </View> */}
+        {SUBCATEGORIES && SUBCATEGORIES.length !== 0 && (
+          <RegistrationDropdown
+            data={SUBCATEGORIES}
+            value={subCategory}
+            multiSelect={true}
+            setData={(text) => {
+              setSubCategory(text);
+            }}
+            placeholder={strings("SignUp.sub_categories")}
+            valueField={Language == "en" ? "name" : "name"}
+            style={styles.dropdownRow}
+          />
+        )}
+        {categoryJSON?.id == 351 && (
+          <RegistrationDropdown
+            data={CUISINES}
+            value={Cuisine}
+            multiSelect={true}
+            setData={(text) => {
+              setCuisine(text);
+            }}
+            placeholder={strings("SignUp.type_of_cuisine")}
+            valueField={Language == "en" ? "name" : "name_ar"}
+            style={styles.dropdownRow}
+          />
+        )}
+
         <View style={styles.row}>
           <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
             <RegistrationTextInput

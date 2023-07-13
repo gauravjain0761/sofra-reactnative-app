@@ -23,6 +23,7 @@ import PinkButton from "../../Components/PinkButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getRestaurnatDetails,
+  getSubCategories,
   updateNotificationSetting,
   updateProfile,
 } from "../../Services/MerchantApi";
@@ -44,6 +45,7 @@ export default function M_ProfileScreen({ navigation }) {
   const [businessName, setbusinessName] = useState("");
   const [arabicBName, setarabicBName] = useState("");
   const [b_category, setb_category] = useState("");
+  const [subCategory, setSubCategory] = useState("");
   const [VATtype, setVATtype] = useState("");
   const [deliveryTime, setdeliveryTime] = useState("");
   const [city, setcity] = useState("");
@@ -57,7 +59,8 @@ export default function M_ProfileScreen({ navigation }) {
   const RESTAURANT = useSelector((e) => e.merchant.restaurant);
   const CITIES = useSelector((e) => e.merchant.cities);
   const CUISINES = useSelector((e) => e.merchant.cuisines);
-  const CATEGORIES = useSelector((e) => e.merchant.categories);
+  const CATEGORIES = useSelector((e) => e.merchant.mainCategories);
+  const SUBCATEGORIES = useSelector((e) => e.merchant.subCategories);
   const fcmToken = useSelector((e) => e.auth.fcmToken);
   const [timeData, settimeData] = useState([]);
   const [lat, setlat] = useState("");
@@ -97,7 +100,10 @@ export default function M_ProfileScreen({ navigation }) {
       setphoneNumber(RESTAURANT.phone);
       setbusinessName(RESTAURANT.name);
       setarabicBName(RESTAURANT.name_ar);
-      setb_category(getArray(RESTAURANT.categories, "name"));
+      setb_category(
+        CATEGORIES.filter((obj) => obj.id == RESTAURANT.category_id)[0].name
+      );
+      setSubCategory(getArray(RESTAURANT.categories, "name"));
       setVATtype(RESTAURANT.vatType);
       setdeliveryTime(deliveryTime.length !== 0 ? deliveryTime[0].name : "");
       setcity(language == "en" ? city[0].name : city[0].name_ar);
@@ -109,6 +115,7 @@ export default function M_ProfileScreen({ navigation }) {
       setorderNoti(RESTAURANT.orderNotifications);
       setlat(RESTAURANT.lat ? Number(RESTAURANT.lat) : "");
       setlong(RESTAURANT.lng ? Number(RESTAURANT.lng) : "");
+      dispatch(getSubCategories(RESTAURANT.category_id));
     }
   }, [RESTAURANT, timeData, CITIES]);
 
@@ -126,27 +133,34 @@ export default function M_ProfileScreen({ navigation }) {
 
   const onUpdateProfile = () => {
     let cityName;
-    let cusineJson;
-    let categoriesJson;
+    let cusineJson = undefined;
+    let subcategoriesJson = undefined;
 
     if (language == "en") {
       cityName = CITIES.filter((obj) => obj.name == city);
-      cusineJson = getFromDataJson(CUISINES, cuisine, "cusineIds");
-      categoriesJson = getFromDataJson(CATEGORIES, b_category, "categoryIds");
+      if (cuisine.length !== 0) {
+        cusineJson = getFromDataJson(CUISINES, cuisine, "cusineIds");
+      }
+      // categoriesJson = getFromDataJson(CATEGORIES, b_category, "categoryIds");
     } else {
       cityName = CITIES.filter((obj) => obj.name_ar == city);
-      cusineJson = getFromDataJson(CUISINES, cuisine, "cusineIds", language);
-      categoriesJson = getFromDataJson(
-        CATEGORIES,
-        b_category,
-        "categoryIds",
-        language
+      if (cuisine.length !== 0) {
+        cusineJson = getFromDataJson(CUISINES, cuisine, "cusineIds", language);
+      }
+      // categoriesJson = getFromDataJson(
+      //   CATEGORIES,
+      //   b_category,
+      //   "categoryIds",
+      //   language
+      // );
+    }
+    if (SUBCATEGORIES && SUBCATEGORIES.length !== 0) {
+      subcategoriesJson = getFromDataJson(
+        SUBCATEGORIES,
+        subCategory,
+        "categoryIds"
       );
     }
-
-    // let cityName = CITIES.filter((obj) => obj.name == city);
-    // let cusineJson = getFromDataJson(CUISINES, cuisine, "cusineIds");
-    // let categoriesJson = getFromDataJson(CATEGORIES, b_category, "categoryIds");
     let data = {};
 
     data = {
@@ -172,8 +186,9 @@ export default function M_ProfileScreen({ navigation }) {
               image.sourceURL.split("/").pop(),
           }
         : undefined,
+      category_id: RESTAURANT.category_id,
       ...cusineJson,
-      ...categoriesJson,
+      ...subcategoriesJson,
       lat: String(lat),
       lng: String(long),
       deviceType: Platform.OS == "android" ? "ANDROID" : "IOS",
@@ -193,25 +208,56 @@ export default function M_ProfileScreen({ navigation }) {
                 if (vatType !== "") {
                   if (deliveryTime !== "") {
                     if (city !== "") {
-                      if (cuisine.length !== 0) {
-                        if (image !== "") {
-                          if (des.trim() !== "") {
-                            if (arabicDes.trim() !== "") {
-                              if (location.trim() !== "") {
-                                onUpdateProfile();
+                      // if (cuisine.length !== 0) {
+                      if (image !== "") {
+                        if (des.trim() !== "") {
+                          if (arabicDes.trim() !== "") {
+                            if (location.trim() !== "") {
+                              if (SUBCATEGORIES && SUBCATEGORIES.length !== 0) {
+                                if (subCategory.length !== 0) {
+                                  if (RESTAURANT.category_id == 351) {
+                                    if (cuisine.length !== 0) {
+                                      onUpdateProfile();
+                                    } else {
+                                      dispatchErrorAction(
+                                        dispatch,
+                                        strings(
+                                          "validationString.please_select_cuisine"
+                                        )
+                                      );
+                                    }
+                                  } else {
+                                    onUpdateProfile();
+                                  }
+                                } else {
+                                  dispatchErrorAction(
+                                    dispatch,
+                                    strings(
+                                      "validationString.please_select_subcategory"
+                                    )
+                                  );
+                                }
                               } else {
-                                dispatchErrorAction(
-                                  dispatch,
-                                  strings(
-                                    "validationString.please_enter_location"
-                                  )
-                                );
+                                if (RESTAURANT.category_id == 351) {
+                                  if (cuisine.length !== 0) {
+                                    onUpdateProfile();
+                                  } else {
+                                    dispatchErrorAction(
+                                      dispatch,
+                                      strings(
+                                        "validationString.please_select_cuisine"
+                                      )
+                                    );
+                                  }
+                                } else {
+                                  onUpdateProfile();
+                                }
                               }
                             } else {
                               dispatchErrorAction(
                                 dispatch,
                                 strings(
-                                  "validationString.please_enter_description_in_arabic"
+                                  "validationString.please_enter_location"
                                 )
                               );
                             }
@@ -219,22 +265,28 @@ export default function M_ProfileScreen({ navigation }) {
                             dispatchErrorAction(
                               dispatch,
                               strings(
-                                "validationString.please enter_description"
+                                "validationString.please_enter_description_in_arabic"
                               )
                             );
                           }
                         } else {
                           dispatchErrorAction(
                             dispatch,
-                            strings("validationString.please_select_image")
+                            strings("validationString.please enter_description")
                           );
                         }
                       } else {
                         dispatchErrorAction(
                           dispatch,
-                          strings("validationString.please_select_cuisine")
+                          strings("validationString.please_select_image")
                         );
                       }
+                      // } else {
+                      //   dispatchErrorAction(
+                      //     dispatch,
+                      //     strings("validationString.please_select_cuisine")
+                      //   );
+                      // }
                     } else {
                       dispatchErrorAction(
                         dispatch,
@@ -372,7 +424,14 @@ export default function M_ProfileScreen({ navigation }) {
 
             <Text style={styles.title}>{strings("profile.business_info")}</Text>
             <View>
-              <RegistrationDropdown
+              <RegistrationTextInput
+                placeholder={strings("profile.business_categories")}
+                value={b_category}
+                // onChangeText={(text) => setarabicBName(text)}
+                placeholderTextColor={Colors.black}
+                editable={false}
+              />
+              {/* <RegistrationDropdown
                 data={CATEGORIES}
                 value={b_category}
                 setData={(text) => {
@@ -380,10 +439,24 @@ export default function M_ProfileScreen({ navigation }) {
                 }}
                 multiSelect={true}
                 placeholder={strings("profile.business_categories")}
-                valueField={language == "en" ? "name" : "name_ar"}
+                valueField={language == "en" ? "name" : "name"}
                 style={styles.dropdownRow}
                 placeholderTextColor={Colors.black}
-              />
+              /> */}
+              {SUBCATEGORIES && SUBCATEGORIES.length !== 0 && (
+                <RegistrationDropdown
+                  data={SUBCATEGORIES}
+                  value={subCategory}
+                  setData={(text) => {
+                    setSubCategory(text);
+                  }}
+                  multiSelect={true}
+                  placeholder={strings("SignUp.sub_categories")}
+                  valueField={language == "en" ? "name" : "name"}
+                  style={styles.dropdownRow}
+                  placeholderTextColor={Colors.black}
+                />
+              )}
               <View style={styles.row}>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
                   <RegistrationDropdown
@@ -431,18 +504,20 @@ export default function M_ProfileScreen({ navigation }) {
                   />
                 </View>
                 <View style={{ width: (SCREEN_WIDTH - hp(6)) / 2 }}>
-                  <RegistrationDropdown
-                    data={CUISINES}
-                    value={cuisine}
-                    setData={(text) => {
-                      setcuisine(text);
-                    }}
-                    placeholder={strings("profile.cuisine")}
-                    valueField={language == "en" ? "name" : "name_ar"}
-                    multiSelect={true}
-                    style={styles.dropdownRow}
-                    placeholderTextColor={Colors.black}
-                  />
+                  {RESTAURANT.category_id == 351 && (
+                    <RegistrationDropdown
+                      data={CUISINES}
+                      value={cuisine}
+                      setData={(text) => {
+                        setcuisine(text);
+                      }}
+                      placeholder={strings("profile.cuisine")}
+                      valueField={language == "en" ? "name" : "name_ar"}
+                      multiSelect={true}
+                      style={styles.dropdownRow}
+                      placeholderTextColor={Colors.black}
+                    />
+                  )}
                 </View>
               </View>
 

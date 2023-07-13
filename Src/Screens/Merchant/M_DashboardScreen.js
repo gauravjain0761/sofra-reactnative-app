@@ -372,7 +372,7 @@ export default function M_DashboardScreen({ navigation }) {
         type="merchant"
       />
 
-      {RESTAURANT && <SubscriptionToast data={RESTAURANT} />}
+      {RESTAURANT && <SubscriptionToast data={RESTAURANT} type={"merchant"} />}
     </View>
   );
 }
