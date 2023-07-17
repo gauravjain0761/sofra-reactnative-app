@@ -464,7 +464,9 @@
     "doit":"Yes, do it!",
     "instruction":"Instructions",
     "category":"Category",
-    "menu":"Menu"
+    "menu":"Menu",
+    "Are_you_sure_cancel_subscription":"Are you sure you want to cancel your subscription?",
+    "cancel_it":"Yes, cancel it!"
   },
   "current_package":{
     "my_subscription":"My Subscription",

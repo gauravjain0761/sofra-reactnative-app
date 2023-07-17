@@ -293,6 +293,7 @@ export default function (state = initialState, action) {
       return { ...state, dashboardSearch: action.payload };
     }
     case "SET_SUBSCRIPTION": {
+      console.log("SET_SUBSCRIPTION---", action.payload);
       return {
         ...state,
         merchantSubscription: action.payload,

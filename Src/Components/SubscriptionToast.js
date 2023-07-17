@@ -32,17 +32,19 @@ export default function SubscriptionToast({ data, type }) {
             </View>
           </View>
         ) : data?.subscription?.subscription_status == "cancelled" ? (
-          <View style={styles.row}>
-            <View>
-              <Image
-                source={require("../Images/Merchant/xxxhdpi/ic_memberwhte.png")}
-                style={styles.imageSub}
-              />
+          moment(data?.subscription?.expired_at) >= moment() ? null : (
+            <View style={styles.row}>
+              <View>
+                <Image
+                  source={require("../Images/Merchant/xxxhdpi/ic_memberwhte.png")}
+                  style={styles.imageSub}
+                />
+              </View>
+              <View>
+                <Text style={styles.title}>{data?.subscription?.message}</Text>
+              </View>
             </View>
-            <View>
-              <Text style={styles.title}>{data?.subscription?.message}</Text>
-            </View>
-          </View>
+          )
         ) : data?.subscription?.subscription_status == "active" ? null : (
           <View style={styles.row}>
             <View>
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignSelf: "center",
     marginBottom: 30,
+    alignItems: "center",
   },
   row: {
     flexDirection: "row",
@@ -87,6 +90,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.6,
     shadowRadius: 10,
     elevation: 15,
+    width: "93%",
   },
   imageSub: {
     height: heightPercentageToDP(5),

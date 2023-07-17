@@ -460,7 +460,9 @@
     "doit":"نعم افعلها!",
     "instruction":"تعليمات",
     "category":"فئة",
-    "menu":"قائمة طعام"
+    "menu":"قائمة طعام",
+    "Are_you_sure_cancel_subscription":"هل أنت متأكد أنك تريد إلغاء اشتراكك؟",
+    "cancel_it":"نعم ، قم بإلغائها!"
   },
   "current_package":{
     "my_subscription":"My Subscriptions",

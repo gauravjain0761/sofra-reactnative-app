@@ -865,6 +865,7 @@ export const getMySubscription = () => async (dispatch) => {
   try {
     const data = await GET(dispatch, url);
     if (data.status == true) {
+      console.log("data.result---", data.result);
       dispatchAction(dispatch, "SET_SUBSCRIPTION", data.result);
     } else {
       dispatchErrorAction(dispatch, data.message);

@@ -7,7 +7,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { strings } from "../../Config/I18n";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
 import { commonFontStyle } from "../../Themes/Fonts";
@@ -22,6 +22,7 @@ import {
 } from "../../Services/MerchantApi";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import moment from "moment";
+import CancelSubscriptionPopup from "../../Components/CancelSubscriptionPopup";
 
 export default function M_CurrentPackageScreen() {
   const dispatch = useDispatch();
@@ -30,14 +31,17 @@ export default function M_CurrentPackageScreen() {
     (e) => e.merchant.merchantSubscription
   );
   const RESTAURANT = useSelector((e) => e.merchant.restaurant);
-
   const isFocused = useIsFocused();
+  const [canpopup, setcanpopup] = useState(false);
   useEffect(() => {
-    if (isFocused == true) dispatch(getMySubscription());
+    if (isFocused == true) {
+      dispatch(getMySubscription());
+    }
   }, [isFocused]);
 
   const onCancel = () => {
-    dispatch(cancelSubscription());
+    setcanpopup(true);
+    // dispatch(cancelSubscription());
   };
 
   const onSubscribe = () => {
@@ -47,14 +51,17 @@ export default function M_CurrentPackageScreen() {
     });
   };
 
+  console.log(moment(merchantSubscription.expired_at) >= moment());
+
   return (
-    <View style={ApplicationStyles.mainView}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {Object.keys(merchantSubscription).length !== 0 ? (
-          merchantSubscription == "You have not purcashed any subscription" ? (
+    Object.keys(merchantSubscription).length !== 0 && (
+      <View style={ApplicationStyles.mainView}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {RESTAURANT &&
+          RESTAURANT?.subscription?.subscription_status == "invalid" ? (
             <View>
               <Text style={[styles.heading, { marginTop: hp(3) }]}>
-                {merchantSubscription}
+                {RESTAURANT?.subscription.message}
               </Text>
               <PinkButton
                 onPress={() => onSubscribe()}
@@ -62,8 +69,11 @@ export default function M_CurrentPackageScreen() {
                 name={strings("current_package.subscribe")}
               />
             </View>
-          ) : RESTAURANT &&
-            RESTAURANT?.subscription?.subscription_status !== "cancelled" ? (
+          ) : Object.keys(merchantSubscription).length !== 0 &&
+            merchantSubscription?.subscription &&
+            merchantSubscription.subscription.title &&
+            RESTAURANT &&
+            RESTAURANT?.subscription?.subscription_status == "active" ? (
             <View>
               <Text style={ApplicationStyles.welcomeText}>
                 {strings("current_package.my_subscription")}
@@ -104,19 +114,55 @@ export default function M_CurrentPackageScreen() {
             </View>
           ) : (
             <View>
-              <Text style={[styles.heading, { marginTop: hp(3) }]}>
-                {strings("current_package.canceltext")}
-              </Text>
-              <PinkButton
-                onPress={() => onSubscribe()}
-                style={styles.pinkBtn}
-                name={strings("current_package.subscribe")}
-              />
+              {moment(merchantSubscription.expired_at) >= moment() ? (
+                <View>
+                  <Text style={ApplicationStyles.welcomeText}>
+                    {strings("current_package.my_subscription")}
+                  </Text>
+                  <Text style={styles.heading}>
+                    {strings("current_package.your_current_package")}
+                  </Text>
+                  <Image
+                    source={
+                      merchantSubscription.subscription.title == "Basic"
+                        ? require("../../Images/Merchant/xxxhdpi/badsic.png")
+                        : merchantSubscription.subscription.title == "Premium"
+                        ? require("../../Images/Merchant/xxxhdpi/pro.png")
+                        : require("../../Images/Merchant/xxxhdpi/standerd.png")
+                    }
+                    style={styles.imageCard}
+                  />
+                  <Text style={styles.heading}>
+                    {strings("current_package.package_expire")}{" "}
+                    {moment(merchantSubscription.expired_at).format(
+                      "DD MMMM YYYY"
+                    )}
+                  </Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={[styles.heading, { marginTop: hp(3) }]}>
+                    {RESTAURANT?.subscription.message}
+                  </Text>
+                  <PinkButton
+                    onPress={() => onSubscribe()}
+                    style={styles.pinkBtn}
+                    name={strings("current_package.subscribe")}
+                  />
+                </View>
+              )}
             </View>
-          )
-        ) : null}
-      </ScrollView>
-    </View>
+          )}
+        </ScrollView>
+        <CancelSubscriptionPopup
+          isVisible={canpopup}
+          onClose={() => setcanpopup(false)}
+          onCancel={() => {
+            dispatch(cancelSubscription()), setcanpopup(false);
+          }}
+        />
+      </View>
+    )
   );
 }
 
