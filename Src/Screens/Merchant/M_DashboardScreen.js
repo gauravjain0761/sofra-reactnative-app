@@ -313,11 +313,13 @@ export default function M_DashboardScreen({ navigation }) {
                 style={styles.bottomcardRowImage}
                 source={require("../../Images/Merchant/xxxhdpi/ic_menu_dashboard.png")}
               />
-              <Text style={styles.rightText}>
-                {strings("dashboard.lateralEntry.total2")}
-                {"\n"}
-                {strings("dashboard.lateralEntry.menu_items")}
-              </Text>
+              <View>
+                <Text style={styles.rightText}>{strings("dashboard.lateralEntry.total2")}</Text>
+                <Text style={styles.rightText}>
+                  {strings("dashboard.lateralEntry.menu_items")}
+                </Text>
+              </View>
+
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -461,15 +463,15 @@ const styles = StyleSheet.create({
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     alignItems: "center",
     width: "100%",
-    // justifyContent: "space-between",
+    justifyContent: I18nManager.isRTL ? 'space-between' : 'flex-start'
   },
   rightText: {
     ...commonFontStyle("M_600", 13, Colors.black),
     marginLeft: hp(1.5),
     marginRight: I18nManager.isRTL ? hp(3) : hp(1.5),
-
+    textAlign: I18nManager.isRTL ? 'left' : 'left'
     // flex: 1,
-    // textAlign: "",
+
   },
   bottomcardRowImage: {
     height: hp(4.5),

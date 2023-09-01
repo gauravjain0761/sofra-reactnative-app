@@ -110,7 +110,7 @@
   },
   "dashboard":{
    "home":"الصفحة الرئيسية",
-   "business_portal":"بوابة الأعمال",
+   "business_portal":"الصفحة الرئيسية",
    "search_for_specific":"ابحث عن عناصر محددة",
    "how_it_works":"كيف تعمل",
    "add_your_restaurant_menu":"أضف قائمة مطعمك",
@@ -465,10 +465,14 @@
     "cancel_it":"نعم ، قم بإلغائها!"
   },
   "current_package":{
-    "my_subscription":"My Subscriptions",
-    "your_current_package":"Your Current Package",
-    "package_expire":"Package expire",
-    "renew_btn":"Renew My Package",
-    "cancel_btn":"Cancel My Subscriptions"
+    "my_subscription":"إشتراكي",
+    "your_current_package":"اشتراكك الحالي",
+    "package_expire":"انتهاء صلاحية الاشتراك",
+    "renew_btn":"تجديد الحزمة الخاصة بي",
+    "cancel_btn":"إلغاء اشتراكاتي",
+    "tost_msg":"انتهاء الاشتراك",
+    "subscribe":"يشترك",
+    "canceltext":"لقد قمت بالغاء الاشتراك, الرجاء الاشتراك",
+    "canceltoast":"تم إلغاء الاشتراك"
   }
 }

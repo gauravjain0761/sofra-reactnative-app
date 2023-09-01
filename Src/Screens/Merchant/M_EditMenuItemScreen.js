@@ -95,9 +95,9 @@ export default function M_EditMenuItemScreen(props) {
       setMenuDes(
         menuItem.menuDescriptors
           ? getArray(
-              menuItem.menuDescriptors,
-              Language == "en" ? "name" : "name_ar"
-            )
+            menuItem.menuDescriptors,
+            Language == "en" ? "name" : "name_ar"
+          )
           : ""
       );
       setMenuIdEdit(menuItem.id);
@@ -157,18 +157,18 @@ export default function M_EditMenuItemScreen(props) {
         ...menuCatJson,
         ...menuDescriptorJson,
         price: Number(Price),
-        discount: Number(Discount),
-        maxLimit: Number(MaxLimit),
+        discount: Discount == '' ? undefined : Number(Discount),
+        maxLimit: MaxLimit == '' ? undefined : Number(MaxLimit),
         image: ImageItem.sourceURL
           ? {
-              uri: ImageItem.sourceURL,
-              type: ImageItem.mime, // or photo.type image/jpg
-              name:
-                "image_" +
-                moment().unix() +
-                "_" +
-                ImageItem.sourceURL.split("/").pop(),
-            }
+            uri: ImageItem.sourceURL,
+            type: ImageItem.mime, // or photo.type image/jpg
+            name:
+              "image_" +
+              moment().unix() +
+              "_" +
+              ImageItem.sourceURL.split("/").pop(),
+          }
           : ImageItem,
       };
     } else {
@@ -195,51 +195,38 @@ export default function M_EditMenuItemScreen(props) {
         if (MenuCategory.length !== 0) {
           if (ItemType.trim() !== "") {
             if (Price.trim() !== "") {
-              if (Discount.trim() !== "") {
-                if (MaxLimit.trim() !== "") {
-                  if (ImageItem !== "") {
-                    if (Description.trim() !== "") {
-                      if (ArabicDes.trim() !== "") {
-                        if (MenuDes.length !== 0) {
-                          onEditMenuItem();
-                        } else {
-                          dispatchErrorAction(
-                            dispatch,
-                            strings(
-                              "validationString.please_select_menu_descriptors"
-                            )
-                          );
-                        }
-                      } else {
-                        dispatchErrorAction(
-                          dispatch,
-                          strings(
-                            "validationString.please_enter_description_in_arabic"
-                          )
-                        );
-                      }
+
+              if (ImageItem !== "") {
+                if (Description.trim() !== "") {
+                  if (ArabicDes.trim() !== "") {
+                    if (MenuDes.length !== 0) {
+                      onEditMenuItem();
                     } else {
                       dispatchErrorAction(
                         dispatch,
-                        strings("validationString.please enter_description")
+                        strings(
+                          "validationString.please_select_menu_descriptors"
+                        )
                       );
                     }
                   } else {
                     dispatchErrorAction(
                       dispatch,
-                      strings("validationString.please_select_item_image")
+                      strings(
+                        "validationString.please_enter_description_in_arabic"
+                      )
                     );
                   }
                 } else {
                   dispatchErrorAction(
                     dispatch,
-                    strings("validationString.please_enter_max_limis")
+                    strings("validationString.please enter_description")
                   );
                 }
               } else {
                 dispatchErrorAction(
                   dispatch,
-                  strings("validationString.please_enter_discount_value")
+                  strings("validationString.please_select_item_image")
                 );
               }
             } else {

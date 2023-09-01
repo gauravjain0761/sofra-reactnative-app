@@ -58,7 +58,7 @@ export default function M_CurrentPackageScreen() {
       <View style={ApplicationStyles.mainView}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {RESTAURANT &&
-          RESTAURANT?.subscription?.subscription_status == "invalid" ? (
+            RESTAURANT?.subscription?.subscription_status == "invalid" ? (
             <View>
               <Text style={[styles.heading, { marginTop: hp(3) }]}>
                 {RESTAURANT?.subscription.message}
@@ -86,8 +86,8 @@ export default function M_CurrentPackageScreen() {
                   merchantSubscription.subscription.title == "Basic"
                     ? require("../../Images/Merchant/xxxhdpi/badsic.png")
                     : merchantSubscription.subscription.title == "Premium"
-                    ? require("../../Images/Merchant/xxxhdpi/pro.png")
-                    : require("../../Images/Merchant/xxxhdpi/standerd.png")
+                      ? require("../../Images/Merchant/xxxhdpi/pro.png")
+                      : require("../../Images/Merchant/xxxhdpi/standerd.png")
                 }
                 style={styles.imageCard}
               />
@@ -127,8 +127,8 @@ export default function M_CurrentPackageScreen() {
                       merchantSubscription.subscription.title == "Basic"
                         ? require("../../Images/Merchant/xxxhdpi/badsic.png")
                         : merchantSubscription.subscription.title == "Premium"
-                        ? require("../../Images/Merchant/xxxhdpi/pro.png")
-                        : require("../../Images/Merchant/xxxhdpi/standerd.png")
+                          ? require("../../Images/Merchant/xxxhdpi/pro.png")
+                          : require("../../Images/Merchant/xxxhdpi/standerd.png")
                     }
                     style={styles.imageCard}
                   />

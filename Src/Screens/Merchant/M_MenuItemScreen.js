@@ -122,18 +122,18 @@ export default function M_MenuItemScreen({ navigation }) {
       ...menuCatJson,
       ...menuDescriptorJson,
       price: Number(Price),
-      discount: Number(Discount),
-      maxLimit: Number(MaxLimit),
+      discount: Discount == '' ? undefined : Number(Discount),
+      maxLimit: MaxLimit == '' ? undefined : Number(MaxLimit),
       image: ImageItem.sourceURL
         ? {
-            uri: ImageItem.sourceURL,
-            type: ImageItem.mime, // or photo.type image/jpg
-            name:
-              "image_" +
-              moment().unix() +
-              "_" +
-              ImageItem.sourceURL.split("/").pop(),
-          }
+          uri: ImageItem.sourceURL,
+          type: ImageItem.mime, // or photo.type image/jpg
+          name:
+            "image_" +
+            moment().unix() +
+            "_" +
+            ImageItem.sourceURL.split("/").pop(),
+        }
         : undefined,
     };
     dispatch(
@@ -158,51 +158,37 @@ export default function M_MenuItemScreen({ navigation }) {
         if (MenuCategory.length !== 0) {
           if (ItemType.trim() !== "") {
             if (Price.trim() !== "") {
-              if (Discount.trim() !== "") {
-                if (MaxLimit.trim() !== "") {
-                  if (ImageItem !== "") {
-                    if (Description.trim() !== "") {
-                      if (ArabicDes.trim() !== "") {
-                        if (MenuDes.length !== 0) {
-                          onAddMenuItem();
-                        } else {
-                          dispatchErrorAction(
-                            dispatch,
-                            strings(
-                              "validationString.please_select_menu_descriptors"
-                            )
-                          );
-                        }
-                      } else {
-                        dispatchErrorAction(
-                          dispatch,
-                          strings(
-                            "validationString.please_enter_description_in_arabic"
-                          )
-                        );
-                      }
+              if (ImageItem !== "") {
+                if (Description.trim() !== "") {
+                  if (ArabicDes.trim() !== "") {
+                    if (MenuDes.length !== 0) {
+                      onAddMenuItem();
                     } else {
                       dispatchErrorAction(
                         dispatch,
-                        strings("validationString.please enter_description")
+                        strings(
+                          "validationString.please_select_menu_descriptors"
+                        )
                       );
                     }
                   } else {
                     dispatchErrorAction(
                       dispatch,
-                      strings("validationString.please_select_item_image")
+                      strings(
+                        "validationString.please_enter_description_in_arabic"
+                      )
                     );
                   }
                 } else {
                   dispatchErrorAction(
                     dispatch,
-                    strings("validationString.please_enter_max_limis")
+                    strings("validationString.please enter_description")
                   );
                 }
               } else {
                 dispatchErrorAction(
                   dispatch,
-                  strings("validationString.please_enter_discount_value")
+                  strings("validationString.please_select_item_image")
                 );
               }
             } else {

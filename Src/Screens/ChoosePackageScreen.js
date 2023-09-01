@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { I18nManager, StyleSheet, View } from "react-native";
 import React from "react";
 import WebView from "react-native-webview";
 import { useNavigation } from "@react-navigation/native";
@@ -9,6 +9,7 @@ import { dispatchAction } from "../Services/CommonFunctions";
 
 export default function ChoosePackageScreen({ route }) {
   const id = route.params.staffId;
+  const lan = I18nManager.isRTL ? 'ar' : 'en'
   console.log("route.params--", route.params);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -34,11 +35,12 @@ export default function ChoosePackageScreen({ route }) {
     console.log(url);
   };
 
+
   return (
     <View style={styles.container}>
       <WebView
         source={{
-          uri: "https://www.mysofra.com/subscription-plans?merchant=" + id,
+          uri: `https://www.mysofra.com/subscription-plans?merchant=${id}&&language=${lan}`
         }}
         onNavigationStateChange={(state) => checkUrlState(state)}
       />

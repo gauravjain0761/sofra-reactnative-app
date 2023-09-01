@@ -108,7 +108,7 @@ let DrawerItemArray = [
     screen: "M_PromocodeScreen",
   },
   {
-    label_ar: strings("current_package.my_subscription"),
+    label_ar: "إشتراكي",
     label: strings("current_package.my_subscription"),
     image: require("../Images/Merchant/xxxhdpi/ic_membership.png"),
     screen: "M_CurrentPackageScreen",
@@ -442,8 +442,8 @@ function CustomDrawerContent(props) {
             ? language == "en"
               ? RESTAURANT.name
               : RESTAURANT.name_ar && RESTAURANT.name_ar !== ""
-              ? RESTAURANT.name_ar
-              : RESTAURANT.name
+                ? RESTAURANT.name_ar
+                : RESTAURANT.name
             : ""}
         </Text>
         {DrawerItemArray.map((item, index) => {
@@ -481,8 +481,8 @@ function CustomDrawerContent(props) {
                       language == "en"
                         ? widthPercentageToDP(50)
                         : Platform.OS == "android"
-                        ? widthPercentageToDP(50)
-                        : widthPercentageToDP(40),
+                          ? widthPercentageToDP(50)
+                          : widthPercentageToDP(40),
                     // flex: 1,
                   },
                 ]}
