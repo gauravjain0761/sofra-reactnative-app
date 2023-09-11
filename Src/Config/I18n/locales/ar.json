@@ -461,7 +461,7 @@
     "instruction":"تعليمات",
     "category":"فئة",
     "menu":"قائمة طعام",
-    "Are_you_sure_cancel_subscription":"هل أنت متأكد أنك تريد إلغاء اشتراكك؟",
+    "Are_you_sure_cancel_subscription":"يرجى ملاحظة أن دفعتك غير قابلة للاسترداد وستنتهي صلاحية وصولك في نهاية دورة الفوترة الحالية.  تأكيد الالغاء؟",
     "cancel_it":"نعم ، قم بإلغائها!"
   },
   "current_package":{
@@ -473,6 +473,10 @@
     "tost_msg":"انتهاء الاشتراك",
     "subscribe":"يشترك",
     "canceltext":"لقد قمت بالغاء الاشتراك, الرجاء الاشتراك",
-    "canceltoast":"تم إلغاء الاشتراك"
+    "canceltoast":"تم إلغاء الاشتراك",
+    "Other_packages":"حزم أخرى",
+    "Upgrade":"يرقي",
+    "Month":"شهر",
+    "month_package":"حزمة الشهر"
   }
 }

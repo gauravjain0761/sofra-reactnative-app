@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  I18nManager,
+  ImageBackground,
 } from "react-native";
 import React, { useState } from "react";
 import { strings } from "../../Config/I18n";
@@ -23,13 +25,18 @@ import {
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import CancelSubscriptionPopup from "../../Components/CancelSubscriptionPopup";
+import { media_url } from "../../Config/AppConfig";
 
 export default function M_CurrentPackageScreen() {
+  const numArray = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']
+  const numArray_ar = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const merchantSubscription = useSelector(
     (e) => e.merchant.merchantSubscription
   );
+  const merchantOtherPackage = useSelector(e => e.merchant.merchantOtherPackage)
   const RESTAURANT = useSelector((e) => e.merchant.restaurant);
   const isFocused = useIsFocused();
   const [canpopup, setcanpopup] = useState(false);
@@ -41,7 +48,6 @@ export default function M_CurrentPackageScreen() {
 
   const onCancel = () => {
     setcanpopup(true);
-    // dispatch(cancelSubscription());
   };
 
   const onSubscribe = () => {
@@ -51,7 +57,16 @@ export default function M_CurrentPackageScreen() {
     });
   };
 
-  console.log(moment(merchantSubscription.expired_at) >= moment());
+  const onPressUpgrade = (item) => {
+    const lan = I18nManager.isRTL ? 'ar' : 'en'
+    navigation.navigate("ChoosePackageScreen", {
+      staffId: RESTAURANT.staffId,
+      screen: "M_CurrentPackageScreen",
+      url: `https://www.mysofra.com/cards?plan=${item.id}&merchant=${RESTAURANT.staffId}&language=${lan}`
+    });
+  }
+
+  console.log('merchantSubscription--', merchantSubscription)
 
   return (
     Object.keys(merchantSubscription).length !== 0 && (
@@ -81,16 +96,19 @@ export default function M_CurrentPackageScreen() {
               <Text style={styles.heading}>
                 {strings("current_package.your_current_package")}
               </Text>
-              <Image
-                source={
-                  merchantSubscription.subscription.title == "Basic"
-                    ? require("../../Images/Merchant/xxxhdpi/badsic.png")
-                    : merchantSubscription.subscription.title == "Premium"
-                      ? require("../../Images/Merchant/xxxhdpi/pro.png")
-                      : require("../../Images/Merchant/xxxhdpi/standerd.png")
-                }
-                style={styles.imageCard}
-              />
+
+              <ImageBackground source={{ uri: media_url + merchantSubscription.subscription.bg_image }}
+                style={styles.imageCard}>
+                <Text style={{ ...commonFontStyle(600, 35, Colors.white), }}>{I18nManager.isRTL ? merchantSubscription.subscription.title_ar : merchantSubscription.subscription.title.toUpperCase()}</Text>
+                <Text style={{ ...commonFontStyle(500, 17, Colors.white), }}>{merchantSubscription.subscription.months} {strings("current_package.month_package")}</Text>
+
+                <View style={{
+                  position: 'absolute',
+                  bottom: hp(1), right: hp(2)
+                }}>
+                  <Text style={{ ...commonFontStyle(700, 35, 'rgba(255,255,255,0.2)'), }}>{I18nManager.isRTL ? merchantSubscription.subscription.title_ar : merchantSubscription.subscription.title.toUpperCase()}</Text>
+                </View>
+              </ImageBackground>
               <Text style={styles.heading}>
                 {strings("current_package.package_expire")}{" "}
                 {moment(merchantSubscription.expired_at).format("DD MMMM YYYY")}
@@ -111,6 +129,38 @@ export default function M_CurrentPackageScreen() {
                   {strings("current_package.cancel_btn")}
                 </Text>
               </TouchableOpacity>
+              <View>
+                <Text style={styles.heading2}>{strings("current_package.Other_packages")}</Text>
+                {merchantOtherPackage && merchantOtherPackage.map((item, index) => {
+                  console.log('media_url + item.bg_image', media_url + item.bg_image)
+                  return (
+                    <View>
+                      <ImageBackground source={{ uri: media_url + item.bg_image }} style={styles.imagebg}>
+                        <View style={styles.rowView}>
+                          <Text style={[styles.heading3,]}>{I18nManager.isRTL ? item.title_ar : item.title} ({item.price} AED & {item.months} {strings("current_package.Month")})</Text>
+                          {/* <TouchableOpacity onPress={() => onPressUpgrade(item)}>
+                            <Text style={styles.upgradeBtn}>{strings("current_package.Upgrade")}</Text>
+                          </TouchableOpacity> */}
+                        </View>
+                        <View>
+                          {I18nManager.isRTL ? item.features_ar.map((element, i) => {
+                            return (
+                              <Text style={styles.features}>{element}</Text>
+                            )
+                          }) : item.features.map((element, i) => {
+                            return (
+                              <Text style={styles.features}>{element}</Text>
+                            )
+                          })}
+                        </View>
+                        <TouchableOpacity style={styles.upgradeView} onPress={() => onPressUpgrade(item)}>
+                          <Text style={styles.upgradeBtn}>{strings("current_package.Upgrade")}</Text>
+                        </TouchableOpacity>
+                      </ImageBackground>
+                    </View>
+                  )
+                })}
+              </View>
             </View>
           ) : (
             <View>
@@ -122,22 +172,52 @@ export default function M_CurrentPackageScreen() {
                   <Text style={styles.heading}>
                     {strings("current_package.your_current_package")}
                   </Text>
-                  <Image
-                    source={
-                      merchantSubscription.subscription.title == "Basic"
-                        ? require("../../Images/Merchant/xxxhdpi/badsic.png")
-                        : merchantSubscription.subscription.title == "Premium"
-                          ? require("../../Images/Merchant/xxxhdpi/pro.png")
-                          : require("../../Images/Merchant/xxxhdpi/standerd.png")
-                    }
-                    style={styles.imageCard}
-                  />
+                  <ImageBackground source={{ uri: media_url + merchantSubscription.subscription.bg_image }}
+                    style={styles.imageCard}>
+                    <Text style={{ ...commonFontStyle(600, 35, Colors.white), }}>{I18nManager.isRTL ? merchantSubscription.subscription.title_ar : merchantSubscription.subscription.title.toUpperCase()}</Text>
+                    <Text style={{ ...commonFontStyle(500, 17, Colors.white), }}>{merchantSubscription.subscription.months} {strings("current_package.month_package")}</Text>
+
+                    <View style={{
+                      position: 'absolute',
+                      bottom: hp(1), right: hp(2)
+                    }}>
+                      <Text style={{ ...commonFontStyle(700, 35, 'rgba(255,255,255,0.2)'), }}>{I18nManager.isRTL ? merchantSubscription.subscription.title_ar : merchantSubscription.subscription.title.toUpperCase()}</Text>
+                    </View>
+                  </ImageBackground>
                   <Text style={styles.heading}>
                     {strings("current_package.package_expire")}{" "}
                     {moment(merchantSubscription.expired_at).format(
                       "DD MMMM YYYY"
                     )}
                   </Text>
+                  <View>
+                    <Text style={styles.heading2}>{strings("current_package.Other_packages")}</Text>
+                    {merchantOtherPackage && merchantOtherPackage.map((item, index) => {
+                      return (
+                        <View>
+                          <ImageBackground source={{ uri: media_url + item.bg_image }} style={styles.imagebg}>
+                            <View style={styles.rowView}>
+                              <Text style={[styles.heading3,]}>{I18nManager.isRTL ? item.title_ar : item.title} ({item.price} AED & {item.months} {strings("current_package.Month")})</Text>
+                            </View>
+                            <View>
+                              {I18nManager.isRTL ? item.features_ar.map((element, i) => {
+                                return (
+                                  <Text style={styles.features}>{element}</Text>
+                                )
+                              }) : item.features.map((element, i) => {
+                                return (
+                                  <Text style={styles.features}>{element}</Text>
+                                )
+                              })}
+                            </View>
+                            <TouchableOpacity style={styles.upgradeView} onPress={() => onPressUpgrade(item)}>
+                              <Text style={styles.upgradeBtn}>{strings("current_package.Upgrade")}</Text>
+                            </TouchableOpacity>
+                          </ImageBackground>
+                        </View>
+                      )
+                    })}
+                  </View>
                 </View>
               ) : (
                 <View>
@@ -168,7 +248,18 @@ export default function M_CurrentPackageScreen() {
 
 const styles = StyleSheet.create({
   heading: {
-    ...commonFontStyle("400", 16, Colors.black),
+    ...commonFontStyle(400, 16, Colors.black),
+  },
+  heading3: {
+    ...commonFontStyle(600, 17, Colors.white),
+    // maxWidth: '76%',
+    paddingHorizontal: hp(2),
+    paddingTop: hp(2),
+    marginBottom: hp(1)
+  },
+  heading2: {
+    ...commonFontStyle(600, 16, Colors.black),
+    marginVertical: hp(2)
   },
   cancelbtn: {
     marginTop: 10,
@@ -176,7 +267,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     textAlign: "center",
-    ...commonFontStyle("400", 15, Colors.black),
+    ...commonFontStyle(400, 15, Colors.black),
   },
   pinkBtn: {
     marginTop: hp(12),
@@ -188,6 +279,34 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 10,
     aspectRatio: 3 / 1.65,
-    marginVertical: hp(3),
+    marginVertical: hp(2),
+    paddingHorizontal: hp(2),
+    paddingVertical: hp(1)
   },
+  rowView: {
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'space-between',
+
+  },
+  upgradeBtn: {
+    ...commonFontStyle(600, 16, Colors.white),
+  },
+  features: {
+    ...commonFontStyle(400, 13.5, 'rgba(255,255,255,0.6)'),
+    paddingHorizontal: hp(2),
+  },
+  imagebg: {
+    marginBottom: hp(2),
+    borderRadius: 10,
+    overflow: "hidden"
+  },
+  upgradeView: {
+    alignItems: "center",
+    paddingTop: hp(2),
+    paddingBottom: hp(2),
+    borderTopWidth: 1,
+    marginTop: hp(1.5),
+    borderColor: 'rgba(255,255,255,0.6)',
+  }
 });

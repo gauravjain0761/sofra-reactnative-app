@@ -867,6 +867,7 @@ export const getMySubscription = () => async (dispatch) => {
     if (data.status == true) {
       console.log("data.result---", data.result);
       dispatchAction(dispatch, "SET_SUBSCRIPTION", data.result);
+      dispatchAction(dispatch, "SET_PACKAGE", data.packages);
     } else {
       dispatchErrorAction(dispatch, data.message);
     }

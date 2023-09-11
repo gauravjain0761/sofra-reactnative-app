@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  I18nManager,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import ApplicationStyles from "../../Themes/ApplicationStyles";
@@ -24,6 +25,7 @@ import D_OrderItems from "../../Components/DeliveryComponent/D_OrderItems";
 import OrderDetailModal from "../../Components/OrderDetailModal";
 import SubscriptionToast from "../../Components/SubscriptionToast";
 export default function M_DashboardScreen({ navigation }) {
+  I18nManager.allowRTL(false);
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const DASHBOARD_DATA = useSelector((e) => e.delivery.dashboardData);
@@ -176,7 +178,7 @@ export default function M_DashboardScreen({ navigation }) {
         selectedOrder={selectedOrder}
         type={"delivery"}
       />
-      <SubscriptionToast data={COMPANY} type={"delivery"} />
+      {/* <SubscriptionToast data={COMPANY} type={"delivery"} /> */}
     </View>
   );
 }

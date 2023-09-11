@@ -34,6 +34,7 @@ const initialState = {
   merchantSubscription: {},
   subCategories: [],
   mainCategories: [],
+  merchantOtherPackage: undefined
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -293,10 +294,16 @@ export default function (state = initialState, action) {
       return { ...state, dashboardSearch: action.payload };
     }
     case "SET_SUBSCRIPTION": {
-      console.log("SET_SUBSCRIPTION---", action.payload);
       return {
         ...state,
         merchantSubscription: action.payload,
+        preLoader: false,
+      };
+    }
+    case "SET_PACKAGE": {
+      return {
+        ...state,
+        merchantOtherPackage: action.payload,
         preLoader: false,
       };
     }

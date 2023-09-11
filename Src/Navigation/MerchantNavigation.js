@@ -438,7 +438,7 @@ function CustomDrawerContent(props) {
           }
         />
         <Text style={styles.name}>
-          {RESTAURANT !== {}
+          {Object.keys(RESTAURANT).length !== 0
             ? language == "en"
               ? RESTAURANT.name
               : RESTAURANT.name_ar && RESTAURANT.name_ar !== ""

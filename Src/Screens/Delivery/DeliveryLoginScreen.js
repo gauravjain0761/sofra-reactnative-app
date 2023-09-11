@@ -15,8 +15,8 @@ import { getDeliveryLogin } from "../../Services/AuthApi";
 
 export default function DeliveryLoginScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("amirmcs05@gmail.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("amir.shahzadoff@gmail.com");
+  const [password, setPassword] = useState("64fec4a5288b0");
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   const fcmToken = useSelector((e) => e.auth.fcmToken);

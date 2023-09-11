@@ -4,11 +4,39 @@ import Colors from "../Themes/Colors";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { commonFontStyle } from "../Themes/Fonts";
 import moment from "moment";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function SubscriptionToast({ data, type }) {
+  const [showDes, setshowDes] = useState(false)
+
+  const isFocused = useIsFocused()
+  useEffect(() => {
+    if (isFocused) {
+      setshowDes(false)
+    }
+  }, [isFocused])
   const navigation = useNavigation();
-  return (
+  if (showDes == false) {
+    return (
+      data?.subscription?.subscription_status == "invalid" ?
+        <TouchableOpacity onPress={() => setshowDes(true)} style={styles.notiView}>
+          <Image style={styles.notiIcon} source={require('../Images/Merchant/xxxhdpi/ic_notification.png')} />
+        </TouchableOpacity> :
+        data?.subscription?.subscription_status == "cancelled" ? (
+          moment(data?.subscription?.expired_at) >= moment() ? null : (
+            <TouchableOpacity onPress={() => setshowDes(true)} style={styles.notiView}>
+              <Image style={styles.notiIcon} source={require('../Images/Merchant/xxxhdpi/ic_notification.png')} />
+            </TouchableOpacity>
+          )) :
+          data?.subscription?.subscription_status == "active" ? null : (
+            <TouchableOpacity onPress={() => setshowDes(true)} style={styles.notiView}>
+              <Image style={styles.notiIcon} source={require('../Images/Merchant/xxxhdpi/ic_notification.png')} />
+            </TouchableOpacity>
+          )
+    )
+  } else return (
     <View style={styles.absoluteView}>
       <TouchableOpacity
         onPress={() =>
@@ -30,6 +58,9 @@ export default function SubscriptionToast({ data, type }) {
             <View>
               <Text style={styles.title}>{data?.subscription?.message}</Text>
             </View>
+            <TouchableOpacity onPress={() => setshowDes(false)}>
+              <Image source={require('../Images/Merchant/xxxhdpi/close.png')} style={styles.closeIcon} />
+            </TouchableOpacity>
           </View>
         ) : data?.subscription?.subscription_status == "cancelled" ? (
           moment(data?.subscription?.expired_at) >= moment() ? null : (
@@ -43,6 +74,9 @@ export default function SubscriptionToast({ data, type }) {
               <View>
                 <Text style={styles.title}>{data?.subscription?.message}</Text>
               </View>
+              <TouchableOpacity onPress={() => setshowDes(false)}>
+                <Image source={require('../Images/Merchant/xxxhdpi/close.png')} style={styles.closeIcon} />
+              </TouchableOpacity>
             </View>
           )
         ) : data?.subscription?.subscription_status == "active" ? null : (
@@ -53,12 +87,15 @@ export default function SubscriptionToast({ data, type }) {
                 style={styles.imageSub}
               />
             </View>
-            <View>
+            <View >
               <Text style={styles.title}>{data?.subscription?.message}</Text>
               <Text style={styles.date}>
                 {moment(data?.subscription?.expired_at).format("MMM DD - YYYY")}
               </Text>
             </View>
+            <TouchableOpacity onPress={() => setshowDes(false)}>
+              <Image source={require('../Images/Merchant/xxxhdpi/close.png')} style={styles.closeIcon} />
+            </TouchableOpacity>
           </View>
         )}
       </TouchableOpacity>
@@ -100,10 +137,28 @@ const styles = StyleSheet.create({
   title: {
     ...commonFontStyle(700, 13, Colors.white),
     marginLeft: heightPercentageToDP(3),
+    maxWidth: '85%'
   },
   date: {
     ...commonFontStyle(400, 11, Colors.white),
     marginLeft: heightPercentageToDP(3),
     marginTop: 5,
   },
+  notiIcon: {
+    height: heightPercentageToDP(6),
+    width: heightPercentageToDP(6),
+    resizeMode: "contain",
+  },
+  notiView: {
+    position: "absolute",
+    bottom: 0,
+    marginBottom: 30,
+    right: 30,
+  },
+  closeIcon: {
+    height: heightPercentageToDP(2.5),
+    width: heightPercentageToDP(2.5),
+    resizeMode: "contain",
+    tintColor: 'white'
+  }
 });

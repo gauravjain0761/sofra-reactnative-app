@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    ...commonFontStyle("M_600", 20, Colors.black),
+    ...commonFontStyle("M_600", 16, Colors.black),
     paddingVertical: hp(2),
   },
   titleBottom: {

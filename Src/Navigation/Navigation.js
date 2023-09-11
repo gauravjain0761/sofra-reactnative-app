@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChooseLoginScreen from "../Screens/ChooseLoginScreen";
 import MerchantLoginScreen from "../Screens/Merchant/MerchantLoginScreen";
-import { Image, Platform, StyleSheet, TouchableOpacity } from "react-native";
+import { I18nManager, Image, Platform, StyleSheet, TouchableOpacity } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import Colors from "../Themes/Colors";
 import DeliveryLoginScreen from "../Screens/Delivery/DeliveryLoginScreen";
@@ -17,6 +17,8 @@ import messaging from "@react-native-firebase/messaging";
 import notifee, { AndroidImportance } from "@notifee/react-native";
 import ChoosePackageScreen from "../Screens/ChoosePackageScreen";
 import D_ChoosePackageScreen from "../Screens/D_ChoosePackageScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import RNRestart from "react-native-restart";
 
 const data = {
   headerBackVisible: false,
@@ -73,7 +75,7 @@ export default function Navigation() {
       .then(() => {
         registerAppWithFCM();
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 
   const getToken = async () => {
@@ -149,6 +151,18 @@ export default function Navigation() {
     });
   }
 
+  const onChangeLanguage = async () => {
+    await AsyncStorage.setItem("Language", I18nManager.isRTL ? 'en' : 'ar');
+    AsyncStorage.getItem("Language").then((res) => {
+      if (res === "ar") {
+        I18nManager.forceRTL(true);
+      } else {
+        I18nManager.forceRTL(false);
+      }
+      RNRestart.Restart();
+    });
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -203,6 +217,15 @@ export default function Navigation() {
                     transform: [{ rotate: "90deg" }],
                   }}
                 />
+              </TouchableOpacity>
+            ),
+            headerRight: () => (
+              <TouchableOpacity onPress={() => onChangeLanguage()}>
+                <Image source={I18nManager.isRTL ? require("../Images/Merchant/xxxhdpi/ic_en.png") : require("../Images/Merchant/xxxhdpi/ic_ar.png")} style={{
+                  height: 50,
+                  width: 50,
+                  resizeMode: "contain",
+                }} />
               </TouchableOpacity>
             ),
             // ...data,

@@ -38,12 +38,22 @@ export default function ChoosePackageScreen({ route }) {
 
   return (
     <View style={styles.container}>
-      <WebView
-        source={{
-          uri: `https://www.mysofra.com/subscription-plans?merchant=${id}&&language=${lan}`
-        }}
-        onNavigationStateChange={(state) => checkUrlState(state)}
-      />
+
+      {route.params && route.params.url ?
+        <WebView
+          source={{
+            uri: route.params.url
+          }}
+          onNavigationStateChange={(state) => checkUrlState(state)}
+        />
+        :
+        <WebView
+          source={{
+            uri: `https://www.mysofra.com/subscription-plans?merchant=${id}&&language=${lan}`
+          }}
+          onNavigationStateChange={(state) => checkUrlState(state)}
+        />
+      }
     </View>
   );
 }

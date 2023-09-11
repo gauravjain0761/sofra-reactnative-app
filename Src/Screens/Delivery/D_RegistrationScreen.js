@@ -66,11 +66,11 @@ export default function D_RegistrationScreen({ route }) {
     };
     dispatch(
       deliveryRegistaer(data, (res) => {
-        navigation.navigate("D_ChoosePackageScreen", {
-          staffId: res.id,
-          screen: "D_RegistrationScreen",
-        });
-        // dispatch({ type: "REGISTER_SUCCESS", payload: true });
+        // navigation.navigate("D_ChoosePackageScreen", {
+        //   staffId: res.id,
+        //   screen: "D_RegistrationScreen",
+        // });
+        dispatch({ type: "REGISTER_SUCCESS", payload: true });
       })
     );
   };
@@ -211,7 +211,7 @@ export default function D_RegistrationScreen({ route }) {
           understood Sofra{" "}
           <Text
             style={{ ...commonFontStyle(700, 14, Colors.pink) }}
-            onPress={() => {}}
+            onPress={() => { }}
           >
             Terms and Conditions
           </Text>

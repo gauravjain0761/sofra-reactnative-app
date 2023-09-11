@@ -465,7 +465,7 @@
     "instruction":"Instructions",
     "category":"Category",
     "menu":"Menu",
-    "Are_you_sure_cancel_subscription":"Are you sure you want to cancel your subscription?",
+    "Are_you_sure_cancel_subscription":"Please note that your payment is non-refundable and your access will expire at the end of the current billing cycle. Confirm cancellation?",
     "cancel_it":"Yes, cancel it!"
   },
   "current_package":{
@@ -477,6 +477,10 @@
     "tost_msg":"Expire Subscription",
     "subscribe":"Subscribe",
     "canceltext":"You cancelled your subscription, please subscribe.",
-    "canceltoast":"Cancelled Subscription"
+    "canceltoast":"Cancelled Subscription",
+    "Other_packages":"Other packages",
+    "Upgrade":"Upgrade",
+    "Month":"Month",
+    "month_package":"month package"
   }
 }
