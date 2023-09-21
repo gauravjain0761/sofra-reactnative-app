@@ -26,6 +26,7 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import CancelSubscriptionPopup from "../../Components/CancelSubscriptionPopup";
 import { media_url } from "../../Config/AppConfig";
+import UpgradeModal from "../../Components/UpgradeModal";
 
 export default function M_CurrentPackageScreen() {
   const numArray = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten']
@@ -40,6 +41,8 @@ export default function M_CurrentPackageScreen() {
   const RESTAURANT = useSelector((e) => e.merchant.restaurant);
   const isFocused = useIsFocused();
   const [canpopup, setcanpopup] = useState(false);
+  const [upgradePopup, setupgradePopup] = useState(false);
+  const [selectedUpgradeItem, setselectedUpgradeItem] = useState({});
   useEffect(() => {
     if (isFocused == true) {
       dispatch(getMySubscription());
@@ -58,6 +61,7 @@ export default function M_CurrentPackageScreen() {
   };
 
   const onPressUpgrade = (item) => {
+    setupgradePopup(false)
     const lan = I18nManager.isRTL ? 'ar' : 'en'
     navigation.navigate("ChoosePackageScreen", {
       staffId: RESTAURANT.staffId,
@@ -153,7 +157,7 @@ export default function M_CurrentPackageScreen() {
                             )
                           })}
                         </View>
-                        <TouchableOpacity style={styles.upgradeView} onPress={() => onPressUpgrade(item)}>
+                        <TouchableOpacity style={styles.upgradeView} onPress={() => { setupgradePopup(true), setselectedUpgradeItem(item) }}>
                           <Text style={styles.upgradeBtn}>{strings("current_package.Upgrade")}</Text>
                         </TouchableOpacity>
                       </ImageBackground>
@@ -239,6 +243,13 @@ export default function M_CurrentPackageScreen() {
           onClose={() => setcanpopup(false)}
           onCancel={() => {
             dispatch(cancelSubscription()), setcanpopup(false);
+          }}
+        />
+        <UpgradeModal
+          isVisible={upgradePopup}
+          onClose={() => setupgradePopup(false)}
+          onUpgrade={() => {
+            onPressUpgrade(selectedUpgradeItem)
           }}
         />
       </View>

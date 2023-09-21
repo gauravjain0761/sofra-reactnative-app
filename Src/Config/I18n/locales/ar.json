@@ -9,7 +9,9 @@
     "Do_not_have_your_account": "لا تملك حساب؟",
     "enter_your_email_address":"أدخل عنوان بريدك الإلكتروني",
     "enter_your_password":"أدخل كلمة المرور الخاصة بك",
-    "email":"البريد الإلكتروني"
+    "email":"البريد الإلكتروني",
+    "Merchant":"تاجر",
+    "Delivery":"توصيل"
   },
   "Forgot_Pass":{
     "Forgot_Password":"هل نسيت كلمة السر",
@@ -54,7 +56,6 @@
     "please_enter_minimum_order_value":"الرجاء إدخال الحد الأدنى لقيمة الطلب",
     "please_enter_maximum_discount_amount":"الرجاء إدخال الحد الأقصى لمبلغ الخصم",
     "please_enter_discount_value":"الرجاء إدخال قيمة الخصم",
-  
     "please_enter_description_in_arabic":"الرجاء إدخال الوصف باللغة العربية",
     "please enter_description":"الرجاء إدخال الوصف",
     "please_enter_business_in_arabic":"الرجاء إدخال الأعمال باللغة العربية",
@@ -168,7 +169,6 @@
   "editCategories":{
     "edit_manu_categories":"تحرير فئات القائمة",
     "update_categories":"تحديث الفئات"
-   
   },
   "documentScreen":{
     "documents":"المستندات",
@@ -232,12 +232,10 @@
      "Phone":"هاتف:",
      "City":"مدينة:",
      "delivery_address":"عنوان التسليم"
-
   },
   "notification":{
    "notification":"الإشعارات"
   },
-
   "profile":{
     "profile":"الملف التعريفي",
     "personal_info":"معلومات شخصية",
@@ -263,7 +261,6 @@
     "locations":"المواقع",
     "city":"مدينة"
   },
-
   "promo_code":{
     "promo_codes":"رموز ترويجية",
     "promo_code_details_here":"تفاصيل الرمز الترويجي هنا:",
@@ -294,7 +291,6 @@
       "edit_promo_code":"تحرير الرمز الترويجي"
     }
   },
-
   "report_screen":{
       "order_details":"تفاصيل الطلب",
       "total_cash_orders":"إجمالي الطلبات النقدية (مكتملة)",
@@ -319,7 +315,6 @@
       "settled_report":"تقرير مستقر",
       "unSettled_report":"تقرير لم تتم تسويته"
      }
-
   },
   "slotScreen":{
       "january":"كانون الثاني",
@@ -388,7 +383,6 @@
     "lateralEntry":{
       "select_opening_time":"حدد وقت الافتتاح",
       "select_closing_time":"حدد وقت الإغلاق"
-      
     }
   },
   "updatePassword":{
@@ -432,7 +426,6 @@
       "app_settings":"تحديث إعدادات التطبيق"
     }
   },
-
   "user_profile": {
     "title": "ملفك الشخصي"
   },
@@ -447,7 +440,6 @@
        "last_month":"الشهر الماضي",
        "Custom_Range":"نطاق مخصص"
     }
-    
   },
   "pop_up":{
     "Are_you_sure":"هل أنت متأكد؟",
@@ -462,7 +454,10 @@
     "category":"فئة",
     "menu":"قائمة طعام",
     "Are_you_sure_cancel_subscription":"يرجى ملاحظة أن دفعتك غير قابلة للاسترداد وستنتهي صلاحية وصولك في نهاية دورة الفوترة الحالية.  تأكيد الالغاء؟",
-    "cancel_it":"نعم ، قم بإلغائها!"
+    "cancel_it":"نعم ، قم بإلغائها!",
+    "upgradeText":"سينتهي اشتراكك وسيبدأ الاشتراك الجديد، ولا يوجد استرداد للاشتراك القديم.",
+    "agree":"موافق",
+    "cancel2":"إلغاء"
   },
   "current_package":{
     "my_subscription":"إشتراكي",

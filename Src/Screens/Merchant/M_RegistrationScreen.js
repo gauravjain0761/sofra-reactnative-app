@@ -392,7 +392,7 @@ export default function M_RegistrationScreen({ navigation, route }) {
           {strings("SignUp.by_clicking_submit")}{" "}
           <Text
             style={{ ...commonFontStyle(700, 14, Colors.pink) }}
-            onPress={() => {}}
+            onPress={() => { navigation.navigate('TermsScreen') }}
           >
             {strings("SignUp.terms_and_condition")}
           </Text>

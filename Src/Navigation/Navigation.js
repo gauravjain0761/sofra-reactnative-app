@@ -19,6 +19,7 @@ import ChoosePackageScreen from "../Screens/ChoosePackageScreen";
 import D_ChoosePackageScreen from "../Screens/D_ChoosePackageScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNRestart from "react-native-restart";
+import TermsScreen from "../Screens/TermsScreen";
 
 const data = {
   headerBackVisible: false,
@@ -371,6 +372,30 @@ export default function Navigation() {
           })}
           name="D_ChoosePackageScreen"
           component={D_ChoosePackageScreen}
+        />
+        <Stack.Screen
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={ApplicationStyles.headerRightView1}
+              >
+                <Image
+                  source={require("../Images/Delivery/xxxhdpi/ic_drop_down.png")}
+                  style={{
+                    height: 18,
+                    width: 18,
+                    resizeMode: "contain",
+                    transform: [{ rotate: "90deg" }],
+                  }}
+                />
+              </TouchableOpacity>
+            ),
+            ...data,
+            ...transparentHeader,
+          })}
+          name="TermsScreen"
+          component={TermsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

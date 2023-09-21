@@ -211,7 +211,7 @@ export default function D_RegistrationScreen({ route }) {
           understood Sofra{" "}
           <Text
             style={{ ...commonFontStyle(700, 14, Colors.pink) }}
-            onPress={() => { }}
+            onPress={() => { navigation.navigate('TermsScreen') }}
           >
             Terms and Conditions
           </Text>

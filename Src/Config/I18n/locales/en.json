@@ -9,7 +9,9 @@
       "Do_not_have_your_account": "Don't have an account?",
       "enter_your_email_address":"Enter Your email address",
       "enter_your_password":"Enter Your Password",
-      "email":"Email"
+      "email":"Email",
+      "Merchant":"Merchant",
+      "Delivery":"Delivery"
     },
     "Forgot_Pass":{
 "Forgot_Password":"Forgot Password",
@@ -54,7 +56,6 @@
       "please_enter_minimum_order_value":"Please Enter minimum Order Value",
       "please_enter_maximum_discount_amount":"Please enter maximum discount amount",
       "please_enter_discount_value":"Please enter discount value",
-    
       "please_enter_description_in_arabic":"Please enter description in arabic",
       "please enter_description":"Please Enter description",
       "please_enter_business_in_arabic":"Please enter business in arabic",
@@ -98,7 +99,6 @@
     "Report_downloaded_Successfully_Please_check_your_downloads":"Report downloaded Successfully, Please check your download.",
     "Orders_file_downloaded_Successfully_Please_check_your_downloads":"Orders file downloaded Successfully, Please check your download.",
       "lateralEntry":{
-
         "please_select_document":"Please select document",
         "documents_download_successfull":"Documents download successfull",
         "something_went_wrong":"Something went wrong! Please try again later",
@@ -108,7 +108,6 @@
       "please_select_closing_time":"Please select closing time",
       "please_select_opening_time":"Please select opening time"
       }
-
     },
     "dashboard":{
      "home":"Home",
@@ -170,7 +169,6 @@
     "editCategories":{
       "edit_manu_categories":"Edit Manu Categories",
       "update_categories":"Update Categories"
-     
     },
     "documentScreen":{
       "documents":"Documents",
@@ -198,7 +196,6 @@
         "no_data_found":"No Data Found"
       }
     },
-    
     "order_detail":{
         "order_detail":"Order Details",
        "order_id":"Order Id:",
@@ -236,7 +233,6 @@
        "City":"City:",
 "delivery_address":"Delivery Address"
     },
-
     "notification":{
      "notification":"Notifications"
     },
@@ -343,9 +339,7 @@
         "action":"Action",
         "lateralEntry":{
           "no_data_found":"No Data Found"
-
         }
-       
     },
     "statisticsScreen":{
       "order":"Order",
@@ -392,7 +386,6 @@
       "lateralEntry":{
         "select_opening_time":"Select Opening Time",
         "select_closing_time":"Select Closing Time"
-        
       }
     },
     "updatePassword":{
@@ -425,7 +418,6 @@
       "offer_listing":"Offers Listing"
       }
     },
-
     "appSetting":{
       "update_app_settings":"Update App Settingss Here",
       "taking_orders":"Taking Orders",
@@ -437,7 +429,6 @@
         "app_settings":"Update App Settings"
       }
     },
-  
     "user_profile": {
       "title": "Your Profile"
     },
@@ -466,7 +457,10 @@
     "category":"Category",
     "menu":"Menu",
     "Are_you_sure_cancel_subscription":"Please note that your payment is non-refundable and your access will expire at the end of the current billing cycle. Confirm cancellation?",
-    "cancel_it":"Yes, cancel it!"
+    "cancel_it":"Yes, cancel it!",
+    "upgradeText":"Your subscription will end and the new one will start, there is no refund on the old subscription.",
+    "agree":"Agree",
+    "cancel2":"Cancel"
   },
   "current_package":{
     "my_subscription":"My Subscription",

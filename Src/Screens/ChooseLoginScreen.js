@@ -15,6 +15,7 @@ import {
   getMainCategories,
 } from "../Services/MerchantApi";
 import messaging from "@react-native-firebase/messaging";
+import { strings } from "../Config/I18n";
 
 export default function ChooseLoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -77,12 +78,12 @@ export default function ChooseLoginScreen({ navigation }) {
           <PinkButton
             onPress={() => navigation.navigate("MerchantLoginScreen")}
             style={styles.mbuttonStyle}
-            name={"Merchant"}
+            name={strings('login.Merchant')}
           />
           <PinkButton
             onPress={() => navigation.navigate("DeliveryLoginScreen")}
             style={styles.dbuttonStyle}
-            name={"Delivery"}
+            name={strings("login.Delivery")}
           />
         </View>
       </View>
